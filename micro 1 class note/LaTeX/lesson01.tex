@@ -1,0 +1,106 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{1}{Part 1: Individual decision-making}{}
+
+
+\section{Decision making in general (Chapter 1)}
+
+The task is to understand decision-making (d.m.) at the individual level, i.e.\ the
+level of the economic agent, or the decision maker.
+
+But we limit our scope to the economic agent operating in a market economy.
+
+Chapters 2--3, or the consumer theory: given prices and income, what type of
+consumer decisions do we expect?
+
+\section{Consumer choice: the elements of the problem (Chapter 2)}
+
+We start by describing some elements of the problem.
+
+\begin{flatnum}
+  \item There is a fixed, finite number $L$ of goods or commodities. Let $x_i$ denote the quantity of good $i$ that is consumed,
+        $i=1,2,\dots,L$.
+
+        The bundle that the agent consumes is denoted
+        \[ x=(x_1,\dots,x_L). \]
+        $x$ is a vector, and is supposed to be a column vector.
+
+  \item The \emph{consumption set} $X$: denote the set of possible bundles. We
+        assume quantities are non-negative, i.e.\ $x_i\ge 0$,
+        $i=1,2,\dots,L$. We imagine the quantities are continuous:
+        \[ X=\R^L_+. \]
+
+  \item The agent (consumer) lives in a market economy. Let $w$ denote wealth and
+        $p_i$ the price of good $i$, $i=1,2,\dots,L$. Let
+        $p=(p_1,\dots,p_L)$ (the price vector); assume prices are all positive, $p\gg 0$, and
+        \[ p\cdot x=\sum_{i=1}^{L}p_ix_i\le w. \]
+\end{flatnum}
+
+\section{The budget set and its properties}
+
+The budget set is the set of affordable or feasible bundles, denoted $B$:
+\[ B_{p,w}=\{\,x\in\R^L_+ : p\cdot x\le w\,\}. \]
+The subset of bundles where the entire income is spent is
+\[ \{\,x\in\R^L_+ : p\cdot x=w\,\}, \]
+which lies on the \emph{budget hyperplane} $\{x\in\R^L : p\cdot x=w\}$; when
+$L=2$ it is the \emph{budget line}.
+
+\topic{Properties of the budget set}
+\begin{flatlist}
+  \item Given $w>0$, $B$ is non-empty, since $x=0$ is affordable.
+  \item Given $p\gg 0$, $B$ is bounded --- a limit to what can be afforded, since
+        $0\le x_i\le w/p_i$ for every good $i$ --- and $B$ is a closed set (it is
+        defined by weak inequalities).
+  \item $B$ is a compact set: closed and bounded in $\R^L$.
+  \item $B$ is a convex set: if $x,x'\in B$, then
+        \[ \tau x+(1-\tau)x'\in B,\qquad \tau\in[0,1], \]
+        since $\tau x+(1-\tau)x'\ge0$ and
+        $p\cdot\bigl(\tau x+(1-\tau)x'\bigr)=\tau\,p\cdot x+(1-\tau)\,p\cdot x'\le
+        \tau w+(1-\tau)w=w$.
+\end{flatlist}
+
+\section{Two ways to proceed}
+
+We have described the economic environment. We can proceed in two ways:
+
+\begin{flatlist}
+  \item \emph{The classical approach.} Start from axioms on preferences and see
+        what predictions follow.
+  \item \emph{The revealed-preference approach.} Start from choice-observable
+        data, and infer something about the consumer from these choices.
+\end{flatlist}
+
+\begin{transcriptnotes}
+  \item The first page of the original is a blank template page; it is not
+        reproduced here.
+  \item ``But we our scope\dots'' had no verb; read as \emph{we limit} our scope.
+  \item ``there're fix \# of goods'' read as \emph{a fixed number of goods}; the
+        sentence repeated itself (``a fixed number of goods, and a finite number
+        $L$ of goods'') and is merged into one clause.
+  \item \textbf{Added:} the one-line reasons behind boundedness, closedness,
+        compactness and convexity of the budget set.
+  \item Index range: the original wrote $i=1,2,3$ for signs and $i=1,2,\dots,L$
+        for prices and goods; with $L$ goods the range $1,\dots,L$ is used
+        throughout.
+  \item ``The bundle that the agent \emph{is} consumed'' $\to$
+        \emph{that the agent consumes}.
+  \item ``none empty'' $\to$ \emph{non-empty}; ``branded'' $\to$ \emph{bounded};
+        ``afforde'' $\to$ \emph{afforded}; ``closedcet'' $\to$ \emph{closed set}.
+  \item ``The budget line $L=2$ on the budget hyperplane'': the glyph is clearly
+        a ``2'', i.e.\ the number of goods. The previous transcription treated
+        $\mathcal{L}$ as a name for the set; it now reads (as in MWG) that the
+        set $\{p\cdot x=w\}$ is the budget hyperplane, a budget \emph{line}
+        when $L=2$.
+  \item The opening line starts with an abbreviation read as ``F.S.''
+        (possibly ``First''); it is dropped.
+  \item Section headings carry the chapter labels from the original
+        (``chapter 1'', ``chapter 2'').
+  \item ``$Tx+(1-T)x'$'' read as $\tau x+(1-\tau)x'$, with $\tau\in[0,1]$.
+  \item ``fiscal envior.'' is illegible; read as \emph{the economic environment}.
+  \item ``Axions'' $\to$ \emph{axioms}.
+\end{transcriptnotes}
+
+\end{document}

@@ -1,0 +1,502 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "43185c01",
+   "metadata": {},
+   "source": [
+    "# ECON*6140 — Assignment 1\n",
+    "Kernel: **Python (Metrics HW1)** (`.venv` in this folder)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "793943d3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import statsmodels.api as sm\n",
+    "import statsmodels.formula.api as smf\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "pd.set_option('display.precision', 4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "514c9883",
+   "metadata": {},
+   "source": [
+    "## Question 2 — tbrate data\n",
+    "`tbrate.xlsx` (converted from `tbrate.docx`): 1950Q1–1996Q4, columns `r` (91-day T-bill rate), `y` (log real GDP), `pi` (inflation)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "99aea33b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.positron.dataexplorer+json": {
+       "comm_id": "388f3372-ae1c-4c16-85d6-de67e7de7fbd",
+       "shape": {
+        "columns": 7,
+        "rows": 5
+       },
+       "source": "pandas",
+       "title": "pandas",
+       "version": 1
+      },
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>obs</th>\n",
+       "      <th>year</th>\n",
+       "      <th>quarter</th>\n",
+       "      <th>period</th>\n",
+       "      <th>r</th>\n",
+       "      <th>y</th>\n",
+       "      <th>pi</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>period</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>1950Q1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>1950</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1950Q1</td>\n",
+       "      <td>0.510</td>\n",
+       "      <td>11.5383</td>\n",
+       "      <td>0.50</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q2</th>\n",
+       "      <td>2</td>\n",
+       "      <td>1950</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1950Q2</td>\n",
+       "      <td>0.510</td>\n",
+       "      <td>11.5383</td>\n",
+       "      <td>4.06</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q3</th>\n",
+       "      <td>3</td>\n",
+       "      <td>1950</td>\n",
+       "      <td>3</td>\n",
+       "      <td>1950Q3</td>\n",
+       "      <td>0.550</td>\n",
+       "      <td>11.5610</td>\n",
+       "      <td>5.50</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q4</th>\n",
+       "      <td>4</td>\n",
+       "      <td>1950</td>\n",
+       "      <td>4</td>\n",
+       "      <td>1950Q4</td>\n",
+       "      <td>0.623</td>\n",
+       "      <td>11.6010</td>\n",
+       "      <td>9.85</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1951Q1</th>\n",
+       "      <td>5</td>\n",
+       "      <td>1951</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1951Q1</td>\n",
+       "      <td>0.693</td>\n",
+       "      <td>11.6193</td>\n",
+       "      <td>14.00</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        obs  year  quarter  period      r        y     pi\n",
+       "period                                                   \n",
+       "1950Q1    1  1950        1  1950Q1  0.510  11.5383   0.50\n",
+       "1950Q2    2  1950        2  1950Q2  0.510  11.5383   4.06\n",
+       "1950Q3    3  1950        3  1950Q3  0.550  11.5610   5.50\n",
+       "1950Q4    4  1950        4  1950Q4  0.623  11.6010   9.85\n",
+       "1951Q1    5  1951        1  1951Q1  0.693  11.6193  14.00"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df = pd.read_excel('tbrate.xlsx', sheet_name='data')\n",
+    "df.index = pd.PeriodIndex(df['period'], freq='Q')\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a1",
+   "metadata": {},
+   "source": [
+    "### 2.1 Build the regression variables\n",
+    "\n",
+    "Question 2 estimates\n",
+    "\n",
+    "    dr_t = b1 + b2*pi_{t-1} + b3*dy_{t-1} + b4*dr_{t-1} + b5*dr_{t-2} + u_t\n",
+    "\n",
+    "so six columns have to exist first: the differences, then the lags built *from*\n",
+    "those differences. Order matters below -- `dy_1` is defined from `dy`, so the\n",
+    "`dy` line has to run first."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a2",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.positron.dataexplorer+json": {
+       "comm_id": "289b4ecf-eb86-4202-bec2-d59f5270e7e1",
+       "shape": {
+        "columns": 6,
+        "rows": 5
+       },
+       "source": "pandas",
+       "title": "pandas",
+       "version": 1
+      },
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>r</th>\n",
+       "      <th>dr</th>\n",
+       "      <th>pi_1</th>\n",
+       "      <th>dy_1</th>\n",
+       "      <th>dr_1</th>\n",
+       "      <th>dr_2</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>period</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>1950Q1</th>\n",
+       "      <td>0.510</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q2</th>\n",
+       "      <td>0.510</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>0.50</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q3</th>\n",
+       "      <td>0.550</td>\n",
+       "      <td>0.040</td>\n",
+       "      <td>4.06</td>\n",
+       "      <td>0.0000</td>\n",
+       "      <td>0.000</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1950Q4</th>\n",
+       "      <td>0.623</td>\n",
+       "      <td>0.073</td>\n",
+       "      <td>5.50</td>\n",
+       "      <td>0.0227</td>\n",
+       "      <td>0.040</td>\n",
+       "      <td>0.00</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1951Q1</th>\n",
+       "      <td>0.693</td>\n",
+       "      <td>0.070</td>\n",
+       "      <td>9.85</td>\n",
+       "      <td>0.0400</td>\n",
+       "      <td>0.073</td>\n",
+       "      <td>0.04</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            r     dr  pi_1    dy_1   dr_1  dr_2\n",
+       "period                                         \n",
+       "1950Q1  0.510    NaN   NaN     NaN    NaN   NaN\n",
+       "1950Q2  0.510  0.000  0.50     NaN    NaN   NaN\n",
+       "1950Q3  0.550  0.040  4.06  0.0000  0.000   NaN\n",
+       "1950Q4  0.623  0.073  5.50  0.0227  0.040  0.00\n",
+       "1951Q1  0.693  0.070  9.85  0.0400  0.073  0.04"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# differences first ...\n",
+    "df['dr'] = df['r'].diff()       # dr_t    = r_t - r_t-1\n",
+    "df['dy'] = df['y'].diff()       # dy_t    = y_t - y_t-1\n",
+    "\n",
+    "# ... then lags, built from the series that already exist\n",
+    "df['pi_1'] = df['pi'].shift(1)  # pi_{t-1}\n",
+    "df['dy_1'] = df['dy'].shift(1)  # dy_{t-1}\n",
+    "df['dr_1'] = df['dr'].shift(1)  # dr_{t-1}\n",
+    "df['dr_2'] = df['dr'].shift(2)  # dr_{t-2}\n",
+    "\n",
+    "df[['r', 'dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2']].head(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a3",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "application/vnd.positron.dataexplorer+json": {
+       "comm_id": "0e9abf32-b619-45ff-bad0-29cc9f9885b8",
+       "shape": {
+        "columns": 1,
+        "rows": 5
+       },
+       "source": "pandas",
+       "title": "pandas",
+       "version": 1
+      },
+      "text/plain": [
+       "dr      1\n",
+       "pi_1    1\n",
+       "dy_1    2\n",
+       "dr_1    2\n",
+       "dr_2    3\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# the top rows carry NaN from the lags -- count them before using anything\n",
+    "df[['dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2']].isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a4",
+   "metadata": {},
+   "source": [
+    "### 2.2 The estimation sample\n",
+    "\n",
+    "1950:4 to 1996:4. The first three quarters are lost to the lags: 1950Q1 has no\n",
+    "`dr`, and nothing before 1950Q3 has a `dr_2`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "zs8i63gn",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "rows: 185\n",
+      "span: 1950Q4 to 1996Q4\n"
+     ]
+    }
+   ],
+   "source": [
+    "# the estimation sample: 1950Q4 to 1996Q4, complete rows only\n",
+    "sub = df.loc['1950Q4':'1996Q4']\n",
+    "sub = sub.dropna(subset=['dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2'])\n",
+    "\n",
+    "print('rows:', len(sub))                       # 185 usable observations\n",
+    "print('span:', sub.index[0], 'to', sub.index[-1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a6",
+   "metadata": {},
+   "source": [
+    "### 2.3 The regression by the classic formula\n",
+    "\n",
+    "    b = (X'X)^-1 X'y\n",
+    "\n",
+    "Two things the formula does **not** do for you, both of which `smf.ols` handles\n",
+    "quietly: it will not add the intercept, and it will not drop incomplete rows.\n",
+    "So the constant has to be a literal column of ones, and `sub` above has to\n",
+    "already be the clean sample."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "yi943jkq",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "X: (185, 5)  y: (185,)\n"
+     ]
+    }
+   ],
+   "source": [
+    "names = ['pi_1', 'dy_1', 'dr_1', 'dr_2']   # this order defines the order of b\n",
+    "\n",
+    "y = sub['dr'].to_numpy()                   # (n,)\n",
+    "X = sub[names].to_numpy()                  # (n, 4) -- no intercept yet\n",
+    "\n",
+    "n = len(y)\n",
+    "ones = np.ones((n, 1))                     # the intercept is a column of ones\n",
+    "X = np.hstack([ones, X])                   # (n, 5)\n",
+    "\n",
+    "print('X:', X.shape, ' y:', y.shape)\n",
+    "\n",
+    "b = np.linalg.inv(X.T @ X) @ X.T @ y       # b = (X'X)^-1 X'y"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "kyptvjtp",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "const -0.2319\n",
+      "pi_1 0.0161\n",
+      "dy_1 18.3807\n",
+      "dr_1 0.2375\n",
+      "dr_2 -0.154\n"
+     ]
+    }
+   ],
+   "source": [
+    "# b is a bare array, so the names have to be put back on\n",
+    "labels = ['const'] + names\n",
+    "\n",
+    "for name, value in zip(labels, b):\n",
+    "    print(name, round(value, 4))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "mbxb6cgt",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "shape: (185,)\n",
+      "mean : 0.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "e = y - X @ b      # residuals, one per observation\n",
+    "\n",
+    "print('shape:', e.shape)\n",
+    "print('mean :', round(e.mean(), 10))       # OLS residuals always sum to zero\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python (Metrics HW1)",
+   "language": "python",
+   "name": "metrics-hw1"
+  },
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

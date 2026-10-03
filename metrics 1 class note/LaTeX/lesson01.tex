@@ -1,0 +1,288 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{1}{The linear regression model: assumptions, OLS, and instruments}{}
+
+\section{The regression model}
+
+For a single observation $i$ we observe
+\[ y_i,\quad x_{1i},\quad x_{2i},\quad \dots,\quad x_{ki},
+   \qquad i=1,\dots,n . \]
+The \emph{regression function} is the conditional expectation of $y_i$ given the
+regressors held at given values:
+\[ \E(y_i\mid x_{1i},\dots,x_{ki})
+   =\E\bigl[y_i \mid x_{1i}=x_1^{*},\ x_{2i}=x_2^{*},\ \dots,\ x_{ki}=x_k^{*}\bigr]. \]
+Supposing the regression function is linear,
+\[ \E(y_i\mid x_{1i},\dots,x_{ki})=x_{1i}\beta_1+x_{2i}\beta_2+\dots+x_{ki}\beta_k=x_i'\beta,
+   \qquad x_i=(x_{1i},\dots,x_{ki})',\quad \beta=(\beta_1,\dots,\beta_k)' . \]
+Stacking the $n$ observations, with the first subscript the variable and the second
+the observation,
+\[ X=\begin{bmatrix}
+      x_{11} & x_{21} & \cdots & x_{k1}\\
+      \vdots & \vdots &        & \vdots\\
+      x_{1n} & x_{2n} & \cdots & x_{kn}
+    \end{bmatrix}_{n\times k},
+\qquad\text{row } i \text{ of } X \text{ is } x_i'. \]
+
+\section{The linear model in matrix form}
+
+With all $n$ observations stacked,
+\[ \E(y\mid X)=\underset{n\times k}{X}\,\beta, \qquad \text{the } X\text{'s are fixed}. \]
+Decompose $y$ into its mean plus a deviation from the mean:
+\[ y=\E(y\mid X)+\underbrace{y-\E(y\mid X)}_{u}, \]
+so that
+\[ y=\E(y\mid X)+u . \]
+Writing the regressors in matrix form,
+\[ y=X\beta+u,\qquad \underset{n\times1}{u}\sim N\bigl(\underset{n\times1}{0},\ \sigma^2\underset{n\times n}{I_n}\bigr). \]
+
+\section{Covariance structure of the errors}
+
+\[
+  \Var(u)=\E\bigl[(u-\E(u))(u-\E(u))'\bigr]=\E(uu')=\sigma^2I_n .
+\]
+Written out coordinate by coordinate, with $u$ the $n\times1$ vector:
+\[
+  \E(uu')=\E\begin{bmatrix}u_1\\ \vdots\\ u_n\end{bmatrix}
+              \begin{bmatrix}u_1 & \cdots & u_n\end{bmatrix}
+          =\E\begin{bmatrix}
+                 u_1^2     & \cdots & u_1u_n\\
+                 \vdots    & \ddots & \vdots\\
+                 u_nu_1    & \cdots & u_n^2
+               \end{bmatrix}.
+\]
+In the two-dimensional case the off-diagonal terms come in pairs of opposite sign:
+$u_1u_2$ is positive in quadrants 1 and 3 and negative in 2 and 4, so with a
+symmetric (spherical) distribution they cancel in expectation and the covariance
+matrix is diagonal.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \draw[ecaxis] (-2.1,0) -- (2.1,0);
+  \draw[ecaxis] (0,2.1) -- (0,-2.1);
+  \node[ecnode,above left] at (0,2.1) {$u_1$};
+  \node[ecnode,below right] at (2.1,0) {$u_2$};
+  \draw[budget] (0,0) circle (1.25);
+  \draw[budget,dashed,rotate=45] (0,0) ellipse (1.75 and 1.0);
+  \node[ecnode] at ( 0.45, 0.45) {$1$};
+  \node[ecnode] at ( 0.45,-0.45) {$2$};
+  \node[ecnode] at (-0.45,-0.45) {$3$};
+  \node[ecnode] at (-0.45, 0.45) {$4$};
+\end{tikzpicture}
+\caption{Signs of the cross-product $u_1u_2$: positive in quadrants 1 and 3,
+negative in quadrants 2 and 4. Solid: spherical (circular) contour; dashed: a tilted,
+non-spherical contour, as in the original sketch.}
+\end{figure}
+
+\topic{Sphericity assumption}
+The expectation of this matrix is assumed to be $\sigma^2I_n$:
+\[
+  \E(uu')=\begin{bmatrix}
+            \sigma^2 & 0        & 0        & \cdots & 0\\
+            0        & \sigma^2 & 0        & \cdots & 0\\
+            0        & 0        & \sigma^2 & \cdots & 0\\
+            \vdots   & \vdots   & \vdots   & \ddots & \vdots\\
+            0        & 0        & 0        & \cdots & \sigma^2
+          \end{bmatrix} .
+\]
+That is, the errors have a common variance and are uncorrelated with one another.
+
+\section{The rank of the regressor matrix}
+
+\[ \underset{n\times k}{X}\ \longrightarrow\ \rank(X)=k, \]
+i.e.\ $X$ has full column rank. Then
+\[ \underset{k\times n}{X'}\ \underset{n\times k}{X}\ \longrightarrow\ k\times k
+   \quad\text{with}\quad \rank k, \]
+so $X'X$ is a full-rank $k\times k$ matrix and can be inverted.
+
+\section{Norms: spherical versus non-spherical covariance}
+
+For the model $y=X\beta+u$, $u\sim N(0,\sigma^2I)$, we have $\E(u)=0$, so
+\[ \|u-\E(u)\|=\|u\|=(u'u)^{1/2}=\Bigl(\sum_{i=1}^{n}u_i^2\Bigr)^{1/2}, \]
+the ordinary Euclidean norm: every direction is treated alike, which is what
+$\Sigma=\sigma^2I_n$ means.
+
+Now suppose instead
+\[ w\sim N(0,\Sigma_n),\qquad \Sigma_n\ne \sigma^2I_n . \]
+Distances are then measured in the metric of $\Sigma^{-1}$, so the squared norm
+becomes
+\[ \|w\|^2=w'w\ \longrightarrow\ \|w\|^2_{\Sigma^{-1}}=w'\Sigma^{-1}w . \]
+Directions in which $w$ varies a lot are down-weighted, directions in which it
+varies little are up-weighted. When $\Sigma=\sigma^2I_n$ this is just
+$w'w/\sigma^2$, the Euclidean case rescaled. This weighted norm is what is applied
+below to $X'u$, whose covariance $\sigma^2X'X$ is not spherical.
+
+\section{The least-squares estimator}
+
+Minimising the squared length of the residual vector $y-Xb$,
+\[ \min_b\|y-Xb\|^2=\min_b\,(y-Xb)'(y-Xb) . \]
+Expanding the quadratic form (the two middle terms are the same scalar, since
+$y'Xb=(b'X'y)'$),
+\[
+\begin{aligned}
+  &= (y'-b'X')(y-Xb)\\
+  &= y'y-b'X'y-y'Xb+b'X'Xb\\
+  &= y'y-2b'X'y+b'X'Xb .
+\end{aligned}
+\]
+The first-order condition is
+\[ \frac{\partial}{\partial b}\Bigl(y'y-2b'X'y+b'X'Xb\Bigr)=-2X'y+2X'Xb=0, \]
+hence the \emph{normal equations} $X'Xb=X'y$ and
+\[ b=(X'X)^{-1}X'y , \]
+which exists because $\rank(X)=k$ makes $X'X$ invertible. The second-order
+condition is
+\[ \frac{\partial^2}{\partial b\,\partial b'}\Bigl(y'y-2b'X'y+b'X'Xb\Bigr)=2X'X , \]
+which is positive definite ($a'X'Xa=\|Xa\|^2>0$ for $a\ne0$, again by full column
+rank), so $b$ is the minimum.
+
+\section{The distribution of $X'u$}
+
+Starting from the estimator
+\[ b=(X'X)^{-1}X'y, \]
+\emph{$y$ is random}. Take the model again,
+\[ y=X\beta+u,\qquad u\sim(0,\sigma^2I_n), \]
+and the exogeneity assumption
+\[ \E(X'u)=0 . \]
+Because the mean is zero, the norm of $X'u$ is its own deviation, and the
+non-spherical norm of the previous section gives the quadratic form
+\[ \|X'u-\E(X'u)\|=\|X'u\|\ \Longrightarrow\ (X'u)'[\Var(X'u)]^{-1}X'u . \]
+The middle piece is
+\[
+\begin{aligned}
+  \Var(X'u)&=\E\bigl[(X'u)(X'u)'\bigr]\\
+           &=\E(X'uu'X)=X'\E(uu')X=\sigma^2X'X ,
+\end{aligned}
+\]
+taking $X$ outside the expectation because it is fixed.
+Substituting $\Var(X'u)=\sigma^2X'X$ into the quadratic form,
+\[ (X'u)'[\Var(X'u)]^{-1}X'u
+   =(X'u)'(\sigma^2X'X)^{-1}X'u
+   =\frac{1}{\sigma^2}\,u'X(X'X)^{-1}X'u . \]
+If moreover $u\sim N(0,\sigma^2I_n)$, then $X'u\sim N(0,\sigma^2X'X)$, a $k$-vector,
+and this quadratic form is distributed $\chi^2_k$. Replacing the unknown $u$ by
+$y-Xb$ and minimising over $b$ is exactly the problem of the next section.
+
+\section{The same estimator, through the projection matrix}
+
+Define the projection matrix
+\[ P_X=X(X'X)^{-1}X', \]
+which is the matrix in the middle of the quadratic form above, and minimise
+(dropping the constant $\sigma^{-2}$)
+\[
+\begin{aligned}
+  &\min_b\,(y-Xb)'X(X'X)^{-1}X'(y-Xb)\\
+  &=\min_b\,(y-Xb)'P_X(y-Xb)\\
+  &=(y'-b'X')P_X(y-Xb)\\
+  &=y'P_Xy-b'X'P_Xy-y'P_XXb+b'X'P_XXb\\
+  &=y'P_Xy-2b'X'P_Xy+b'X'P_XXb .
+\end{aligned}
+\]
+The first-order condition is
+\[ \text{FOC:}\quad -2X'P_Xy+2X'P_XXb=0, \]
+so
+\[ X'P_Xy=X'P_XXb . \]
+Since $P_XX=X(X'X)^{-1}X'X=X$ and $P_X$ is symmetric, $X'P_X=(P_XX)'=X'$, and the
+condition is the normal equations $X'y=X'Xb$ again. Solving for $b$ gives again
+\[ b=(X'X)^{-1}X'y . \]
+
+\section{When $X$ is not exogenous: instruments}
+
+With the model
+\[ y=X\beta+u,\qquad u\sim(0,\sigma^2I), \]
+the exogeneity assumption fails:
+\[ \E(X'u)\ne0 . \]
+Then we look for an instrument matrix
+\[ Z_{n\times p},\qquad p\ge k, \]
+satisfying
+\[ \E(Z'u)=0 \quad\text{(validity)},\qquad \rank\bigl(\E(Z'X)\bigr)=k
+   \quad\text{(relevance)} . \]
+Both are needed to identify $\beta$: validity gives the $p$ moment equations
+$\E\bigl(Z'(y-X\beta)\bigr)=0$, and relevance makes them pin down a unique $\beta$.
+The case $p=k$ is \emph{exactly identified}, $p>k$ \emph{over-identified}.
+
+\begin{transcriptnotes}
+  \item Page 1 of the original carries only the title ``Econometric I''.
+  \item The original mixes $T$ and $'$ for transposes ($x_i^T\beta$ on page 2,
+        $\cdot'$ elsewhere); the prime is used throughout here.
+  \item The regressor matrix is written with the variable as the first subscript
+        ($x_{1i}$ = variable 1, observation $i$), so row $i$ of $X$ is $x_i'$;
+        that convention is kept.
+  \item \textbf{Corrected:} page 3 has $\E(y\mid x)=x^{T}\beta$ with $x$ marked
+        $n\times k$; for an $n\times k$ matrix the conditional mean of the $n$-vector
+        $y$ is $X\beta$ ($x^T\beta$ would not conform), so it is typeset
+        $\E(y\mid X)=X\beta$.
+  \item \textbf{Corrected:} the regressor matrix on page 2 has first row
+        $x_{11},x_{21},\dots,x_{k1}$ (variable first) but last row
+        $x_{n1},\dots,x_{nk}$ (observation first); the last row is typeset
+        $x_{1n},\dots,x_{kn}$ to match the variable-first convention.
+  \item Page 2 also sketches row $i$ of $X$ as $[x_{1i}\ x_{2i}\ \cdots\ x_{ki}]$;
+        this is the remark ``row $i$ of $X$ is $x_i'$''.
+  \item \textbf{Corrected:} $\Var(u)$ was written as
+        $\E(u-\E(u))(u-\E(u))'$; without the outer bracket the operator $\E$
+        applies only to the first factor, so the expectation is taken over the whole
+        product.
+  \item \textbf{Corrected:} ``$u$'' was labelled by a brace under
+        $y-\E(y\mid x)$; it is the residual, and it is kept as the definition of
+        $u$ rather than written as a separate assertion.
+  \item \textbf{Corrected:} the norm line reads
+        $(u'u)^{1/2}=\sum_{i=1}^{n}u_i^2$ in the original; the outer square root was
+        missing from the sum.
+  \item \textbf{Corrected:} the minimisation was written $\min\|w\|$, while the
+        right-hand side is the \emph{squared} norm (the sum of squared residuals);
+        it is typeset as $\|y-Xb\|^2$, since $w$ was already used for the
+        non-spherical error vector of the previous section. The original also
+        minimises over $\beta$ and then differentiates in $b$; $b$ is used
+        throughout.
+  \item \textbf{Corrected:} the weighted norm was written $\|w\|\to w'\Sigma^{-1}w$;
+        $w'\Sigma^{-1}w$ is the \emph{squared} weighted norm, and it is typeset so.
+  \item \textbf{Corrected:} page 6 writes the non-spherical case as
+        $\Sigma_n\ne I_n$; it is typeset $\Sigma_n\ne\sigma^2I_n$, since a common
+        variance other than one is still spherical.
+  \item \textbf{Added:} the second-order condition for least squares, the step
+        $X'P_X=X'$ that turns the projection-matrix first-order condition back into
+        the normal equations, the $\chi^2_k$ distribution of the quadratic form in
+        $X'u$ under normality, and the relevance condition
+        $\rank\E(Z'X)=k$ for the instruments (the original states only
+        $\E(Z'u)=0$).
+  \item The projection-matrix derivation now follows the distribution of $X'u$,
+        as in the original (pages 8 and 9): the quadratic form
+        $\sigma^{-2}u'P_Xu$ is what motivates minimising $(y-Xb)'P_X(y-Xb)$.
+  \item \textbf{Corrected:} the last line of the first-order condition was written
+        as an equality with the preceding expression
+        ($\cdots=y'y-2b'x'y+b'x'xb=-2x'y+2x'xb=0$). The derivative is a separate
+        step, so it is typeset as $\partial/\partial b$ of that expression.
+  \item \textbf{Corrected:} in the projection-matrix section one line lost the
+        transpose, ``$(y-xb)P_x(y-xb)$''; it is $(y-Xb)'P_X(y-Xb)$. The definition
+        $P_X=X(X'X)^{-1}X'$ is written as an equation (it was a label under the
+        expression).
+  \item \textbf{Corrected:} the quadratic form for $x'u$ was left with a bare
+        ``$=$'' at the front of the last line; it is written here as the full
+        chain $(X'u)'[\Var(X'u)]^{-1}X'u=(X'u)'(\sigma^2X'X)^{-1}X'u
+        =\sigma^{-2}u'X(X'X)^{-1}X'u$, with the substitution step shown.
+  \item The original writes the regressor matrix in lower case ($x$, $P_x$) on
+        pages 3 and 6--9 and in upper case ($X$) elsewhere; it is $X$ (and $P_X$)
+        throughout here. Transcript notes that quote the original keep its $x$.
+  \item The expansion of $\E(uu')$ was drawn with the bottom-left entry as
+        $u_nu_1$; the matrix is symmetric ($u_iu_j$ off the diagonal).
+  \item The quadrant sketch was redrawn, keeping its axes $u_1$ (vertical),
+        $u_2$ (horizontal) and the quadrant numbers 1--4 (clockwise from top right).
+        The original has a circle and a second, tilted closed curve over it; the
+        latter is drawn dashed and read as a non-spherical contour (interpretation).
+  \item \textbf{Added:} the paragraph on the signs of $u_1u_2$ by quadrant, and the
+        remarks in the norms section on down-/up-weighting of directions; the
+        original has only the sketch and the formulas.
+  \item In the original the expansion of $\E(uu')$ ends with an arrow to the
+        $\sigma^2$-diagonal matrix labelled ``sphericity assumption''; the matrix is
+        given once, under that heading, rather than twice.
+  \item Page 7: the last line reads ``$=2x'y+2x'xb=0$'' with the sign of $2x'y$
+        unclear; the derivative is $-2X'y+2X'Xb$.
+  \item Page numbers of the original, in case you need to trace back: page 2
+        regression function and $X$; page 3 the model and $\sigma^2I_n$; page 4
+        $\Var(u)$ and the sketch; page 5 sphericity and $\rank(X)$; page 6 norms
+        and non-spherical $\Sigma_n$; page 7 least squares; page 8 the distribution
+        of $x'u$; page 9 the projection-matrix derivation; page 10 instruments.
+\end{transcriptnotes}
+
+\end{document}

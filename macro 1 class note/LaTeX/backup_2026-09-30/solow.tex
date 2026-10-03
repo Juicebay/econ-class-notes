@@ -1,0 +1,720 @@
+\documentclass[11pt]{article}
+\usepackage{macrostyle}
+
+\begin{document}
+
+\lessonheader{Lectures 1--3: The Solow Growth Model}{Setup, Dynamics, Evaluation, Differential Equations, and Policy}{ECON*6020, Fall 2026}
+
+{\small\tableofcontents}
+\newpage
+
+% =========================================================================
+\section{Model Setup}
+
+\topic{Notation and Conventions}
+\begin{flatlist}
+  \item \textbf{Aggregates}: Denoted by upper-case letters ($Y_t, K_t, C_t, I_t, L_t, A_t$).
+  \item \textbf{Per-capita variables}: Denoted by lower-case letters:
+  \[
+  y_t \equiv \frac{Y_t}{L_t}, \qquad c_t \equiv \frac{C_t}{L_t}, \qquad i_t \equiv \frac{I_t}{L_t}, \qquad k_t \equiv \frac{K_t}{L_t}.
+  \]
+  \item \textbf{Efficiency units}: Denoted with a hat (per unit of effective labor $A_t L_t$):
+  \[
+  \yh_t \equiv \frac{Y_t}{A_t L_t}, \qquad \ch_t \equiv \frac{C_t}{A_t L_t}, \qquad \ih_t \equiv \frac{I_t}{A_t L_t}, \qquad \kh_t \equiv \frac{K_t}{A_t L_t}.
+  \]
+  \item \textbf{Time derivatives and growth rates}: A dot denotes the time derivative $\dot{X}_t \equiv dX_t / dt$. The proportional growth rate is:
+  \[
+  \gr{X_t} \equiv \frac{\dot{X}_t}{X_t} = \frac{d\ln X_t}{dt}.
+  \]
+\end{flatlist}
+
+\topic{Growth-Rate Rules}
+From logarithmic differentiation:
+\[
+\gr{(XY)} = \gr{X} + \gr{Y}, \qquad \gr{(X/Y)} = \gr{X} - \gr{Y}, \qquad \gr{(X^a)} = a\gr{X}.
+\]
+
+\topic{Exogenous Factors}
+Population $L_t$ and labor-augmenting technology $A_t$ grow at constant, exogenous rates $n$ and $x$:
+\[
+\gr{L_t} = n \implies L_t = L_0 e^{nt}, \qquad \gr{A_t} = x \implies A_t = A_0 e^{xt}.
+\]
+Effective labor units $A_t L_t$ consequently grow at the combined rate $n + x$:
+\[
+A_t L_t = A_0 L_0 e^{(n+x)t}.
+\]
+
+\topic{The Production Function}
+Aggregate output is produced according to $Y_t = F(A_t L_t, K_t)$, satisfying three core neoclassical properties:
+\begin{flatnum}
+  \item \textbf{Constant Returns to Scale (CRS)}: For any $\lambda > 0$,
+  \[
+  F(\lambda A_t L_t, \lambda K_t) = \lambda F(A_t L_t, K_t) = \lambda Y_t.
+  \]
+  \item \textbf{Positive and Diminishing Marginal Products}:
+  \[
+  F_L > 0, \quad F_K > 0, \qquad F_{LL} < 0, \quad F_{KK} < 0.
+  \]
+  \item \textbf{Inada Conditions}:
+  \[
+  \lim_{K \to 0} F_K = \infty, \quad \lim_{K \to \infty} F_K = 0; \qquad \lim_{L \to 0} F_L = \infty, \quad \lim_{L \to \infty} F_L = 0.
+  \]
+  Inputs are essential; capital is exceptionally productive when scarce and unproductive when abundant.
+\end{flatnum}
+
+\runin{Intensive form.} Setting $\lambda = 1 / (A_t L_t)$ under CRS:
+\[
+\yh_t = F\left(1, \frac{K_t}{A_t L_t}\right) \equiv f(\kh_t).
+\]
+Output per effective worker depends solely on capital per effective worker, reducing the dimensionality of the dynamic system to a single state variable, $\kh_t$.
+
+\topic{Cobb--Douglas Specification}
+Specializing to the Cobb--Douglas form with capital elasticity $0 < \alpha < 1$:
+\[
+Y_t = (A_t L_t)^{1-\alpha} K_t^{\alpha} \implies \yh_t = \kh_t^\alpha.
+\]
+
+\topic{Factor Prices and Income Shares}
+With competitive factor markets, labor and capital earn their marginal products:
+\begin{align*}
+w_t &= \pd{Y_t}{L_t} = (1-\alpha) A_t^{1-\alpha} L_t^{-\alpha} K_t^{\alpha} = (1-\alpha)\frac{Y_t}{L_t} = (1-\alpha) A_t \kh_t^{\alpha}, \\
+r_t &= \pd{Y_t}{K_t} = \alpha (A_t L_t)^{1-\alpha} K_t^{\alpha-1} = \alpha\frac{Y_t}{K_t} = \alpha \kh_t^{\alpha-1}.
+\end{align*}
+Factor payments exhaust total output (Euler's theorem under CRS):
+\[
+\frac{w_t L_t}{Y_t} = 1-\alpha, \qquad \frac{r_t K_t}{Y_t} = \alpha \implies w_t L_t + r_t K_t = Y_t.
+\]
+\runin{Empirical calibration.} U.S.\ labor compensation as a share of total income averaged $62.8\%$ over 1929--2024 ($64.2\%$ post-1960) with no long-run trend. Thus, macro calibrations conventionally set $1-\alpha \approx 2/3$, giving $\alpha \approx 1/3$.
+
+% =========================================================================
+\section{The Model in Three Units}
+
+\begin{center}
+\begin{tabular}{@{}llllr@{}}
+\toprule
+Equation & Aggregate & Per Capita & Per Effective Worker & \\
+\midrule
+Production & $Y = (AL)^{1-\alpha} K^\alpha$ & $y = A^{1-\alpha} k^\alpha$ & $\yh = \kh^\alpha$ & (1) \\
+Resource constraint & $Y = C + I$ & $y = c + i$ & $\yh = \ch + \ih$ & (2) \\
+Saving / Investment & $I = sY$ & $i = sy$ & $\ih = s\yh$ & (3) \\
+Capital accumulation & $\dot{K} = I - \delta K$ & $\dot{k} = i - (\delta + n)k$ & $\dk = \ih - \gam\kh$ & (4) \\
+\bottomrule
+\end{tabular}
+\end{center}
+along with factor prices $r = \alpha \kh^{\alpha-1}$ (5) and $w = (1-\alpha)A\kh^\alpha$ (6).
+
+\topic{Derivation of the Fundamental Differential Equation}
+1. \textbf{Per-capita capital}: Differentiating $k = K / L$ with respect to time:
+\[
+\gr{k} = \gr{K} - \gr{L} = \frac{I - \delta K}{K} - n \implies \dot{k} = \frac{I}{L} - (\delta + n)k = i - (\delta + n)k.
+\]
+2. \textbf{Capital per effective worker}: Differentiating $\kh = K / (AL)$:
+\[
+\gr{\kh} = \gr{K} - \gr{A} - \gr{L} = \frac{I - \delta K}{K} - x - n.
+\]
+Multiplying through by $\kh$:
+\[
+\dk = \frac{I}{AL} - (\delta + n + x)\kh = \ih - \gam\kh.
+\]
+Substituting $\ih = s\yh = s\kh^\alpha$ yields the \textbf{fundamental Solow differential equation}:
+\[
+\boxed{\dk = s\kh^\alpha - \gam\kh} \tag{8}
+\]
+The term $\gam\kh$ is \emph{break-even investment}: the investment required to replace depreciated capital ($\delta\kh$), equip new workers ($n\kh$), and maintain capital intensity as workers become more productive ($x\kh$).
+
+% =========================================================================
+\section{Dynamics and the Steady State}
+
+\topic{The Solow Phase Diagram}
+Because $0 < \alpha < 1$, actual investment $s\kh^\alpha$ is strictly concave, while break-even investment $\gam\kh$ is a linear ray through the origin.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[xscale=0.55,yscale=5.2]
+  \draw[ecaxis] (0,0) -- (12.5,0);
+  \draw[ecaxis] (0,0) -- (0,0.95);
+  \node[ecnode,anchor=west] at (12.6,0) {$\kh$};
+  \draw[budget] plot[domain=0.001:12,samples=80] (\x,{0.3*\x^(1/3)});
+  \draw[budget,dashed] (0,0) -- (11,0.88);
+  \node[ecnode,anchor=west] at (12,{0.3*12^(1/3)}) {$\ih = s\kh^{\alpha}$};
+  \node[ecnode,anchor=west] at (11,0.88) {$\gam\kh$};
+  \draw[densely dotted] (7.26,0) -- (7.26,0.581) node[bundle] {};
+  \node[ecnode,below] at (7.26,0) {$\kh^{*}$};
+  \draw[-{Stealth[length=4pt]},line width=0.8pt] (2.0,0.03) -- (4.5,0.03);
+  \draw[-{Stealth[length=4pt]},line width=0.8pt] (11.5,0.03) -- (9.3,0.03);
+  \node[ecnode,align=center] at (3.2,0.63) {$s\kh^{\alpha} > \gam\kh$\\$\implies \dk > 0$};
+  \node[ecnode,align=center] at (10.3,0.35) {$s\kh^{\alpha} < \gam\kh$\\$\implies \dk < 0$};
+\end{tikzpicture}
+\caption{The Solow diagram ($s=0.3, \alpha=1/3, \delta+n+x=0.08$).}
+\end{figure}
+
+\topic{Steady-State Values}
+A steady state requires $\dk = 0$. For $\kh > 0$:
+\[
+s(\kh^*)^\alpha = \gam\kh^* \iff (\kh^*)^{\alpha-1} = \frac{\delta+n+x}{s} \iff \boxed{\kh^* = \left(\frac{s}{\delta+n+x}\right)^{\frac{1}{1-\alpha}}}
+\]
+Associated steady-state values per effective worker:
+\[
+\yh^* = (\kh^*)^\alpha = \left(\frac{s}{\delta+n+x}\right)^{\frac{\alpha}{1-\alpha}}, \qquad \ch^* = (1-s)\yh^*, \qquad r^* = \alpha(\kh^*)^{\alpha-1} = \frac{\alpha(\delta+n+x)}{s}.
+\]
+
+\topic{Global Stability}
+Examine the growth rate of capital per effective worker:
+\[
+\gr{\kh} = \frac{\dk}{\kh} = s\kh^{\alpha-1} - \gam \equiv \phi(\kh).
+\]
+Differentiating:
+\[
+\phi'(\kh) = (\alpha-1)s\kh^{\alpha-2} < 0 \quad (\text{since } 0 < \alpha < 1).
+\]
+Because $\phi(\kh)$ is strictly decreasing with $\lim_{\kh \to 0}\phi(\kh) = \infty$ and $\lim_{\kh \to \infty}\phi(\kh) = -\gam < 0$, it crosses zero uniquely at $\kh^*$:
+\[
+\kh < \kh^* \implies \gr{\kh} > 0 \implies \dk > 0, \qquad \kh > \kh^* \implies \gr{\kh} < 0 \implies \dk < 0.
+\]
+The steady state is globally stable for any initial capital stock $\kh_0 > 0$.
+
+% =========================================================================
+\section{Balanced Growth: The Long-Run Facts}
+
+In the steady state (the \emph{Balanced Growth Path}, BGP), $\dk / \kh = 0$. Applying logarithmic differentiation rules gives the long-run growth behavior of all variables:
+
+\begin{center}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+Variable & Notation & Expression & Long-Run Growth Rate \\
+\midrule
+Effective quantities & $\kh, \yh, \ch, \ih$ & constant & $0$ \\
+Per-capita output & $y$ & $A\yh^*$ & $x$ \\
+Per-capita consumption & $c$ & $A\ch^*$ & $x$ \\
+Per-capita investment & $i$ & $A\ih^*$ & $x$ \\
+Per-capita capital & $k$ & $A\kh^*$ & $x$ \\
+Real wage & $w$ & $(1-\alpha)A\kh^{*\alpha}$ & $x$ \\
+Real rental rate of capital & $r$ & $\alpha\kh^{*\alpha-1}$ & $0$ \\
+Aggregate output & $Y$ & $y L$ & $n + x$ \\
+Aggregate capital & $K$ & $k L$ & $n + x$ \\
+Ratios & $K/Y, C/Y, I/Y$ & constant & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\runin{Consistency with Kaldor Facts.} The model successfully matches key long-run empirical features of developed economies: output per worker grows at a roughly constant rate ($x$); the capital-output ratio and factor shares show no secular trend; and the return to capital is stable in the long run.
+
+% =========================================================================
+\section{Transitional Growth and Convergence}
+
+\topic{Decomposition of Growth}
+From $y_t = A_t \yh_t = A_t \kh_t^\alpha$, taking logs and differentiating yields:
+\[
+\gr{y} = \underbrace{x}_{\text{long-run growth}} + \underbrace{\alpha\gr{\kh}}_{\text{transitional growth}} = x + \alpha\left(s\kh^{\alpha-1} - \gam\right).
+\]
+\runin{Mechanism.} When $\kh$ is low, the marginal product of capital $\alpha\kh^{\alpha-1}$ is high. Each unit of output saved yields a large proportional addition to the existing capital stock, generating rapid growth. As capital deepens, diminishing returns set in and growth decays toward $x$.
+
+\topic{Conditional vs.\ Absolute Convergence}
+\begin{flatlist}
+  \item \textbf{Conditional Convergence}: If two countries share identical parameters ($s, n, x, \delta, A$), they share the same steady state. The poorer country has a lower $\kh$, hence a higher $\dk / \kh$ and faster per-capita income growth.
+  \item \textbf{Absence of Absolute Convergence}: If a country is poor due to low technology $A$, its capital per effective worker $\kh = K / (AL)$ may actually be high, implying a low $\dk / \kh$ and slow growth. Cross-country parameter heterogeneity ($s, n, x$) prevents unconditional convergence.
+  \item \textbf{Divergence}: Two economies starting at the same initial income will permanently diverge if one possesses a higher saving rate $s$ (diverging to a higher level) or a higher rate of technological progress $x$ (diverging to a permanently steeper growth path).
+\end{flatlist}
+
+\topic{Numerical Simulation of Transitional Dynamics}
+Calibrating to annual parameters: $s = 0.25, \alpha = 1/3, \delta = 0.05, n = 0.01, x = 0.02 \implies \gam = 0.08$. Steady-state capital is:
+\[
+\kh^* = \left(\frac{0.25}{0.08}\right)^{3/2} = 3.125^{1.5} \approx 5.524.
+\]
+Starting at $\kh_0 = 1.800$ (roughly one-third of steady state), initial growth of output per worker is:
+\[
+\gr{y_0} = 0.02 + \tfrac{1}{3}\left[0.25(1.800)^{-2/3} - 0.08\right] \approx 0.02 + \tfrac{1}{3}(0.169 - 0.080) \approx 0.050 \quad (5.0\%).
+\]
+Simulating forward using the annual discrete approximation $\kh_{t+1} = \kh_t + s\kh_t^\alpha - 0.08\kh_t$:
+
+\begin{center}
+\small
+\begin{tabular}{@{}rccc@{\qquad}rccc@{}}
+\toprule
+$t$ & $\kh_t$ & $\dk_t/\kh_t$ & $\dot{y}_t/y_t$ & $t$ & $\kh_t$ & $\dk_t/\kh_t$ & $\dot{y}_t/y_t$ \\
+\midrule
+0 & 1.8000 & -- & -- & 7 & 2.8267 & 0.0491 & 0.0364 \\
+1 & 1.9601 & 0.0890 & 0.0497 & 8 & 2.9541 & 0.0451 & 0.0350 \\
+2 & 2.1162 & 0.0796 & 0.0465 & 9 & 3.0764 & 0.0414 & 0.0338 \\
+3 & 2.2678 & 0.0717 & 0.0439 & 10 & 3.1939 & 0.0382 & 0.0327 \\
+4 & 2.4149 & 0.0648 & 0.0416 & 11 & 3.3066 & 0.0353 & 0.0318 \\
+5 & 2.5571 & 0.0589 & 0.0396 & 12 & 3.4145 & 0.0326 & 0.0309 \\
+6 & 2.6944 & 0.0537 & 0.0379 & 13 & 3.5178 & 0.0303 & 0.0301 \\
+-- & -- & -- & -- & 14 & 3.6166 & 0.0281 & 0.0294 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\runin{Limits of transitional growth.} Output growth falls rapidly from $5.0\%$ toward the long-run technology growth rate of $2.0\%$. Capital accumulation can explain transient growth episodes, but sustained growth miracles of $4\text{--}5\%$ across several decades cannot be driven by capital deepening alone; they require sustained technology growth $x$.
+
+% =========================================================================
+\section{Solving the Solow Differential Equation}
+
+\topic{Mathematical Foundation: Linear First-Order ODEs}
+A general first-order linear differential equation has the form:
+\[
+\dot{z}_t + a(t)z_t = b(t).
+\]
+With constant coefficients $a > 0$ and $b$, this becomes:
+\[
+\dot{z}_t + a z_t = b.
+\]
+We solve this using the \textbf{integrating factor} method:
+\begin{flatnum}
+  \item Multiply both sides by the integrating factor $e^{at}$:
+  \[
+  e^{at}\dot{z}_t + a e^{at} z_t = b e^{at}.
+  \]
+  \item By the product rule, the left-hand side is the exact derivative of $e^{at} z_t$:
+  \[
+  \frac{d}{dt}\left(e^{at} z_t\right) = b e^{at}.
+  \]
+  \item Integrate both sides with respect to time $t$:
+  \[
+  \int \frac{d}{dt}\left(e^{at} z_t\right)dt = \int b e^{at} dt \implies e^{at} z_t = \frac{b}{a} e^{at} + C,
+  \]
+  where $C$ is an arbitrary constant of integration.
+  \item Divide through by $e^{at}$ to obtain the general solution:
+  \[
+  z_t = \frac{b}{a} + C e^{-at}.
+  \]
+  \item Impose the initial condition $z(0) = z_0$. At $t = 0$, $e^0 = 1$, so:
+  \[
+  z_0 = \frac{b}{a} + C \implies C = z_0 - \frac{b}{a}.
+  \]
+  Substituting $C$ back into the general solution gives the particular solution:
+  \[
+  \boxed{z_t = \frac{b}{a} + \left(z_0 - \frac{b}{a}\right)e^{-at}}
+  \]
+\end{flatnum}
+
+\runin{Interpretation of the linear solution.}
+The stationary value where $\dot{z}_t = 0$ is $z^* \equiv b/a$. The solution can thus be written as:
+\[
+z_t = z^* + (z_0 - z^*)e^{-at} \iff z_t - z^* = (z_0 - z^*)e^{-at}.
+\]
+\begin{flatlist}
+  \item Differentiating the deviation from stationary state:
+  \[
+  \frac{d}{dt}(z_t - z^*) = -a (z_0 - z^*)e^{-at} = -a(z_t - z^*).
+  \]
+  The gap between $z_t$ and $z^*$ shrinks at the constant exponential rate $a > 0$.
+  \item If $z_0 < z^*$, $z_t$ rises monotonically toward $z^*$; if $z_0 > z^*$, $z_t$ falls monotonically toward $z^*$.
+  \item At time $t$, the fraction of the initial gap that has been closed is:
+  \[
+  \frac{z_t - z_0}{z^* - z_0} = 1 - e^{-at}.
+  \]
+\end{flatlist}
+
+\topic{The Exact Solow Transition Path}
+The Solow equation $\dk_t = s\kh_t^\alpha - \gam\kh_t$ is nonlinear due to $\kh_t^\alpha$. However, it is an instance of a \textbf{Bernoulli differential equation}:
+\[
+\dk_t + \gam\kh_t = s\kh_t^\alpha.
+\]
+We solve it exactly via a substitution that transforms it into a linear ODE:
+\begin{flatnum}
+  \item For $\kh_t > 0$, divide both sides of the equation by $\kh_t^\alpha$:
+  \[
+  \kh_t^{-\alpha}\dk_t + \gam\kh_t^{1-\alpha} = s.
+  \]
+  \item Define the transformed variable:
+  \[
+  z_t \equiv \kh_t^{1-\alpha}.
+  \]
+  \item Differentiating $z_t$ with respect to time using the chain rule:
+  \[
+  \dot{z}_t = (1-\alpha)\kh_t^{-\alpha}\dk_t \implies \kh_t^{-\alpha}\dk_t = \frac{\dot{z}_t}{1-\alpha}.
+  \]
+  \item Substitute this expression into the transformed equation:
+  \[
+  \frac{\dot{z}_t}{1-\alpha} + \gam z_t = s.
+  \]
+  \item Multiply through by $(1-\alpha)$:
+  \[
+  \dot{z}_t + \underbrace{(1-\alpha)\gam}_{a} z_t = \underbrace{(1-\alpha)s}_{b}.
+  \]
+  This is a linear first-order differential equation with constant coefficients.
+\end{flatnum}
+
+\runin{Exact solution.} The stationary state of $z_t$ is:
+\[
+z^* = \frac{b}{a} = \frac{(1-\alpha)s}{(1-\alpha)(\delta+n+x)} = \frac{s}{\delta+n+x} = (\kh^*)^{1-\alpha}.
+\]
+Define the \textbf{convergence rate parameter}:
+\[
+\boxed{\beta \equiv (1-\alpha)(\delta+n+x)}
+\]
+Applying the linear ODE solution formula:
+\[
+z_t = z^* + (z_0 - z^*)e^{-\beta t}.
+\]
+Inverting the transformation $z_t = \kh_t^{1-\alpha}$ (with initial condition $z_0 = \kh_0^{1-\alpha}$) gives the **exact closed-form solution** for capital per effective worker:
+\[
+\boxed{\kh_t = \left[z^* + \left(\kh_0^{1-\alpha} - z^*\right)e^{-\beta t}\right]^{\frac{1}{1-\alpha}}}
+\]
+
+\runin{Exact vs.\ approximate convergence.}
+The transformed variable $z_t = \kh_t^{1-\alpha}$ converges at the exact constant rate $\beta$. The variable $\kh_t$ itself follows a nonlinear path in $e^{-\beta t}$. Near the steady state, however, $\ln\kh_t$ approximately obeys the exact same exponential convergence law. Because log output is proportional to log capital ($\ln\yh_t = \alpha\ln\kh_t$), this log approximation is directly suited to empirical analysis of income convergence.
+
+\runin{Verification against the simulation.}
+Using $s = 0.25, \alpha = 1/3, \gam = 0.08, \kh_0 = 1.8$:
+\[
+\beta = (1 - 1/3)(0.08) = \tfrac{2}{3}(0.08) \approx 0.05333, \qquad z^* = \frac{0.25}{0.08} = 3.125, \qquad z_0 = 1.8^{2/3} \approx 1.4798.
+\]
+At $t = 14$:
+\[
+z_{14} = 3.125 + (1.4798 - 3.125)e^{-0.05333 \times 14} = 3.125 - 1.6452 \times 0.4739 = 2.3453.
+\]
+Inverting back:
+\[
+\kh_{14} = (2.3453)^{3/2} \approx 3.591.
+\]
+This closely matches the discrete annual step simulation value of $3.617$ (the slight difference arises solely from the discrete-time Euler step approximation in the table).
+
+\topic{Log-Linearization Around the Steady State}
+Let $\tilde{k}_t \equiv \ln \kh_t \iff \kh_t = e^{\tilde{k}_t}$. The growth rate of $\kh_t$ is:
+\[
+\dot{\tilde{k}}_t = \frac{\dk_t}{\kh_t} = s\kh_t^{\alpha-1} - \gam = s e^{-(1-\alpha)\tilde{k}_t} - \gam \equiv h(\tilde{k}_t).
+\]
+Take a first-order Taylor series expansion of $h(\tilde{k}_t)$ around the steady state $\tilde{k}^* = \ln\kh^*$:
+\[
+\dot{\tilde{k}}_t = h(\tilde{k}_t) \simeq h(\tilde{k}^*) + h'(\tilde{k}^*)(\tilde{k}_t - \tilde{k}^*).
+\]
+1. At the steady state, by definition:
+\[
+h(\tilde{k}^*) = \dot{\tilde{k}}^* = 0.
+\]
+2. Differentiate $h(\tilde{k})$:
+\[
+h'(\tilde{k}) = \frac{d}{d\tilde{k}}\left[s e^{-(1-\alpha)\tilde{k}} - \gam\right] = -(1-\alpha)s e^{-(1-\alpha)\tilde{k}}.
+\]
+3. Evaluate the derivative at $\tilde{k}^*$. From the steady-state condition $s(\kh^*)^{\alpha-1} = \gam$, we have $s e^{-(1-\alpha)\tilde{k}^*} = \gam = \delta + n + x$. Thus:
+\[
+h'(\tilde{k}^*) = -(1-\alpha)(\delta + n + x) \equiv -\beta.
+\]
+Substituting $h(\tilde{k}^*) = 0$ and $h'(\tilde{k}^*) = -\beta$ into the Taylor expansion yields:
+\[
+\boxed{\dot{\tilde{k}}_t \simeq -\beta(\tilde{k}_t - \tilde{k}^*)}
+\]
+
+\topic{Solving the Log-Linearized Equation}
+Rearranging:
+\[
+\dot{\tilde{k}}_t + \beta \tilde{k}_t = \beta \tilde{k}^*.
+\]
+Comparing with the standard linear ODE $\dot{z}_t + a z_t = b$:
+\[
+z_t \leftrightarrow \tilde{k}_t, \qquad a \leftrightarrow \beta, \qquad b \leftrightarrow \beta \tilde{k}^* \implies \frac{b}{a} = \frac{\beta\tilde{k}^*}{\beta} = \tilde{k}^*.
+\]
+Applying the linear solution:
+\[
+\tilde{k}_t \simeq \tilde{k}^* + (\tilde{k}_0 - \tilde{k}^*)e^{-\beta t}.
+\]
+Subtracting $\tilde{k}_0$ from both sides gives the adjustment equation:
+\[
+\boxed{\tilde{k}_t - \tilde{k}_0 \simeq \left(1 - e^{-\beta t}\right)(\tilde{k}^* - \tilde{k}_0)}
+\]
+The log of capital closes the gap toward its steady-state value at the approximate rate $\beta$ per year.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[xscale=0.13,yscale=0.8,
+  declare function={bet=0.0533333; ze(\t)=3.125-1.645273*exp(-bet*\t);
+                    kl(\t)=exp(ln(5.524272)+(ln(1.8)-ln(5.524272))*exp(-bet*\t));}]
+  \draw[ecaxis] (0,0) -- (84,0);
+  \draw[ecaxis] (0,0) -- (0,6.4);
+  \node[ecnode,anchor=west] at (84,0) {$t$};
+  \node[ecnode,anchor=south] at (0,6.4) {$\kh_t$};
+  \draw[densely dotted] (0,5.524) -- (80,5.524);
+  \node[ecnode,left] at (0,5.524) {$\kh^{*}=5.52$};
+  \node[ecnode,left] at (0,1.8) {$\kh_0=1.8$};
+  \draw[budget] plot[domain=0:80,samples=80] (\x,{ze(\x)^1.5});
+  \draw[budget,dashed] plot[domain=0:80,samples=80] (\x,{kl(\x)});
+  \foreach \t in {20,40,60} \node[ecnode,below] at (\t,0) {$\t$};
+  \node[ecnode,anchor=east] (ex) at (14,4.7) {exact};
+  \draw[thin,black!55] (ex.east) -- (18,{ze(18)^1.5});
+  \node[ecnode,anchor=west] at (38,3.2) {log-linear approx.};
+  \draw[thin,black!55] (38,3.2) -- (34,{kl(34)});
+\end{tikzpicture}
+\caption{Exact path vs.\ log-linear approximation ($\kh_0 = 1.8, \kh^* = 5.52, \beta = 0.0533$). Starting at one-third of $\kh^*$, the log-linearization slightly understates early catch-up, but the two paths converge tightly as $\kh_t \to \kh^*$.}
+\end{figure}
+
+\topic{From Capital Convergence to Income Convergence}
+Output per worker is $y_t = Y_t / L_t = A_t \yh_t = A_t \kh_t^\alpha$. Taking natural logarithms:
+\[
+\ln y_t = \ln A_t + \alpha \tilde{k}_t, \qquad \ln\yh^* = \alpha \tilde{k}^*.
+\]
+Under constant technology growth $x$:
+\[
+\ln A_t - \ln A_0 = xt \implies \ln A_t = \ln A_0 + xt.
+\]
+Subtract $\ln y_0 = \ln A_0 + \alpha\tilde{k}_0$ from $\ln y_t$:
+\[
+\ln y_t - \ln y_0 = (\ln A_t - \ln A_0) + \alpha(\tilde{k}_t - \tilde{k}_0) = xt + \alpha(\tilde{k}_t - \tilde{k}_0).
+\]
+Substitute the log-linear solution for $\tilde{k}_t - \tilde{k}_0$:
+\[
+\ln y_t - \ln y_0 \simeq xt + \left(1 - e^{-\beta t}\right)\alpha(\tilde{k}^* - \tilde{k}_0).
+\]
+Recognizing that $\alpha\tilde{k}^* = \ln\yh^*$ and $\alpha\tilde{k}_0 = \ln\yh_0 = \ln y_0 - \ln A_0$:
+\[
+\boxed{\ln y_t - \ln y_0 \simeq xt + \left(1 - e^{-\beta t}\right)\left[\ln\yh^* - (\ln y_0 - \ln A_0)\right]}
+\]
+\runin{Economic intuition.} Controlling for steady-state output per effective worker $\yh^*$ and initial technology $A_0$, an economy with a lower initial income level $y_0$ will experience faster transitional growth.
+
+\topic{Derivation of the Cross-Country Growth Regression}
+Consider a cross-section of countries indexed by $i$ observed over an interval of length $T$.
+1. Divide both sides of the convergence equation by $T$:
+\[
+\frac{\ln y_{i,T} - \ln y_{i,0}}{T} \simeq \frac{xt}{T} + \frac{1 - e^{-\beta T}}{T}\left[\ln\yh_i^* - \ln y_{i,0} + \ln A_{i,0}\right].
+\]
+2. Define the \textbf{convergence coefficient}:
+\[
+\lambda_T \equiv \frac{1 - e^{-\beta T}}{T}.
+\]
+3. Substitute the Cobb--Douglas steady state for $\ln\yh_i^*$:
+\[
+\yh_i^* = \left(\frac{s_i}{n_i + x + \delta}\right)^{\frac{\alpha}{1-\alpha}} \implies \ln\yh_i^* = \frac{\alpha}{1-\alpha}\ln s_i - \frac{\alpha}{1-\alpha}\ln(n_i + x + \delta).
+\]
+4. Group terms:
+\[
+\boxed{\frac{\ln y_{i,T} - \ln y_{i,0}}{T} \simeq c_i - \lambda_T \ln y_{i,0} + \lambda_T\frac{\alpha}{1-\alpha}\ln s_i - \lambda_T\frac{\alpha}{1-\alpha}\ln(n_i + x + \delta)}
+\]
+where the country-specific term is:
+\[
+c_i \equiv x + \lambda_T \ln A_{i,0}.
+\]
+5. In empirical applications (e.g., Mankiw, Romer, and Weil), initial technology $\ln A_{i,0}$ is unobserved and specified as:
+\[
+c_i = c_0 + \gamma' Z_i + u_i,
+\]
+where $Z_i$ captures institutional quality, schooling, health, or openness. Conditional convergence holds if the estimated coefficient on $\ln y_{i,0}$ is negative ($-\lambda_T < 0$), identifying the underlying convergence speed $\beta$.
+
+\topic{Speed of Convergence and Half-Life}
+The theoretical speed of convergence in the baseline Solow model is:
+\[
+\beta = (1-\alpha)(\delta + n + x).
+\]
+Using baseline parameters ($\alpha = 1/3, \delta = 0.05, n = 0.01, x = 0.02$):
+\[
+\beta = \left(1 - \frac{1}{3}\right)(0.05 + 0.01 + 0.02) = \frac{2}{3}(0.08) \approx 0.0533 \quad (5.33\% \text{ per year}).
+\]
+The \textbf{half-life} $T_{1/2}$ is the time required to close exactly half of the initial gap to the steady state:
+\[
+e^{-\beta T_{1/2}} = \frac{1}{2} \implies -\beta T_{1/2} = \ln\left(\frac{1}{2}\right) = -\ln 2 \implies \boxed{T_{1/2} = \frac{\ln 2}{\beta}}
+\]
+\begin{flatlist}
+  \item At the theoretical Solow rate $\beta = 0.0533$:
+  \[
+  T_{1/2} = \frac{0.6931}{0.0533} \approx 13.0 \text{ years}.
+  \]
+  \item At the standard empirical estimate found in cross-country data ($\beta \approx 0.02$):
+  \[
+  T_{1/2} = \frac{0.6931}{0.02} \approx 34.7 \text{ years}.
+  \]
+\end{flatlist}
+\runin{Conclusion.} The baseline Solow model predicts convergence that is more than twice as fast as observed in reality. This empirical failure motivates models that lower capital's diminishing returns (such as adding human capital).
+
+% =========================================================================
+\section{Explaining International Income Differences}
+
+\topic{Steady-State Income Accounting}
+Steady-state output per worker is:
+\[
+y^* = A \left(\frac{s}{\delta+n+x}\right)^{\frac{\alpha}{1-\alpha}}.
+\]
+With $\alpha = 1/3$, the elasticity of steady-state income with respect to $s$ is $\alpha / (1-\alpha) = 1/2$. Can differences in $s$, $n$, or $A$ explain an observed tenfold income gap ($y_R / y_P = 10$)?
+
+\runin{1. Saving rates ($s$).} Assuming identical $A, n, x, \delta, \alpha$:
+\[
+\frac{y_R}{y_P} = \left(\frac{s_R}{s_P}\right)^{1/2} = 10 \implies \frac{s_R}{s_P} = 10^2 = 100.
+\]
+If rich countries save $s_R = 0.25$, poor countries would require:
+\[
+s_P = \frac{0.25}{100} = 0.0025 \quad (0.25\%).
+\]
+While poor countries typically save less, a $0.25\%$ saving rate is counterfactually low.
+
+\runin{2. Population growth rates ($n$).} Assuming identical $A, s, x, \delta, \alpha$:
+\[
+\frac{y_R}{y_P} = \left(\frac{\delta + n_P + x}{\delta + n_R + x}\right)^{1/2} = 10 \implies \delta + n_P + x = 100(\delta + n_R + x).
+\]
+Setting $\delta = 0.05, n_R = 0.01, x = 0.02 \implies \delta + n_R + x = 0.08$:
+\[
+0.05 + n_P + 0.02 = 100(0.08) = 8.00 \implies n_P = 7.93 \quad (793\% \text{ per year}).
+\]
+Plausible differences in population growth cannot account for international income disparities.
+
+\runin{3. Technology differences ($A$).} Holding $s, n, x, \delta$ constant:
+\[
+\frac{y_R}{y_P} = \frac{A_R}{A_P} = 10.
+\]
+Differences in total factor productivity (TFP) can mathematically account for the gap. However, the Solow model treats $A$ as purely exogenous, offering no explanation for why TFP varies across countries.
+
+\runin{Intuition.} Diminishing returns to physical capital severely restrict the responsiveness of steady-state income to capital accumulation ($d\ln y^* / d\ln s = 1/2$). Huge variations in factor accumulation are needed to explain modest income differences.
+
+% =========================================================================
+\section{Policy Analysis}
+
+\topic{The Golden Rule of Capital Accumulation}
+Steady-state consumption per effective worker is:
+\[
+\ch^* = \yh^* - \ih^* = (\kh^*)^\alpha - \gam\kh^*.
+\]
+Maximizing $\ch^*$ with respect to $\kh^*$:
+\[
+\frac{d\ch^*}{d\kh^*} = \alpha(\kh^*)^{\alpha-1} - \gam = 0 \implies \boxed{\kh_{GR} = \left(\frac{\alpha}{\delta+n+x}\right)^{\frac{1}{1-\alpha}}}
+\]
+The second-order condition confirms a unique global maximum:
+\[
+\frac{d^2\ch^*}{d(\kh^*)^2} = \alpha(\alpha-1)(\kh^*)^{\alpha-2} < 0.
+\]
+In words, $f'(\kh_{GR}) = \delta + n + x$, or equivalently:
+\[
+r - \delta = n + x.
+\]
+The net marginal product of capital equals the economy's steady-state growth rate.
+
+\runin{The Golden Rule saving rate.}
+Comparing $\kh_{GR}$ to the steady-state formula $\kh^*(s) = [s / \gam]^{1/(1-\alpha)}$ shows that the Golden Rule is achieved when:
+\[
+\boxed{s_{GR} = \alpha}
+\]
+The optimal steady-state saving rate equals capital's share of national income: all capital income is invested, and all labor income is consumed.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[xscale=0.42,yscale=1.75]
+  \draw[ecaxis] (0,0) -- (15,0);
+  \draw[ecaxis] (0,0) -- (0,2.75);
+  \node[ecnode,anchor=west] at (15.1,0) {$\kh$};
+  \draw[budget] plot[domain=0.001:14.3,samples=90] (\x,{\x^(1/3)});
+  \node[ecnode,anchor=west] at (14.3,{14.3^(1/3)}) {$\yh = \kh^{\alpha}$};
+  \draw[budget,dashed] (0,0) -- (14.3,1.144);
+  \node[ecnode,anchor=west] at (14.3,1.144) {$\gam\kh$};
+  \draw[budget,black!55] plot[domain=0.001:14.3,samples=90] (\x,{\x^(1/3)/3});
+  \node[ecnode,anchor=west,black!70] at (14.3,{14.3^(1/3)/3}) {$\alpha\kh^{\alpha}$};
+  \draw[thin] (2.0,1.522) -- (13.5,2.442);
+  \draw[densely dotted] (8.505,0) -- (8.505,2.042);
+  \draw[{Stealth[length=3pt]}-{Stealth[length=3pt]},line width=0.7pt] (8.505,0.694) -- (8.505,2.028);
+  \node[ecnode,anchor=west] at (8.6,1.35) {$\ch_{GR}$};
+  \node[ecnode,below] at (8.505,0) {$\kh_{GR}$};
+  \node[ecnode] (tg) at (4.6,2.5) {tangent, slope $\delta+n+x$};
+  \draw[thin,black!55] (tg.south) -- (5.0,1.73);
+\end{tikzpicture}
+\caption{The Golden Rule capital stock $\kh_{GR}$. Consumption is maximized where the slope of the production function equals the break-even investment ray.}
+\end{figure}
+
+\topic{Dynamic Inefficiency vs.\ Underaccumulation}
+\begin{flatlist}
+  \item \textbf{Overaccumulation ($s > \alpha$)}: $\kh^* > \kh_{GR}$. The economy is \textbf{dynamically inefficient}. Reducing $s$ increases consumption immediately ($\ch = (1-s)\yh$ jumps up since $\kh$ cannot change instantaneously) and increases consumption in the long-run steady state.
+  \item \textbf{Underaccumulation ($s < \alpha$)}: $\kh^* < \kh_{GR}$. The economy is dynamically efficient. Raising $s$ increases long-run consumption, but forces an initial sacrifice in consumption. Whether this improves welfare depends on how future consumption is discounted.
+\end{flatlist}
+
+\topic{A Permanent Increase in the Saving Rate}
+Suppose that at date $t_0$, the saving rate permanently rises from $s_0$ to $s_1$ with $s_0 < s_1$:
+\begin{flatnum}
+  \item Capital $\kh$ is a predetermined stock and cannot jump at $t_0$.
+  \item Actual investment $s\yh$ jumps upward, making $\dk > 0$. The initial growth of capital jumps to:
+  \[
+  \left.\gr{\kh}\right|_{t_0} = s_1(\kh_0^*)^{\alpha-1} - \gam = \left(\frac{s_1}{s_0} - 1\right)\gam > 0.
+  \]
+  \item Consumption per effective worker $\ch = (1-s)\yh$ drops immediately from $(1-s_0)\yh_0^*$ to $(1-s_1)\yh_0^*$.
+  \item The growth rate of output per worker jumps to $x + \alpha(s_1/s_0 - 1)\gam$, then gradually returns to $x$ as $\kh_t \to \kh^*(s_1)$.
+  \item Output per worker shifts to a permanently higher level, but its long-run growth rate remains unchanged at $x$.
+\end{flatnum}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  declare function={lam=0.0533333; z(\t)=3.75-1.25*exp(-lam*\t);},
+  ttl/.style={font=\footnotesize,align=center,anchor=north}]
+  \begin{scope}[xscale=0.045]
+    \draw[ecaxis] (-20,0) -- (68,0);
+    \draw[ecaxis] (-20,0) -- (-20,2.9);
+    \node[ecnode,anchor=west] at (68,0) {$t$};
+    \node[ecnode,anchor=south] at (-20,2.9) {$\ln(Y/L)$};
+    \draw[budget] (-20,{1.4*0.058}) -- (0,{1.4*0.458});
+    \draw[budget] plot[domain=0:60,samples=60] (\x,{1.4*(0.02*\x+0.5*ln(z(\x)))});
+    \draw[black!55,dashed] (0,{1.4*0.458}) -- (60,{1.4*1.658});
+    \draw[densely dotted] (0,0) -- (0,{1.4*0.458});
+    \node[ecnode,below] at (0,0) {$t_0$};
+    \node[ttl] at (24,-0.45) {(a) level shifts up;\\ slope returns to $x$};
+  \end{scope}
+  \begin{scope}[xshift=5.3cm,xscale=0.045]
+    \draw[ecaxis] (-20,0) -- (68,0);
+    \draw[ecaxis] (-20,0) -- (-20,2.9);
+    \node[ecnode,anchor=west] at (68,0) {$t$};
+    \node[ecnode,anchor=south] at (-20,2.9) {$\dot{y}/y$ (\%)};
+    \draw[budget] (-20,1.2) -- (0,1.2);
+    \draw[budget] plot[domain=0:60,samples=60]
+         (\x,{0.6*100*(0.02+0.5*lam*1.25*exp(-lam*\x)/z(\x))});
+    \draw[densely dotted] (0,0) -- (0,2.0);
+    \draw[black!55,dashed] (0,1.2) -- (60,1.2);
+    \node[ecnode,left] at (-20,1.2) {$2$};
+    \node[ecnode,left] at (-20,2.0) {$3.3$};
+    \draw[thin] (-21.5,2.0) -- (-18.5,2.0);
+    \node[ecnode,below] at (0,0) {$t_0$};
+    \node[ttl] at (24,-0.45) {(b) growth jumps,\\ decays back to $x$};
+  \end{scope}
+  \begin{scope}[xshift=10.6cm,xscale=0.045]
+    \draw[ecaxis] (-20,0) -- (68,0);
+    \draw[ecaxis] (-20,0) -- (-20,2.9);
+    \node[ecnode,anchor=west] at (68,0) {$t$};
+    \node[ecnode,anchor=south] at (-20,2.9) {$\ch$};
+    \draw[budget] (-20,{6*0.265}) -- (0,{6*0.265});
+    \draw[budget] plot[domain=0:60,samples=60] (\x,{6*(0.7*sqrt(z(\x))-1)});
+    \draw[densely dotted] (0,0) -- (0,{6*0.265});
+    \draw[black!55,dashed] (0,{6*0.356}) -- (60,{6*0.356});
+    \node[ecnode,below] at (0,0) {$t_0$};
+    \node[ttl] at (24,-0.45) {(c) falls on impact;\\ ends higher if $s_1 < \alpha$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Permanent increase in $s$ from $0.20$ to $0.30$ at date $t_0$ ($\alpha=1/3, \gam=0.08, x=0.02$).}
+\end{figure}
+
+\topic{Foreign Aid and Technical Assistance}
+\runin{1. Consumption aid.} A temporary transfer of consumption goods raises utility while active. Because it leaves domestic investment, saving, capital stock, and productivity unaltered, the production path is completely unaffected.
+
+\runin{2. Investment aid.} Let $a_t$ be external aid per effective worker. A fraction $\varphi$ is invested directly, and $(1-\varphi)$ is treated as income (saved at rate $s$):
+\[
+\dk_t = s\kh_t^\alpha + \underbrace{[\varphi + s(1-\varphi)]a_t}_{\text{aid-financed investment}} - \gam\kh_t.
+\]
+Cash aid corresponds to $\varphi = 0$ (extra investment $sa_t$); in-kind capital aid corresponds to $\varphi = 1$ (extra investment $a_t$). Aid accelerates capital accumulation during the transfer. However, once aid ceases ($a_t = 0$), the equation of motion reverts to its baseline form and $\kh_t$ converges back to its original steady state. Aid has no permanent effect on income unless it permanently alters $s$ or $A$.
+
+\runin{3. Technical assistance.} Suppose assistance permanently raises technology by a factor $\mu > 1$ (from $A$ to $\mu A$) at $t_0$. Because physical capital $K$ is predetermined, capital per effective worker drops on impact:
+\[
+\kh(t_0) = \frac{K}{\mu A L} = \frac{\kh^*}{\mu}.
+\]
+Output per worker evolves as:
+\[
+\underbrace{A\kh^{*\alpha}}_{\text{pre-assistance}} \ \longrightarrow \ \underbrace{\mu A \left(\frac{\kh^*}{\mu}\right)^\alpha = \mu^{1-\alpha}A\kh^{*\alpha}}_{\text{impact effect}} \ \longrightarrow \ \underbrace{\mu A\kh^{*\alpha}}_{\text{long-run steady state}}.
+\]
+Output jumps immediately by $\mu^{1-\alpha}$. Then, because $\kh < \kh^*$, transitional capital accumulation drives output per worker to $\mu$ times its original path. A one-time increase in $A$ permanently raises the level of output per worker; permanently raising the growth rate requires raising $x$.
+
+% =========================================================================
+\section{Overall Assessment and Limitations}
+
+\topic{Empirical Strengths}
+\begin{flatlist}
+  \item Reproduces the balanced-growth facts of developed economies (constant $K/Y$, constant real interest rate, constant factor shares).
+  \item Establishes conditional convergence driven by diminishing marginal returns to capital.
+  \item Explains transitional growth differences (post-war reconstructions, growth accelerations).
+\end{flatlist}
+
+\topic{Key Model Limitations}
+\begin{flatnum}
+  \item \textbf{Exogenous Growth Drivers}: Saving rate $s$, population growth $n$, and technology growth $x$ are exogenous. The model cannot explain endogenous growth or evaluate tax/incentive policies.
+  \item \textbf{Counterfactual Expenditure Behavior}: Implies constant $C/Y$ and $I/Y$ throughout the transition, failing to capture rising investment shares observed in developing economies.
+  \item \textbf{Convergence Speed is Too Rapid}: The baseline calibration predicts $\beta \approx 5.3\%$ ($T_{1/2} \approx 13$ years), whereas empirical studies estimate $\beta \approx 2\%$ ($T_{1/2} \approx 35$ years).
+  \item \textbf{Limited Explanatory Power for International Inequality}: Diminishing returns ($\alpha = 1/3$) restrict capital accumulation, requiring implausible cross-country parameter differences to explain observed income gaps.
+\end{flatnum}
+
+\runin{Central takeaway.} The Solow model successfully organizes the proximate sources of growth (capital accumulation and exogenous technology) while leaving the fundamental causes (institutions, geography, endogenous technological innovation) outside the model.
+
+\begin{transcriptnotes}
+  \item \textbf{Sources}: \texttt{solow\_growth\_model\_slides.pdf} (15 slides), \texttt{solow\_growth\_model\_evaluation.pdf} (18 slides), \texttt{solow\_policy\_slides.pdf} (8 slides), and \texttt{solow\_differential\_equations.pdf} (14 slides).
+  \item \textbf{Restorations}: Fully restored the step-by-step integrating factor ODE solution, the Bernoulli variable transformation, the Taylor series expansion and derivative evaluation, the exact-to-log income translation, and the cross-country regression derivation.
+\end{transcriptnotes}
+
+\end{document}

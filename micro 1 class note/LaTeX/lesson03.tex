@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{3}{Chapter 2 (continued): demand, Walras' law, and WARP}{}
+
+
+\section{Demand functions}
+
+The consumer's choice depends on prices $p$ and wealth (or income) $w$. We let
+$x(p,w)$ denote the \emph{demand correspondence}: the set of bundles the consumer
+chooses from the budget set $B_{p,w}$. If the correspondence is single-valued --- that is, the
+set consists of a single element --- then we have a standard demand function. In
+the latter case
+\[ x(p,w)=\bigl(x_1(p,w),\dots,x_L(p,w)\bigr), \]
+where $x_i(p,w)$ is the individual demand for good $i$, $i=1,2,\dots,L$.
+
+We start with some basic assumptions, to the effect that the consumer is rational.
+
+\topic{Homogeneity of degree 0}
+$x(p,w)$ is homogeneous of degree 0:
+\[ x(\alpha p,\alpha w)=x(p,w)\qquad\text{for all }\alpha>0. \]
+This is saying that only relative prices and real income matter (the budget set
+is the same, $B_{\alpha p,\alpha w}=B_{p,w}$). It does not matter if
+we convert to a different currency, or from dollars to cents.
+
+\section{Walras' law and comparative statics}
+
+\topic{Walras' law}
+For any $p\gg 0$ and $w>0$,
+\[ p\cdot x(p,w)=w, \]
+i.e.\ the agent uses all his wealth (income).
+
+We now assume that the demand correspondence is a demand function. We often assume
+it is differentiable.
+
+\topic{Comparative statics}
+The parameters are $(p,w)$. What happens to the endogenous choices (i.e.\
+consumption) when the exogenous parameters change? With differentiable demand
+functions we want to examine
+\[ \pd{x_i(p,w)}{p_j}\qquad\text{and}\qquad \pd{x_i(p,w)}{w}. \]
+
+We now use the assumptions for comparative statics. Using homogeneity of degree 0,
+\[ x(\alpha p,\alpha w)=x(p,w)\ \text{ for }\ \alpha>0
+   \qquad\Longrightarrow\qquad
+   \frac{d\,x_i(\alpha p,\alpha w)}{d\alpha}=0, \]
+where the derivative on the left is the \emph{total} derivative with respect to
+$\alpha$, i.e.\ the chain rule applied to all the arguments
+$\alpha p_1,\dots,\alpha p_L,\alpha w$. Hence
+\[ 0=\sum_{j=1}^{L}\pd{x_i(\alpha p,\alpha w)}{p_j}\,p_j
+     +\pd{x_i(\alpha p,\alpha w)}{w}\,w . \]
+Evaluate at $\alpha=1$:
+\[ 0=\sum_{j=1}^{L}\pd{x_i(p,w)}{p_j}\,p_j
+     +\pd{x_i(p,w)}{w}\,w . \]
+When $x_i(p,w)>0$, multiply the whole expression by $x_i(p,w)$ and divide each term
+inside by the same $x_i(p,w)$ --- the factor cancels, so the equality is untouched:
+\[
+\begin{aligned}
+  0&=\sum_{j=1}^{L}\pd{x_i(p,w)}{p_j}\,p_j
+      +\pd{x_i(p,w)}{w}\,w\\[2pt]
+   &=x_i(p,w)\left[\sum_{j=1}^{L}\pd{x_i(p,w)}{p_j}\,\frac{p_j}{x_i(p,w)}
+      +\pd{x_i(p,w)}{w}\,\frac{w}{x_i(p,w)}\right].
+\end{aligned}
+\]
+The bracket is the sum of the demand elasticities of good $i$ with respect to every
+price (own and cross) and to wealth, and since $x_i(p,w)>0$ it must itself be zero.
+
+This is intuitive, given that the starting point is homogeneity of degree 0:
+nothing changes if all prices and wealth change by the same percentage. We learn
+that the elasticities cannot all have the same sign: unless they are all zero, some
+are positive and some negative.
+
+\section{The weak axiom of revealed preference (WARP)}
+
+WARP is a minimal rationality assumption: the agent does not make
+self-contradictory choices.
+
+WARP is satisfied if, for any two pairs $(p,w)$ and $(p',w')$, it holds that
+\[ p\cdot x(p',w')\le w
+   \quad\text{and}\quad x(p',w')\ne x(p,w)
+   \qquad\Longrightarrow\qquad
+   p'\cdot x(p,w)>w' . \]
+Tomorrow's bundle is affordable today, but I chose not to buy it: $x(p,w)$ is
+revealed preferred to $x(p',w')$. The reason I do not buy $x(p,w)$ tomorrow is
+simply that I cannot afford it.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.40]
+  % ---------------- panel (a): WARP holds ----------------
+  \begin{scope}
+    \ecaxes{12.5}{8.5}
+    \draw[budget] (0,8) -- (6.5,0);                 % B(p,w) steeper
+    \draw[budget] (0,4.5) -- (11.5,0);              % B(p',w') flatter
+
+    \node[ecnode,anchor=south west] at (2.5, 5.27) {$B_{p,w}$};
+    \node[ecnode,anchor=south west] at (8.0, 1.8) {$B_{p',w'}$};
+
+    \node[bundle] at (1.63, 6.0) {};                % x on B(p,w)
+    \node[ecnode,anchor=south west] at (1.7, 6.1) {$x$};
+
+    \node[bundle] at (3.83, 3.0) {};                % x' on B(p',w'), inside B(p,w)
+    \node[ecnode,anchor=north east] at (3.8, 2.7) {$x'$};
+    \node[ecnode,anchor=north] at (6.25,-0.6) {WARP holds};
+  \end{scope}
+  % ---------------- panel (b): WARP fails ---------------
+  \begin{scope}[xshift=15cm]
+    \ecaxes{12.5}{8.5}
+    \draw[budget] (0,4.5) -- (11.5,0);              % B(p,w) flatter
+    \draw[budget] (0,7.5) -- (6.5,0);               % B(p',w') steeper
+
+    \node[ecnode,anchor=south west] at (8.0, 1.8) {$B_{p,w}$};
+    \node[ecnode,anchor=south west] at (1.5, 6.0) {$B_{p',w'}$};
+
+    \node[bundle] at (2.56, 3.5) {};                % x on B(p,w), inside B(p',w')
+    \node[ecnode,anchor=north west] at (2.66, 3.0) {$x$};
+
+    \node[bundle] at (4.77, 2.0) {};                % x' on B(p',w'), inside B(p,w)
+    \node[ecnode,anchor=north east] at (4.6, 1.9) {$x'$};
+    \node[ecnode,anchor=north] at (6.25,-0.6) {WARP fails};
+  \end{scope}
+  \end{tikzpicture}
+\caption{The two cases for a pair of price--wealth situations $(p,w)$ and
+$(p',w')$. \emph{Left:} $x'$ is affordable when $x$ is chosen under $(p,w)$, revealing
+that $x$ is preferred to $x'$. Because $x$ is unaffordable under $(p',w')$, there is no
+contradiction and WARP holds. \emph{Right:} $x'$ is affordable when $x$ is chosen
+under $(p,w)$, and $x$ is affordable when $x'$ is chosen under $(p',w')$. This creates
+a mutual revealed preference, which is exactly what WARP forbids.}
+\end{figure}
+
+\section{WARP and Slutsky wealth compensation}
+
+WARP implies homogeneity of degree 0. If $(p',w')=(\alpha p,\alpha w)$, then $x'$
+is affordable whenever $x$ was chosen, and vice versa. If $x'\ne x$, then $x$ is
+revealed preferred to $x'$ and $x'$ is revealed preferred to $x$ --- a
+self-contradictory choice, which violates WARP. Hence $x'=x$.
+
+WARP has strong implications when combined with Walras' law.
+
+\topic{A thought experiment}
+Take a price change from $p$ to $p'$ and, at the same time, adjust income so that
+\[ w'=p'\cdot x(p,w), \]
+which is exactly \emph{Slutsky wealth compensation}: at the new prices the original
+bundle is just affordable. The result (the \emph{compensated law of demand}): suppose $x(p,w)$ is homogeneous
+of degree 0 and satisfies Walras' law. Then $x(p,w)$ satisfies WARP if and only if,
+for any compensated price change from $(p,w)$ to $(p',w')$, with
+$w'=p'\cdot x(p,w)$, it holds that
+\[ (p'-p)\cdot\bigl(x(p',w')-x(p,w)\bigr)\le 0, \]
+with strict inequality if $x(p,w)\ne x(p',w')$.
+
+In particular, if only the price of good $i$ changes ($p_j'=p_j$ for $j\ne i$), the
+inner product has a single term,
+\[ (p_i'-p_i)\bigl(x_i(p',w')-x_i(p,w)\bigr)\le 0, \]
+so the compensated demand for good $i$ moves in the opposite direction to its own
+price. When several prices change at once only the inner product is signed, not each
+good separately.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.52]
+  \ecaxes{9.6}{6.6}
+  \draw[budget] (0,6) -- (6,0);                   % B(p,w)
+  \draw[budget] (0,3) -- (9,0);                   % B(p',w') : w' = p'.x(p,w)
+  \draw[adm]    (4.5,1.5) -- (9,0);               % marked: the part with p.x(p',w') > w
+  \node[ecnode,anchor=south west] at (1.40,4.70) {$B_{p,w}$};
+  \node[ecnode,anchor=south west] at (0.60,2.85) {$B_{p',w'}$};
+  \node[bundle] at (4.5,1.5) {};                  % x(p,w), at the crossing
+  \node[ecnode,anchor=north east] at (4.35,1.30) {$x(p,w)$};
+  \node[ecnode] at (7.00,2.20) {$p\cdot x'>w$};
+  \draw[thin] (6.90,1.90) -- (6.50,0.86);
+  \node[bundle] at (7.5,0.5) {};                  % x' = x(p',w'), on the marked part
+  \node[ecnode,above right] at (7.62,0.60) {$x'$};
+\end{tikzpicture}
+\caption{Slutsky wealth compensation. The new budget line $B_{p',w'}$ is drawn so
+that $w'=p'\cdot x(p,w)$: it passes through the original bundle $x(p,w)$, so the two
+lines cross exactly there. Write $x'=x(p',w')$ for the bundle chosen at the new
+prices. Since $x'$ must satisfy $p'\cdot x'=w'$ it lies on $B_{p',w'}$, and since
+WARP requires $x'$ to be unaffordable at $(p,w)$ it can only lie on the thick part
+of that line, where $p\cdot x'>w$.}
+\end{figure}
+
+\topic{Reading the picture}
+Because $p'\cdot x(p,w)=w'$, the original bundle lies on $B_{p',w'}$, so the two
+lines cross at $x(p,w)$. The new choice $x'=x(p',w')$ also lies on $B_{p',w'}$
+(Walras' law). If $x'\ne x(p,w)$ were on the stretch inside $B_{p,w}$ (from the
+crossing up to the vertical intercept), each bundle would be affordable when the
+other was chosen, which WARP forbids. So $x'$ lies on the thick stretch, where
+$p\cdot x'>w$. Here good 2 has become relatively more expensive (the new line is
+flatter), and the thick stretch has less of good 2 than $x(p,w)$: demand for the good
+whose price rose falls.
+
+\begin{transcriptnotes}
+  \item The original opens with a divider page reading only ``Chapter 2''; it is
+        represented here by the subtitle.
+  \item ``single-valuable'' $\to$ \emph{single-valued}; ``weath'' $\to$
+        \emph{wealth}; ``connect to different currency'' $\to$ \emph{convert}.
+  \item ``Walva's'' $\to$ \emph{Walras'}; ``homogenity'' $\to$
+        \emph{homogeneity}; ``as verse versa'' $\to$ \emph{and vice versa}.
+  \item ``the agent uses all his wealth on income'' $\to$ \emph{uses all his wealth
+        (income)}.
+  \item The step after evaluating at $\alpha=1$ is kept as in the original: multiply
+        the whole expression by $x_i(p,w)$ and divide each term inside by the same
+        $x_i(p,w)$. The two occurrences of the factor cancel, so the equality $=0$
+        survives, and because $x_i(p,w)>0$ the bracket --- the sum of the
+        elasticities --- must itself be zero.
+  \item \textbf{Corrected:} ``all income elasticities sum to zero'' is too narrow.
+        What homogeneity gives is that the price elasticities of the demand for
+        good $i$ (own and cross) \emph{plus} its income (wealth) elasticity sum to
+        zero.
+  \item \textbf{Corrected:} the compensated-change condition was written with
+        ``$=0$''. Since the next line says ``strict if $x(p,w)\ne x(p',w')$'', the
+        intended relation is $(p'-p)\cdot(x(p',w')-x(p,w))\le 0$: the equality sign
+        was a slip.
+  \item \textbf{Corrected:} the line ``in the aggregate case'' stated the sign
+        condition good by good, $(p_i'-p_i)(x_i'-x_i)\le0$. That does not follow
+        when several prices change together: only the inner product over all goods
+        is signed. The good-by-good statement holds when only $p_i$ changes, and it
+        is written with that qualifier.
+  \item \textbf{Corrected:} the statement of the compensated law of demand omitted
+        homogeneity of degree 0, which the ``if and only if'' assumes (MWG
+        Proposition 2.F.1); it is added. The sentence ``for the
+        compensated demand, assume that $x(p,w)$ satisfies Walras' law'' is
+        folded into that statement.
+  \item \textbf{Corrected:} ``we learn that some elasticities are positive and some
+        negative'' is stated too strongly (they may all be zero); what follows from
+        a zero sum is that they cannot all share a strict sign.
+  \item ``the set of bundles that are acceptable'' is written as the set of bundles
+        \emph{chosen} from $B_{p,w}$; ``real prices'' is written \emph{relative
+        prices}. The derivative in $\alpha$ is typeset $d/d\alpha$, since it is a
+        total derivative.
+  \item The last sketch was redrawn with $x(p,w)$ at the crossing of the two budget
+        lines --- with Slutsky compensation the new line must pass through the
+        original bundle --- and with the stretch of $B_{p',w'}$ on which
+        $x'=x(p',w')$ is admissible, i.e.\ where $p\cdot x'>w$, drawn thick and
+        labelled, and $x'$ shown on it.
+  \item The summation indices are written inconsistently in the original
+        (``$\sum_{i=1}^{L}\partial x_i(\alpha p,\alpha w)/\partial p_i\,p_j$'',
+        ``$\partial p_2\,p_2$'' after setting $\alpha=1$, and
+        ``$\sum_i \partial x_i/\partial p_i\cdot p_i/x_i$'' in the elasticity line, which
+        would leave only the own-price term); the wealth derivative is written
+        ``$\partial x_i(\alpha p,w)/\partial w$''. All are typeset with the sum over
+        $j$ and the argument $(\alpha p,\alpha w)$.
+  \item \textbf{Added:} the paragraph ``Reading the picture'' (why $x'$ must lie on the
+        thick stretch, and that the stretch has less of good 2) is an explanation of
+        the final sketch, not written in the original.
+  \item The WARP figure now follows the corrected reading. In the holds case only
+        $x'$ is affordable at $(p,w)$ while $x$ is unaffordable at $(p',w')$, so the
+        antecedent of the axiom is met and its conclusion holds; in the failing case
+        both bundles are affordable under both price--wealth pairs. The two panels
+        use the same two lines with the labels swapped ($B_{p,w}$ the steeper line on
+        the left, the flatter one on the right), so the two cases are read against the
+        same geometry. The point labels are placed just clear of the lines. The panels are captioned ``WARP holds'' and ``WARP fails'' (the original labels only the second).
+\end{transcriptnotes}
+
+\end{document}

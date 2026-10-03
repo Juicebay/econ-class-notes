@@ -1,0 +1,17 @@
+K(1976Q1) under each reading of the calibration rule:
+   logdiff     K0 = 2.12757e+12   K/Y(1976Q1) = 2.76
+   simplediff  K0 = 1.87477e+12   K/Y(1976Q1) = 2.43
+   I0/delta    K0 = 2.37092e+12   K/Y(1976Q1) = 3.07
+   30*I0       K0 = 1.77819e+12   K/Y(1976Q1) = 2.31
+   35*I0       K0 = 2.07456e+12   K/Y(1976Q1) = 2.69
+   40*I0       K0 = 2.37092e+12   K/Y(1976Q1) = 3.07
+
+   K0 choice        sd(capital) corr(capital,y)  sd(cap prod) corr(cap prod,y)
+   logdiff             0.87      -0.15           2.02         0.90
+   simplediff          0.88      -0.15           2.03         0.90
+   I0/delta            0.86      -0.15           2.01         0.91
+   30*I0               0.89      -0.15           2.03         0.90
+   35*I0               0.87      -0.15           2.02         0.90
+   40*I0               0.86      -0.15           2.01         0.91
+   (K from business gross fixed capital formation: sd k 0.64 corr 0.01, sd y/k 1.80 corr 0.93)
+   (I as a quarterly flow, I/4:  sd k 0.87 corr -0.15, sd y/k 2.02 corr 0.90)

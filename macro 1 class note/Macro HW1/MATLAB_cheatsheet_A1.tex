@@ -1,0 +1,350 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.85cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+
+\definecolor{codebg}{RGB}{246,247,249}
+\definecolor{codekw}{RGB}{0,88,158}
+\definecolor{codecm}{RGB}{105,115,105}
+\definecolor{codestr}{RGB}{158,60,20}
+\definecolor{rulegray}{RGB}{205,210,215}
+
+\lstdefinestyle{ml}{
+  language=Matlab,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  commentstyle=\color{codecm}\itshape,
+  stringstyle=\color{codestr},
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single,
+  framesep=4pt,
+  rulecolor=\color{rulegray},
+  aboveskip=6pt,
+  belowskip=6pt
+}
+\lstdefinestyle{inl}{
+  language=Matlab,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{codekw},
+  commentstyle=\color{codecm}\itshape,
+  stringstyle=\color{codestr},
+  showstringspaces=false,
+  frame=none,
+  backgroundcolor=\color{white},
+  columns=fullflexible,
+  keepspaces=true
+}
+\lstset{style=ml}
+
+\titleformat{\section}{\large\bfseries\color{codekw}}{\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{8pt}{3pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries MATLAB cheat sheet}\\[2pt]
+{\large ECON*6020 --- Assignment 1: Canadian business cycle data, 1976Q1--2026Q2}\\[4pt]
+{\small Data file \texttt{Assignment1\_data.xlsx}, sheet \texttt{Combined}: 202 quarters $\times$ 66 columns.\\
+Companion to \texttt{assignment1.m}. This sheet lists the \emph{syntax} you need --- not the answers.}
+\end{center}
+
+\vspace{2pt}
+\hrule
+\vspace{6pt}
+
+\section{Load the file and look at it}
+
+\begin{lstlisting}
+clear; clc; close all
+
+T = readtable("Assignment1_data.xlsx", Sheet = "Combined", ...
+              VariableNamingRule = "preserve");
+
+disp(head(T, 8))                            % first 8 rows of the sheet
+fprintf("%d quarters x %d columns\n", height(T), width(T));
+var = string(T.Properties.VariableNames);    % all 66 names as a string vector
+q   = string(T.quarter);                     % "1976Q1" ... "2026Q2"  (column 1)
+Tq  = height(T);                             % 202
+\end{lstlisting}
+
+\lstinline[style=inl]!readtable! reads the sheet into a \emph{table}; a column is then
+\lstinline[style=inl]!T.name!. Things worth knowing: \lstinline[style=inl]!height!/\lstinline[style=inl]!width! give rows/columns
+(\lstinline[style=inl]!size! works too), \lstinline[style=inl]!head(T,n)! shows the first $n$ rows, \lstinline[style=inl]!T{:,k}!
+gives column $k$ as a plain numeric vector, and \lstinline[style=inl]!string(...)! converts to
+text so \lstinline[style=inl]!==! comparisons work.
+
+\section{How the column names are built}
+
+Every GDP column name is three segments joined by \lstinline[style=inl]!_!:
+
+\begin{center}
+\lstinline[style=inl]!basis! \ \lstinline[style=inl]!_! \ \lstinline[style=inl]!seasonally_adjusted_at_annual_rates! \ \lstinline[style=inl]!_! \ \lstinline[style=inl]!what!
+\end{center}
+
+where \lstinline[style=inl]!basis! is \lstinline[style=inl]!current_prices! (nominal) or
+\lstinline[style=inl]!chained_2017_dollars! (real), and \lstinline[style=inl]!what! is one of the 31 components:
+
+\vspace{-2pt}
+{\footnotesize
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+final\_consumption\_expenditure & exports\_of\_goods\_and\_services \\
+household\_final\_consumption\_expenditure & exports\_of\_goods \\
+goods & exports\_of\_services \\
+durable\_goods & less\_imports\_of\_goods\_and\_services \\
+semi\_durable\_goods & imports\_of\_goods \\
+non\_durable\_goods & imports\_of\_services \\
+services & statistical\_discrepancy \\
+non\_profit\_institutions\_serving\_households\_final\_consumption\_expenditure & gross\_domestic\_product\_at\_market\_prices \\
+general\_governments\_final\_consumption\_expenditure & final\_domestic\_demand \\
+gross\_fixed\_capital\_formation & investment\_in\_inventories \\
+business\_gross\_fixed\_capital\_formation & of\_which\_business\_investment\_in\_inventories \\
+residential\_structures & non\_farm \\
+non\_residential\_structures\_machinery\_and\_equipment & farm \\
+non\_residential\_structures & \\
+machinery\_and\_equipment & \\
+intellectual\_property\_products & \\
+non\_profit\_institutions\_serving\_households\_gross\_fixed\_capital\_formation & \\
+general\_governments\_gross\_fixed\_capital\_formation & \\
+\end{tabular}
+\end{center}}
+
+The three extra columns are
+\lstinline[style=inl]!hours_worked_v4391505_quarterly_sum_hours!,
+\lstinline[style=inl]!population_v1_persons! and
+\lstinline[style=inl]!exchange_rate_v37426_to_2016_v111666275_from_2017_quarterly_average_cad_per_usd!.
+
+\subsection*{Build a name instead of typing it}
+
+\begin{lstlisting}
+nm = @(basis, what) join([basis, "seasonally_adjusted_at_annual_rates", what], "_");
+R  = "chained_2017_dollars";     % real, 2017 dollars
+N  = "current_prices";           % nominal
+
+y    = T.chained_2017_dollars_seasonally_adjusted_at_annual_rates_gross_domestic_product_at_market_prices;
+ynom = T.current_prices_seasonally_adjusted_at_annual_rates_gross_domestic_product_at_market_prices;
+                                                                  % dot access works...
+y    = T.(nm(R, "gross_domestic_product_at_market_prices"));      % ...or computed
+ynom = T.(nm(N, "gross_domestic_product_at_market_prices"));
+\end{lstlisting}
+
+\subsection*{Every name is a legal MATLAB identifier}
+
+\lstinline[style=inl]!isvarname! returns \lstinline[style=inl]!1! for all 66 names (checked), so all three
+ways of reaching a column work:
+
+\begin{lstlisting}
+pop = T.population_v1_persons;                        % plain dot access
+pop = T.("population_v1_persons");                    % same column, brackets
+pop = T.(nm("chained_2017_dollars", "services"));     % computed from the pieces
+\end{lstlisting}
+
+The GDP names run up to 129 characters, so the computed form is usually less
+typing; when you do type one out, copy it from \lstinline[style=inl]!T.Properties.VariableNames!
+or from the header row of the Excel file.
+
+\section{The 14 variables of the table}
+
+\begin{lstlisting}
+% --- 10 series straight from the file -------------------------------------
+y    = T.(nm(R, "gross_domestic_product_at_market_prices"));      % output, real
+c    = T.(nm(R, "semi_durable_goods")) + ...
+       T.(nm(R, "non_durable_goods"))  + T.(nm(R, "services"));   % consumption
+i    = T.(nm(R, "non_residential_structures_machinery_and_equipment"));
+gc   = T.(nm(R, "general_governments_final_consumption_expenditure"));
+gi   = T.(nm(R, "general_governments_gross_fixed_capital_formation"));
+ex   = T.(nm(R, "exports_of_goods_and_services"));
+im   = T.(nm(R, "less_imports_of_goods_and_services"));           % positive
+n    = T.hours_worked_v4391505_quarterly_sum_hours;               % hours
+pop  = T.population_v1_persons;                                   % persons
+fx   = 100 * T.exchange_rate_v37426_to_2016_v111666275_from_2017_quarterly_average_cad_per_usd;
+                                                                  % CAD/USD -> cents
+
+% --- 4 variables you build ------------------------------------------------
+nx   = 1 + (ex - im) ./ y;                  % net exports, 1 + NX/Y
+w    = y ./ n;                              % labour productivity, Y/N
+pgdp = 100 * ynom ./ y;                     % price = GDP deflator
+
+delta = 0.025;                              % quarterly depreciation
+gI    = mean(diff(i) ./ i(1:end-1));        % avg growth of investment
+k     = zeros(Tq, 1);
+k(1)  = i(1) / (gI + delta);                % K0 from (g+delta)K = I
+for t = 1:Tq-1
+    k(t+1) = i(t) + (1 - delta) * k(t);     % law of motion
+end
+mpk  = y ./ k;                              % capital productivity, Y/K
+
+% --- one matrix, table order, then per capita ------------------------------
+X = [y c i gc gi ex im nx n w k mpk fx pgdp];      % 202 x 14
+QC = [1 2 3 4 5 6 7 9 11];                         % y c i gc gi ex im n k
+X(:, QC) = X(:, QC) ./ pop;    % ratios (nx w mpk) and indexes (fx pgdp) are
+                               % already per-capita, so leave them alone
+\end{lstlisting}
+
+Order of \lstinline[style=inl]!X! (this is the table's order): 1 output, 2 consumption,
+3 investment, 4 gov consumption, 5 gov investment, 6 exports, 7 imports,
+8 net exports, 9 hours, 10 labour productivity, 11 capital, 12 capital
+productivity, 13 nominal exchange rate, 14 price.
+
+\section{Operators: matrix algebra vs element-by-element}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & matrix algebra & element-by-element \\
+\midrule
+multiply & \texttt{A*B} & \texttt{A.*B} \\
+divide   & \texttt{A/B} (solve) & \texttt{A./B} \\
+power    & \texttt{A\^{}2} & \texttt{A.\^{}2} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Rule of thumb: two series of the same length are \emph{always} \lstinline[style=inl]!./! and
+\lstinline[style=inl]!.*!. The plain versions are for matrix products, and using them by mistake
+gives either an error (\emph{Incorrect dimensions}) or a silent scalar matrix
+product.
+
+\section{HP filter (the method in the course's \texttt{hpfilter.m})}
+
+\begin{lstlisting}
+raw    = log(X);                                  % log FIRST
+lambda = 1600;
+d = (1+6*lambda)*ones(Tq,1);  x = diag(d);
+d = -4*lambda*ones(Tq-1,1);   x = x + diag(d,1) + diag(d,-1);
+d =  lambda*ones(Tq-2,1);     x = x + diag(d,2) + diag(d,-2);
+x(1,1) = 1+lambda;      x(1,2) = -2*lambda;   x(2,1) = -2*lambda;
+x(2,2) = 1+5*lambda;    x(Tq,Tq) = 1+lambda;  x(Tq-1,Tq) = -2*lambda;
+x(Tq,Tq-1) = -2*lambda; x(Tq-1,Tq-1) = 1+5*lambda;
+hpmat  = inv(x);                                  % HP matrix, built once
+trend  = hpmat * raw;                             % trend, in logs
+dev    = raw - trend;                             % cyclical component
+\end{lstlisting}
+
+The course file reads \lstinline[style=inl]!data2026q2.csv! and derives the number of columns
+itself, so to reuse it exactly:
+\lstinline[style=inl]!writematrix(X, "data2026q2.csv")! then run \lstinline[style=inl]!hpfilter!. It hard-codes
+$T=202$, which is our sample length, so the sizes work out.
+
+\section{Statistics}
+
+\begin{lstlisting}
+vcv  = (dev' * dev) / Tq;               % variance-covariance matrix (14x14)
+v    = sum(vcv .* eye(14));             % variances on the diagonal
+sd   = sqrt(v) * 100;                   % std dev in percent
+corr = vcv ./ sqrt(v' * v);             % correlation matrix
+
+corrWithY = corr(:, 1);                 % correlation with output (column 1)
+
+% persistence of output: autocorrelation
+y1 = dev(2:Tq, 1);                      % periods 2:T
+y0 = dev(1:Tq-1, 1);                    % periods 1:T-1
+ac = corrcoef(y1, y0);
+rho = ac(1, 2);
+\end{lstlisting}
+
+\lstinline[style=inl]!dev'*dev! multiplies the $202\times14$ matrix by its transpose, giving
+$14\times14$. \lstinline[style=inl]!sum(vcv .* eye(14))! keeps only the diagonal (the variances);
+\lstinline[style=inl]!sqrt(v'*v)! is the outer product of the standard deviations, which is
+exactly the denominator of every correlation.
+
+\section{Plotting}
+
+\begin{lstlisting}
+t = (1:Tq)';
+plot(t, dev(:,1), "LineWidth", 1.2);  hold on
+plot(t, dev(:,2), "LineWidth", 1.2);  hold off
+xticks(t(1:16:end))                     % one tick every 4 years
+xticklabels(q(1:16:end))                % ... labelled with the quarter strings
+xlabel("quarter"); ylabel("log deviation from trend")
+legend(["Output", "Consumption"], Location = "best"); grid on
+
+figure
+yyaxis left;  plot(t, trend(:,1));  ylabel("trend")
+yyaxis right; plot(t, dev(:,1));    ylabel("cycle")
+
+exportgraphics(gcf, "fig.png", Resolution = 200)   % or saveas(gcf,"fig.png")
+\end{lstlisting}
+
+\lstinline[style=inl]!xticks! needs \emph{numbers}, so pass positions (\lstinline[style=inl]!t(1:16:end)!) and give
+the labels separately --- calling \lstinline[style=inl]!xticks! on the quarter strings errors.
+
+\section{Function quick reference}
+
+{\footnotesize
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.1cm}>{\raggedright\arraybackslash}p{6.3cm}>{\raggedright\arraybackslash}p{6.3cm}@{}}
+\toprule
+task & syntax & note \\
+\midrule
+make a vector & \texttt{zeros(Tq,1)}, \texttt{ones(Tq,1)}, \texttt{(1:Tq)'} & \texttt{'} transposes \\
+size & \texttt{size(X)}, \texttt{size(X,1)}, \texttt{height(T)} & \texttt{numel} for total count \\
+mean / sum & \texttt{mean(x)}, \texttt{sum(x)}, \texttt{mean(M)} & on a matrix: column-wise \\
+std & \texttt{std(x,1)} & \texttt{1} = divide by $N$ (population) \\
+growth & \texttt{diff(x)./x(1:end-1)} & \texttt{diff} is one shorter \\
+cumulate & \texttt{cumsum(x)} & \\
+logs & \texttt{log(x)}, \texttt{exp(x)} & natural log \\
+correlation & \texttt{corrcoef(a,b)}, \texttt{corr(M)} & $2\times2$ / matrix \\
+diagonal, identity & \texttt{diag(v)}, \texttt{eye(14)} & \\
+inverse, solve & \texttt{inv(A)}, \texttt{A\textbackslash{}b} & \texttt{A\textbackslash{}b} is faster \\
+indexing & \texttt{x(1)}, \texttt{X(:,k)}, \texttt{X(1:5,2)}, \texttt{x(end)} & starts at 1, not 0 \\
+text & \texttt{string(x)}, \texttt{strtrim(s)}, \texttt{join(v,"\_")} & \texttt{==} works on strings \\
+search in names & \texttt{contains(var,"goods")}, \texttt{startsWith}, \texttt{find(...)} & useful to find a column \\
+print & \texttt{fprintf("\%d rows\textbackslash{}n", Tq)} & \texttt{\%g}, \texttt{\%.2f} \\
+write files & \texttt{writematrix(X,"x.csv")}, \texttt{writetable} & \\
+sanity check & \texttt{assert(numel(y)==Tq)}, \texttt{isnan(sum(y))} & catch size errors early \\
+clear the deck & \texttt{clear}, \texttt{clc}, \texttt{close all} & start of every script \\
+\bottomrule
+\end{tabular}
+\end{center}}
+
+\section{Errors I hit, and what fixes them}
+
+{\footnotesize
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.6cm}>{\raggedright\arraybackslash}p{9.9cm}@{}}
+\toprule
+message / symptom & fix \\
+\midrule
+\emph{Invalid text character} & the name you typed contains something MATLAB cannot use (a space, a dash, a \texttt{\$}). Use \texttt{T.("...")} or fix the header \\
+\emph{VariableNames must be a character vector} & use name=value pairs: \texttt{table(a, VariableNames=["x"])}, not \texttt{table(a,"VariableNames",["x"])} \\
+\emph{Incorrect dimensions for matrix multiplication} & you meant \texttt{.*} or \texttt{./} instead of \texttt{*} / \texttt{/} \\
+\texttt{xticks} error on a categorical axis & pass numeric positions, then \texttt{xticklabels(q(...))} \\
+\texttt{height} fails on a struct & use \texttt{numel()} or keep the table instead of extracting fields \\
+results look absurd (huge trend swings) & you skipped \texttt{log()} before filtering \\
+\texttt{NaN} in the first row of a growth series & expected: \texttt{diff} shortens the series; index with \texttt{(1:end-1)} \\
+numbers off by one quarter & MATLAB indexes from 1, an "0-based" habit from other languages \\
+script name starts with \texttt{\_} or a digit & MATLAB scripts need a valid identifier as filename \\
+\bottomrule
+\end{tabular}
+\end{center}}
+
+\section{The whole pipeline, in order}
+
+\begin{lstlisting}
+load and inspect  ->  build the 14 series  ->  per capita  ->  log
+   ->  HP filter (trend + cycle)  ->  variance-covariance  ->  std dev
+   ->  correlations with output  ->  autocorrelation of output
+   ->  plot trend & cycle  ->  write the table / figure out
+\end{lstlisting}
+
+Keep the steps in separate cells (or \lstinline[style=inl]!%%! sections) so you can rerun from
+the middle without recomputing everything.
+
+\end{document}

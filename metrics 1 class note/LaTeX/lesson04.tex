@@ -1,0 +1,364 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{4}{The Frisch--Waugh--Lovell theorem, omitted and irrelevant variables, and the linear hypothesis}{}
+
+\section{The model, in two blocks (a reminder)}
+
+The set opens with the model of the previous lessons written again,
+\[ y = X\beta + u, \]
+and then split into two groups of regressors:
+\[ y = \Bigl[\,X_{1}\;\vdots\;X_{2}\,\Bigr]\begin{pmatrix}\beta_{1}\\ \beta_{2}\end{pmatrix} + u
+   = X_{1}\beta_{1} + X_{2}\beta_{2} + u, \]
+with the dimensions read under the terms of the line,
+\[ \underbrace{y}_{n\times1}
+   = \underbrace{X_{1}}_{n\times k_{1}}\underbrace{\beta_{1}}_{k_{1}\times1}
+   + \underbrace{X_{2}}_{n\times k_{2}}\underbrace{\beta_{2}}_{k_{2}\times1}
+   + \underbrace{u}_{n\times1}. \]
+The estimator is $b = (X'X)^{-1}X'y$, and written out in the same two blocks,
+\[
+\begin{pmatrix} b_{1} \\ b_{2} \end{pmatrix}
+= \begin{bmatrix} X_{1}'X_{1} & X_{1}'X_{2} \\ X_{2}'X_{1} & X_{2}'X_{2} \end{bmatrix}^{-1}
+  \begin{pmatrix} X_{1}'y \\ X_{2}'y \end{pmatrix}.
+\]
+
+\section{The projection and the annihilator, and the two block pairs}
+
+The reminder continues with the two matrices,
+\[ P = X(X'X)^{-1}X' \;\Longrightarrow\; PX = X \;\Longrightarrow\; Pe = 0,
+   \qquad
+   M = I_{n} - X(X'X)^{-1}X' \;\Longrightarrow\; MX = 0, \]
+and with the two identities that follow from them:
+\[ Me = e, \qquad MMy = My = Mu, \]
+the first because $e = My$ already lies in $L(X)^{\perp}$, which $M$ leaves unchanged, the second because $M$ is
+idempotent and $My = M(X\beta + u) = Mu$ once $MX = 0$.
+
+For the two blocks the page writes the matching pair,
+\[ P_{1}\ \text{projects on}\ L(X_{1}), \qquad
+   M_{1}\ \text{projects on}\ L(X_{1})^{\perp}, \]
+and records how the two spaces sit inside the full ones:
+\[ L(X_{1}) \subset L(X), \qquad L(X_{1})^{\perp} \supset L(X)^{\perp}. \]
+
+\topic{The identities the page collects}
+\[ P_{1}X_{1} = X_{1}, \qquad M_{1}X_{1} = 0, \qquad
+   PX_{1} = X_{1}, \qquad M_{1}My = My = e, \]
+with the two questions left open beside them,
+\[ P_{1}X_{2} = \;? \qquad M_{1}X_{2} = \;? \]
+The answer: in general neither is zero. $P_{1}X_{2}$ is the matrix of fitted values
+from regressing each column of $X_{2}$ on $X_{1}$, and $M_{1}X_{2}$ the matching
+residuals; $P_{1}X_{2} = 0$ and $M_{1}X_{2} = X_{2}$ exactly when $X_{1}'X_{2} = 0$,
+i.e.\ when the two blocks are orthogonal.
+
+The top of the next page runs the same list for the second block,
+\[ P_{2}X_{2} = X_{2}, \quad M_{2}X_{2} = 0, \qquad
+   PX_{2} = X_{2}, \quad M_{2}My = My, \qquad
+   P_{2}X_{1} = \;? \quad M_{2}X_{1} = \;? \]
+and then writes the two matrices out in full:
+\[ P_{1} = X_{1}(X_{1}'X_{1})^{-1}X_{1}', \qquad
+   M_{1} = I_{n} - P_{1} = I_{n} - X_{1}(X_{1}'X_{1})^{-1}X_{1}'. \]
+
+\section{The Frisch--Waugh--Lovell theorem}
+
+The theorem is headed \emph{Frisch--Waugh--Lovell (FWL)}. For
+\[ y = X_{1}\beta_{1} + X_{2}\beta_{2} + u \]
+the whole line is hit with the annihilator of the second block,
+\[ M_{2}y = M_{2}X_{1}\beta_{1} + M_{2}u, \]
+the term in $\beta_{2}$ dropping because $M_{2}X_{2} = 0$. The page labels the three
+pieces underneath,
+\[ \underbrace{M_{2}y}_{y^{*}} = \underbrace{M_{2}X_{1}}_{X_{1}^{*}}\,\beta_{1}
+   + \underbrace{M_{2}u}_{u^{*}}, \]
+and the regression that uses them is the starred one,
+\[ (X_{1}^{*\prime}X_{1}^{*})^{-1}X_{1}^{*\prime}y^{*}, \]
+that is,
+\[ b_{1} = (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y, \]
+with the other block obtained the same way,
+\[ b_{2} = (X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}y. \]
+
+\topic{What the starred objects are}
+The page first recalls how any regression splits $y$,
+\[ y = \underbrace{Py}_{\text{explained}} + \underbrace{My}_{\text{residuals}}, \]
+and then reads both starred objects as residuals of a regression on $X_{2}$:
+\[ M_{2}y \longrightarrow \text{regressing } y \text{ on } X_{2}
+   \longrightarrow \text{residual}, \]
+\[ M_{2}X_{1} \longrightarrow \text{regressing } X_{1} \text{ on } X_{2}
+   \longrightarrow \text{residual}. \]
+Read together: $y^{*} = M_{2}y$ is what is left of $y$ once $X_{2}$ is taken out,
+the regressors of the second stage are the residuals $X_{1}^{*} = M_{2}X_{1}$, and
+regressing the first on the second returns $b_{1}$, the same value as in the full
+regression. The residuals of the starred regression are also the same as those of
+the full regression, and since $X_{1}^{*\prime}y^{*} = X_{1}'M_{2}M_{2}y = X_{1}'M_{2}y$,
+regressing $y$ itself (rather than $M_{2}y$) on $X_{1}^{*}$ gives the same $b_{1}$.
+
+\topic{The substitution, and why $b_{1}$ is unbiased}
+\[
+\begin{aligned}
+b_{1} &= (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y\\
+      &= (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}(X_{1}\beta_{1} + X_{2}\beta_{2} + u)\\
+      &= \beta_{1} + (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}u,
+\end{aligned}
+\]
+the middle term vanishing again because $M_{2}X_{2} = 0$.
+
+\section{The sampling distribution of the block estimators}
+
+With the substitution in hand, $b_{1}$ is unbiased and its covariance is the
+expectation of the outer product written on the page,
+\[ \E(b_{1}) = \beta_{1}, \]
+\[
+\begin{aligned}
+\Var(b_{1}) &= \E\Bigl\{(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}u
+              \bigl[(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}u\bigr]'\Bigr\}\\
+            &= (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}\,\E(uu')\,M_{2}X_{1}(X_{1}'M_{2}X_{1})^{-1}
+             = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1},
+\end{aligned}
+\]
+the last step using $\E(uu') = \sigma^{2}I_{n}$ and $M_{2}M_{2} = M_{2}$. Hence
+\[ b_{1} \sim N\bigl(\beta_{1},\ \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}\bigr), \qquad
+   b_{2} \sim N\bigl(\beta_{2},\ \sigma^{2}(X_{2}'M_{1}X_{2})^{-1}\bigr), \]
+and, on the same line of the page, the estimator of the whole vector,
+\[ b \sim N\bigl(\beta,\ \sigma^{2}(X'X)^{-1}\bigr). \]
+
+\section{Misspecification: the two cases}
+
+The page turns to misspecification, listed as two cases: (1) omit relevant
+variables, and (2) include irrelevant variables.
+
+\section{Case (1): omitting a relevant variable}
+
+The data come from the larger model and the smaller one is estimated:
+\[ \underbrace{y = X_{1}\beta_{1} + X_{2}\beta_{2} + u}_{\text{data gen.\ process}},
+   \qquad
+   \underbrace{y = X_{1}\beta_{1} + u}_{\text{estimated model}}, \]
+and the estimator of the estimated model expands as
+\[
+\begin{aligned}
+\hat{\beta}_{1} &= (X_{1}'X_{1})^{-1}X_{1}'y\\
+            &= \beta_{1} + (X_{1}'X_{1})^{-1}X_{1}'X_{2}\beta_{2}
+               + (X_{1}'X_{1})^{-1}X_{1}'u .
+\end{aligned}
+\]
+Taking expectations, the second term does not disappear,
+\[ \E(\hat{\beta}_{1}) = \beta_{1}
+   + \underbrace{(X_{1}'X_{1})^{-1}X_{1}'X_{2}\beta_{2}}_{\text{bias}}, \]
+which is the bias the page marks by underlining that term and writing \emph{bias}
+at its arrow. The bias vanishes only if $\beta_{2} = 0$ or $X_{1}'X_{2} = 0$ (the
+omitted regressors are orthogonal to the included ones). The variance, by contrast,
+is the short-regression one, $\sigma^{2}(X_{1}'X_{1})^{-1}$, not that of $b_{1}$ in
+the correct model:
+\[
+\Var(\hat{\beta}_{1})
+  = \E\bigl[(\hat{\beta}_{1} - \E(\hat{\beta}_{1}))(\hat{\beta}_{1} - \E(\hat{\beta}_{1}))'\bigr]
+  = \E\bigl[(X_{1}'X_{1})^{-1}X_{1}'uu'X_{1}(X_{1}'X_{1})^{-1}\bigr]
+  = \sigma^{2}(X_{1}'X_{1})^{-1},
+\]
+so the two sampling distributions the page puts side by side are
+\[ \hat{\beta}_{1} \sim N\bigl(\beta_{1} + (X_{1}'X_{1})^{-1}X_{1}'X_{2}\beta_{2},\
+   \sigma^{2}(X_{1}'X_{1})^{-1}\bigr), \qquad
+   b_{1} \sim N\bigl(\beta_{1},\ \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}\bigr). \]
+
+\topic{The comparison of the two variances}
+\[ \Var(\hat{\beta}_{1}) = \sigma^{2}(X_{1}'X_{1})^{-1}, \qquad
+   \Var(b_{1}) = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}, \]
+and since
+\[ X_{1}'M_{2}X_{1} = X_{1}'(I_{n} - P_{2})X_{1} = X_{1}'X_{1} - X_{1}'P_{2}X_{1}
+   \le X_{1}'X_{1}, \]
+where $\le$ is the positive semi-definite order ($X_{1}'P_{2}X_{1} = (P_{2}X_{1})'(P_{2}X_{1})$
+is positive semi-definite), and since inverting positive definite matrices reverses
+that order, the inverse is at least as large,
+\[ (X_{1}'X_{1})^{-1} \le (X_{1}'X_{1} - X_{1}'P_{2}X_{1})^{-1},
+   \qquad\text{so}\qquad \Var(\hat{\beta}_{1}) \le \Var(b_{1}), \]
+with equality only when $X_{1}'X_{2} = 0$: omitting a variable costs bias but buys
+(a smaller) variance.
+
+\topic{Mean squared error}
+\[ \text{MSE}(\hat{\theta}) = \E(\hat{\theta} - \theta)^{2}
+   = \Var(\hat{\theta}) + (\text{bias})^{2}, \]
+with the matrix version written beside it,
+$\E\bigl[(\hat{\theta} - \theta)(\hat{\theta} - \theta)'\bigr]$, and applied to the
+estimator of this section,
+\[
+\text{MSE}(\hat{\beta}_{1}) = \E\bigl[(\hat{\beta}_{1} - \beta_{1})(\hat{\beta}_{1} - \beta_{1})'\bigr]
+= (X_{1}'X_{1})^{-1}X_{1}'X_{2}\beta_{2}\beta_{2}'X_{2}'X_{1}(X_{1}'X_{1})^{-1}
+  + \sigma^{2}(X_{1}'X_{1})^{-1},
+\]
+the first term being the squared bias and the second the variance. The first line of
+the next page gives the same quantity for the estimator of the correct model,
+\[ \text{MSE}(b_{1}) = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}, \]
+which is the value the biased estimator's mean squared error is weighed against.
+Neither is smaller in general: omitting $X_{2}$ lowers the MSE when the squared bias
+is smaller than the variance saved, e.g.\ when $\beta_{2}$ is small relative to
+$\sigma$.
+
+\section{Case (2): including an irrelevant variable}
+
+Now the data come from the smaller model and the larger one is estimated:
+\[ \underbrace{y = X_{1}\beta_{1} + u}_{\text{data gen.\ process}}, \qquad
+   \underbrace{y = X_{1}\beta_{1} + X_{2}\beta_{2} + u}_{\text{estimated model}}, \]
+so the estimator of $\beta_{1}$ is the full-model one,
+\[
+\begin{aligned}
+\hat{\beta}_{1} &= (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y\\
+            &= (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}(X_{1}\beta_{1} + u)\\
+            &= \beta_{1} + (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}u,
+\end{aligned}
+\]
+unbiased,
+\[ \E(\hat{\beta}_{1}) = \beta_{1}, \qquad
+   \Var(\hat{\beta}_{1}) = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}, \]
+but carrying the larger of the two variances: the estimator from the model that is
+right is
+\[ b_{1} = (X_{1}'X_{1})^{-1}X_{1}'y, \qquad \E(b_{1}) = \beta_{1}, \qquad
+   \Var(b_{1}) = \sigma^{2}(X_{1}'X_{1})^{-1}, \]
+and, both of them unbiased, the comparison is between the variances; by the
+inequality of case (1),
+\[ \text{MSE}(\hat{\beta}_{1}) = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}
+   \ \ge\ \sigma^{2}(X_{1}'X_{1})^{-1} = \text{MSE}(b_{1}), \]
+with equality only when $X_{1}'X_{2} = 0$.
+Including an irrelevant variable therefore costs variance and buys nothing.
+
+\section{Inference: a linear hypothesis}
+
+The model is written once more in general form,
+\[ \underbrace{y}_{n\times1} = \underbrace{X}_{n\times K}\,
+   \underbrace{\beta}_{K\times1} + \underbrace{u}_{n\times1}, \]
+and the last page of the set, headed \emph{Inference, hypothesis test}, turns to
+testing. The hypotheses written across the top are
+\[ \beta_{1} = \beta_{2} \quad(\text{that is } \beta_{1} - \beta_{2} = 0), \qquad
+   \beta_{3} - \beta_{5} = 1, \qquad \beta_{4} + \beta_{6} + \beta_{7} = 2, \]
+and they are collected into a single linear restriction,
+\[ H_{0} : R\beta = r, \qquad
+   \underbrace{R}_{q\times K}\ \underbrace{\beta}_{K\times1}
+   = \underbrace{r}_{q\times1}, \]
+where $q$, in the page's own note, is the number of hypotheses (restrictions); the
+rows of $R$ must be linearly independent, $\rank(R) = q \le K$, so that no
+restriction is redundant or contradicts another. The coefficient
+vector is written out as
+\[ \beta = (\beta_{1}\ \ \beta_{2}\ \ \cdots\ \ \beta_{j}\ \ \cdots\ \ \beta_{K})', \]
+and the three hypotheses sit in the rows of the $3\times K$ matrix
+\[
+R = \begin{pmatrix}
+      1 & -1 & 0 & 0 & 0 & 0 & 0 & \cdots & 0\\[2pt]
+      0 &  0 & 1 & 0 & -1 & 0 & 0 & \cdots & 0\\[2pt]
+      0 &  0 & 0 & 1 & 0 & 1 & 1 & \cdots & 0
+    \end{pmatrix},
+\qquad
+R\beta = \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix} = C,
+\]
+the pieces carrying the labels of the page's last line, $R\,B = C$: the restriction
+matrix, the coefficient vector $B$ and the vector of restrictions $C$. The lecture
+set ends here, at the statement of the null hypothesis; the test statistic built on
+it is not written down.
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Lesson 4''; it is not
+        reproduced.
+  \item The regressor matrix is written in lower case throughout the original
+        ($x$, $x_{1}$, $x_{2}$); it is typeset upper case ($X$, $X_{1}$, $X_{2}$),
+        as in Lesson 3. The matrices $P$ and $M$ are written bare on the page (the
+        shorthand of Lesson 3) and are kept bare here, with the block versions
+        $P_{1}$, $M_{1}$, $P_{2}$, $M_{2}$.
+  \item $MMy = My = Mu$ carries no subscript in the original; the same identity for
+        the second block, on the following page, is written $M_{2}My = My$. Both
+        are transcribed as written.
+  \item The two questions $P_{1}X_{2} = \;?$ and $M_{1}X_{2} = \;?$ on the first
+        working page are never answered on it; the next page runs the same list for
+        the second block instead. \textbf{Added:} a short answer (fitted values and
+        residuals of $X_{2}$ on $X_{1}$; zero, resp.\ $X_{2}$, only when
+        $X_{1}'X_{2} = 0$).
+  \item \textbf{Corrected:} the covariance of $b_{1}$ was written as the outer
+        product itself, without the expectation; $\E\{\cdot\}$ is inserted and the
+        middle step shown.
+  \item \textbf{Added:} when the omitted-variable bias vanishes, that the FWL
+        residuals coincide with the full-regression ones, the comparison of the two
+        MSEs, and the rank condition $\rank(R) = q$.
+  \item Below $b_{2}$ the page writes ``$My$ \ explained $Py$ \ residuals'' with a
+        $y$ under ``explained''; it is the split $y = Py + My$ into explained part
+        and residuals, and is typeset so (an earlier transcription read it as a gloss
+        on $M_{2}y$). The next line reads ``$M_{2}y \to$ regression and $X_{2} \to$
+        residual'' --- the subscript is $2$, not $1$: $M_{2}y$ is the residual of
+        regressing $y$ on $X_{2}$. It is typeset in the same words as the line
+        below it, ``$M_{2}X_{1} \to$ regressing $X_{1}$ on $X_{2} \to$ residual''.
+  \item In the substitution for $b_{1}$ the page repeats $y$ and appends the
+        bracketed model as an insertion; the second occurrence of the leading
+        bracket carries a prime where the inverse belongs, and the $X_{1}'$ after it
+        is dropped. The chain is typeset once, in the corrected form, which is what
+        the preceding line (the starred regression) and the closing line
+        $\beta_{1} + (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}u$ both require. The closing
+        line itself carries a stray $y$ before $M_{2}u$; it is dropped.
+  \item The misspecified-model estimator is written $\hat{\beta}_{1}$ on the page
+        (an earlier transcription had $\hat{b}_{1}$); it is typeset $\hat{\beta}_{1}$.
+        The hat changes meaning between the two cases of the misspecification
+        section: in case (1) $\hat{\beta}_{1}$ is the estimator from the \emph{smaller},
+        mis-specified model and $b_{1}$ the estimator from the true, larger one; in
+        case (2) $\hat{\beta}_{1}$ is the estimator from the \emph{larger} model and
+        $b_{1}$ the estimator from the true, smaller one. Both are kept as written;
+        the text says which model each estimator comes from.
+  \item The second line of the substitution in case (2) is written with a symbol
+        that reads as $\beta_{1}$ where the estimator is meant; it is typeset
+        $\hat{\beta}_{1}$.
+  \item The first line of page 6 is written $\text{MSE}(b_{1}) = \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}$
+        without a hat, in the sequence where the estimator of the correct model is
+        meant; it is kept without the hat.
+  \item \textbf{Corrected:} the inequality chain of case (1) ends
+        $\Var(\hat{\beta}_{1}) < \Var(b_{1})$ with a strict sign, and case (2) ends
+        $\text{MSE}(\hat{\beta}_{1}) > \text{MSE}(b_{1})$. The middle steps
+        $X_{1}'X_{1} \ge X_{1}'X_{1} - X_{1}'P_{2}X_{1}$ and
+        $(X_{1}'X_{1})^{-1} \le (X_{1}'X_{1} - X_{1}'P_{2}X_{1})^{-1}$ only give the
+        weak (positive semi-definite) order, and the two are equal when
+        $X_{1}'X_{2} = 0$; both conclusions are typeset with $\le$ / $\ge$.
+  \item \textbf{Corrected:} in case (1) the expansion of $\hat{\beta}_{1}$ is written
+        $\beta_{1} + (X_{1}'X_{2})^{-1}X_{1}'X_{2}\beta_{2} + \dots$; the inverse is
+        $(X_{1}'X_{1})^{-1}$, as in the bias line below it. The distribution of
+        $\hat{\beta}_{1}$ is written with mean
+        $\beta_{1} + (X_{1}'X)^{-1}X_{1}'X_{2}\beta_{1}$; it is
+        $\beta_{1} + (X_{1}'X_{1})^{-1}X_{1}'X_{2}\beta_{2}$. The first line of
+        $\text{MSE}(\hat{\beta}_{1})$ has $\hat{\beta}_{1} - \beta$ in the first factor;
+        it is $\beta_{1}$.
+  \item \textbf{Added:} the page gives no labels to the two models of case (2); the
+        ``data gen.\ process'' / ``estimated model'' braces are carried over from
+        case (1). The general model $y = X\beta + u$ ends page 6 (dimensions written
+        $n\times k$, $K\times1$); it opens the inference section here, with $K$
+        throughout. On page 2 the page writes ``$P_{1}$ project on $\ell(x)$''
+        where $L(X_{1})$ is meant, and $y = X_{1}\beta + X_{2}\beta + u$ without the
+        block subscripts on $\beta$; both are typeset in the intended form.
+  \item The page heads the theorem ``Frish-Waugh-Lovell''; ``Frisch'' is written
+        here, as in Lesson 3.
+  \item The column-space glyph is the cursive lower-case letter read as $\ell$ in
+        Lessons 2 and 3; the spaces are typeset $L(X_{1})$, $L(X)$, and the
+        orthocomplement $L(X_{1})^{\perp}$, $L(X)^{\perp}$. The page writes the
+        full space as a bare $\ell$ in $\ell(X_{1})\subset\ell$; it is $L(X)$.
+  \item On the last page the coefficient vector is written as a transposed row,
+        $\beta = (\beta_{1}\ \beta_{2}\ \cdots\ \beta_{j}\ \cdots\ \beta_{K})'$; it
+        is typeset as the $K\times1$ column it denotes. The example index is a single
+        glyph that reads as $j$ or as $7$; a generic coefficient is what the notation
+        wants, and it is typeset $\beta_{j}$. Row 2 of $R$ has $+1$ in the third
+        position and $-1$ in the fifth, which is $\beta_{3} - \beta_{5} = 1$ of the
+        headline; row 3 has entries in the fourth, sixth and seventh positions, which
+        is $\beta_{4} + \beta_{6} + \beta_{7} = 2$. The page writes the columns out to
+        the eighth position and then stops; the three rows are given the same nine
+        columns here, with $\cdots$ through the middle and a closing zero, so that
+        they line up.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        reminder, the block model, $b$ and its block form, $P$ and $M$ with
+        $PX = X$, $Pe = 0$, $MX = 0$, $Me = e$, $MMy = My = Mu$, the two
+        ``project'' lines with the nesting of the spaces, and the identities
+        $P_{1}X_{1} = X_{1}$, $M_{1}X_{1} = 0$, $PX_{1} = X_{1}$, $M_{1}My = My = e$
+        with the two open questions; page 3 $P_{2}X_{2} = X_{2}$, $PX_{2} = X_{2}$,
+        $M_{2}My = My$, the two definitions, the FWL heading,
+        $M_{2}y = M_{2}X_{1}\beta_{1} + M_{2}u$ with the starred labels, the starred
+        regression, $b_{1}$ and $b_{2}$, the split $y = Py + My$, the two arrow lines and the substitution;
+        page 4 $\E(b_{1})$ and $\Var(b_{1})$, the three sampling distributions, the
+        misspecification heading with its two cases, and the start of case (1);
+        page 5 the expansion of $\Var(\hat{\beta}_{1})$, the two distributions, the
+        variance comparison with its inequality chain, then
+        $\text{MSE}(\hat{\theta})$ and $\text{MSE}(\hat{\beta}_{1})$; page 6
+        $\text{MSE}(b_{1})$, the heading of case (2), $\hat{\beta}_{1}$ with its
+        expectation and variance, the comparison
+        $\text{MSE}(\hat{\beta}_{1}) > \text{MSE}(b_{1})$, and the general model;
+        page 7 the three hypotheses, $H_{0} : R\beta = r$ with its dimensions, the
+        note on $q$, $\beta$ written out, the matrix $R$ and $R\,B = C$.
+\end{transcriptnotes}
+
+\end{document}

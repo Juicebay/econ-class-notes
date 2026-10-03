@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{5}{Quadratic forms in normal vectors, and the $F$ test of $R\beta = r$}{}
+
+\section{The model and the hypothesis (a reminder)}
+
+The set opens with the model of the previous lessons, now with normal errors,
+\[ y = X\beta + u, \qquad u \sim N(0, \sigma^{2}I), \]
+and with the linear hypothesis on which Lesson 4 ended,
+\[ H_{0} : \underbrace{R}_{q\times K}\,\underbrace{\beta}_{K\times1}
+   = \underbrace{r}_{q\times1}. \]
+To test it, the lecture first needs the distribution of quadratic forms in a
+normal vector; it takes a digression to get them.
+
+\section{Digression: quadratic forms and the $\chi^{2}$ distribution}
+
+\topic{(1) A standard normal vector}
+Let $\underbrace{z}_{n\times1} \sim N(0, I_{n})$. Then
+\[ \sum_{i=1}^{n} z_{i}^{2}
+   = \underbrace{z'}_{1\times n}\,\underbrace{z}_{n\times1} \sim \chi^{2}_{n}, \]
+a sum of $n$ independent squared standard normals.
+
+\topic{(2) A normal vector with a general covariance}
+If $\underbrace{x}_{n\times1} \sim N(0, \Sigma)$, with $\Sigma$ an $n\times n$
+(positive definite) covariance matrix, then
+\[ x'\Sigma^{-1}x \sim \chi^{2}_{n}. \]
+The proof runs through the spectral decomposition.
+
+\topic{Spectral decomposition theorem}
+Let $\Sigma$ be symmetric and real. Then it has eigenvalues and eigenvectors,
+\[ \underbrace{\Sigma}_{n\times n}\,\underbrace{q}_{n\times1} = \underbrace{\lambda}_{\text{scalar}}\,q, \]
+and collecting the eigenvectors in the columns of $Q$,
+\[ Q'\Sigma Q = \Lambda, \qquad
+   \Lambda = \begin{bmatrix} \lambda_{1} & \cdots & 0\\ \vdots & \ddots & \vdots\\ 0 & \cdots & \lambda_{n} \end{bmatrix},
+   \qquad\text{where } Q' = Q^{-1} \ (\text{an orthogonal matrix}). \]
+Multiplying by $Q$ on the left and $Q'$ on the right,
+\[ QQ'\Sigma QQ' = Q\Lambda Q' \quad\Longrightarrow\quad
+   \Sigma = Q\Lambda Q' = Q\Lambda^{1/2}\Lambda^{1/2}Q', \qquad
+   \Lambda^{1/2} = \begin{bmatrix} \sqrt{\lambda_{1}} & \cdots & 0\\ \vdots & \ddots & \vdots\\ 0 & \cdots & \sqrt{\lambda_{n}} \end{bmatrix}, \]
+so that, with $T = Q\Lambda^{1/2}$,
+\[ TT' = Q\Lambda^{1/2}\Lambda^{1/2}Q' = \Sigma. \]
+
+\topic{The proof of (2)}
+Take $\underbrace{z}_{n\times1} \sim N(0, I_{n})$ and set $x = Tz$. Then
+\[ \E(x) = T\E(z) = 0, \qquad
+   \Var(x) = T\Var(z)T' = TT' = \Sigma, \]
+so $x \sim N(0, \Sigma)$. Conversely $z = T^{-1}x$, and $z'z \sim \chi^{2}_{n}$ by (1),
+so
+\[ z'z = x'(T^{-1})'T^{-1}x = x'(T')^{-1}T^{-1}x = x'\Sigma^{-1}x \sim \chi^{2}_{n}, \]
+using
+\[ \Sigma^{-1} = (TT')^{-1} = (T')^{-1}(T)^{-1}. \]
+
+\topic{(3) An idempotent quadratic form}
+Let $z \sim N(0, I_{n})$ and let $A$ be (symmetric and) idempotent of rank $p$. Then
+\[ z'Az \sim \chi^{2}_{p}. \]
+First, the eigenvalues of an idempotent matrix: from $AA = A$ and $Aq = \lambda q$,
+\[ A(Aq) = Aq = \lambda q \qquad\text{and}\qquad A(Aq) = A\lambda q = \lambda Aq = \lambda^{2}q, \]
+so
+\[ \lambda q = \lambda^{2}q \;\Longrightarrow\; (\lambda^{2} - \lambda)q = 0
+   \;\Longrightarrow\; \lambda = 1 \ \text{or}\ \lambda = 0. \]
+Hence the rank equals the trace:
+\[ \rank(A) = \operatorname{trace}(A), \]
+because with $Q'AQ = \Lambda$,
+\[ \operatorname{trace}(Q'AQ) = \operatorname{trace}(\Lambda) = \sum_{i=1}^{n}\lambda_{i} = p
+   = \operatorname{trace}(A), \]
+the trace being invariant ($\operatorname{trace}(Q'AQ) = \operatorname{trace}(AQQ') = \operatorname{trace}(A)$)
+and the number of unit eigenvalues being the rank.
+
+Now rotate $z$: let $z = Qy$, i.e.\ $y = Q'z$. Then
+\[ \E(y) = 0, \qquad \Var(y) = Q'\Var(z)Q = Q'Q = I_{n}, \]
+so $y \sim N(0, I_{n})$ and $y'y \sim \chi^{2}_{n}$. The quadratic form becomes
+\[ z'Az = y'\underbrace{Q'AQ}_{\Lambda}\,y = y'\Lambda y
+   = \sum_{i=1}^{p} y_{i}^{2} \sim \chi^{2}_{p}, \]
+ordering the eigenvalues so that the $p$ ones come first.
+
+\topic{(4) Independence of two quadratic forms}
+Let $Az$ and $Bz$ be two normal vectors, where $A$ and $B$ are idempotent and
+symmetric, of ranks $p$ and $q$ respectively. By (3),
+\[ w_{1} = z'Az \sim \chi^{2}_{p}, \qquad w_{2} = z'Bz \sim \chi^{2}_{q}, \]
+and
+\[ w_{1} \text{ is independent of } w_{2} \iff AB = 0. \]
+The reason: $w_{1} = (Az)'(Az)$ depends on $z$ only through $Az$, and $w_{2}$ only
+through $Bz$; these two normal vectors have covariance
+\[ \E\bigl(Az(Bz)'\bigr) = A\Var(z)B' = AB = 0, \]
+and uncorrelated jointly normal vectors are independent.
+
+\topic{Definition ($F$ distribution)}
+Let $w_{1} \sim \chi^{2}_{p}$ and $w_{2} \sim \chi^{2}_{q}$ be independent. Then
+\[ \frac{w_{1}/p}{w_{2}/q} \sim F(p, q). \]
+In particular, if $w_{1} \sim \chi^{2}_{1}$,
+\[ \frac{w_{1}/1}{w_{2}/q} \sim F(1, q) = t_{q}^{2}. \]
+
+\section{The test of $H_{0} : R\beta = r$}
+
+\topic{The distance between $Rb$ and $r$}
+The hypothesis is judged by how far $Rb$ lies from $r$, written $|Rb - r|$ and
+measured, by (2), as a quadratic form weighted by the inverse covariance ---
+the $x'\Sigma^{-1}x$ written beside it on the page:
+\[ |Rb - r| \;\longrightarrow\; (Rb - r)'\bigl[\Var(Rb - r)\bigr]^{-1}(Rb - r) \sim \chi^{2}_{q}. \]
+
+\topic{$Rb - r$ under the null}
+\[
+\begin{aligned}
+Rb - r &= R(X'X)^{-1}X'y - r\\
+       &= R\beta + R(X'X)^{-1}X'u - r\\
+       &= R(X'X)^{-1}X'u \qquad\text{when } H_{0} \text{ holds}.
+\end{aligned}
+\]
+
+\topic{Its variance}
+Using $\Var(Ax) = A\Var(x)A'$,
+\[
+\begin{aligned}
+\Var(Rb - r) &= \Var\bigl(R(X'X)^{-1}X'u\bigr)\\
+             &= R(X'X)^{-1}X'\,\underbrace{\E(uu')}_{\sigma^{2}I}\,X(X'X)^{-1}R'\\
+             &= \sigma^{2}\bigl(R(X'X)^{-1}R'\bigr).
+\end{aligned}
+\]
+
+\topic{The quadratic form (the ``sandwich'')}
+The inverse variance is sandwiched between $(Rb - r)'$ and $(Rb - r)$:
+\[ |Rb - r| = (Rb - r)'\bigl[\Var(Rb - r)\bigr]^{-1}(Rb - r), \qquad
+   Rb - r = R(X'X)^{-1}X'u, \]
+so
+\[ |Rb - r| = \frac{1}{\sigma^{2}}\,u'\,\underbrace{X(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}X'}_{N}\,u
+   = \frac{1}{\sigma^{2}}\,u'Nu. \]
+
+\topic{The properties of $N$}
+\[ N' = N, \qquad NN = N, \qquad MN = MX(\cdots) = 0, \]
+and its rank is its trace,
+\[
+\begin{aligned}
+\rank(N) = \operatorname{trace}(N)
+ &= \operatorname{trace}\Bigl[\bigl(X(X'X)^{-1}R'\bigr)\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}X'\Bigr]\\
+ &= \operatorname{trace}\Bigl[\bigl(R(X'X)^{-1}R'\bigr)^{-1}\bigl(R(X'X)^{-1}X'X(X'X)^{-1}R'\bigr)\Bigr]\\
+ &= \operatorname{trace}(I_{q}) = q,
+\end{aligned}
+\]
+the middle step moving the first factor to the back (the trace is invariant under
+cyclic permutation) and the last using $X'X(X'X)^{-1} = I$.
+
+\topic{The two $\chi^{2}$ pieces}
+The unknown $\sigma^{2}$ is estimated by
+\[ s^{2} = \frac{u'Mu}{n - K} \qquad (= e'e/(n - K)), \]
+and, since $u/\sigma \sim N(0, I_{n})$, result (3) gives
+\[ \text{\textcircled{\scriptsize 1}}\ \ \frac{1}{\sigma^{2}}u'Nu \sim \chi^{2}_{q}, \qquad
+   \text{\textcircled{\scriptsize 2}}\ \ \frac{1}{\sigma^{2}}u'Mu \sim \chi^{2}_{n-K}, \]
+and they are independent by (4), because
+\[ MN = 0 \quad\text{because}\quad MX = 0. \]
+
+\topic{The $F$ statistic}
+\[ \frac{\dfrac{1}{\sigma^{2}}u'Nu\,\big/\,q}{\dfrac{1}{\sigma^{2}}u'Mu\,\big/\,(n - K)}
+   \;\sim\; F(q,\, n - K), \]
+the numerator being the $\chi^{2}_{q}$ and the denominator the $\chi^{2}_{n-K}$, each
+divided by its degrees of freedom. The $\sigma^{2}$ cancels, so the statistic can be
+computed from the data:
+\[ F = \frac{(Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r)/q}{s^{2}}
+   \;\sim\; F(q,\, n - K) \quad\text{under } H_{0}. \]
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Lesson 5''; it is not
+        reproduced.
+  \item Transposes are written both as $^{T}$ and as $'$ in the original; all are
+        typeset $'$, as in Lesson 4. The regressor matrix is written lower case
+        ($x$) on the page and typeset $X$, as in Lessons 3--4; in the digression the
+        lower-case $x$ is a random vector and is kept lower case. The page writes
+        $B$ for $\beta$ in $R\beta = r$ and in $R\beta + R(X'X)^{-1}X'u - r$; typeset
+        $\beta$. The error variance, written with a glyph like $6$, is $\sigma^{2}$.
+        The page's $K$/$k$ are both typeset $K$.
+  \item The digression numbers only items (3) and (4); the headings (1) and (2)
+        are \textbf{added} for the two results that precede them on the page
+        ($z'z \sim \chi^{2}_{n}$ and $x'\Sigma^{-1}x \sim \chi^{2}_{n}$).
+  \item In (2) the page writes $N(0, \Sigma)$ with an $n$ under $\Sigma$, read as its
+        dimension; ``positive definite'' is \textbf{added} (needed for
+        $\Sigma^{-1}$ and $\sqrt{\lambda_{i}}$). $T = Q\Lambda^{1/2}$ is not named on
+        the page, which goes from $Q\Lambda^{1/2}\Lambda^{1/2}Q' = \Sigma$ straight to
+        $TT' = \Sigma$; it is \textbf{added}.
+  \item \textbf{Corrected:} in the proof of (2) the page writes
+        $x'(T^{-1})'T^{-1}z = x'(X')^{-1}T^{-1}x$; the first line should end in $x$
+        and the middle factor is $(T')^{-1}$. The page's ``$\Sigma^{-1} =
+        (T')^{-1}(T)^{-1}$'' is kept, with $(TT')^{-1}$ added in front.
+  \item \textbf{Corrected:} in (3) the eigenvalue step is written
+        ``$A(Aq) = A\lambda q$, $Aq = \lambda Aq = \lambda^{2}q$''; typeset as the two
+        evaluations of $A(Aq)$ it intends. (3) says only ``idempotent''; ``symmetric''
+        is added in brackets, since the spectral decomposition and the orthogonal
+        $Q$ need it (and (4) states it).
+  \item \textbf{Corrected:} ``$\Var(y) = Q'\Var(z) = Q = I_{n}$'' on page 4 drops the
+        right-hand $Q$; typeset $Q'\Var(z)Q = Q'Q = I_{n}$. The page draws an
+        arrow labelled $\Lambda$ at $Q'AQ$; typeset as an underbrace. The subscript of
+        $y'y \sim \chi^{2}$ is unclear; it is $n$. The trace invariance and the
+        ordering of the eigenvalues are \textbf{added}.
+        \textbf{Corrected:} the page writes $z'Az = y'Q'AQ'y$; since $z = Qy$
+        the last factor is $Q$, giving $y'Q'AQy$.
+  \item (4) begins ``Let $Ax$ and $Bx$ be two normal vector''; the vector is $z$ in
+        everything that follows, so it is typeset $Az$, $Bz$. \textbf{Corrected:} the
+        covariance is written $A\Var(z)\beta = AB$; the last factor is $B'$ ($= B$ by
+        symmetry). The sentence explaining why zero covariance gives independence is
+        \textbf{added}. Note that the ``iff'' is as written on the page.
+  \item \textbf{Corrected:} on page 5 the quadratic form is written
+        $(Rb - r)'(\Var(Rb - r))(Rb - r)$ without the inverse; page 6 writes it with
+        the inverse, which is right (and matches $x'\Sigma^{-1}x$ beside it).
+  \item \textbf{Corrected:} the variance line on page 6 is written
+        $R(X'X)^{-1}\E(uu')X(X'X)^{-1}R'$, dropping the $X'$ before $\E(uu')$.
+  \item \textbf{Corrected:} the expansion of $|Rb - r|$ is written
+        $\sigma^{2}u'X(X'X)^{-1}R(R(X'X)^{-1}R')^{-1}R(X'X)^{-1}X'u$; the constant is
+        $1/\sigma^{2}$ (the inverse of $\sigma^{2}R(X'X)^{-1}R'$), and the first $R$
+        carries a prime, as in the definition of $N$ in the trace line on page 7.
+        The $1/\sigma^{2}$ reappears correctly on page 8.
+  \item \textbf{Corrected:} in the second trace line on page 7 the first bracket is
+        written $(R(X'X)^{-1}R)^{-1}$ and the second contains $X'Y$; they are
+        $(R(X'X)^{-1}R')^{-1}$ and $X'X$. ``$mN = MX(\cdots)$'' is written without a
+        right-hand side; $= 0$ is added (page 8 states $MN = 0$).
+  \item \textbf{Corrected:} page 8 writes \textcircled{\scriptsize 1} as $u'Nu \sim \chi^{2}_{q}$ and
+        \textcircled{\scriptsize 2} as $u'Mu \sim \chi^{2}_{n-K}$ without the $1/\sigma^{2}$; the
+        factor is inserted (the $F$ ratio just below carries it).
+  \item \textbf{Added:} $s^{2} = e'e/(n-K)$ beside $u'Mu/(n-K)$, and the closing
+        formula for $F$ with $\sigma^{2}$ cancelled --- the page stops at
+        $F(q, n - K)$ drawn with arrows from the two $\chi^{2}$ pieces.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        model, $H_{0}$ with dimensions, the digression heading, (1), (2), and the
+        spectral decomposition up to $\Lambda^{1/2}$; page 3 $TT' = \Sigma$, the proof
+        of (2), and the statement of (3) with the eigenvalue step; page 4 $\lambda = 1$
+        or $0$, rank $=$ trace, the rotation $y = Q'z$ and $z'Az \sim \chi^{2}_{p}$,
+        and the statement of (4); page 5 $w_{1}$, $w_{2}$, the independence
+        condition, the definition of $F$, $F(1, q) = t_{q}^{2}$, $H_{0}$ and $|Rb - r|$,
+        and the expansion of $Rb - r$; page 6 $Rb - r$ under $H_{0}$, its variance
+        (with $\Var(Ax) = A\Var(x)A'$), the quadratic form (labelled
+        ``sandwich'', with an arrow to it) and the underbraced $N$; page 7 $u'Nu$, $MN$, the properties of $N$, its trace, and
+        $s^{2}$; page 8 the two $\chi^{2}$ pieces, $MN = 0$, and the $F$ ratio.
+\end{transcriptnotes}
+
+\end{document}

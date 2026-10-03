@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{3}{The projection and annihilator matrices, $R^{2}$ and degrees of freedom, and the partitioned regression}{}
+
+\section{The linear model, and the two matrices}
+
+The model is taken up again in matrix form,
+\[ y = X\beta + u, \qquad u \sim N(0,\sigma^{2}I_{n}), \]
+with $X$ fixed and $\rank(X)=k$, so that the least-squares estimator is
+\[ b = (X'X)^{-1}X'y . \]
+The fitted values and the residuals come from splitting $y$ itself,
+\[ y = Xb + (y - Xb), \]
+where the first piece is the fitted value and the second the residual:
+\[ Xb = X(X'X)^{-1}X'y, \qquad e = y - Xb . \]
+Collecting,
+\[ y = P_{X}y + (I_{n} - P_{X})y = P_{X}y + M_{X}y , \]
+where
+\[ P_{X} \equiv X(X'X)^{-1}X', \qquad M_{X} \equiv I_{n} - P_{X} \]
+are both labelled \emph{projection matrix} in the notes: $P_{X}$ projects onto
+the column space $L(X)$ of $X$, and $M_{X}$ onto its orthogonal complement
+$L(X)^{\perp}$ (the residual maker, or annihilator). From here on they are also
+written simply $P$ and $M$.
+
+\topic{Both matrices are idempotent --- and symmetric}
+\[ P_{X}P_{X} = P_{X}, \qquad P_{X}' = P_{X}, \qquad M_{X}M_{X} = M_{X},
+   \qquad M_{X}' = M_{X}. \]
+For instance $P_{X}P_{X} = X(X'X)^{-1}X'X(X'X)^{-1}X' = X(X'X)^{-1}X' = P_{X}$, and
+$M_{X}M_{X} = I_{n} - 2P_{X} + P_{X}P_{X} = I_{n} - P_{X} = M_{X}$.
+A square matrix that is both idempotent and symmetric is an \emph{orthogonal
+projection}.
+
+\section{How the projection and the annihilator act}
+
+The projection leaves the regressors alone, and the annihilator kills them:
+\[ P_{X}X = X, \qquad M_{X}X = (I_{n} - P_{X})X = X - X = 0 . \]
+The same pair of identities holds for the residual itself:
+\[ P_{X}e = P_{X}(I_{n} - P_{X})y = 0, \qquad
+   M_{X}e = M_{X}(I_{n} - P_{X})y = (M_{X} - M_{X}P_{X})y = e , \]
+the second of these because $M_{X}P_{X} = (I_{n} - P_{X})P_{X} = P_{X} - P_{X} = 0$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % the column space of X
+  \draw[fill=black!8, draw=black!55] (-1.0,0.15)
+      .. controls (0.2,2.0) and (2.5,2.0) .. (3.85,1.05)
+      .. controls (4.65,0.35) and (3.6,-1.15) .. (1.9,-1.25)
+      .. controls (0.3,-1.35) and (-1.85,-0.85) .. (-1.0,0.15);
+  \node[ecnode] at (0.3,0.9) {$L(X)$};
+  % the origin
+  \node[bundle] at (0,0) {};
+  \node[ecnode,anchor=north west] at (0.06,-0.06) {$O$};
+  % y
+  \draw[ecaxis] (0,0) -- (2.64,2.53);
+  \node[ecnode,anchor=west] at (2.70,2.50) {$y\in\R^{n}$};
+  % its projection
+  \draw[ecaxis] (0,0) -- (2.90,0.35);
+  \node[ecnode,anchor=south] at (1.60,0.30) {$P_{X}y$};
+  % the residual, perpendicular to the subspace
+  \draw[ecaxis] (2.90,0.35) -- (2.64,2.53);
+  \node[ecnode,anchor=west] at (2.98,1.30) {$e$};
+  \draw[thin,black!55] (3.02,2.00) -- (2.74,1.91);
+  \node[ecnode,anchor=west] at (3.05,1.98) {$L(X)^{\perp}$};
+  % right angle at the foot of the perpendicular
+  \draw[thin] (2.87,0.60) -- (2.62,0.57) -- (2.65,0.32);
+\end{tikzpicture}
+\caption{$P_{X}y$ is the projection of $y$ onto the $k$-dimensional column space
+$L(X)$ of $X$, and the residual $e = y - P_{X}y$ is orthogonal to it. The vector in
+the subspace is unlabelled in the notes and is labelled $P_{X}y$ here. The
+dimensions counted next to the sketch are
+$\underbrace{\dim L(X)}_{k} + \underbrace{\dim L(X)^{\perp}}_{n-k} = n$.}
+\end{figure}
+
+\section{The decomposition of $y'y$: explained and residual sums of squares}
+
+Inserting $y = P_{X}y + M_{X}y$ into $y'y$,
+\[ y'y = (P_{X}y + M_{X}y)'(P_{X}y + M_{X}y) = y'P_{X}y + y'M_{X}y , \]
+the cross terms vanishing because $P_{X}'M_{X} = P_{X}M_{X} = P_{X}(I_{n}-P_{X}) = 0$.
+That is the notes' line
+\[ \text{T.S.S.} = \text{explained S.S.} + \text{residual S.S.}, \]
+and therefore
+\[ R^{2} = \frac{y'P_{X}y}{y'y} = 1 - \frac{y'M_{X}y}{y'y}, \qquad 0\le R^{2}\le 1. \]
+This is the \emph{uncentred} $R^{2}$, with the total sum of squares measured from
+zero. When $X$ contains a constant, the usual (centred) $R^{2}$ replaces $y'y$ by
+$\sum_{i}(y_{i}-\bar{y})^{2}$, the sum of squares around the mean, and the same
+decomposition holds for it.
+The same model written observation by observation, as on the page, is
+\[
+\begin{aligned}
+  y_{i}   &= x_{1i}\beta_{1} + \dots + x_{ki}\beta_{k} + u_{i},\\
+          &\;\;\;\vdots\\
+  y_{n}   &= x_{1n}\beta_{1} + \dots + x_{kn}\beta_{k} + u_{n},
+\end{aligned}
+\]
+where the first subscript names the regressor and the second the observation, as
+the notes write it. The adjusted $R^{2}$ on the same page is
+\[ R^{2}_{\text{adjusted}} = 1 - \frac{(y'M_{X}y)/(n-k)}{\sum_{i}(y_{i}-\bar{y})^{2}/(n-1)} , \]
+each sum of squares divided by its degrees of freedom: $n-k$ for the residuals and
+$n-1$ for the centred total. Unlike $R^{2}$, it can fall when a regressor is added.
+
+\section{The expectation of the residual sum of squares}
+
+Since $M_{X}X = 0$, applying the annihilator to $y$ throws away the systematic
+part:
+\[ M_{X}y = M_{X}(X\beta + u) = M_{X}X\beta + M_{X}u = M_{X}u , \]
+so $M_{X}y = M_{X}u$, and hence $y'M_{X}y = u'M_{X}u$. The residual sum of squares
+is that same quadratic form in $u$,
+\[ \text{RSS} = e'e = u'M_{X}u , \]
+with $u \sim N(0,\sigma^{2}I_{n})$ written again on the page at this point. Taking
+expectations, and using that $u'M_{X}u$ is a scalar (so it equals its own trace)
+together with $\operatorname{trace}(ABC) = \operatorname{trace}(BCA)$ to turn
+$u'M_{X}u$ into $\operatorname{trace}(M_{X}uu')$,
+\[
+\begin{aligned}
+  \E(e'e) &= \E(u'M_{X}u) = \E\bigl[\operatorname{trace}(u'M_{X}u)\bigr]
+            = \E\bigl[\operatorname{trace}(M_{X}uu')\bigr]\\
+          &= \operatorname{trace}\bigl[M_{X}\,\E(uu')\bigr]
+            = \sigma^{2}\operatorname{trace}(M_{X}).
+\end{aligned}
+\]
+The two trace facts the page records for this are
+\[ \operatorname{trace}(A) = \sum_{i=1}^{n} a_{ii}, \qquad
+   \operatorname{trace}(ABC) = \operatorname{trace}(BCA) = \operatorname{trace}(CAB). \]
+It remains to evaluate the trace. Since the trace of a product may be cycled,
+$\operatorname{trace}\bigl(X(X'X)^{-1}X'\bigr) = \operatorname{trace}(I_{k}) = k$,
+so
+\[
+\begin{aligned}
+  \operatorname{trace}(M_{X}) &= \operatorname{trace}\bigl(I_{n} - X(X'X)^{-1}X'\bigr)\\
+  &= \operatorname{trace}(I_{n}) - \operatorname{trace}(I_{k}) = n - k ,
+\end{aligned}
+\]
+and therefore
+\[ \E(e'e) = \sigma^{2}(n-k), \qquad
+   s^{2} = \frac{e'e}{n-k}, \qquad
+   \E(s^{2}) = \frac{\sigma^{2}(n-k)}{n-k} = \sigma^{2}. \]
+So $s^{2}$ is unbiased for $\sigma^{2}$, while $e'e/n$ is biased downwards; the $k$
+lost degrees of freedom are the $k$ coefficients estimated. The argument used only
+$\E(uu') = \sigma^{2}I_{n}$, not normality. Under normality, in addition,
+$e'e/\sigma^{2} = u'M_{X}u/\sigma^{2} \sim \chi^{2}_{n-k}$, since $M_{X}$ is
+idempotent with rank $= \operatorname{trace}(M_{X}) = n-k$.
+
+\section{The partitioned regression model}
+
+The regressors are now split into two blocks:
+\[ y = X\beta + u, \qquad X = [\,X_{1} \vdots X_{2}\,], \qquad K = k_{1} + k_{2}, \]
+with the dimensions $n\times K$, $n\times k_{1}$, $n\times k_{2}$ written under
+$X$, $X_{1}$, $X_{2}$. Written out,
+\[ y = [\,X_{1} \vdots X_{2}\,]\begin{bmatrix}\beta_{1}\\\hline\beta_{2}\end{bmatrix}
+   = X_{1}\beta_{1} + X_{2}\beta_{2} + u, \]
+the two coefficients being $k_{1}\times1$ and $k_{2}\times1$. The estimator
+expands in the same blocks:
+\[
+b = (X'X)^{-1}X'y
+  = \bigl[(X_{1} \vdots X_{2})'(X_{1} \vdots X_{2})\bigr]^{-1}(X_{1} \vdots X_{2})'y
+  = \left[\begin{pmatrix}X_{1}'\\X_{2}'\end{pmatrix}(X_{1}\;\;X_{2})\right]^{-1}
+    \begin{pmatrix}X_{1}'\\X_{2}'\end{pmatrix}y,
+\]
+and written out in full (the first line of the next page of the notes),
+\[
+\begin{bmatrix} b_{1} \\ b_{2} \end{bmatrix}
+= \begin{bmatrix} X_{1}'X_{1} & X_{1}'X_{2} \\ X_{2}'X_{1} & X_{2}'X_{2} \end{bmatrix}^{-1}
+  \begin{bmatrix} X_{1}'y \\ X_{2}'y \end{bmatrix}.
+\]
+
+\section{The Frisch--Waugh--Lovell theorem: the ingredients}
+
+The notes head the next page \emph{Frisch--Waugh--Lovell (FWL)} and set up the
+objects the theorem is stated in. For
+\[ y = X_{1}\beta_{1} + X_{2}\beta_{2} + u, \]
+with $L(X_{1})$ the column space of $X_{1}$ of dimension $k_{1}$, the projection
+onto it is
+\[ P_{1} = X_{1}(X_{1}'X_{1})^{-1}X_{1}', \qquad
+   \dim L(X_{1}) = k_{1}, \qquad \dim L(X_{1})^{\perp} = n - k_{1}, \]
+and the two spaces are nested --- the property everything else rests on:
+\[ L(X_{1}) \subset L(X). \]
+The last page of the set then collects the identities the argument runs on
+($M_{1} = I_{n} - P_{1}$ is the matching annihilator):
+\begin{flatlist}
+  \item $P_{1}X_{1} = X_{1}$, \quad $PX_{1} = X_{1}$, \quad $M_{1}X_{1} = 0$;
+  \item $M_{1}e_{1} = e_{1}$, where $e_{1} = M_{1}y$ is the residual from regressing
+        $y$ on $X_{1}$ alone: a residual is already annihilated, so annihilating it
+        again changes nothing;
+  \item $M_{1}M = M$, because $M$ is the smaller of the two;
+  \item $PP_{1} = P_{1}$, because $P_{1}$ is the smaller of the two.
+\end{flatlist}
+They follow from $P_{1}X_{1} = X_{1}$, $PX_{1} = X_{1}$ and idempotency. For example,
+\[ PP_{1} = PX_{1}(X_{1}'X_{1})^{-1}X_{1}' = X_{1}(X_{1}'X_{1})^{-1}X_{1}' = P_{1}, \]
+and then
+\[ M_{1}M = (I_{n}-P_{1})(I_{n}-P) = I_{n} - P - P_{1} + P_{1}P = I_{n} - P = M, \]
+using $P_{1}P = (PP_{1})' = P_{1}$. Symmetry gives the same identities in the other
+order, $P_{1}P = P_{1}$ and $MM_{1} = M$.
+``Smaller'' is what $L(X_{1}) \subset L(X)$ makes true: the range of $P_{1}$ lies
+inside that of $P$, and the range of $M$ inside that of $M_{1}$.
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``class 3''; it is not
+        reproduced.
+  \item The original mixes lower- and upper-case for the regressor matrix, from
+        line to line and sometimes within a line ($x$ on pages 2, 5, 6, 7, $X$ on
+        pages 4 and 8); everything is typeset with $X$ here, including the blocks $X_{1}$, $X_{2}$
+        (lower case on pages 6--9) and the column spaces $L(X)$, $L(X_{1})$, as in
+        Lesson 4. Individual elements $x_{ji}$ stay lower case. The subscripts of
+        the projection are written as lower-case $x$ ($P_{x}$, $M_{x}$) on page 2
+        and as $X$ elsewhere; they are typeset $P_{X}$, $M_{X}$ throughout. The
+        shorthand $P$, $M$ is the notes' own, from page 4 onwards.
+  \item The residual maker is written in lower case ($m$, $m_{1}$) on pages 5, 6
+        and 9; it is typeset $M_{X}$, $M_{1}$.
+  \item The column-space glyph is the cursive lower-case letter read as $\ell$ in
+        the sketch and in ``$\dim f(x)$''; as in Lesson 2 it is the column space
+        of $X$ and is typeset $L(X)$. The nested-spaces line, written
+        ``$x_{1} \subset x$'' on page 8, is typeset
+        $L(X_{1}) \subset L(X)$. In the sketch the arrow labelled $\ell(x)$ points
+        at the shaded region (the subspace), and $\ell(x)^{\perp}$ at the
+        perpendicular $e$; the vector along the subspace is unlabelled.
+  \item On page 2 the label ``projection matrix'' is joined by two strokes to
+        both $P_{x}y$ and $M_{x}y$; the terms ``residual maker''/``annihilator''
+        for $M_{X}$ are \textbf{Added}.
+  \item Page 2 writes the chain $y = xb + (y-xb)$ with two down-arrows to
+        $x(x'x)^{-1}x'y$ and to $e$, and the next line begins with a bare ``$=$'';
+        the chain is typeset continuously.
+  \item \textbf{Corrected:} page 5 writes the chain as
+        $My = M(x\beta+u) = Mx\beta + My = Mu$; the middle term is clearly an
+        $My$ (same letter shape as the $y$ in ``$My = Mu$'' below). It must be
+        $Mu$, since $M(x\beta+u) = Mx\beta + Mu$; typeset as $Mu$.
+  \item The expectation chain on page 5 repeats the argument
+        $\operatorname{trace}(u'Mu)$, runs into the right edge of the page, and
+        the closing bracket of $\operatorname{trace}(Muu')$ is missing; it is
+        typeset once, closed. The factor $\E(uu')=\sigma^{2}I_{n}$ and the step
+        $\operatorname{trace}\bigl[M\E(uu')\bigr] = \sigma^{2}\operatorname{trace}(M)$
+        are written sideways in a right-hand column of the page and are folded
+        into the chain here.
+  \item Page 6 heads the section ``Partioned Regression Model'', without the
+        second ``i''; ``Partitioned'' is written here. Page 8 heads the theorem
+        ``Frish-Waugh-Lovell''; ``Frisch'' is written here.
+  \item On page 7 the expanded estimator carries a trailing ``$=0$'' after the
+        final $y$ as written, and the last line has no leading $=$ before its
+        bracket; neither is reproduced. The block separators are kept as drawn:
+        vertical dots between $x_{1}$ and $x_{2}$, a horizontal dashed line
+        between $\beta_{1}$ and $\beta_{2}$.
+  \item The row-by-row system on page 4 writes a generic row $y_{i}$ (with
+        $x_{1i}$, $x_{ki}$, $u_{i}$; the $x_{ki}$ could also read $x_{k1}$), then
+        vertical dots, then the last row $y_{n}$; it is typeset that way. The
+        subscript order is regressor-then-observation, kept as written, though
+        the observation index usually comes first.
+  \item The adjusted $R^{2}$ is written on one line as
+        $(y'My)/n-k$ over $y'y/n-1$; it is typeset with the grouping that gives
+        the usual estimator, $\text{RSS}/(n-k)$ over $\text{TSS}/(n-1)$.
+        \textbf{Corrected:} the $n-1$ degrees of freedom belong to the
+        \emph{centred} total sum of squares $\sum_{i}(y_{i}-\bar{y})^{2}$ (one
+        degree of freedom is used by $\bar{y}$), not to $y'y$; the denominator is
+        typeset with the centred sum, and a remark that $y'P_{X}y/y'y$ is the
+        uncentred $R^{2}$ is added.
+  \item \textbf{Added:} the one-line checks of idempotency, the remarks that
+        $\E(s^{2}) = \sigma^{2}$ does not need normality and that
+        $e'e/\sigma^{2}\sim\chi^{2}_{n-k}$ under normality, the definition of
+        $e_{1}$, and the derivation of $PP_{1} = P_{1}$ and $M_{1}M = M$.
+  \item \textbf{Corrected:} page 9 writes $PP_{1} = P_{2}$ (a clear $2$). Since
+        $L(X_{1})\subset L(X)$, $PP_{1} = P_{1}$, which is also what the words on
+        the same line (``because $P_{1}$ is smaller'') say; typeset as $P_{1}$.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        model, $b$, the split of $y$ into $P_{X}y + M_{X}y$, and idempotency and
+        symmetry; page 3 $P_{X}X = X$, the sketch with the dimension count, and
+        the three identities $P_{X}e = 0$, $M_{X}X = 0$, $M_{X}e = e$; page 4 the
+        decomposition of $y'y$, T.S.S., $R^{2}$ and the adjusted $R^{2}$, and the
+        row-by-row system; page 5 $M_{X}y = M_{X}u$, $\text{RSS} = u'M_{X}u$, the
+        $\E(e'e)$ chain and the trace identities; page 6
+        $\operatorname{trace}(M_{X}) = n-k$, $\E(e'e) = \sigma^{2}(n-k)$, $s^{2}$
+        and the start of the partitioned model; page 7 the partitioned model and
+        the expanded $b$; page 8 the block formula for $b$, the FWL heading,
+        $L(X_{1})$, $P_{1}$, the dimensions and $L(X_{1})\subset L(X)$; page 9 the
+        list of properties of $P_{1}$, $M_{1}$.
+\end{transcriptnotes}
+
+\end{document}

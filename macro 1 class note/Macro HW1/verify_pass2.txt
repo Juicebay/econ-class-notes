@@ -1,0 +1,72 @@
+=== (a) Great Recession: is the fall monotone 2008Q3 -> 2009Q2? ===
+   2008Q3  log level 10.933380  qoq +0.457%  cycle +1.92%
+   2008Q4  log level 10.917937  qoq -1.544%  cycle +0.38%
+   2009Q1  log level 10.893472  qoq -2.446%  cycle -2.07%
+   2009Q2  log level 10.880101  qoq -1.337%  cycle -3.42%
+   2009Q3  log level 10.881055  qoq +0.095%  cycle -3.35%
+   2009Q4  log level 10.888793  qoq +0.774%  cycle -2.63%
+
+=== (b) early 1990s: cycle 1988-1998 ===
+   1988Q1  +2.25%
+   1988Q2  +2.56%
+   1988Q3  +1.92%
+   1988Q4  +1.90%
+   1989Q1  +2.55%
+   1989Q2  +2.44%
+   1989Q3  +2.29%
+   1989Q4  +1.65%
+   1990Q1  +2.44%
+   1990Q2  +1.74%
+   1990Q3  +0.67%
+   1990Q4  -0.53%
+   1991Q1  -2.03%
+   1991Q2  -1.72%
+   1991Q3  -1.89%
+   1991Q4  -1.98%
+   1992Q1  -2.07%
+   1992Q2  -2.29%
+   1992Q3  -2.16%
+   1992Q4  -2.06%
+   1993Q1  -1.78%
+   1993Q2  -1.30%
+   1993Q3  -0.88%
+   1993Q4  -1.09%
+   1994Q1  -0.11%
+   1994Q2  +0.73%
+   1994Q3  +1.29%
+   1994Q4  +1.26%
+   1995Q1  +1.56%
+   1995Q2  +0.89%
+   1995Q3  +0.20%
+   1995Q4  -0.25%
+   1996Q1  -0.84%
+   1996Q2  -0.96%
+   1996Q3  -1.07%
+   1996Q4  -1.26%
+   1997Q1  -0.75%
+   1997Q2  -0.55%
+   1997Q3  -0.38%
+   1997Q4  -0.46%
+   1998Q1  +0.08%
+   1998Q2  -0.80%
+   1998Q3  -0.91%
+   1998Q4  -0.59%
+
+=== (c) quarters below trend, peak -> first quarter at/above trend ===
+   early 1980s                 peak 1981Q2 trough 1982Q4 (6 qtrs)  back at trend 1984Q4  quarters below trend 11
+   early 1990s                 peak 1989Q1 trough 1992Q2 (13 qtrs)  back at trend 1994Q2  quarters below trend 14
+   early 1990s (peak 1988Q2)   peak 1988Q2 trough 1992Q2 (16 qtrs)  back at trend 1994Q2  quarters below trend 14
+   early 1990s (peak 1990Q1)   peak 1990Q1 trough 1992Q2 (9 qtrs)  back at trend 1994Q2  quarters below trend 14
+   Great Recession             peak 2008Q3 trough 2009Q2 (3 qtrs)  back at trend 2011Q3  quarters below trend 10
+
+=== (d) question 4: percent changes, log vs exact ===
+   output  log -14.09%   exact -13.15%   ratio hours/output(exact) later
+   price   log -1.72%   exact -1.70%   ratio hours/output(exact) later
+   hours   log -24.69%   exact -21.88%   ratio hours/output(exact) later
+   hours exact / output exact = 1.66
+
+=== (e) last-quarter aggregates vs the raw monthly CSVs ===
+   2019Q1  hours csv sum 1855581400  xlsx 1855581400  |  fx csv avg 1.329167  xlsx 1.329167
+   2020Q2  hours csv sum 1476921400  xlsx 1476921400  |  fx csv avg 1.385933  xlsx 1.385933
+   2026Q2  hours csv sum 2038930800  xlsx 2038930800  |  fx csv avg 1.383800  xlsx 1.383800
+   population csv 2026-04 = 41417056, xlsx 2026Q2 = 41417056

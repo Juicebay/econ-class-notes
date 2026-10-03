@@ -1,0 +1,314 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "43185c01",
+   "metadata": {},
+   "source": [
+    "# ECON*6140 \u2014 Assignment 1\n",
+    "Kernel: **Python (Metrics HW1)** (`.venv` in this folder)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "793943d3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import statsmodels.api as sm\n",
+    "import statsmodels.formula.api as smf\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "pd.set_option('display.precision', 4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "514c9883",
+   "metadata": {},
+   "source": [
+    "## Question 2 \u2014 tbrate data\n",
+    "`tbrate.xlsx` (converted from `tbrate.docx`): 1950Q1\u20131996Q4, columns `r` (91-day T-bill rate), `y` (log real GDP), `pi` (inflation)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "99aea33b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_excel('tbrate.xlsx', sheet_name='data')\n",
+    "df.index = pd.PeriodIndex(df['period'], freq='Q')\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a1",
+   "metadata": {},
+   "source": [
+    "### 2.1 Build the regression variables\n",
+    "\n",
+    "Question 2 estimates\n",
+    "\n",
+    "    dr_t = b1 + b2*pi_{t-1} + b3*dy_{t-1} + b4*dr_{t-1} + b5*dr_{t-2} + u_t\n",
+    "\n",
+    "so six columns have to exist first: the differences, then the lags built *from*\n",
+    "those differences. Order matters below -- `dy_1` is defined from `dy`, so the\n",
+    "`dy` line has to run first."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# differences first ...\n",
+    "df['dr'] = df['r'].diff()       # dr_t    = r_t - r_t-1\n",
+    "df['dy'] = df['y'].diff()       # dy_t    = y_t - y_t-1\n",
+    "\n",
+    "# ... then lags, built from the series that already exist\n",
+    "df['pi_1'] = df['pi'].shift(1)  # pi_{t-1}\n",
+    "df['dy_1'] = df['dy'].shift(1)  # dy_{t-1}\n",
+    "df['dr_1'] = df['dr'].shift(1)  # dr_{t-1}\n",
+    "df['dr_2'] = df['dr'].shift(2)  # dr_{t-2}\n",
+    "\n",
+    "df[['r', 'dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2']].head(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# the top rows carry NaN from the lags -- count them before using anything\n",
+    "df[['dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2']].isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a4",
+   "metadata": {},
+   "source": [
+    "### 2.2 The estimation sample\n",
+    "\n",
+    "1950:4 to 1996:4. The first three quarters are lost to the lags: 1950Q1 has no\n",
+    "`dr`, and nothing before 1950Q3 has a `dr_2`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sub = df.loc['1950Q4':'1996Q4'].copy()                            # sample period\n",
+    "sub = sub.dropna(subset=['dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2'])   # complete rows\n",
+    "\n",
+    "print('shape :', sub.shape)          # (185, 13) -> 185 usable observations\n",
+    "print('span  :', sub.index[0], '...', sub.index[-1])\n",
+    "print('missing in dr:', int(sub['dr'].isna().sum()))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a6",
+   "metadata": {},
+   "source": [
+    "### 2.3 The regression by the classic formula\n",
+    "\n",
+    "    b = (X'X)^-1 X'y\n",
+    "\n",
+    "Two things the formula does **not** do for you, both of which `smf.ols` handles\n",
+    "quietly: it will not add the intercept, and it will not drop incomplete rows.\n",
+    "So the constant has to be a literal column of ones, and `sub` above has to\n",
+    "already be the clean sample."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "names = ['pi_1', 'dy_1', 'dr_1', 'dr_2']       # this order defines b's order\n",
+    "\n",
+    "y = sub['dr'].to_numpy()                       # (185,)\n",
+    "X = sub[names].to_numpy()                      # (185, 4) -- no constant yet\n",
+    "X = np.column_stack([np.ones(len(X)), X])      # (185, 5) -- ones in column 0\n",
+    "\n",
+    "print('X:', X.shape, '  y:', y.shape)         # X must be n x k, y must be n\n",
+    "\n",
+    "b = np.linalg.inv(X.T @ X) @ X.T @ y           # b = (X'X)^-1 X'y\n",
+    "b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# b is a bare array: the names are gone, so reattach them from `names`\n",
+    "labels = ['const'] + names\n",
+    "\n",
+    "for lab, bi in zip(labels, b):\n",
+    "    print(f'{lab:>8s}  {bi:>12.6f}')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a9",
+   "metadata": {},
+   "source": [
+    "### 2.4 Standard errors from the same two matrices\n",
+    "\n",
+    "    Var(b) = s^2 (X'X)^-1,      s^2 = u'u / (n - k)\n",
+    "\n",
+    "Keep `V` around -- question 4 needs it for the quadratic form w'Vw."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a10",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "n, k = X.shape\n",
+    "u    = y - X @ b                     # residuals\n",
+    "s2   = (u @ u) / (n - k)             # sigma-hat-squared\n",
+    "V    = s2 * np.linalg.inv(X.T @ X)   # Var(b), k x k\n",
+    "se   = np.sqrt(np.diag(V))           # standard errors\n",
+    "\n",
+    "for lab, bi, si in zip(labels, b, se):\n",
+    "    print(f'{lab:>8s}  {bi:>12.6f}  se {si:>10.6f}')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a11",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# cross-check: statsmodels estimates the same thing from the same matrices\n",
+    "res = smf.ols('dr ~ pi_1 + dy_1 + dr_1 + dr_2', data=sub).fit()\n",
+    "\n",
+    "print('coefficients match :', np.allclose(b, res.params.values))\n",
+    "print('std errors   match :', np.allclose(se, res.bse.values))\n",
+    "print('rank / k           :', np.linalg.matrix_rank(X), '/', k)\n",
+    "\n",
+    "res.summary()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a12",
+   "metadata": {},
+   "source": [
+    "### 2.5 Plot the residuals and fitted values against time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a13",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, axes = plt.subplots(2, 1, figsize=(9, 6), sharex=True)\n",
+    "t = sub.index.to_timestamp()\n",
+    "\n",
+    "axes[0].plot(t, res.fittedvalues, lw=1.0)\n",
+    "axes[1].plot(t, res.resid, lw=1.0)\n",
+    "axes[0].axhline(0, color='0.6', lw=0.8)\n",
+    "axes[1].axhline(0, color='0.6', lw=0.8)\n",
+    "axes[0].set_ylabel('fitted')\n",
+    "axes[1].set_ylabel('residual')\n",
+    "axes[1].set_xlabel('year')\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "q2a14",
+   "metadata": {},
+   "source": [
+    "### 2.6 The two auxiliary regressions\n",
+    "\n",
+    "Regress the residuals on the fitted values, and then the fitted values on the\n",
+    "residuals. For each one, read off the slope, its p-value and R-squared, then\n",
+    "answer the question on the sheet: what do you notice?\n",
+    "\n",
+    "Two things worth asking yourself. Can the second regression reconstruct the\n",
+    "first? And what does R-squared = 0 mean when one series has been regressed on\n",
+    "another? The last line below gives you one more fact to interpret."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "q2a15",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sub['resid'] = res.resid\n",
+    "sub['fit']   = res.fittedvalues\n",
+    "\n",
+    "r1 = smf.ols('resid ~ fit', data=sub).fit()      # residuals on fitted\n",
+    "r2 = smf.ols('fit ~ resid', data=sub).fit()      # fitted on residuals\n",
+    "\n",
+    "print('resid ~ fit :', r1.params.to_dict(), ' R2 =', round(r1.rsquared, 6))\n",
+    "print('fit ~ resid :', r2.params.to_dict(), ' R2 =', round(r2.rsquared, 6))\n",
+    "print()\n",
+    "print('r1 residuals identical to res.resid :', np.allclose(r1.resid, res.resid))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0728d655",
+   "metadata": {},
+   "source": [
+    "## Question 3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ad8f0fe1",
+   "metadata": {},
+   "source": [
+    "## Question 4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "879a6a23",
+   "metadata": {},
+   "source": [
+    "## Question 5"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python (Metrics HW1)",
+   "language": "python",
+   "name": "metrics-hw1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

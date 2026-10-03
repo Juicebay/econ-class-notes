@@ -1,0 +1,156 @@
+%% macrostyle.sty --- house style for the Macroeconomic Theory I class notes
+%% ---------------------------------------------------------------------------
+%% FIXED FORMAT.  Every lesson file starts with
+%%     \documentclass[11pt]{article}
+%%     \usepackage{macrostyle}
+%%     \lessonheader{<number>}{<subtitle>}{<date or empty>}
+%% and nothing else in the preamble.  Do not change this file per lesson:
+%% change it once, and every lesson recompiles with the new look.
+%%
+%% v2.0 (2026-09-30): readability pass --- coloured headings, running header,
+%% boxes for key results / intuition / pitfalls / material beyond the slides,
+%% \why{} margin reasons for derivation steps, \slides{} source pointers.
+%% ---------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{macrostyle}[2026/09/30 v2.0 House style for macro class notes]
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage[margin=2.4cm,headheight=14pt]{geometry}
+\RequirePackage{amsmath,amssymb,mathtools}
+\RequirePackage{microtype}
+\RequirePackage{enumitem}
+\RequirePackage{parskip}
+\RequirePackage{needspace}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+
+% ---------------------------------------------------------------- colours ---
+\definecolor{accent}{RGB}{28,62,120}      % headings, key-result frames
+\definecolor{keybg}{RGB}{236,242,252}
+\definecolor{intbg}{RGB}{238,247,238}
+\definecolor{intfr}{RGB}{60,130,70}
+\definecolor{pitbg}{RGB}{253,242,230}
+\definecolor{pitfr}{RGB}{205,110,20}
+\definecolor{extfr}{RGB}{120,120,120}
+\definecolor{note}{RGB}{110,110,110}
+
+% ------------------------------------------------------------------ look ----
+\linespread{1.12}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em plus 0.15em}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+
+\titleformat{\section}{\Large\bfseries\color{accent}}{\thesection}{0.8em}{}
+  [{\color{accent}\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{1.6em}{0.9em}
+\titleformat{\subsection}{\large\bfseries\color{accent}}{\thesubsection}{0.7em}{}
+\titlespacing*{\subsection}{0pt}{1.3em}{0.5em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{note}Macroeconomic Theory I --- The Solow Model}
+\fancyhead[R]{\small\color{note}\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{\thesection\enspace #1}{}}
+
+% -------------------------------------------------------------- notation ----
+\newcommand{\R}{\mathbb{R}}                              % real numbers
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}     % partial derivative
+\newcommand{\kh}{\hat{k}}                                % capital per effective worker
+\newcommand{\yh}{\hat{y}}                                % output per effective worker
+\newcommand{\ch}{\hat{c}}                                % consumption per effective worker
+\newcommand{\ih}{\hat{\imath}}                           % investment per effective worker
+\newcommand{\dk}{\dot{\hat{k}}}                          % time derivative of k-hat
+\newcommand{\gr}[1]{\frac{\dot{#1}}{#1}}                 % growth rate  \dot X / X
+\newcommand{\gam}{(\delta+n+x)}                          % effective depreciation rate
+
+% --------------------------------------------------------- title block ------
+% \lessonheader{<title>}{<subtitle>}{<date --- may be empty>}
+\newcommand{\lessonheader}[3]{%
+  \thispagestyle{empty}%
+  \begin{center}
+    {\large\scshape\color{accent} Macroeconomic Theory I --- Class Notes}\\[4pt]
+    {\LARGE\bfseries #1}\\[5pt]
+    {\itshape #2}%
+    \ifx\relax#3\relax\else\\[3pt]{\small #3}\fi
+  \end{center}
+  \vspace{0.3em}{\color{accent}\hrule height 0.8pt}\vspace{0.9em}%
+}
+
+% ------------------------------------------------------------- headings -----
+% A bold heading on its own line (minor topic inside a subsection).
+\newcommand{\topic}[1]{\par\Needspace{4\baselineskip}\medskip\noindent{\bfseries\color{accent!85!black}#1}\par\nobreak\smallskip}
+% A bold run-in heading: \runin{Walras' law.} then the text continues.
+\newcommand{\runin}[1]{\par\medskip\noindent\textbf{#1}\quad\ignorespaces}
+% Which slides a section follows:  \slides{L1 9--11}
+\newcommand{\slides}[1]{\par\vspace{-0.3em}{\small\color{note}\itshape Slides: #1}\par\vspace{0.2em}}
+% Numbered derivation step:  \step{1}{Take logs.}
+\newcommand{\step}[2]{\par\smallskip\noindent{\bfseries\color{accent}Step #1.}\enspace #2\par\nobreak}
+% Reason for a line of a derivation, printed at the right margin (use inside align* / \[ \]).
+\newcommand{\why}[1]{\tag*{\small\color{note}\itshape #1}}
+
+% ----------------------------------------------------------------- boxes ----
+\tcbset{macrobox/.style={enhanced,boxrule=0.6pt,arc=2pt,left=8pt,right=8pt,
+        top=5pt,bottom=5pt,before skip=0.9em,after skip=0.9em,fonttitle=\bfseries\small}}
+% Key result: the formula / statement to remember.
+\newtcolorbox{keyresult}[1][Key result]{macrobox,colback=keybg,colframe=accent,title={#1},
+        coltitle=white,colbacktitle=accent}
+% Plain-language intuition.
+\newtcolorbox{intuition}[1][Intuition]{macrobox,colback=intbg,colframe=intbg,
+        borderline west={2.5pt}{0pt}{intfr},title={#1},coltitle=intfr,colbacktitle=intbg,
+        attach title to upper,after title={\enspace}}
+% Common mistake / subtle point.
+\newtcolorbox{pitfall}[1][Watch out]{macrobox,colback=pitbg,colframe=pitbg,
+        borderline west={2.5pt}{0pt}{pitfr},title={#1},coltitle=pitfr,colbacktitle=pitbg,
+        attach title to upper,after title={\enspace}}
+% Material that is NOT on the slides (worked checks, extra derivations).
+\newtcolorbox{extra}[1][Beyond the slides]{macrobox,breakable,colback=white,colframe=white,
+        borderline={0.6pt}{0pt}{extfr,dashed},title={#1},coltitle=extfr,
+        colbacktitle=white,attach title to upper,after title={\enspace}}
+% End-of-section summary.
+\newtcolorbox{recap}[1][In one paragraph]{macrobox,breakable,colback=black!4,colframe=black!4,
+        title={#1},coltitle=black!75,colbacktitle=black!4,attach title to upper,after title={\enspace}}
+
+% --------------------------------------------------------------- lists ------
+\newenvironment{flatlist}%
+  {\begin{itemize}[leftmargin=1.3em,itemsep=3pt,topsep=3pt,parsep=0pt]}%
+  {\end{itemize}}
+\newenvironment{flatnum}%
+  {\begin{enumerate}[leftmargin=1.5em,itemsep=3pt,topsep=3pt,parsep=0pt]}%
+  {\end{enumerate}}
+
+% -------------------------------------------------- transcription notes -----
+% Small-print list at the end of a lesson: what was fixed, what is uncertain.
+\newenvironment{transcriptnotes}%
+  {\par\vspace{1.4em}\Needspace{6\baselineskip}\hrule\vspace{0.5em}\small
+   \noindent\textbf{Source notes}\par\vspace{0.2em}%
+   \begin{itemize}[leftmargin=1.2em,itemsep=1.5pt,topsep=2pt,parsep=0pt]}%
+  {\end{itemize}}
+
+% ------------------------------------------------------------- diagrams -----
+\tikzset{
+  ecaxis/.style = {-{Stealth[length=4pt,width=3pt]},line width=0.5pt},
+  budget/.style = {line width=0.9pt},
+  adm/.style    = {line width=2.4pt},
+  bundle/.style = {circle,fill=black,inner sep=1.4pt},
+  ecnode/.style = {font=\small,inner sep=1.8pt}
+}
+% \ecaxes{<x-max>}{<y-max>}  --- two plain axes, origin bottom-left
+\newcommand{\ecaxes}[2]{%
+  \draw[ecaxis] (0,0) -- (#1,0);%
+  \draw[ecaxis] (0,0) -- (0,#2);}
+
+% ------------------------------------------------------------ hyperlinks ----
+\RequirePackage[colorlinks=true,linkcolor=accent,urlcolor=accent]{hyperref}
+
+\endinput

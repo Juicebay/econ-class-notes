@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+%% Beginner cheat sheet for ECON*6140 Assignment #1.
+%% Every regression is done by matrix algebra (numpy only, no statsmodels).
+%% All snippets were run against tbrate.xlsx in "Metrics HW1" before typesetting.
+%% The previous, longer statsmodels version is pythonguide_long.tex.
+%% This file is NOT part of the lesson/hw build glob in build.sh.
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{upquote}
+\setlength{\emergencystretch}{3.2em}
+
+\definecolor{codebg}{RGB}{246,246,248}
+\definecolor{codekw}{RGB}{0,83,166}
+\definecolor{codestr}{RGB}{163,21,21}
+\definecolor{codecom}{RGB}{0,120,60}
+\definecolor{codegray}{RGB}{120,120,120}
+
+\lstdefinestyle{py}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecom}\itshape,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{codegray!60},
+  breaklines=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  aboveskip=6pt,
+  belowskip=6pt,
+}
+\lstset{style=py}
+
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.2}
+
+\begin{document}
+
+\begin{center}
+  {\large\scshape ECON*6140 Econometrics I}\\[3pt]
+  {\LARGE\bfseries Python Cheat Sheet for HW1}\\[4pt]
+  {\itshape Matrices only --- no regression packages}
+\end{center}
+\vspace{0.3em}\hrule\vspace{0.6em}
+
+\noindent\textbf{How to use it.} Copy one grey block into one notebook cell,
+change the names, press \textbf{Shift+Enter}. One idea per cell, so when something
+breaks you know where. Run cells top to bottom.
+
+%--------------------------------------------------------------------
+\section{Five rules}
+
+\begin{flatnum}
+  \item \code{@} is matrix multiplication. \code{*} multiplies element by element.
+        Mixing them up gives a wrong answer with \emph{no} error.
+  \item \code{X.T} is $X'$. \code{np.linalg.inv(A)} is $A^{-1}$. \code{np.eye(n)} is the
+        $n\times n$ identity $I$.
+  \item Python counts from 0. \code{b[0]} is the first coefficient (the constant),
+        \code{b[1]} the second.
+  \item \code{df['r']} picks a column (square brackets). \code{df.head()} runs an
+        action (round brackets).
+  \item \code{X.shape} tells you the size of a matrix. Print it whenever you are unsure.
+\end{flatnum}
+
+%--------------------------------------------------------------------
+\section{Load the data and make variables}
+
+\begin{lstlisting}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+np.set_printoptions(suppress=True)      # show 0.0161, not 1.61e-02
+
+df = pd.read_excel('tbrate.xlsx', sheet_name='data')
+df.index = pd.PeriodIndex(df['period'], freq='Q')   # rows named 1950Q1, 1950Q2, ...
+\end{lstlisting}
+
+\noindent Two tools make every variable in the assignment:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Code & Means & Example \\
+\midrule
+\code{.diff()}   & change from last period, $\Delta x_t = x_t - x_{t-1}$ & \code{df['r'].diff()} \\
+\code{.shift(1)} & last period's value, $x_{t-1}$ & \code{df['pi'].shift(1)} \\
+\code{.shift(2)} & two periods back, $x_{t-2}$ & \code{df['dr'].shift(2)} \\
+\code{np.log()}  & natural log & \code{np.log(df['c'])} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lstlisting}
+df['dr']   = df['r'].diff()       # change in r
+df['dy']   = df['y'].diff()       # change in y
+df['pi_1'] = df['pi'].shift(1)    # last quarter's pi
+df['dy_1'] = df['dy'].shift(1)    # last quarter's dy (needs dy made first!)
+df['dr_1'] = df['dr'].shift(1)    # last quarter's dr
+df['dr_2'] = df['dr'].shift(2)    # dr two quarters back
+\end{lstlisting}
+
+\noindent Lags leave empty cells (\code{NaN}) at the top. That is why the sample
+starts later. Cut the sample by date (both ends included):
+
+\begin{lstlisting}
+sub = df.loc['1950Q4':'1996Q4']
+len(sub)                          # 185 rows
+sub.isna().sum()                  # every column should say 0
+\end{lstlisting}
+
+%--------------------------------------------------------------------
+\section{Regression with matrices}
+
+\topic{Step 1: turn columns into $y$ and $X$.} The constant is just a column of ones.
+
+\begin{lstlisting}
+one = np.ones(len(sub))                      # the constant
+y = sub['dr'].to_numpy()                     # y as a plain vector
+X = np.column_stack([one, sub['pi_1'], sub['dy_1'], sub['dr_1'], sub['dr_2']])
+X.shape                                      # (185, 5)
+\end{lstlisting}
+
+\noindent \code{np.column_stack([...])} glues columns side by side. The order you
+list them is the order of $b$.
+
+\topic{Step 2: the formulas.}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Math & Code & Name \\
+\midrule
+$b = (X'X)^{-1}X'y$           & \code{b = np.linalg.inv(X.T @ X) @ X.T @ y} & coefficients \\
+$\hat y = Xb$                 & \code{yhat = X @ b}                         & fitted values \\
+$e = y - \hat y$              & \code{e = y - yhat}                         & residuals \\
+$s^2 = e'e/(n-k)$             & \code{s2 = (e @ e) / (n - k)}               & error variance \\
+$\widehat{\Var}(b) = s^2(X'X)^{-1}$ & \code{V = s2 * np.linalg.inv(X.T @ X)} & covariance matrix \\
+$\text{se}(b_j)=\sqrt{V_{jj}}$ & \code{se = np.sqrt(np.diag(V))}            & standard errors \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\topic{Step 3: write it once, reuse it.} Put this in one cell and run it. After that,
+every regression in the assignment is one line.
+
+\begin{lstlisting}
+def ols(y, X):
+    XtX_inv = np.linalg.inv(X.T @ X)
+    b    = XtX_inv @ X.T @ y          # coefficients
+    yhat = X @ b                      # fitted values
+    e    = y - yhat                   # residuals
+    n, k = X.shape                    # rows, columns
+    s2   = (e @ e) / (n - k)
+    V    = s2 * XtX_inv               # Var(b)
+    se   = np.sqrt(np.diag(V))        # standard errors
+    return b, se, yhat, e, V
+\end{lstlisting}
+
+\begin{lstlisting}
+b, se, yhat, e, V = ols(y, X)
+print(b)                          # [const, pi_1, dy_1, dr_1, dr_2]
+print(se)
+\end{lstlisting}
+
+\noindent The t-statistic is \code{b / se}. You can leave pieces you don't need
+with \code{_}, e.g.\ \code{_, _, _, e2, _ = ols(y2, X2)} keeps only the residuals.
+
+\topic{Regressing one vector on another.} Anything you computed (residuals, fitted
+values) is just a vector, so it goes straight into \code{column_stack}:
+
+\begin{lstlisting}
+Z = np.column_stack([one, yhat])   # a constant and the fitted values
+b_z, se_z, _, _, _ = ols(e, Z)     # regress e on them
+\end{lstlisting}
+
+\noindent \textbf{No constant?} Leave out \code{one}. With a single regressor, make it
+a one-column matrix: \code{X = v.reshape(-1, 1)}.
+
+%--------------------------------------------------------------------
+\section{Plot against time}
+
+\begin{lstlisting}
+t = sub.index.to_timestamp()                   # dates for the x-axis
+
+fig, ax = plt.subplots(2, 1, figsize=(9, 6), sharex=True)
+ax[0].plot(t, yhat);  ax[0].set_ylabel('fitted')
+ax[1].plot(t, e);     ax[1].set_ylabel('residual')
+ax[1].axhline(0, color='grey')                 # zero line
+plt.show()
+\end{lstlisting}
+
+\noindent Save it for your write-up with \code{fig.savefig('q2.png', dpi=200)}.
+
+%--------------------------------------------------------------------
+\section{Projection matrices $P$ and $M$}
+
+\begin{lstlisting}
+X1 = np.column_stack([one, sub['dy_1']])       # any group of columns
+P1 = X1 @ np.linalg.inv(X1.T @ X1) @ X1.T      # P1 = X1 (X1'X1)^-1 X1'
+M1 = np.eye(len(sub)) - P1                     # M1 = I - P1
+\end{lstlisting}
+
+\noindent These are $n\times n$ ($185\times185$). Use them just like the math:
+\code{P1 @ y}, \code{M1 @ y}, \code{M1 @ X2}. Handy facts to check your code:
+$P_1 y$ is the fitted value and $M_1 y$ the residual from regressing $y$ on $X_1$.
+
+%--------------------------------------------------------------------
+\section{A combination of coefficients: $\hat\gamma = w'b$}
+
+Make $w$ the same length as $b$, with a 1 on each coefficient you want to add up.
+
+\begin{lstlisting}
+w = np.zeros(len(b))        # [0, 0, 0, 0, 0]
+w[1] = 1                    # pick b[1]
+w[2] = 1                    # pick b[2]      -> w = [0, 1, 1, 0, 0]
+                            # (w[1:4] = 1 would pick b[1], b[2], b[3])
+
+gamma    = w @ b                    # w'b
+se_gamma = np.sqrt(w @ V @ w)       # sqrt(w' Var(b) w)
+\end{lstlisting}
+
+\topic{Reparameterising.} To get the same number straight out of a regression,
+build new columns (e.g.\ \code{sub['x'] - sub['z']}), put them in a new $X$, and run
+\code{ols} again. The fitted values must not change --- use that as your check.
+
+%--------------------------------------------------------------------
+\section{Checking your answers}
+
+\begin{lstlisting}
+np.allclose(a, c)          # True if two vectors/matrices are equal (up to rounding)
+np.allclose(P1 @ P1, P1)   # a projection times itself is itself -> True
+np.allclose(M1 @ X1, 0)    # M1 wipes out X1 -> True
+e.mean()                   # about 0 when X has a constant
+\end{lstlisting}
+
+\noindent Use \code{np.allclose}, not \code{==}: computers round, so two ``equal''
+numbers can differ in the 15th decimal.
+
+%--------------------------------------------------------------------
+\section{Errors you will hit}
+
+\begin{center}
+\begin{tabular}{@{}p{0.36\linewidth}p{0.58\linewidth}@{}}
+\toprule
+Message & Fix \\
+\midrule
+\code{KeyError: 'dr'} & That column doesn't exist yet. Run the cells from the top
+  (Kernel $\to$ Restart \& Run All). \\
+\code{matmul: ... mismatch} & Sizes don't fit. Print \code{X.shape} and \code{y.shape}. \\
+\code{Singular matrix} & Two columns are the same thing (e.g.\ \code{one} added twice). \\
+\code{nan} in your answer & A \code{NaN} slipped into the sample. Check
+  \code{sub.isna().sum()}. \\
+\code{NameError: name 'np'} & Run the import cell first. \\
+Nothing is shown & Only the \emph{last} line of a cell is displayed. Use \code{print(...)}. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

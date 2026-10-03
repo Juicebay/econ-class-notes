@@ -1,0 +1,158 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+%% Assignment #1, ECON*6140 Econometrics I (T. Stengos).
+%% Typeset from three photographed pages of the printed question sheet.
+%% Problems: partitioned OLS, a dynamic regression of the treasury-bill rate,
+%% an FWL-style two-step residual regression, a distributed lag of income
+%% growth, and the list of ten auxiliary regressions in (5).
+
+\begin{document}
+
+\hwheader{1}{Fall 2026.}{Due: Wednesday, October 14, 2026.}
+
+\question{(1)}
+Suppose we have the linear model $y = X\beta + u$, where $X$ is $n \times k$,
+$\beta$ is $k \times 1$ and $y$ and $u$ are $n \times 1$. We partition
+$X = [X_{1}|X_{2}]$ and $\beta = (\beta_{1}\ \ \beta_{2})^{T}$, where $X_{1}$ is
+$n \times k_{1}$, $X_{2}$ is $n \times k_{2}$, $\beta_{1}$ is $k_{1} \times 1$
+and $\beta_{2}$ is $k_{2} \times 1$, $k = k_{1} + k_{2}$. Hence
+\[
+  y = [X_{1}|X_{2}]
+      \begin{pmatrix} \beta_{1} \\ \beta_{2} \end{pmatrix}
+    + u
+    = X_{1}\beta_{1} + X_{2}\beta_{2} + u .
+\]
+Using the formula for the OLS estimator $b = (X^{T}X)^{-1}X^{T}y$ to find
+expressions in terms of the partitions $X_{1}$, $X_{2}$ for $b_{1}$ and $b_{2}$.
+In other words solve
+\[
+  \begin{pmatrix} b_{1} \\ b_{2} \end{pmatrix}
+  = \left[
+      \begin{pmatrix} X_{1}^{T} \\ X_{2}^{T} \end{pmatrix}
+      \bigl( X_{1}\ \ X_{2} \bigr)
+    \right]^{-1}
+    \begin{pmatrix} X_{1}^{T} \\ X_{2}^{T} \end{pmatrix} y .
+\]
+\emph{Hint}: Use the formula for the inverses of partitioned matrices in
+Johnston and Dinardo pp.\ 472--473. The resulting $b_{1}$, $b_{2}$ should be
+expressed in terms of $X_{1}$, $X_{2}$, $M_{1}$ and $M_{2}$.
+
+\question{(2)}
+The file \texttt{tbrate.docx} contains data for 1950:1 to 1996:4 for three
+series: $r_{t}$ the interest rate on 90-day treasury bills, $\pi_{t}$ the rate
+of inflation, and $y_{t}$ the logarithm of real GDP. For the period 1950:4 to
+1996:4 run the regression
+\begin{equation}\tag{1}
+  \Delta r_{t} = \beta_{1} + \beta_{2}\pi_{t-1} + \beta_{3}\Delta y_{t-1}
+                 + \beta_{4}\Delta r_{t-1} + \beta_{5}\Delta r_{t-2} + u_{t}
+\end{equation}
+where $\Delta$ is the first difference operator, defined so that
+$\Delta r_{t} = r_{t} - r_{t-1}$. Plot the residuals and fitted values against
+time. Then regress the residuals on the fitted values and on a constant. What do
+you notice? Now regress the fitted values on the residuals and on a constant.
+What do you notice in this last regression?
+
+\question{(3)}
+For the same sample period regress $\Delta r_{t}$ on a constant,
+$\Delta y_{t-1}$, $\Delta r_{t-1}$ and $\Delta r_{t-2}$. Save the residuals from
+this regression and call them $e_{t}$. Then regress $\pi_{t-1}$ on a constant,
+$\Delta y_{t-1}$, $\Delta r_{t-1}$ and $\Delta r_{t-2}$, save the residuals from
+this regression and call them $e_{t}^{\pi}$. Now regress $e_{t}$ on
+$e_{t}^{\pi}$. How are the estimated coefficient and the residuals from this last
+regression related to anything that you obtained when you estimated regression
+(1) in question (2) above?
+
+\question{(4)}
+Using the data from the consumption file to be found at the course link page,
+construct the variables $c_{t}$, the logarithm of consumption and $y_{t}$ the
+logarithm of income and their difference $\Delta c_{t} = c_{t} - c_{t-1}$ and
+$\Delta y_{t} = y_{t} - y_{t-1}$. Use the data to estimate the following model
+for the period 1953:1 to 1996:4
+\begin{equation}\tag{2}
+  \Delta c_{t} = \beta_{1} + \beta_{2}\Delta y_{t}
+                 + \beta_{3}\Delta y_{t-1} + \beta_{4}\Delta y_{t-2}
+                 + \beta_{5}\Delta y_{t-3} + \beta_{6}\Delta y_{t-4}
+                 + errors
+\end{equation}
+Let $\gamma = \sum_{i=2}^{6}\beta_{i}$. Calculate $\hat{\gamma}$ and its standard
+error in two different ways. In one method use the result where if
+$\hat{\gamma} = w^{T}\hat{\beta}$ where $w$ is a vector of known coefficients
+then $\Var(\hat{\gamma}) = w^{T}\Var(\hat{\beta})w$. The other method should use
+a transformation of the equation (1) above which allows $\hat{\gamma}$ and its
+standard error to be read directly from the regression output.
+
+\question{(5)}
+Consider the following linear regression
+\[
+  y = X_{1}\beta_{1} + X_{2}\beta_{2} + u
+\]
+where $y$ and $u$ are $n \times 1$, $X_{1}$ is $n \times k_{1}$, $X_{2}$ is
+$n \times k_{2}$, $\beta_{1}$ is $k_{1} \times 1$ and $\beta_{2}$ is
+$k_{2} \times 1$. Let $\hat{\beta}_{1}$ and $\hat{\beta}_{2}$ be the OLS
+parameter estimates from running this regression.
+
+Now consider the following regressions all to be estimated by OLS:
+
+\begin{flatlist}
+  \item[(a)] $y = X_{2}\beta_{2} + u$
+  \item[(b)] $P_{1}y = X_{2}\beta_{2} + u$
+  \item[(c)] $P_{1}y = P_{1}X_{2}\beta_{2} + u$
+  \item[(d)] $P_{X}y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$
+  \item[(e)] $P_{X}y = X_{2}\beta_{2} + u$
+  \item[(f)] $M_{1}y = X_{2}\beta_{2} + u$
+  \item[(g)] $M_{1}y = M_{1}X_{2}\beta_{2} + u$
+  \item[(h)] $M_{1}y = X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$
+  \item[(i)] $M_{1}y = M_{1}X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$
+  \item[(j)] $P_{X}y = M_{1}X_{2}\beta_{2} + u$
+\end{flatlist}
+
+Here $P_{1}$ projects orthogonally on to the space of the $X_{1}$,
+$M_{1} = I - P_{1}$ and $P_{X}$ projects orthogonally on to the space of all the
+$X$'s, $M_{X} = I - P_{X}$. For which of the above regressions are the estimates
+of $\beta_{2}$ the same as in the original regression and why? For which are the
+residuals the same and why?
+
+\begin{transcriptnotes}
+  \item The original is three photographed pages of the printed assignment sheet
+        (the photographs are landscape, with the page lying on its side). Page 1
+        carries the letterhead and questions (1) and (2) down to ``Then regress
+        the residuals''; page 2 carries the rest of (2), then (3), (4) and (5)
+        down to item (a); page 3 carries items (d)--(j) and the closing
+        paragraph of (5).
+  \item The header block is reproduced from the sheet: Department of Economics
+        and Finance, Lang School of Business and Economics, ECON*6140
+        Econometrics I, Instructor: T. Stengos, Fall 2026, Assignment \#1, due
+        Wednesday, October 14, 2026. The instructor line is not repeated in the
+        title block above.
+  \item The two numbered equations keep the numbers the sheet gives them: the
+        dynamic regression of $\Delta r_{t}$ in (2) is tagged (1), and the
+        distributed-lag model for $\Delta c_{t}$ in (4) is tagged (2), so the
+        tags run in order of appearance on the sheet, not in question order.
+  \item In question (4) the sheet says ``a transformation of the equation (1)
+        above'' although the equation immediately above it is tagged (2). The
+        wording is kept as printed; the reference is evidently to equation (2),
+        which is the model of that question.
+  \item Typographical slips on the sheet, corrected here: ``teh residuals'' for
+        ``the residuals'' in (2); ``Npw regress'' for ``Now regress'' in (3);
+        ``transfomration'' and ``standrad error'' for ``transformation'' and
+        ``standard error'' in (4); ``course course link page'' for ``course link
+        page'' in (4), where the first ``course'' ends a line and the second
+        begins the next; ``the space of tall the $X$'s'' for ``all the $X$'s''
+        in (5).
+  \item The sheet writes the transpose with a capital $T$ superscript
+        throughout --- $X^{T}X$, $(\beta_{1}\ \beta_{2})^{T}$, $X_{1}^{T}$ ---
+        where these notes usually use the prime mark $\xT$. Kept as printed.
+  \item Equation (2) names its disturbance ``errors'' rather than $u$, and the
+        regressions of (5) all write ``$+u$'' with the same symbol for the
+        disturbance as the original model; both kept as printed.
+  \item The ten items of question (5) are lettered (a)--(j) on the sheet, the
+        first three on page 2 and the remaining seven on page 3; they are
+        typeset with the same letters (a)--(j) here, in the same order.
+  \item Nothing in the three photographs was illegible. Read with the matrices
+        as $P_{1}$, $M_{1} = I - P_{1}$ for the space of $X_{1}$ and $P_{X}$,
+        $M_{X} = I - P_{X}$ for the space of all the $X$'s, as the paragraph
+        before the question states.
+\end{transcriptnotes}
+
+\end{document}

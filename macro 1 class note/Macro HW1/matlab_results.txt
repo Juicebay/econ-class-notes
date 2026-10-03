@@ -1,0 +1,35 @@
+K(1976Q1) = 2.128e+12   (K/Y = 2.76)   average growth K = 0.6450%  =  growth I = 0.6450%
+
+variable                 sd (%)  corr(y)
+Output                     1.70     1.00
+Consumption                1.60     0.81
+Investment                 6.45     0.63
+Gov consumption            1.01     0.22
+Gov investment             3.20    -0.06
+Exports                    3.70     0.76
+Imports                    4.72     0.82
+Net exports                0.69    -0.30
+Hours worked               2.16     0.89
+Labour productivity        1.01    -0.23
+Capital                    0.87    -0.15
+Capital productivity       2.02     0.90
+Nominal exchange rate      3.86    -0.12
+Price                      1.32     0.25
+
+corr(hours worked, labour productivity) = -0.6471
+corr(hours worked, capital productivity) = +0.8076
+autocorrelation of output = 0.729
+early 1980s    : peak 1981Q2 (+3.37%)  trough 1982Q4 (-5.44%)  depth -5.44%  6 quarters peak->trough, 11 quarters below trend (back at trend 1984Q4)
+early 1990s    : peak 1989Q1 (+2.55%)  trough 1992Q2 (-2.29%)  depth -2.29%  13 quarters peak->trough, 14 quarters below trend (back at trend 1994Q2)
+Great Recession: peak 2008Q3 (+1.92%)  trough 2009Q2 (-3.42%)  depth -3.42%  3 quarters peak->trough, 10 quarters below trend (back at trend 2011Q3)
+
+corr(output cycle, price cycle), 2007Q1-2011Q4 = +0.832
+price cycle minimum 2008-2010: -2.47% in 2009Q1
+corr(output cycle, price cycle), 1979Q1-1983Q4 = -0.606
+   (same correlation over 1979Q1-1982Q4 only: +0.044 -- in 1979-80 the price
+    cycle was still below trend, so the window has to end in 1983)
+
+series     log chg    pct chg    cycle low     back at 2019Q4
+output     -14.09%    -13.15%      -12.63%             2021Q4
+price       -1.72%     -1.70%       -4.70%             2020Q3
+hours      -24.69%    -21.88%      -21.89%             2023Q1

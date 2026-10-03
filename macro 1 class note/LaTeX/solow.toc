@@ -1,0 +1,50 @@
+\contentsline {section}{\numberline {1}Notation and the Growth-Rate Toolkit}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Three ways to measure every variable}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Dots and growth rates}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Exogenous growth of population and technology}{4}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Production and Factor Prices}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}The production function}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Cobb--Douglas production}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Factor prices and constant income shares}{5}{subsection.2.3}%
+\contentsline {section}{\numberline {3}The Equations of the Model}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The model in three units}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Deriving the capital-accumulation equations}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}The key dynamic equation}{7}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Dynamics and the Steady State}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The Solow diagram}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Solving for the steady state}{8}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Convergence to the steady state}{8}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Balanced Growth: The Long-Run Facts}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Output per person grows at the rate of technological progress}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Consumption and investment grow with output}{9}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Capital grows faster than labour}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}The return to capital is constant}{9}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Summary of long-run growth rates}{9}{subsection.5.5}%
+\contentsline {section}{\numberline {6}Transitional Growth and Convergence}{10}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Long-run growth vs.\ transitional growth}{10}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Conditional convergence, no absolute convergence, divergence}{10}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}A numerical example}{11}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Limits of transitional growth}{11}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Explaining International Income Differences}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Saving rates}{12}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Population growth}{12}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Technology}{12}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Solving the Solow Differential Equation}{13}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Linear first-order differential equations}{13}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}The exact Solow transition path}{14}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Log-linearizing around the steady state}{15}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Solving the log-linear equation}{16}{subsection.8.4}%
+\contentsline {subsection}{\numberline {8.5}From capital convergence to income convergence}{17}{subsection.8.5}%
+\contentsline {subsection}{\numberline {8.6}From the Solow transition to a growth regression}{17}{subsection.8.6}%
+\contentsline {subsection}{\numberline {8.7}Speed of convergence and half-life}{18}{subsection.8.7}%
+\contentsline {section}{\numberline {9}Policy Analysis}{18}{section.9}%
+\contentsline {subsection}{\numberline {9.1}The Golden Rule}{18}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Saving above or below the Golden Rule}{19}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}A higher saving rate: the transition}{19}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Foreign aid}{20}{subsection.9.4}%
+\contentsline {subsection}{\numberline {9.5}Technical assistance and the level of technology}{21}{subsection.9.5}%
+\contentsline {section}{\numberline {10}Overall Assessment and Limitations}{21}{section.10}%
+\contentsline {subsection}{\numberline {10.1}What the model gets right}{21}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Overall assessment}{22}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Limitations of the baseline model}{22}{subsection.10.3}%
+\contentsline {section}{Formula Sheet}{23}{Item.15}%

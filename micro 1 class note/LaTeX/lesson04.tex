@@ -1,0 +1,308 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{4}{The compensated law of demand, the Slutsky matrix, and the limits of WARP}{}
+
+\section{The compensated law of demand, and WARP}
+
+The compensated law of demand is an ``if and only if'' statement: for demand that is
+homogeneous of degree 0 and satisfies Walras' law, its two parts are equivalent, so
+WARP says the same thing as
+\[ (P'-P)\cdot\bigl(x(P',w')-x(P,w)\bigr)\le 0
+   \qquad\text{whenever}\qquad w'=P'\cdot x(P,w), \]
+with strict inequality whenever $x(P',w')\ne x(P,w)$. That is, when the price change is accompanied by the wealth compensation that keeps
+the original bundle just affordable, the compensated change in demand points in the
+direction opposite to the price change. What follows proves the implication
+WARP $\Rightarrow$ the inequality.
+
+\section{Proof: WARP implies the compensated law of demand}
+
+\topic{The trivial case}
+If $x(P',w')=x(P,w)$ then $x(P',w')-x(P,w)=0$, so the left-hand side is zero and the
+inequality holds.
+
+\topic{The case $x(P',w')\ne x(P,w)$}
+By construction of the compensated wealth, $P'\cdot x(P,w)=w'$, and by Walras' law at
+the new prices the agent spends all of it, $w'=P'\cdot x(P',w')$. Combining the two,
+\[ P'\cdot\bigl(x(P',w')-x(P,w)\bigr)=0. \tag{$*$} \]
+Now use WARP. Since $P'\cdot x(P,w)=w'$, the old bundle $x(P,w)$ was affordable when
+$x(P',w')$ was chosen, so
+\[ x(P',w')\ \text{is revealed preferred to}\ x(P,w). \]
+The opposite revealed preference cannot also hold, for that would be a
+self-contradiction. If $x(P',w')$ had been affordable at $(P,w)$, then --- $x(P,w)$
+being the bundle chosen there --- $x(P,w)$ would be revealed preferred to
+$x(P',w')$, and the two bundles would each be revealed preferred to the other. WARP
+rules this out, so $x(P',w')$ was \emph{not} affordable at $(P,w)$:
+\[ P\cdot x(P',w')>w . \]
+Subtracting $w=P\cdot x(P,w)$ --- Walras' law at the original prices --- from this,
+\[ P\cdot\bigl(x(P',w')-x(P,w)\bigr)>0 . \]
+Finally, use $(*)$:
+\[
+\begin{aligned}
+  (P'-P)\cdot\bigl(x(P',w')-x(P,w)\bigr)
+  &=P'\cdot\bigl(x(P',w')-x(P,w)\bigr)-P\cdot\bigl(x(P',w')-x(P,w)\bigr)\\
+  &=0-P\cdot\bigl(x(P',w')-x(P,w)\bigr)<0 ,
+\end{aligned}
+\]
+which is the compensated law of demand, strict in this case.
+
+\section{The marginal price change: the substitution effect}
+
+Now consider a small change in the price $p_j$ alone, with the wealth compensation
+applied at the same time. The question is: by how much does the demand for good $i$
+respond to $p_j$ when wealth is adjusted so that the \emph{old} bundle stays just
+affordable? That response is the substitution effect $S_{ij}$.
+
+\topic{Step 1: fix the starting point, and write compensated demand as a function of $p'$}
+Assume demand is differentiable. Start at prices $p$ and wealth $w$, where the
+consumer buys $x(p,w)$. Treat
+$(p,w)$, and therefore the old bundle $x(p,w)$, as \emph{fixed numbers}: they
+describe where we start and do not move. The only variable is the new price vector
+$p'$. Slutsky compensation sets wealth at the new prices to
+\[ w'(p')=p'\cdot x(p,w)=\sum_{k=1}^{l}p_k'\,x_k(p,w), \]
+so the compensated demand for good $i$ is a function of $p'$ alone,
+\[ h_i(p')\equiv x_i\bigl(p',\,w'(p')\bigr)=x_i\bigl(p',\,p'\cdot x(p,w)\bigr). \]
+
+\topic{Step 2: see where $p_j'$ enters}
+In $x_i\bigl(p',\,w'(p')\bigr)$ the new price $p_j'$ enters in two places:
+\begin{flatnum}
+  \item \emph{directly}, as the $j$-th price argument of the demand function;
+  \item \emph{through wealth}, since $w'(p')=\sum_k p_k'\,x_k(p,w)$. Because the old
+        bundle $x(p,w)$ is a constant here, only the $k=j$ term depends on $p_j'$,
+        so
+        \[ \frac{\partial w'}{\partial p_j'}=x_j(p,w): \]
+        raising $p_j'$ by one unit raises the compensation by exactly the amount of
+        good $j$ in the old bundle.
+\end{flatnum}
+
+\topic{Step 3: the chain rule}
+Adding the two channels,
+\[
+  \frac{\partial h_i(p')}{\partial p_j'}
+  =\underbrace{\frac{\partial x_i}{\partial p_j'}(p',w')}_{\text{direct price effect}}
+   +\underbrace{\frac{\partial x_i}{\partial w}(p',w')}_{\text{wealth effect}}\;
+    \underbrace{\frac{\partial w'}{\partial p_j'}}_{=\,x_j(p,w)} ,
+  \qquad w'=p'\cdot x(p,w).
+\]
+Here $\partial x_i/\partial p_j'$ is the partial derivative of the demand function
+$x_i(\cdot,\cdot)$ with respect to its $j$-th price argument, holding its wealth
+argument fixed, and $\partial x_i/\partial w$ its derivative with respect to the
+wealth argument; both are evaluated at the new point $(p',w')$. Note that
+$x_j(p,w)$ carries the \emph{old} prices: it comes from $\partial w'/\partial p_j'$,
+and the old bundle does not move.
+
+\topic{Step 4: evaluate at $p'=p$}
+$S_{ij}$ is the effect of an \emph{infinitesimal} change, so the derivative is taken
+at the starting point, $p'=p$. There the compensated wealth is
+$w'=p\cdot x(p,w)=w$ by Walras' law, so the evaluation point $(p',w')$ is just
+$(p,w)$, and the price argument written $p_j'$ is then $p_j$. This gives the
+\emph{substitution effect} of a change in the price of good $j$ on good $i$:
+\[
+  S_{ij}\equiv
+  \frac{\partial h_i(p')}{\partial p_j'}\bigg|_{p'=p}
+  =\frac{\partial x_i(p,w)}{\partial p_j}
+   +\frac{\partial x_i(p,w)}{\partial w}\,x_j(p,w).
+\]
+
+\topic{Reading the formula}
+The ordinary (uncompensated) price effect $\partial x_i/\partial p_j$ mixes two
+things: relative prices change, \emph{and} the consumer becomes poorer (by $x_j$ per
+unit rise in $p_j$, to first order). The compensation hands back exactly that loss,
+and the term $\frac{\partial x_i}{\partial w}\,x_j$ is the demand response to it.
+What is left, $S_{ij}$, is the response to the change in relative prices alone.
+Rearranged, this is the \emph{Slutsky equation}:
+\[
+  \underbrace{\frac{\partial x_i(p,w)}{\partial p_j}}_{\text{total effect}}
+  =\underbrace{S_{ij}}_{\text{substitution effect}}
+   \;\underbrace{-\;\frac{\partial x_i(p,w)}{\partial w}\,x_j(p,w)}_{\text{wealth effect}} .
+\]
+
+\section{The Slutsky matrix}
+
+The $l\times l$ matrix that collects all the $S_{ij}$ is the \emph{substitution
+matrix}, or \emph{Slutsky matrix}. What can be said about its structure? The clue is
+the compensated law of demand, which in differential form reads
+\[ \sum_{i=1}^{l} dp_i\,dx_i\le 0 . \]
+The change in wealth that accompanies the price change is
+\[ dw=x(P,w)\cdot dP=\sum_{j=1}^{l}x_j(P,w)\,dP_j , \]
+so the total differential of the demand for good $i$ is
+\[
+\begin{aligned}
+  dx_i&=\sum_{j=1}^{l}\frac{\partial x_i(P,w)}{\partial P_j}\,dP_j
+        +\frac{\partial x_i(P,w)}{\partial w}\,dw\\[2pt]
+      &=\sum_{j=1}^{l}\frac{\partial x_i(P,w)}{\partial P_j}\,dP_j
+        +\frac{\partial x_i(P,w)}{\partial w}\sum_{j=1}^{l}x_j(P,w)\,dP_j\\[2pt]
+      &=\sum_{j=1}^{l}\Bigl[\frac{\partial x_i(P,w)}{\partial P_j}
+        +\frac{\partial x_i(P,w)}{\partial w}\,x_j(P,w)\Bigr]dP_j\\[2pt]
+      &=\sum_{j=1}^{l}S_{ij}\,dP_j .
+\end{aligned}
+\]
+
+\section{Negative semi-definiteness of the Slutsky matrix}
+
+Substituting $dx_i=\sum_j S_{ij}\,dP_j$ into the compensated law of demand,
+\[
+  \sum_{i=1}^{l}dP_i\,dx_i
+  =\sum_{i=1}^{l}dP_i\sum_{j=1}^{l}S_{ij}\,dP_j
+  =\sum_{i=1}^{l}\sum_{j=1}^{l}dP_i\,S_{ij}\,dP_j\le 0 ,
+\]
+by the compensated law of demand. Since this holds for every price change $dP$, the
+quadratic form $dP' S\,dP$ is non-positive for every $dP$: the Slutsky matrix is
+\emph{negative semi-definite}, in the sense $v'Sv\le0$ for all $v\in\R^{l}$, which
+does not require $S$ to be symmetric.
+
+Later in the course the same conclusion is obtained when axioms are imposed on
+preferences. (The quadratic form only pins down the symmetric part
+$\tfrac12(S+S')$. WARP does not deliver symmetry of $S$ in general --- with two goods
+$S$ is automatically symmetric, given homogeneity and Walras' law, but not with three
+or more --- whereas the preference-based derivation also gives symmetry.)
+
+$S$ is never negative \emph{definite}. By Walras' law and then homogeneity of degree 0 (the Euler
+equation of Lesson 3),
+\[ \sum_{j}S_{ij}p_j=\sum_{j}\frac{\partial x_i}{\partial p_j}p_j
+   +\frac{\partial x_i}{\partial w}\,p\cdot x(p,w)
+   =\sum_{j}\frac{\partial x_i}{\partial p_j}p_j+\frac{\partial x_i}{\partial w}\,w=0, \]
+so $S\,p=0$ and $p'Sp=0$: a proportional change in all prices, fully compensated,
+changes nothing.
+
+\section{WARP alone is not enough: an example}
+
+Consider three price situations and the bundles chosen in each:
+\[
+\begin{array}{lll}
+  P^{0}=(1,1,2), & P^{1}=(1,1,1), & P^{2}=(1,2,1),\\[2pt]
+  x^{0}=(5,19,9), & x^{1}=(12,12,12), & x^{2}=(27,11,1).
+\end{array}
+\]
+Here $x^{i}=x(P^{i},w^{i})$, so the wealth in situation $i$ is what $x^{i}$ costs at
+$P^{i}$. The cost of each bundle at each price vector is
+
+\begin{center}
+\begin{tabular}{c|ccc}
+        & $P^{0}$ & $P^{1}$ & $P^{2}$\\\hline
+$x^{0}$ & \textbf{42} & 33 & 52\\
+$x^{1}$ & 48 & \textbf{36} & 48\\
+$x^{2}$ & 40 & 39 & \textbf{50}
+\end{tabular}
+\end{center}
+
+\noindent
+the bold entry in each column being the wealth, i.e.\ the cost of the bundle actually
+chosen there: $w^{0}=42$, $w^{1}=36$, $w^{2}=50$. Reading the columns:
+
+\begin{flatlist}
+  \item At $P^{0}$ (wealth 42): $x^{1}$ costs 48 and is not affordable, but $x^{2}$
+        costs 40. So $x^{2}$ was in the budget and $x^{0}$ was chosen:
+        $x^{0}$ R.P.\ $x^{2}$.
+  \item At $P^{1}$ (wealth 36): $x^{2}$ costs 39 and is not affordable, but $x^{0}$
+        costs 33, so $x^{1}$ R.P.\ $x^{0}$.
+  \item At $P^{2}$ (wealth 50): $x^{0}$ costs 52 and is not affordable, but $x^{1}$
+        costs 48, so $x^{2}$ R.P.\ $x^{1}$.
+\end{flatlist}
+
+Chaining the three,
+\[ x^{0}\ \text{R.P.}\ x^{2}\ \text{R.P.}\ x^{1}\ \text{R.P.}\ x^{0}, \]
+a cycle: the revealed preferences are \emph{intransitive}. And yet WARP is satisfied
+at every pair. In each of the three comparisons above the alternative bundle is
+affordable only \emph{one} way round --- $x^{0}$ is not affordable at $P^{2}$, $x^{1}$
+is not affordable at $P^{0}$, and $x^{2}$ is not affordable at $P^{1}$ --- so no two
+bundles are ever revealed preferred to each other directly. WARP, which only ever
+compares two situations at a time, never notices the cycle.
+
+So WARP on its own is not enough to establish that the agent has rational (that is,
+transitive) preferences. The example needs three goods: with only two goods, WARP
+does rule out such cycles.
+
+\section{The strong axiom of revealed preference (SARP)}
+
+What is missing is transitivity. The \emph{strong axiom of revealed preference} adds
+it: no chain of revealed preferences may return to its starting point,
+\[ x^{0}\ \text{R.P.}\ x^{1}\ \text{R.P.}\ \cdots\ \text{R.P.}\ x^{0}
+   \quad\text{is forbidden.} \]
+SARP extends WARP from pairs to chains of any length (a chain of length two is
+exactly what WARP forbids), so SARP implies WARP but not conversely; the example above
+satisfies WARP and fails SARP, which is exactly why it is the counterexample it is.
+
+\begin{transcriptnotes}
+  \item The original opens with a title page reading only ``Lesson 4''.
+  \item \textbf{Corrected:} in the total differential of $dx_i$ the original sums
+        over $i$ inside the sum over $i$ and then keeps the index $i$ on the
+        marginal effect of wealth,
+        ``$\sum_j\frac{\partial x_i}{\partial P_j}dP_j
+        +\frac{\partial x_i}{\partial w}\sum_ix_i(P,w)dP_i$''. The second sum must
+        run over the good whose price changed, and the term multiplying
+        $\frac{\partial x_i}{\partial w}$ is $x_j(P,w)\,dP_j$ --- which is what makes
+        the bracket come out as $S_{ij}$ on the next line. Both places are written
+        with $j$ here.
+  \item \textbf{Corrected:} the derivative that defines the substitution effect is
+        taken with respect to $p_j'$ (the price inside the compensated demand), not
+        with respect to $p_j$; the notation $p'$ is used throughout.
+  \item \textbf{Corrected:} the last page reads ``Strong axiom A.P.\ (SARP)''; the
+        axiom is the strong axiom of \emph{revealed preference}. The line reads
+        ``Assume away transitivity cycle'' (``away'' inserted above the line),
+        i.e.\ SARP assumes away cycles of revealed preference --- the
+        intransitive cycles of the example.
+  \item Negative semi-definite: the notes conclude straight from
+        $\sum_i\sum_j dP_iS_{ij}dP_j\le0$ that the Slutsky matrix is negative
+        semi-definite, and that conclusion is correct as it stands, with
+        semi-definiteness meant as $v'Sv\le0$ for all $v$ (as in MWG), which
+        does not presuppose symmetry. \textbf{Corrected:} an earlier version of
+        this transcription said the conclusion needed symmetry; the remark now says
+        only that the quadratic form sees the symmetric part, and that symmetry is
+        a separate property, obtained later from axioms on preferences.
+  \item Page 5's remark ``Later, we get the same conclusion when we impose axioms
+        on preferences'' is kept as the teacher's statement (it refers to negative
+        semi-definiteness). \textbf{Corrected:} an earlier version of this
+        transcription turned it into a claim that the \emph{next lecture} derives
+        symmetry. \textbf{Added:} the parenthetical on symmetry.
+  \item \textbf{Added:} the result $Sp=0$ (so $S$ is never negative definite), the
+        assumptions (homogeneity, Walras' law) under which the ``if and only if''
+        holds, the strict inequality when the bundles differ, and the remark that
+        the WARP-without-SARP example needs three goods.
+  \item \textbf{Corrected:} in the example, ``both were in the budget'' at $P^{0}$
+        said $x^{1}$ was affordable there; it costs 48 against a wealth of 42, and
+        only $x^{2}$ was in the budget.
+  \item The chain-rule line wrote every partial derivative with the same composite
+        argument $x_i(p',p'\cdot x(p,w))$, which makes the right-hand side look
+        like the left-hand side. \textbf{Corrected:} an earlier version of this
+        transcription wrote the direct term as $\partial x_i/\partial p_j$ while
+        differentiating in $p_j'$; since the derivative is with respect to the
+        new price, the direct term is $\partial x_i/\partial p_j'$, evaluated at
+        $(p',w')$. It becomes $\partial x_i(p,w)/\partial p_j$ only after
+        evaluating at $p'=p$. \textbf{Added:} the derivation is split into four
+        steps (fix the starting point; the two channels through which $p_j'$
+        enters; the chain rule; evaluation at $p'=p$ using Walras' law), with the
+        compensated demand named $h_i(p')$, and the Slutsky equation is stated.
+  \item ``slatsky'' is spelled \emph{Slutsky} here, and ``intransive'' is
+        \emph{intransitive}.
+  \item The original uses lower case $p$ in the substitution-effect section and upper
+        case $P$ in the Slutsky-matrix section; the case is kept as written, as
+        elsewhere in these notes.
+  \item The example is transcribed with its numbers unchanged; the cost table was
+        recomputed from the price vectors and bundles and matches the original entry
+        by entry ($x^{0}$: 42, 33, 52; $x^{1}$: 48, 36, 48; $x^{2}$: 40, 39, 50).
+        The original writes the table with the bundles as rows and the price vectors
+        as columns, which is kept.
+  \item The line that introduces the marginal-price-change section reads ``we move
+        to key results readings marginal price change'' in the original; the word
+        after ``results'' is probably ``regarding''. The sentence itself is not
+        typeset; the section heading replaces it.
+  \item \textbf{Corrected:} the original introduces the marginal change as ``change
+        in $x_i$ when $P_i$ changes''; the derivation that follows (and $S_{ij}$)
+        concerns a change in the price $p_j$ of good $j$, so $p_j$ is used.
+  \item On the proof page, the original's step ``$x(P',w')$ is R.P.\ to $x(P,w)$, so
+        WARP tells us that $x(P,w)$ was picked under $(P,w)$ because $x(P',w')$ was
+        not affordable'' compresses the argument: that $x(P',w')$ was not affordable
+        at $(P,w)$ is the \emph{conclusion} drawn from WARP (the opposite revealed
+        preference would be a contradiction), not a premise. The proof is written out
+        with that step spelled out.
+  \item Pages of the original, for tracing back: page 2 the ``iff'' statement and the
+        proof of WARP $\Rightarrow$ the inequality; page 3 the marginal price change
+        and $S_{ij}$; page 4 the Slutsky matrix and the differential form; page 5 the
+        negative semi-definiteness conclusion; page 6 the three-price example;
+        page 7 the strong axiom.
+\end{transcriptnotes}
+
+\end{document}

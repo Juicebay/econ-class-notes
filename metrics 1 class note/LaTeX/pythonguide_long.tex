@@ -1,0 +1,805 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+%% Python syntax companion for ECON*6140 Assignment #1.
+%% Teaches the mechanics of pandas / numpy / statsmodels / matplotlib so the
+%% assignment can be coded independently.  Every snippet in this file was run
+%% against the actual tbrate.xlsx in the "Metrics HW1" folder before typesetting.
+%% This file is NOT part of the lesson/hw build glob in build.sh.
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage[hidelinks]{hyperref}
+
+%% Long unbreakable \texttt tokens in justified prose tend to overrun the
+%% margin; microtype plus a generous emergencystretch lets TeX stretch the
+%% line instead of overflowing.
+\usepackage{microtype}
+\setlength{\emergencystretch}{3.2em}
+
+\definecolor{codebg}{RGB}{246,246,248}
+\definecolor{codekw}{RGB}{0,83,166}
+\definecolor{codestr}{RGB}{163,21,21}
+\definecolor{codecom}{RGB}{0,120,60}
+\definecolor{codegray}{RGB}{120,120,120}
+
+\lstdefinestyle{py}{
+  language=Python,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecom}\itshape,
+  numbers=left,
+  numberstyle=\tiny\color{codegray},
+  numbersep=9pt,
+  frame=single,
+  framerule=0.3pt,
+  rulecolor=\color{codegray!60},
+  xleftmargin=16pt,
+  breaklines=true,
+  breakindent=14pt,
+  showstringspaces=false,
+  tabsize=4,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+\lstset{style=py}
+
+%% Inline code that is safe inside table cells (see the listings pitfall:
+%% \lstinline must never sit inside a command argument, so tables use \code).
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\fn}[1]{\texttt{#1}}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+
+\begin{document}
+
+\begin{center}
+  {\footnotesize\scshape Department of Economics and Finance\\
+   Lang School of Business and Economics}\\[5pt]
+  {\large\scshape ECON*6140 Econometrics I}\\[3pt]
+  {\LARGE\bfseries Python Syntax Companion}\\[4pt]
+  {\itshape Writing Assignment \#1 yourself, one line at a time}\\[3pt]
+  {\small Fall 2026 --- works with the \code{.venv} in the \code{Metrics HW1} folder}
+\end{center}
+\vspace{0.4em}\hrule\vspace{0.5em}
+
+\noindent\textbf{What this is.} A syntax manual, not a solutions manual. It shows
+you the Python you have to type --- how to load the data, build a lag, run a
+regression, pull a number out of the output, plot a series, and form a linear
+combination of coefficients and its standard error. The econometric reasoning
+stays with you; the typing should not be what slows you down.
+
+\noindent\textbf{How to read it.} Every grey block is a snippet that runs as
+written. Copy a block into a cell in \code{HW1.ipynb}, change the names, press
+\code{Shift+Enter}. Do not paste all of it at once --- run one idea per cell so
+that when something breaks you know which line broke it.
+
+\vspace{0.6em}
+{\small\tableofcontents}
+
+\newpage
+
+\section{The five objects you are actually working with}
+
+Almost every line of the assignment manipulates one of five things. Learn their
+names and the rest is vocabulary.
+
+\begin{center}
+\begin{tabular}{@{}p{2.5cm}p{12.9cm}@{}}
+\toprule
+\textbf{Object} & \textbf{What it is, and why you care} \\
+\midrule
+\code{DataFrame} & Your worksheet. Rows are observations, columns are variables.
+  \code{df} in the notebook is one. \\
+\code{Series} & A single column, or any single vector of numbers.
+  \code{df['r']} is one; so is the residual vector of a regression. \\
+\code{Index} & The row labels. Yours will be quarterly dates, which is what lets
+  you write \code{loc['1950Q4':'1996Q4']} to slice a sample. \\
+\code{ndarray} & A raw numpy array --- numbers with no labels and no dates.
+  The linear algebra in question (1) and the \code{w} vector in question (4)
+  live here. \\
+result object & What \code{.fit()} hands back (\code{res}). It is a bundle:
+  parameters, standard errors, residuals, fitted values, covariance matrix. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Attributes versus methods --- the single most common beginner error}
+
+An \emph{attribute} is a stored fact, written with no parentheses. A
+\emph{method} is an action, written with parentheses.
+
+\begin{lstlisting}
+df.shape          # (188, 7)      attribute: parentheses would error
+df.columns        # column names, as an Index
+df.index          # the 188 date labels
+df.dtypes         # what type each column is
+
+df.head()         # method: the () is what calls it
+df.head(3)        # an argument inside the () narrows it
+df['r'].mean()    # method on a Series
+\end{lstlisting}
+
+\noindent If you ever see \code{TypeError: 'DataFrame' object is not callable},
+you put parentheses on an attribute. If you see a bound-method printed at you
+(something like \code{<bound method ...>}), you left the parentheses off a method.
+
+\subsection{How to explore instead of memorise}
+
+You do not need to remember the whole library. You need to know how to ask it
+questions. In a notebook cell:
+
+\begin{lstlisting}
+res.params            # what is in this object?
+dir(res)              # every attribute and method it has
+help(res.cov_params)  # the documentation, in an output cell
+res.cov_params?       # same thing, Jupyter shorthand
+\end{lstlisting}
+
+\noindent In a running cell, typing \code{res.} and pressing \code{Tab} lists
+what is available. If a name is half-typed, \code{Shift+Tab} shows its
+signature. This is faster than any cheat sheet, including this one.
+
+\section{Reading the spreadsheet}
+
+The data file is \code{tbrate.xlsx}, converted from the \code{tbrate.docx} on the
+course page. It has two sheets, \code{data} and \code{notes}; the working sheet
+holds 188 quarterly rows with columns \code{obs}, \code{year}, \code{quarter},
+\code{period}, \code{r}, \code{y}, \code{pi}.
+
+\begin{lstlisting}
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
+pd.set_option('display.precision', 4)   # tidy output while you work
+
+df = pd.read_excel('tbrate.xlsx', sheet_name='data')
+df.head()
+\end{lstlisting}
+
+\noindent\code{sheet\_name} takes the sheet's name as a string, or its position
+as a number (\code{0} is the first sheet). \code{read\_excel} needs the
+\code{openpyxl} engine, which is already in your \code{requirements.txt}.
+
+\subsection{Turning the period column into a date index}
+
+The \code{period} column arrives as text such as \code{'1950Q1'}. Convert it to a
+\code{PeriodIndex} and the frame gains a real time axis:
+
+\begin{lstlisting}
+df.index = pd.PeriodIndex(df['period'], freq='Q')
+df.index[:3]            # PeriodIndex(['1950Q1','1950Q2','1950Q3'], ...)
+\end{lstlisting}
+
+\noindent The \code{freq='Q'} is not optional decoration: it is what tells pandas
+the step between labels is one quarter, and therefore what
+\code{loc['1950Q4':'1996Q4']} means. Two consequences you will use constantly:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item \textbf{Slicing a sample by label.} \code{df.loc['1950Q4':'1996Q4']} keeps
+        the rows from 1950Q4 to 1996Q4 inclusive. Both endpoints are included ---
+        unlike positional slicing, which excludes the last.
+  \item \textbf{Plotting with dates on the $x$-axis.} Convert when you plot with
+        \code{df.index.to\_timestamp()}; a \code{PeriodIndex} does not always
+        cooperate with matplotlib directly.
+\end{itemize}
+
+\noindent An equivalent tidier idiom, if you prefer the date column not to be
+duplicated as a variable:
+
+\begin{lstlisting}
+df = df.set_index(pd.PeriodIndex(df['period'], freq='Q'))
+\end{lstlisting}
+
+\section{Building the regression variables}
+
+The assignment writes the model in differences and lags. pandas does this with
+two vectorised operations --- no loops, ever:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item \code{.diff()} --- the first difference, $\Delta x_t = x_t - x_{t-1}$.
+  \item \code{.shift(1)} --- the one-period lag, $x_{t-1}$.
+\end{itemize}
+
+\begin{lstlisting}
+df['dr']   = df['r'].diff()        # Delta r_t      = r_t   - r_{t-1}
+df['dy']   = df['y'].diff()        # Delta y_t      = y_t   - y_{t-1}
+df['pi_1'] = df['pi'].shift(1)     # pi_{t-1}
+df['dy_1'] = df['dy'].shift(1)     # Delta y_{t-1}
+df['dr_1'] = df['dr'].shift(1)     # Delta r_{t-1}
+df['dr_2'] = df['dr'].shift(2)     # Delta r_{t-2}
+\end{lstlisting}
+
+\noindent Three things worth internalising here.
+
+\textbf{Order matters.} \code{dy\_1} is defined from \code{dy}, so the
+\code{df['dy'] = ...} line must run before the \code{df['dy\_1'] = ...} line.
+Writing them out of order gives you a column of \code{NaN} and no error message.
+
+\textbf{Chaining is allowed and equivalent.} The series \code{dy\_1} above is the
+same as \code{df['y'].diff()} with a \code{.shift(1)} applied afterwards:
+difference first, then lag. Read a chain left to right as English.
+
+\textbf{Lags are defined on the variable, not on the equation.}
+$\Delta r_{t-1}$ means ``the series $\Delta r$, moved down one row'', which is
+\code{df['dr'].shift(1)}. It does \emph{not} mean \code{df['r'].diff(1)} again.
+
+\subsection{What \code{shift} does to the top of the sample}
+
+\code{shift(1)} slides the series down one row and leaves a hole at the top,
+which pandas fills with a missing value, \code{NaN}:
+
+\begin{lstlisting}
+df[['r', 'dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2']].head(4)
+#          r    dr  pi_1  dy_1  dr_1  dr_2
+# 1950Q1 0.510   NaN   NaN   NaN   NaN   NaN
+# 1950Q2 0.510 0.000  0.50   NaN   NaN   NaN
+# 1950Q3 0.550 0.040  4.06  0.00 0.000   NaN
+# 1950Q4 0.623 0.073  5.50  0.023 0.040   0.0
+\end{lstlisting}
+
+\noindent This is why the assignment's sample starts at 1950:4 rather than
+1950:1 --- the first rows cannot carry a $\Delta r_{t-2}$, so they are not
+observations of the model. \code{NaN} propagates: any arithmetic touching a
+\code{NaN} returns \code{NaN}.
+
+\subsection{Adding several columns at once}
+
+\code{assign} returns a new frame, which is useful for a script but easy to get
+wrong in a notebook because it does not modify \code{df} in place:
+
+\begin{lstlisting}
+df = df.assign(dr=df['r'].diff(), dy=df['y'].diff())
+\end{lstlisting}
+
+\noindent The reassignment \code{df = ...} is the part people forget. Plain
+square-bracket assignment, \code{df['dr'] = ...}, modifies \code{df} directly and
+is what you want most of the time.
+
+\section{Choosing the estimation sample}
+
+Two steps: cut the dates, then throw away the rows that the lags left incomplete.
+
+\begin{lstlisting}
+sub = df.loc['1950Q4':'1996Q4'].copy()          # 1. the sample period
+sub = sub.dropna(subset=['dr', 'pi_1', 'dy_1', 'dr_1', 'dr_2'])   # 2. complete rows
+sub.shape          # (185, 13)  -- 185 usable observations
+\end{lstlisting}
+
+\noindent\code{dropna(subset=[...])} drops a row only if one of the \emph{named}
+columns is missing; other columns may be \code{NaN} and the row survives. Called
+with no argument, \code{dropna()} drops rows with a missing value anywhere, which
+can silently delete data you meant to keep.
+
+\noindent\code{.copy()} detaches \code{sub} from \code{df}. Without it, later lines
+like \code{sub['e'] = ...} raise a \code{SettingWithCopyWarning} because pandas
+cannot tell whether you meant to write into \code{df} as well.
+
+\noindent A very useful check before every regression --- the number of
+observations you think you have versus the number you actually have:
+
+\begin{lstlisting}
+len(sub)                                   # 185
+sub[['dr', 'pi_1']].isna().sum()           # missing values per column: 0 and 0
+\end{lstlisting}
+
+\noindent The single most common way to get two regressions that ``should''
+match and do not is to let them run on different row counts, because a
+\code{NaN} hides in one of them. Keep an eye on \code{res.nobs}.
+
+\section{Running a regression}
+
+\subsection{The formula interface --- use this one}
+
+\begin{lstlisting}
+res = smf.ols('dr ~ pi_1 + dy_1 + dr_1 + dr_2', data=sub).fit()
+res.summary()
+\end{lstlisting}
+
+\noindent The formula reads as ``\code{dr} is explained by \code{pi\_1},
+\code{dy\_1}, \code{dr\_1}, \code{dr\_2}''. Grammar you will need:
+
+\begin{center}
+\begin{tabular}{@{}p{3.3cm}p{12.1cm}@{}}
+\toprule
+\textbf{Formula} & \textbf{Meaning} \\
+\midrule
+\code{y \textasciitilde\ x1 + x2} & Regress \code{y} on \code{x1}, \code{x2} and an intercept. The \code{+} is \emph{not} addition --- it means ``include as a regressor''. \\
+\code{y \textasciitilde\ x1 - 1} & No intercept. Question (3) needs this: ``regress $\Delta r_t$ on a constant, $\Delta y_{t-1}$, \ldots'' includes the constant, so you write nothing special; but suppressing one is \code{- 1}, not \code{+ 0}. \\
+\code{np.log(x)} & Functions work inside a formula; \code{smf} looks them up in the data. \\
+\code{I(x**2)} & Wrap arithmetic that is not a plain variable name in \code{I()}. \\
+\code{y \textasciitilde\ x1 * x2} & Main effects \emph{and} interaction. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Two things the formula interface does for you: it adds the constant
+automatically (so never add your own \code{const} column as well --- that is a
+singular design matrix), and it drops incomplete rows and tells you it did.
+
+\noindent\textbf{Do not forget \code{.fit()}.}
+\code{smf.ols(...)} alone is a model \emph{specification}; \code{res} only exists
+after \code{.fit()}. Everything in the next section lives on the fitted result.
+
+\subsection{The matrix interface --- use it in question (5)}
+
+When the regressors are not columns of a frame --- when \code{X1}, \code{X2},
+\code{P1y}, \code{M1y} are vectors you constructed --- the array interface is
+the one to reach for:
+
+\begin{lstlisting}
+X = sub[['pi_1', 'dy_1', 'dr_1', 'dr_2']]      # a DataFrame of regressors
+X = sm.add_constant(X)                          # prepend the constant yourself
+res = sm.OLS(sub['dr'], X).fit()
+\end{lstlisting}
+
+\noindent Note the differences from \code{smf}: \code{sm.OLS} takes the data as
+two arguments, not a formula; \code{sm.add\_constant} is mandatory, because no
+formula is there to add the intercept; and the two inputs must line up row for
+row --- same length, same order.
+
+\noindent The estimator itself, if you want to see the algebra of question (1)
+in code:
+
+\begin{lstlisting}
+Xv = np.asarray(X)                # ndarray, shape (185, 5)
+yv = sub['dr'].to_numpy()         # ndarray, shape (185,)
+
+b = np.linalg.inv(Xv.T @ Xv) @ Xv.T @ yv     # b = (X'X)^{-1} X'y
+b
+\end{lstlisting}
+
+\noindent\code{@} is matrix multiplication; \code{*} is elementwise
+multiplication and will silently give you the wrong answer if you swap them.
+\code{Xv.T} is the transpose. The result agrees with \code{res.params.values}
+to machine precision. This is also your check on question (5): you can build any
+projection by hand and confirm the same numbers fall out.
+
+\section{Getting numbers out of a fitted result}
+
+\code{res} is a bundle of answers. These are the pieces the assignment asks for:
+
+\begin{center}
+\begin{longtable}{@{}p{4.3cm}p{11.7cm}@{}}
+\toprule
+\textbf{Expression} & \textbf{What it gives you} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Expression} & \textbf{What it gives you} \\
+\midrule
+\endhead
+\code{res.params} & Coefficients, as a Series indexed by name: \code{res.params['pi\_1']}. \\
+\code{res.params.values} & The same numbers as a plain array, in formula order. Use this for matrix work. \\
+\code{res.bse} & Standard errors, indexed the same way. \\
+\code{res.tvalues, res.pvalues} & $t$ statistics and two-sided $p$-values. \\
+\code{res.cov\_params()} & The $k \times k$ covariance matrix $\widehat{\Var}(b)$. \emph{A method --- it needs the parentheses.} \\
+\code{res.conf\_int()} & 95\% confidence intervals, one row per coefficient. \\
+\code{res.resid} & Residuals $\hat u_t$, a Series with the sample's date index. \\
+\code{res.fittedvalues} & Fitted values $\hat y_t$, likewise. \\
+\code{res.nobs} & Number of observations actually used. \\
+\code{res.rsquared} & $R^2$; \code{res.rsquared\_adj} is the adjusted version. \\
+\code{res.df\_resid} & Residual degrees of freedom $n-k$. \\
+\code{res.model.exog} & The design matrix as used, with the constant in column 1. \\
+\code{res.summary()} & The printed table. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\noindent Reading \code{res.summary()}: the top block is the model, the middle
+block is the coefficient table (coefficient, standard error, $t$, $p$, interval
+--- one row per regressor), and the bottom block is $R^2$, $F$, log-likelihood,
+AIC and BIC. Scan the middle block for the numbers the questions ask for, and
+the bottom block for \code{No. Observations}.
+
+\noindent\code{res.resid} and \code{res.fittedvalues} are ordinary Series ---
+you can take their mean, their correlation, or regress one on the other.
+That is the whole of question (2).
+
+\section{Plotting against time}
+
+\begin{lstlisting}
+fig, ax = plt.subplots(figsize=(9, 3.5))
+ax.plot(sub.index.to_timestamp(), sub['resid'], lw=1.0, color='C0')
+ax.axhline(0, color='0.6', lw=0.8)          # a zero reference line
+ax.set_title('OLS residuals')
+ax.set_xlabel('year')
+ax.set_ylabel('residual')
+fig.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\noindent The pattern --- make a figure, draw on the axes, label, show --- is
+always the same. To get residuals and fitted values on two stacked panels that
+share one time axis (which is what ``plot against time'' wants):
+
+\begin{lstlisting}
+fig, axes = plt.subplots(2, 1, figsize=(9, 6), sharex=True)
+t = sub.index.to_timestamp()
+
+axes[0].plot(t, sub['fit'],   lw=1.0)
+axes[1].plot(t, sub['resid'], lw=1.0)
+axes[0].set_ylabel('fitted'); axes[1].set_ylabel('residual')
+axes[1].set_xlabel('year')
+fig.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\noindent\code{axes} is a list here (two panels, so two axes); index it with
+\code{axes[0]} and \code{axes[1]}. \code{sharex=True} makes them share the time
+axis so they line up visually --- important when the point of the plot is to see
+whether the residual spike coincides with a fitted spike.
+
+\noindent To keep a figure for the write-up:
+
+\begin{lstlisting}
+fig.savefig('q2_residuals.png', dpi=200, bbox_inches='tight')
+\end{lstlisting}
+
+\section{Saving fitted values and residuals as data}
+
+Question (2) and question (3) both need a residual vector to become a
+\emph{column} so you can regress it on something. Assign it into the frame you
+estimated from:
+
+\begin{lstlisting}
+sub = sub.copy()                       # once, before adding columns
+sub['resid'] = res.resid               # aligned by date index
+sub['fit']   = res.fittedvalues
+\end{lstlisting}
+
+\noindent This works because \code{res.resid} carries the same date index as
+\code{sub}, and pandas aligns on the index rather than on position. That
+alignment is a feature --- and a trap: if you assign a residual from a regression
+run on a \emph{different} sample, the shorter vector will not line up and you
+get \code{NaN}s rather than an error. When in doubt, check
+\code{sub['resid'].isna().sum()}.
+
+\noindent Then the two auxiliary regressions of question (2) are just
+regressions:
+
+\begin{lstlisting}
+smf.ols('resid ~ fit', data=sub).fit().params
+smf.ols('fit ~ resid', data=sub).fit().params
+\end{lstlisting}
+
+\noindent Read three numbers from each: the slope on the right-hand variable,
+its $p$-value, and \code{res.rsquared}. Then ask whether the second regression
+can reconstruct the first, and what $R^2 = 0$ means when you have regressed one
+series on another.
+
+\subsection{Question (3): the two residual vectors}
+
+The pattern is identical: estimate an auxiliary regression, harvest
+\code{.resid}, store it, and run the last regression on the stored columns.
+The only way question (3) goes wrong is sample mismatch, so build both
+auxiliary regressions from the same \code{sub} and the same
+\code{dropna}:
+
+\begin{lstlisting}
+ra = smf.ols('dr ~ dy_1 + dr_1 + dr_2', data=sub).fit()
+sub['e'] = ra.resid
+
+rb = smf.ols('pi_1 ~ dy_1 + dr_1 + dr_2', data=sub).fit()
+sub['epi'] = rb.resid
+
+rc = smf.ols('e ~ epi', data=sub).fit()
+rc.params['epi']        # compare this with the coefficient from question (2)
+rc.resid                # compare these with the residuals from question (2)
+\end{lstlisting}
+
+\noindent Printing the two numbers side by side is the fastest way to see the
+relationship:
+
+\begin{lstlisting}
+print(rc.params['epi'], res.params['pi_1'])
+print(np.allclose(rc.resid, res.resid))     # True or False: are they identical?
+\end{lstlisting}
+
+\section{\texorpdfstring{Linear combinations of coefficients: $\hat\gamma = w'\hat\beta$}{Linear combinations of coefficients}}
+
+Question (4) asks for $\hat\gamma = \sum_{i=2}^{6}\hat\beta_i$ and its standard
+error. You know the rule $\Var(\hat\gamma) = w'\Var(\hat\beta)w$; the only new
+skill is writing $w$ in code.
+
+\begin{lstlisting}
+b = res.params.values             # array of length k, in formula order
+V = np.asarray(res.cov_params())  # k x k covariance matrix
+
+w = np.zeros(len(b))              # start with all zeros...
+w[1:6] = 1                        # ...and put a 1 on the coefficients you want
+
+gamma_hat = w @ b                       # the point estimate
+se_gamma  = np.sqrt(w @ V @ w)          # its standard error
+print(gamma_hat, se_gamma)
+\end{lstlisting}
+
+\noindent The three lines that matter:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item \code{np.zeros(len(b))} makes a vector of the right length, all zeros. A
+        $w$ that is the wrong length is the most common error here, so build it
+        from \code{len(b)} rather than typing \code{np.zeros(6)}.
+  \item \code{w[1:6] = 1} sets the ones. Python counts from zero, so slot $0$ is
+        the intercept and slots $1\ldots5$ are the first five slopes. Read off
+        \code{res.params.index} to see exactly which name sits in which slot:
+        \code{print(list(res.params.index))}.
+  \item \code{np.sqrt(w @ V @ w)} is the scalar whose square root is the standard
+        error. $w'Vw$ is a quadratic form and comes out as a one-element array;
+        \code{np.sqrt} turns it into the number you want.
+\end{itemize}
+
+\noindent If \code{res.params} were built from a plain numpy design matrix
+without names, the same recipe works --- only the indexing is by position, so
+be certain of your column order.
+
+\subsection{A free check, and a second way to compute the same thing}
+
+statsmodels can impose the linear restriction for you, which is exactly the
+$w'\hat\beta$ calculation:
+
+\begin{lstlisting}
+tt = res.t_test('pi_1 + dy_1 = 0')       # or any linear combination
+float(np.ravel(tt.effect)[0])            # the combination
+float(np.ravel(tt.sd)[0])                # its standard error
+float(np.ravel(tt.pvalue)[0])            # p-value for the restriction
+\end{lstlisting}
+
+\noindent The restriction is written as a string in the same grammar as the
+formula: coefficient names, \code{+}, \code{-}, and \code{= 0}. The
+\code{np.ravel(...)[0]} wrapper is needed because \code{effect}, \code{sd} and
+\code{pvalue} come back as one-element arrays.
+
+\noindent Use it to \emph{verify} your $w$-route answer, not to replace it: if
+the two disagree, your $w$ has a one in the wrong slot. That check is worth
+doing once, and then you can trust the $w$ method for the case where the
+restriction is not a simple sum.
+
+\section{The reparameterisation trick}
+
+The second method question (4) asks for is a transformation that makes
+$\hat\gamma$ a coefficient of the regression, so that its standard error comes
+straight off the printout. The algebra is yours to write; here is the syntax,
+on a small example that has the same shape.
+
+\noindent Suppose the model is $y = \beta_1 + \beta_2 x + \beta_3 z_1$ (three
+regressors, and you want $\gamma = \beta_2 + \beta_3$). Define a new variable
+$u_1 = z_1 - x$. Substituting $z_1 = x + u_1$ into the model gives
+$\beta_2 x + \beta_3 z_1 = (\beta_2 + \beta_3)x + \beta_3 u_1$: the coefficient
+on $x$ is now $\gamma$ itself.
+
+\begin{lstlisting}
+d = d.copy()
+d['u1'] = d['z1'] - d['x']              # build the new regressor
+
+res_orig = smf.ols('y ~ x + z1', data=d).fit()
+res_new  = smf.ols('y ~ x + u1', data=d).fit()
+
+res_orig.params['x'] + res_orig.params['z1']   # gamma the hard way
+res_new.params['x']                            # gamma, read off the output
+res_new.bse['x']                               # its standard error, likewise
+\end{lstlisting}
+
+\noindent Three properties of this transformation, all of which you can confirm
+on the example above and which are the reason the trick works:
+
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item The two regressions have \emph{identical fitted values} --- the model is
+        reparameterised, not changed. Check with
+        \code{np.allclose(res\_orig.fittedvalues, res\_new.fittedvalues)}.
+  \item $\hat\gamma$ from \code{res\_new.params['x']} equals
+        $\hat\beta_2 + \hat\beta_3$ from the original, exactly.
+  \item Its standard error from \code{res\_new.bse['x']} equals
+        $\sqrt{w'Vw}$ from the previous section, exactly.
+\end{itemize}
+
+\noindent To apply this to question (4), extend the same construction
+mechanically: one new variable per coefficient you are absorbing into
+$\gamma$, each equal to the original variable minus the variable whose
+coefficient becomes $\gamma$. Build the new columns in the frame, then write a
+formula that names them. Then answer the natural question --- why must the
+fitted values not change, when the regressors did?
+
+\section{Projection matrices in code}
+
+Question (5) hands you $P_1$, $M_1 = I - P_1$, $P_X$ and $M_X = I - P_X$, and
+asks which of ten auxiliary regressions reproduce $\hat\beta_2$ and which
+reproduce the residuals. Two ways to build them.
+
+\noindent\textbf{The literal way} --- form the matrices exactly as written:
+
+\begin{lstlisting}
+n = len(d)
+X1 = np.column_stack([np.ones(n), d['x'].to_numpy()])   # [1, x]
+P1 = X1 @ np.linalg.inv(X1.T @ X1) @ X1.T               # n x n
+M1 = np.eye(n) - P1                                     # n x n
+\end{lstlisting}
+
+\noindent\code{np.column\_stack} glues vectors side by side into a matrix;
+\code{np.eye(n)} is the $n \times n$ identity. Note that $P_1$ and $M_1$ are
+$185 \times 185$ here --- the arithmetic is fine, but it is wasteful.
+
+\noindent\textbf{The practical way} --- a projection is a fitted value. $P_1 y$
+is the vector of fitted values from regressing $y$ on $X_1$, and $M_1 y$ is that
+regression's residual. So:
+
+\begin{lstlisting}
+r1 = smf.ols('y ~ x', data=d).fit()
+P1y = r1.fittedvalues.to_numpy()      # = P1 @ y
+M1y = r1.resid.to_numpy()             # = M1 @ y  = y - P1y
+
+rall = smf.ols('y ~ x + z1 + z2', data=d).fit()
+PXy = rall.fittedvalues.to_numpy()    # = PX @ y
+MXy = rall.resid.to_numpy()           # = MX @ y
+\end{lstlisting}
+
+\noindent This is the version to use for (5). Every left-hand side of (a)--(j)
+is one of $y$, $P_1y$, $M_1y$, $P_Xy$ --- all four are now ordinary vectors in
+your frame. Every right-hand side is a variable, or $P_1X_2$, or $M_1X_2$,
+\code{MX\_X2} --- and a projected \emph{regressor} such as $M_1X_2$ is likewise
+just a residual series, one column of $X_2$ at a time:
+
+\begin{lstlisting}
+r2 = smf.ols('z1 ~ x', data=d).fit()
+d['M1z1'] = r2.resid.to_numpy()       # the first column of M1 @ X2
+\end{lstlisting}
+
+\noindent Then each auxiliary regression is one line, and you compare results
+in a small dictionary rather than by eye:
+
+\begin{lstlisting}
+out = {}
+out['original'] = rall.params['z1']
+out['(a)'] = smf.ols('y ~ z1', data=d).fit().params['z1']
+out['(f)'] = smf.ols('M1y ~ z1', data=d).fit().params['z1']
+out['(g)'] = smf.ols('M1y ~ M1z1', data=d).fit().params['z1']
+print(out)
+\end{lstlisting}
+
+\noindent Watch for the cases where a right-hand side has no constant in it.
+The formula interface adds an intercept unless you write \code{- 1}, and whether
+an intercept belongs is precisely part of what the question is probing --- so
+decide deliberately, and if a case is ambiguous under the standard formula
+interface, that is a signal to use \code{sm.OLS} with a hand-built design matrix,
+where you control the columns exactly.
+
+\section{Errors you will actually hit}
+
+\begin{center}
+\begin{longtable}{@{}p{4.4cm}p{5.0cm}p{6.1cm}@{}}
+\toprule
+\textbf{Message} & \textbf{Cause} & \textbf{Fix} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Message} & \textbf{Cause} & \textbf{Fix} \\
+\midrule
+\endhead
+\code{KeyError: 'dr'} & The column does not exist --- the line that creates it
+  was not run, or was run out of order. & Run the cells from the top. Check
+  \code{df.columns}. \\
+\code{exog contains inf or nans} & A regressor has a missing or infinite value
+  inside the estimation sample. & \code{dropna(subset=[...])} before the
+  regression. Check for \code{np.log(0)}, which returns \code{-inf}. \\
+\code{LinAlgError: Singular matrix} & The regressors are perfectly collinear ---
+  most often the constant added twice, or an $n$-column \code{X1} that already
+  spans the whole design. & Never \code{add\_constant} a matrix whose first
+  column is already ones. Check \code{np.linalg.matrix\_rank(Xv)} against the
+  column count. \\
+Two coefficients that should match do not & The two regressions used different
+  samples. & Print \code{res.nobs} for both. Rebuild both from the same
+  \code{sub}. \\
+\code{SettingWithCopyWarning} & You assigned a new column into a frame that is a
+  slice of another frame. & \code{sub = sub.copy()} once, up front. \\
+\code{ValueError: cannot insert period, already exists} & \code{reset\_index()}
+  tried to create a column with a name that is already there. & Drop the
+  duplicate first, or rename the index before resetting. \\
+\code{TypeError: 'DataFrame' object is not callable} & Parentheses on an
+  attribute: \code{df.shape()}. & Attributes take no arguments. \\
+\code{ValueError: operands could not be broadcast} & Arrays of different lengths
+  --- usually a \code{NaN}-trimmed \code{res.resid} versus the full frame. &
+  Print \code{len()} of both, and align by index rather than by position. \\
+$R^2$ of exactly 1.0 & You regressed a series on itself, or on a perfect
+  function of itself --- for example using \code{fit} as the regressor when the
+  left-hand side is \code{fit}. & Check the variable names on both sides of the
+  \code{\textasciitilde}. \\
+Nothing prints after \code{.fit()} & \code{.fit()} returns the result; it does
+  not display it in a script. & In a script, \code{print(res.summary())}; in a
+  notebook, put it on the last line of the cell. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Small habits that will save you hours}
+
+\begin{itemize}[leftmargin=1.4em,itemsep=3pt]
+  \item \textbf{One idea per cell.} A cell that builds one variable and prints
+        \code{.head()} tells you immediately when the variable is wrong. A cell
+        that builds six columns tells you nothing.
+  \item \textbf{Print the shape, not just the values.} \code{df.shape} after
+        every construction step catches an off-by-one in the sample before it
+        becomes an off-by-one in a standard error.
+  \item \textbf{Name variables after the assignment's symbols.} \code{dr},
+        \code{pi\_1}, \code{dy\_1}, \code{dr\_2}, \code{e}, \code{epi},
+        \code{dc}, \code{gamma}. When you compare your output to the question
+        sheet you will not have to translate.
+  \item \textbf{Verify a linear algebra result with a library call.} Build
+        $\hat\gamma$ with $w$ \emph{and} with \code{t\_test}; build $b$ with
+        \code{sm.OLS} \emph{and} with \code{np.linalg.inv}. Two independent
+        routes agreeing is a proof; one route looking reasonable is not.
+  \item \textbf{Check the one thing that must not change.} The reparameterisation
+        must leave fitted values untouched, and the FWL auxiliary regressions
+        must leave certain coefficients untouched. Test that invariant with
+        \code{np.allclose} --- it is a much sharper test than eyeballing two
+        tables, and it tells you \emph{which} of the ten cases in (5) behave
+        that way.
+  \item \textbf{Send numbers to LaTeX, not to your typing hand.} When the
+        assignment asks you to report a table, \code{res.summary().as\_latex()}
+        and \code{sub[['dr']].head().to\_latex()} produce paste-ready output for
+        your write-up.
+\end{itemize}
+
+\section{Quick reference}
+
+\begin{center}
+\begin{longtable}{@{}p{4.2cm}p{4.8cm}p{6.5cm}@{}}
+\toprule
+\textbf{Call} & \textbf{What it does} & \textbf{Example} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Call} & \textbf{What it does} & \textbf{Example} \\
+\midrule
+\endhead
+\code{pd.read\_excel} & Read a spreadsheet sheet into a frame & \code{pd.read\_excel('tbrate.xlsx', sheet\_name='data')} \\
+\code{pd.PeriodIndex} & Build a quarterly date index & \code{pd.PeriodIndex(df['period'], freq='Q')} \\
+\code{DataFrame.loc} & Select rows and columns by label & \code{df.loc['1950Q4':'1996Q4', 'r']} \\
+\code{Series.diff} & First difference, $\Delta x_t$ & \code{df['r'].diff()} \\
+\code{Series.shift} & Lag by $s$ periods, $x_{t-s}$ & \code{df['pi'].shift(1)} \\
+\code{DataFrame.dropna} & Drop rows with missing values & \code{df.dropna(subset=['dr','pi\_1'])} \\
+\code{DataFrame.copy} & Detach a slice from its parent & \code{sub = df.loc[...].copy()} \\
+\code{DataFrame.assign} & Add columns, returning a new frame & \code{df = df.assign(dy=df['y'].diff())} \\
+\code{smf.ols} & OLS from a formula & \code{smf.ols('dr \textasciitilde\ pi\_1', data=sub).fit()} \\
+\code{sm.OLS} & OLS from an array design matrix & \code{sm.OLS(y, X).fit()} \\
+\code{sm.add\_constant} & Prepend a column of ones & \code{sm.add\_constant(X)} \\
+\code{result.params} & Coefficients & \code{res.params['pi\_1']} \\
+\code{result.bse} & Standard errors & \code{res.bse['dr\_1']} \\
+\code{result.cov\_params} & $k \times k$ covariance matrix & \code{V = np.asarray(res.cov\_params())} \\
+\code{result.resid} & Residuals & \code{sub['e'] = res.resid} \\
+\code{result.fittedvalues} & Fitted values & \code{sub['fit'] = res.fittedvalues} \\
+\code{result.t\_test} & Test a linear restriction & \code{res.t\_test('b1 + b2 = 0')} \\
+\code{np.zeros} & Vector of zeros, for $w$ & \code{w = np.zeros(len(b))} \\
+\code{np.sqrt} & Square root, for the std.\ error & \code{np.sqrt(w @ V @ w)} \\
+\code{np.allclose} & Compare two vectors numerically & \code{np.allclose(a, b)} \\
+\code{np.linalg.inv} & Matrix inverse & \code{np.linalg.inv(X.T @ X)} \\
+\code{np.column\_stack} & Glue vectors into a matrix & \code{np.column\_stack([v1, v2])} \\
+\code{plt.subplots} & Figure plus axes & \code{fig, ax = plt.subplots(figsize=(9,3.5))} \\
+\code{Axes.plot} & Draw a line & \code{ax.plot(t, y, lw=1.0)} \\
+\code{Axes.axhline} & Horizontal reference line & \code{ax.axhline(0, color='0.6')} \\
+\code{Figure.savefig} & Write the figure to a file & \code{fig.savefig('q2.png', dpi=200)} \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\vspace{1.2em}
+\hrule\vspace{0.5em}
+{\small \noindent\textbf{One last thing.} The econometrics of questions (1) and
+(5) is algebra, and code will not do it for you. What code does is let you
+\emph{check} the algebra: derive the partitioned-inverse expressions on paper,
+then build $M_1$ and $M_2$ in numpy and confirm the formula. That is the habit
+worth taking away from this assignment --- the computer as a check on the
+proof, not a substitute for it.}
+
+\end{document}

@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+%% FOR A NEW LESSON: copy this file, rename it lessonNN.tex, fill in the header,
+%% and write the body with the commands below. Do not add packages here --
+%% everything goes in microstyle.sty so that all lessons keep the same look.
+%%
+%%   \section{...}        numbered section            \section without star
+%%   \topic{...}          bold heading on its own line
+%%   \runin{...}          bold run-in heading
+%%   flatlist / flatnum   bullet / numbered list
+%%   transcriptnotes      small-print list of corrections, at the very end
+%%   \ecaxes{x}{y}        plain axes for a diagram; styles: budget, bundle, ecnode
+%%   \pd{f}{x}            partial derivative   \R  the real numbers
+
+\begin{document}
+
+\lessonheader{NN}{<subtitle: Part or chapter and topic>}{<date, or nothing>}
+
+
+\section{First section}
+
+Text.
+
+\topic{A named result or definition}
+Statement, with display maths:
+\[ \pd{x_i(p,w)}{p_j}, \qquad \R^L_+. \]
+
+\begin{flatlist}
+  \item A bullet point.
+  \item Another one.
+\end{flatlist}
+
+\end{document}

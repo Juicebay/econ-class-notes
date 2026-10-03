@@ -1,0 +1,305 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{6}{Chapter 3: Classical demand theory --- preferences, axioms, and utility}{}
+
+
+\section{The classical approach}
+
+We build demand behavior from scratch, by imposing fundamental axioms on consumer
+preferences and seeing what these assumptions imply about behavior.
+
+
+\section{The preference relation}
+
+The primitive of the model is the preference relation $\succsim$. This is
+hard-wired into the consumer and captures everything about his taste or
+preference.
+
+If $x,y\in X$ with $x\succsim y$, then $x$ is w.p.\ (weakly preferred) to $y$.
+From $\succsim$:
+
+\begin{flatlist}
+  \item if $x\succsim y$ but not $y\succsim x$, then $x\succ y$;
+  \item if $x\succsim y$ and $y\succsim x$, then the consumer is indifferent,
+        $x\sim y$.
+\end{flatlist}
+
+\noindent
+So we build $\succ$ and $\sim$ from $\succsim$; the latter is the primitive.
+
+
+\section{The basic axioms: completeness and transitivity}
+
+We start with axioms that imply that the consumer's preferences are relations in
+the basic sense.
+
+\begin{flatlist}
+  \item \emph{Completeness:} for $x,y\in X$, either $x\succsim y$ or
+        $y\succsim x$, or both.
+  \item \emph{Transitivity:} if $x\succsim y$ and $y\succsim z$, then
+        $x\succsim z$.
+\end{flatlist}
+
+This just tells us that the consumer is rational, but it does not tell us about
+what his tastes are like. The remaining axioms have more economic meaning.
+
+
+\section{Local non-satiation}
+
+\runin{Local non-satiation.} For every $x\in X$ and any $\varepsilon>0$ there
+exists $y\in X$ such that $\lVert x-y\rVert<\varepsilon$ and $y\succ x$.
+
+So there is no bliss point: the consumer is never satiated, because he can always
+get a better bundle close by. Two important implications:
+
+\begin{flatlist}
+  \item Indifference curves are thin --- kill the thick zone.
+
+  \item The consumer, when he optimizes, spends his entire income: the budget
+        constraint binds.
+\end{flatlist}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.46]
+  % ------------- panel (a): a thick indifference zone -------------
+  \begin{scope}
+    \ecaxes{4.2}{4.2}
+    \node[ecnode,anchor=south west] at (0,4.25) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.35,0)   {$x_1$};
+
+    \draw[budget] (0.5,3.3) .. controls (0.9,1.6) and (1.6,0.9) .. (3.4,0.6);
+    \draw[budget] (1.2,3.7) .. controls (1.6,2.2) and (2.3,1.6) .. (3.9,1.3);
+    \draw[line width=0.6pt] (0.72,2.55) -- (1.33,3.30) -- (1.00,1.68) -- (1.80,2.30)
+          -- (1.40,1.25) -- (2.40,1.80) -- (2.25,0.90);
+    \draw[red,fill=red!15] (1.62,1.55) circle (0.30);
+    \node[ecnode,red] at (1.62,1.55) {$\varepsilon$};
+  \end{scope}
+  % ------------- panel (b): a thin indifference curve --------------
+  \begin{scope}[xshift=6.4cm]
+    \ecaxes{4.2}{4.2}
+    \node[ecnode,anchor=south west] at (0,4.25) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.35,0)   {$x_1$};
+
+    \draw[budget] (0.6,3.6) .. controls (1.05,1.75) and (1.70,1.10) .. (3.60,0.60);
+    \draw[red,fill=red!15,fill opacity=0.6] (1.09,2.23) circle (0.34);
+    \node[ecnode,red,anchor=west] at (1.43,2.23) {$\varepsilon$};
+  \end{scope}
+\end{tikzpicture}
+\caption{The first implication of local non-satiation, drawn as in the original.
+\emph{Left:} a thick indifference zone; a small $\varepsilon$-ball inside it
+contains only bundles indifferent to its centre, so there is no strictly better
+bundle nearby --- local non-satiation rules this out (``kill the thick zone'').
+\emph{Right:} a thin indifference curve; every $\varepsilon$-ball around a point
+on it reaches bundles above the curve.}
+\end{figure}
+
+
+\section{Why the budget constraint binds}
+
+\runin{By contradiction.} Suppose the optimal bundle $x$ does not exhaust the
+budget, $p\cdot x<w$. Then every bundle close enough to $x$ is still affordable
+(there is an $\varepsilon>0$ such that $p\cdot y<w$ whenever
+$\lVert y-x\rVert<\varepsilon$), and by local non-satiation one of them, $y$, has
+$y\succ x$. So something better was affordable. This contradicts the fact that the
+original bundle is optimal; hence $p\cdot x=w$.
+
+
+\section{Monotonicity and convexity}
+
+Axioms with more content regarding the structure of preferences.
+
+\begin{flatlist}
+  \item \emph{Monotonicity:} $\succsim$ is monotone if $x\gg y$ implies
+        $x\succ y$.
+  \item \emph{Strong monotonicity:} $\succsim$ is strongly monotone if
+        $x\ge y$ and $x\ne y$, then $x\succ y$.
+\end{flatlist}
+
+Strong monotonicity implies monotonicity, and (on $X=\R^L_+$) monotonicity implies
+local non-satiation, because the consumer would always like more of everything:
+$x+\frac{\varepsilon}{2\sqrt{L}}(1,\dots,1)$ is within $\varepsilon$ of $x$ and strictly
+preferred to it.
+
+\begin{flatlist}
+  \item \emph{Convexity:} $\succsim$ is convex if, for every $x$, $y\succsim x$ and
+        $z\succsim x$ imply
+        \[ \alpha y+(1-\alpha)z\succsim x\qquad\text{for all }\alpha\in[0,1]. \]
+\end{flatlist}
+
+Avr.\ (average) is always at least as good as extreme. Equivalently, for every $x$
+the superior (upper contour) set is a convex set,
+\[ \{\,y\in\R^L_+ : y\succsim x\,\}. \]
+In a picture: indifference curves are bowed towards the origin (a diminishing
+marginal rate of substitution).
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \fill[black!10] (0.6,3.6) .. controls (1.05,1.75) and (1.70,1.10) .. (3.60,0.60)
+        -- (4.0,0.6) -- (4.0,4.0) -- (0.6,4.0) -- cycle;
+  \ecaxes{4.4}{4.4}
+  \node[ecnode,anchor=south west] at (0,4.45) {$x_2$};
+  \node[ecnode,anchor=west]      at (4.5,0)   {$x_1$};
+  \draw[budget] (0.6,3.6) .. controls (1.05,1.75) and (1.70,1.10) .. (3.60,0.60);
+
+  \draw[densely dashed] (0.71,3.18) -- (2.83,0.84);
+  \node[bundle] at (0.71,3.18) {};
+  \node[ecnode,anchor=north east] at (0.66,3.12) {$y$};
+  \node[bundle] at (2.83,0.84) {};
+  \node[ecnode,anchor=north east] at (2.78,0.80) {$z$};
+  \node[bundle] at (1.77,2.01) {};
+  \node[ecnode,anchor=west] at (1.86,2.08) {$\alpha y+(1-\alpha)z$};
+\end{tikzpicture}
+\caption{Convexity, drawn as in the original: $y$ and $z$ lie on the
+indifference curve through $x$, and their average $\alpha y+(1-\alpha)z$ lies in
+the superior set of $x$ (hatched in the notes, shaded here), which is convex.}
+\end{figure}
+
+
+\section{Strict convexity}
+
+\runin{Strict convexity.} $\succsim$ is strictly convex if, for every $x$,
+$y\succsim x$, $z\succsim x$ and $y\ne z$ imply
+\[ \alpha y+(1-\alpha)z\succ x \qquad \text{for all } \alpha\in(0,1). \]
+Indifference curves then have no flat segments; with strictly convex (rational, continuous,
+locally non-satiated) preferences the demand $x(p,w)$ is single-valued, a demand function.
+
+
+\section{Utility functions}
+
+The preference relation $\succsim$ is abstract; one may become used to thinking
+about utility functions. A utility function is a map $u:X\to\R$ with
+\[ x\succsim y \iff u(x)\ge u(y). \]
+The utility function is just a made-up construct that is invented to represent
+preferences in a different way. Utility functions are often more convenient to
+work with, especially if we add assumptions such as differentiability.
+
+Two facts follow directly from the definition. A utility function is \emph{ordinal}:
+if $u$ represents $\succsim$, so does $f\circ u$ for any strictly increasing
+$f:\R\to\R$, so only the ranking matters, not the numbers. And only a rational
+$\succsim$ can be represented: $\ge$ on $\R$ is complete and transitive, so the
+$\succsim$ it represents must be too.
+
+
+\section{When a utility representation fails}
+
+However, not all $\succsim$ can be represented by a utility function, even when
+they are rational. The most famous example is lexicographic preference: put the
+bundle with the most $x_2$, and compare $x_1$ only to break ties,
+\[ x\succ y \iff x_2>y_2,\ \text{or}\ x_2=y_2\ \text{and}\ x_1>y_1 . \]
+No two distinct bundles are indifferent, and there is no utility function for it.
+It is not continuous: $x^n=(1,\,1+1/n)\succ y=(2,1)$ for every $n$, but in the limit
+$x=(1,1)\prec y$.
+
+To use a utility function, more assumptions are needed. At least, the extra
+assumptions have a natural economic interpretation. We need continuity.
+
+
+\section{Continuity}
+
+\runin{Continuity.} $\succsim$ is continuous if for any sequence
+$\{(x^n,y^n)\}_{n=1}^{\infty}$ with $x^n\succsim y^n$ for all $n$, and
+$x=\lim_{n\to\infty}x^n$, $y=\lim_{n\to\infty}y^n$, it holds that
+$x\succsim y$.
+
+That is: no sudden preference reversal. Equivalently, for every $x$ the upper and
+lower contour sets $\{y:y\succsim x\}$ and $\{y:x\succsim y\}$ are closed. The payoff
+(Debreu): a rational and continuous $\succsim$ can be represented by a continuous
+utility function. Lexicographic preferences fail exactly this continuity.
+
+\begin{transcriptnotes}
+  \item Page 1 of the original is a title page reading ``Lesson 6 : Chap.~3 ---
+        classical demand Th.''; the abbreviation is read as \emph{theory}, and
+        the page carries no other content. The subtitle previously read ``Part
+        2''; it now follows the title page (Chapter 3).
+  \item ``this hand written into the consumer'' has no verb in the original; it
+        is read as \emph{This is} hard-wired into the consumer (``hand written''
+        is taken as a mishearing of ``hard-wired'', the usual phrase).
+  \item ``captures evenly about his taste or preference'' is read as
+        \emph{captures everything} about his taste or preference --- the ending
+        of the word is written as if it were ``-ly''.
+  \item ``we start with axioms imply that the consumer's pref.\ are relations in
+        basic sense'' is ungrammatical as written (the finite verb ``imply'' has
+        no relative pronoun); it is read as \emph{axioms \textbf{that} imply
+        \dots}. ``relations in basic sense'' is kept as written; in the notation
+        of the course these are binary relations on $X$ in the ordinary
+        set-theoretic sense.
+  \item ``indifference curve are thin'' is corrected to \emph{curves}; ``kill the
+        thick zone'' is written in red ink in the original.
+  \item Local non-satiation is written with $y>x$ in the original; $y\succ x$ is
+        used here, as elsewhere in these notes the strict relation is the hook
+        symbol.
+  \item \textbf{Corrected (earlier transcription):} page 4 draws two sketches
+        under ``Two important implications'': on the left a thick indifference
+        zone (a band hatched with a zig-zag) with a small red $\varepsilon$-ball
+        inside it, on the right a thin indifference curve with a red
+        $\varepsilon$-ball on it. Both red marks are $\varepsilon$-balls (the
+        $\varepsilon$ is legible at high zoom), not a ``circled slash''. The
+        figure previously had the panels swapped, a red slash, and invented
+        labels $x$, $x'$; it now follows the original.
+  \item ``By contradiction, the budget is not exhausted'' states the conclusion
+        of a contradiction argument without spelling out the assumption; the
+        sentence is read as \emph{suppose} the budget is not exhausted. The
+        original also omits the verb in ``mean.\ that you can find something
+        better'', read as \emph{meaning} that.
+  \item ``rehanding'' $\to$ \emph{regarding}; ``AVR.'' is read as \emph{average}.
+  \item \textbf{Corrected:} the convexity line was written with three conditions
+        before the implication ($y\succsim x$, $y\succsim z$, $z\succsim x$) and no
+        range for $\alpha$. The middle condition is redundant, and it is dropped;
+        the definition is typeset in the standard form, $y\succsim x$ and
+        $z\succsim x$ imply $\alpha y+(1-\alpha)z\succsim x$ for all
+        $\alpha\in[0,1]$. ``Average is always better than extreme'' is softened to
+        \emph{at least as good as}: convexity is a weak relation.
+  \item The superior set is written $\{y\in\ \cdot\ \mid y\succsim x\}$ in the
+        original; the set after $\in$ is an unclear glyph (like ``['' ), read as
+        the consumption set $\R^L_+$. The convexity sketch marks three dots on
+        the indifference curve region (two on the curve, their average inside the
+        hatched set), reproduced as $y$, $z$ and $\alpha y+(1-\alpha)z$; a small
+        pair of arrows drawn near the origin of that sketch is illegible and is
+        omitted.
+  \item ``stric convexity $\succsim$ is strict $\succsim$ is strictly convex''
+        repeats the phrase; only \emph{strictly convex} is kept.
+  \item \textbf{Corrected:} strict convexity is written ``if $y\succsim x$,
+        $y\succsim z$, $z\succsim x$ implies $\alpha y+(1-\alpha)z\succ x$
+        $\forall\alpha\in(0,1)$''. As with convexity, the middle condition is
+        redundant and is dropped; the condition $y\ne z$ is missing and is added
+        (without it $y=z=x$ would give $x\succ x$).
+  \item \textbf{Added:} a precise proof that the budget constraint binds, the
+        chain strong monotonicity $\Rightarrow$ monotonicity $\Rightarrow$ local
+        non-satiation, the ordinal nature of utility and why representability
+        requires rationality, the formal lexicographic order with a sequence showing
+        it is not continuous, Debreu's representation result for continuous
+        preferences, the equivalent closed-contour-set form of continuity, the
+        remark that convex indifference curves are bowed toward the origin, and
+        the remark after strict convexity (no flat segments; single-valued
+        demand).
+  \item ``is abstract, to may become use to thinking about utility functions'' is
+        read as \emph{one may become used to thinking about utility functions};
+        ``can be represented at a utility func.'' is read as \emph{by} a utility
+        function.
+  \item Lexicographic preference is written as ``put the bundle with the most
+        $x_2$''. The order is normally described by comparing the first
+        coordinate first; the notes' order (good 2 first) is kept, and the formal
+        definition is written in that order.
+  \item In the continuity definition the original labels the sequence
+        $\{(x^n,y^n)\}_{N=1}^{\infty}$ and then writes ``$\forall N$'' before
+        switching to lower-case $n$ in the limits. The index is written $n$
+        throughout here.
+  \item ``the extra assumptions has a nature econ interpretation'' is read as
+        \emph{have a natural} economic interpretation.
+  \item Page 9 of the original carries a single line, ``No sudden preference
+        reversal.'', which closes the continuity section.
+  \item Pages of the original, for tracing back: page 2 the classical approach
+        and the preference relation; page 3 completeness, transitivity, and local
+        non-satiation; page 4 the two implications with the thick-zone sketch;
+        page 5 the binding budget constraint and monotonicity; page 6 strong
+        monotonicity, convexity and the superior set; page 7 strict convexity and
+        the utility function; page 8 lexicographic preference and continuity;
+        page 9 the closing line.
+\end{transcriptnotes}
+
+\end{document}

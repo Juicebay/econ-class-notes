@@ -1,0 +1,301 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{2}{IV and GMM, the Gauss--Markov theorem, and the geometry of least squares}{}
+
+\section{The linear model and its assumptions}
+
+\[ y=X\beta+u,\qquad u\sim(0,\sigma^{2}I_n), \]
+with $y$: $n\times1$, $X$: $n\times k$, $\beta$: $k\times1$ and $u$: $n\times1$. The
+same model is carried under two alternative sets of assumptions about the
+regressors and the errors, both keeping the error covariance spherical, plus a
+rank condition:
+
+\begin{flatlist}
+  \item $X$ is fixed, \quad $u\sim N(0,\sigma^{2}I)$;
+  \item $X$ is stochastic, \quad $u\sim(0,\sigma^{2}I)$;
+  \item $\rank(X)=k$.
+\end{flatlist}
+The brace the notes draw around the error statements is labelled \emph{sphericity}:
+one common variance $\sigma^{2}$, no correlation, which is what makes the algebra
+below simple. The third line is the rank condition that makes $X'X$ invertible, so
+that
+\[ b=(X'X)^{-1}X'y \]
+is defined.
+
+\section{Orthogonality, and the need for instruments}
+
+Together with $\rank(X)=k$, the two moment conditions that identify $\beta$ are
+\[ \E(u)=0,\qquad \E(X'u)=0 \quad\text{(the \emph{orthogonality condition}).} \]
+If the regressors are correlated with the error this fails. Then one looks for an
+instrument matrix
+\[ Z_{n\times p},\qquad p\ge k,\qquad \E(Z'u)=0, \]
+that is, $p$ variables that are uncorrelated with $u$ but correlated with $X$
+(formally, $\rank\E(Z'X)=k$). The moment condition $\E(Z'u)=0$ is what replaces $\E(X'u)=0$: it gives $p$ equations
+for the $k$ unknown elements of $\beta$.
+
+\section{The objective of an IV estimator}
+
+The idea is to choose $\beta$ so that the sample moments $Z'u$ are as small as
+possible. As written on the page,
+\[ \min \|Z'u-\E(Z'u)\|,\qquad\text{which with } \E(Z'u)=0 \text{ is } \min\|Z'u\| . \]
+Minimising a norm of a vector of moments is not the same as minimising the raw sum
+of squares, because the moments do not carry the same variance. Weighting by the
+inverse of their covariance (the metric of Lesson 1, $w'\Sigma^{-1}w$) gives
+\[ \min (Z'u)'\bigl[\Var(Z'u)\bigr]^{-1}(Z'u). \]
+Under sphericity $\Var(Z'u)=Z'\bigl(\sigma^{2}I_n\bigr)Z=\sigma^{2}Z'Z$, so the
+inverse is $\sigma^{-2}(Z'Z)^{-1}$ and the objective becomes
+\[ \frac{1}{\sigma^{2}}\,u'Z\,(Z'Z)^{-1}Z'u
+   \;\Longrightarrow\;
+   (y-X\beta)'Z\,(Z'Z)^{-1}Z'(y-X\beta), \]
+the last step substituting $u=y-X\beta$. The factor $\sigma^{-2}$ is a constant and
+drops out of the minimisation.
+
+\section{The generalized IV (two-stage least squares) estimator}
+
+Writing $P_z\equiv Z(Z'Z)^{-1}Z'$, minimise the objective over $b$:
+\[
+\begin{aligned}
+  &\min_b\,(y-xb)'Z(Z'Z)^{-1}Z'(y-xb)\\
+  &=\min_b\,(y-xb)'P_z(y-xb)\\
+  &=\min_b\,\Bigl(y'P_zy-b'x'P_zy-y'P_zxb+b'x'P_zxb\Bigr).
+\end{aligned}
+\]
+The two middle terms are the same scalar, so together they are $-2b'x'P_zy$, and the
+first-order condition is
+\[
+\begin{aligned}
+  -2x'P_zy+2x'P_zxb&=0\\
+  x'P_zy&=(x'P_zx)\,b,
+\end{aligned}
+\]
+hence
+\[ b=(x'P_zx)^{-1}x'P_zy
+   =(x'Z(Z'Z)^{-1}Z'x)^{-1}x'Z(Z'Z)^{-1}Z'y . \]
+With more instruments than regressors, $p>k$ (the over-identified case), this is
+the \emph{generalized IV} (two-stage least squares) estimator.
+
+If instead there are exactly as many instruments as regressors, $p=k$, then $Z$ is
+$n\times k$ and $Z'x$ is a square $k\times k$ matrix, invertible when the
+instruments are relevant, $\rank(Z'x)=k$. Then
+$(x'Z(Z'Z)^{-1}Z'x)^{-1}=(Z'x)^{-1}(Z'Z)(x'Z)^{-1}$, and the same formula collapses
+to
+\[ b=(Z'x)^{-1}(Z'Z)(x'Z)^{-1}\,x'Z(Z'Z)^{-1}Z'y=(Z'x)^{-1}Z'y, \]
+the \emph{simple IV} estimator. With $p=k$ the choice of weights no longer matters:
+$b$ sets the $k$ sample moments $Z'(y-xb)$ exactly to zero.
+
+\section{Which estimator? A summary}
+
+Reading the assumptions as a table:
+
+\begin{flatlist}
+  \item $y=X\beta+u$ with $\E(X'u)=0$ and $\Var(u)=\sigma^{2}I$: everything is
+        spherical and the regressors are exogenous, so use least squares,
+        $b=(x'x)^{-1}x'y$;
+  \item $\E(X'u)\ne0$: the orthogonality condition fails, so bring in instruments
+        $Z$ with $\E(Z'u)=0$ and use IV, $b_{iv}$; with $\Var(u)=\sigma^{2}I$ this is
+        the estimator written out above;
+  \item $\Var(u)\ne\sigma^{2}I_n$, i.e.\ $\Var(u)=\sigma^{2}\Omega_n$ with
+        $\Omega\ne I_n$, while $X$ is fixed and $\E(x'u)=0$: the errors are
+        non-spherical but exogenous, and the answer is \emph{generalized least
+        squares};
+  \item both failures at once, $\Var(u)\ne\sigma^{2}I_n$ \emph{and}
+        $\E(x'u)\ne0$: generalized least squares is no longer consistent, and the
+        answer is the \emph{generalized method of moments} (GMM).
+\end{flatlist}
+
+\section{The OLS estimator in the normal linear model}
+
+Take the well-behaved case: $y=x\beta+u$ with $u\sim N(0,\sigma^{2}I)$, $X$ fixed and
+$\rank(X)=k$, so that $x'x$ is invertible. The estimator is
+\[
+\begin{aligned}
+  b&=(x'x)^{-1}x'y\\
+   &=(x'x)^{-1}x'x\beta+(x'x)^{-1}x'u\\
+   &=\beta+(x'x)^{-1}x'u .
+\end{aligned}
+\]
+With $X$ fixed, $b$ is $\beta$ plus a linear function of $u$, so it inherits the
+distribution of $u$: it is unbiased,
+\[ \E(b)=\beta+(x'x)^{-1}x'\E(u)=\beta, \]
+and its covariance is
+\[
+\begin{aligned}
+  \Var(b)&=\E\bigl[(b-\beta)(b-\beta)'\bigr]
+          =\E\bigl[(x'x)^{-1}x'uu'x(x'x)^{-1}\bigr]\\
+         &=\sigma^{2}(x'x)^{-1},
+\end{aligned}
+\]
+using $\E(uu')=\sigma^{2}I_n$, so the sampling distribution is normal,
+\[ b\sim N\bigl(\beta,\ \sigma^{2}(x'x)^{-1}\bigr) . \]
+The estimator is the \emph{BLUE} --- best linear unbiased estimator --- which is
+the content of the Gauss--Markov theorem, proved next. The theorem uses only
+$\E(u)=0$ and $\Var(u)=\sigma^{2}I$; normality is not needed for it, only for the
+exact normal distribution of $b$.
+
+\section{Gauss--Markov: no other linear unbiased estimator beats OLS}
+
+Start from the model $y=X\beta+u$ and consider an arbitrary linear estimator
+\[ b^{*}=Cy,\qquad C:\ k\times n,\quad y:\ n\times1, \]
+just as least squares $b=(X'X)^{-1}X'y$ is $y$ premultiplied by the $k\times n$
+matrix $(X'X)^{-1}X'$.
+Every such $C$ can be written as the least-squares matrix plus a remainder,
+\[ C=\bigl[(X'X)^{-1}X'+A\bigr], \]
+so that
+\[ b^{*}=Cy=\bigl[(X'X)^{-1}X'+A\bigr]y=(X'X)^{-1}X'y+Ay=b+Ay . \]
+Substituting the model,
+\[
+\begin{aligned}
+  b^{*}&=(x'x)^{-1}x'(x\beta+u)+A(x\beta+u)\\
+       &=\beta+(x'x)^{-1}x'u+Ax\beta+Au .
+\end{aligned}
+\]
+Taking expectations, $\E(u)=0$:
+\[
+\begin{aligned}
+  \E(b^{*})&=\beta+(x'x)^{-1}x'\E(u)+Ax\beta+A\E(u)\\
+           &=\beta+Ax\beta\;=\;\beta \qquad\text{when } Ax=0 .
+\end{aligned}
+\]
+So $b^{*}$ is unbiased for every value of $\beta$ exactly when $A$ satisfies $Ax=0$. That same condition --- the
+one that restricts attention to the class of unbiased linear estimators --- also
+removes the cross terms below. For the variance,
+\[
+\begin{aligned}
+  \Var(b^{*})&=\E\bigl[(b^{*}-\beta)(b^{*}-\beta)'\bigr]\\
+             &=\E\Bigl[\bigl((x'x)^{-1}x'u+Au\bigr)\bigl(u'x(x'x)^{-1}+u'A'\bigr)\Bigr]\\
+             &=\E\Bigl[(x'x)^{-1}x'uu'x(x'x)^{-1}+Auu'x(x'x)^{-1}
+                    +(x'x)^{-1}x'uu'A'+Auu'A'\Bigr]\\
+             &=\sigma^{2}(x'x)^{-1}+\sigma^{2}Ax(x'x)^{-1}
+               +\sigma^{2}(x'x)^{-1}x'A'+\sigma^{2}AA' .
+\end{aligned}
+\]
+With $Ax=0$ the two cross terms vanish and
+\[
+\begin{aligned}
+  \Var(b^{*})&=\sigma^{2}(x'x)^{-1}+\sigma^{2}AA'\\
+             &=\Var(b)+\sigma^{2}AA' .
+\end{aligned}
+\]
+The extra term is $\sigma^{2}AA'$, which is positive semi-definite: for any
+$c\in\R^{k}$, $c'AA'c=\|A'c\|^{2}\ge0$. (It is not in general positive definite;
+it is nonzero whenever $A\ne0$, and zero only when $A=0$, i.e.\ $b^{*}=b$.) Adding
+it can only make the covariance larger, so no linear unbiased estimator has a
+smaller covariance than $b$: $\Var(b^{*})-\Var(b)$ is positive semi-definite, i.e.\
+for every $c$, $\Var(c'b^{*})\ge\Var(c'b)$. Least squares is BLUE.
+
+\section{Geometric interpretation}
+
+In the model $y=X\beta+u$ the vector $y$ is a point of $\R^n$, and the columns of $X$ span a subspace
+\[ \dim L(x)=k \]
+only $k$-dimensional. Write the
+least-squares decomposition as
+\[ y=Xb+e, \]
+where the fitted value $Xb=X(X'X)^{-1}X'y$ lies in that subspace and $e=y-Xb$ is
+what is left over. The normal equations $X'(y-Xb)=0$ say exactly that $X'e=0$: the
+residual is orthogonal to every column of $X$. (The true $X\beta$ also lies in the
+subspace, but the error $u=y-X\beta$ is not orthogonal to it in general.)
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.95]
+  % the subspace spanned by the columns of X
+  \draw[budget] (-1.4,0.2)
+      .. controls (-1.1,1.4) and (0.2,2.0) .. (1.4,1.7)
+      .. controls (2.6,1.4) and (3.5,0.9) .. (3.4,0.4)
+      .. controls (3.3,-0.5) and (2.2,-1.4) .. (1.0,-1.5)
+      .. controls (-0.2,-1.6) and (-1.2,-0.9) .. cycle;
+  \node[ecnode] at (-0.35,1.05) {$L(x)$};
+  % the origin
+  \node[bundle] at (0,0) {};
+  % y, and its projection
+  \draw[ecaxis] (0,0) -- (4.2,2.2);
+  \node[ecnode,anchor=west] at (4.28,2.24) {$y$};
+  \draw[ecaxis] (0,0) -- (3.4,0.4);
+  \node[ecnode,anchor=west] at (3.5,0.18) {$Xb$};
+  % the residual, perpendicular to the subspace
+  \draw[ecaxis] (3.4,0.4) -- (4.2,2.2);
+  \node[ecnode,anchor=west] at (3.95,1.30) {$e$};
+  % right angle at the foot of the perpendicular
+  \draw[thin] (3.678,0.433) -- (3.792,0.689) -- (3.514,0.656);
+  % annotation
+  \node[ecnode] at (1.05,2.85) {orthogonal projection};
+\end{tikzpicture}
+\caption{$Xb$ is the orthogonal projection of $y$ onto the $k$-dimensional
+subspace spanned by the columns of $X$, and the residual $e=y-Xb$ is orthogonal
+to that subspace. Minimising $\|y-X\beta\|^{2}$ over $\beta$ is simply choosing the
+point of the subspace closest to $y$.}
+\end{figure}
+
+\begin{transcriptnotes}
+  \item The original opens with a title page reading only ``Lesson 2''.
+  \item The three error statements are grouped by a hand-drawn brace labelled
+        \emph{sphericity}; the arrangement is kept, the brace is not redrawn.
+  \item The original mixes lower case ($x$) and upper case ($X$) for the regressor
+        matrix, as in Lesson 1; the case is kept as written.
+  \item $\E(Z'u)=0$ is used on the same page as the condition $\min\|Z'u-\E(Z'u)\|$.
+        Both are transcribed as written, though with $\E(Z'u)=0$ the second term of
+        the norm vanishes; the norm is then replaced by
+        $(Z'u)'[\Var(Z'u)]^{-1}Z'u$, which is what makes the weights appear.
+  \item The constant $\sigma^{-2}$ is carried into the last objective line here; the
+        original drops it there, since it does not affect the minimiser.
+  \item \textbf{Corrected:} the first-order condition was written
+        $-2b'x'P_zy+2x'P_zxb=0$; the derivative of $-2b'x'P_zy$ with respect to $b$
+        is $-2x'P_zy$ (no $b'$), which is what the next line
+        $x'P_zy=(x'P_zx)b$ uses.
+  \item \textbf{Corrected:} in the just-identified collapse the middle line reads
+        $(Z'x)^{-1}(Z'Z)\,x'(x'Z)^{-1}x'Z(Z'Z)^{-1}Z'y$ with a stray $x'$ after
+        $(Z'Z)$, and the line above has $x'Z'(Z'Z)^{-1}$ for $x'Z(Z'Z)^{-1}$; both
+        are typeset without the slip.
+  \item The page annotates the generalized-IV formula with ``$p>k$'' and the
+        simple-IV case with ``$K=p$, $Z$ is $n\times K$''; the annotation is kept
+        as ``over-identified''/``just-identified''.
+  \item $b\sim(\beta,\sigma^{2}(x'x)^{-1})$ is written on the page as the shorthand
+        $(\text{mean},\text{covariance})$; since $u$ is normal the distribution is
+        normal, and it is typeset $N(\beta,\sigma^{2}(x'x)^{-1})$.
+  \item \textbf{Corrected:} the expectation of $b^{*}$ was written
+        $\E(b)+(x'x)^{-1}x'\E(u)+\dots$; $\E(b)$ already contains the term
+        $(x'x)^{-1}x'\E(u)$, so the first term is $\beta$, not $\E(b)$.
+  \item \textbf{Corrected:} ``$\sigma^{2}AA'$ is positive definite when $A\ne0$''
+        is not true in general ($A$ is $k\times n$ and $AA'$ is positive definite
+        only if $A$ has full row rank $k$); the conclusion only needs positive
+        semi-definiteness, which always holds.
+  \item \textbf{Added:} the geometry page contains only $y=X\beta+u$,
+        $y\in\R^n$ (written ``$y=\R^n$''), $\dim\ell(x)=k$, the sketch and the
+        words ``orthogonal projection''. The decomposition $y=Xb+e$, the normal
+        equations $X'e=0$ and the remark on $u$ are added explanation, as are the
+        labels $Xb$, $e$ and $y$ in the figure (the sketch labels only the
+        subspace).
+  \item The just-identified case is written with $K$ on the page; it is typeset
+        $p=k$ to match the dimensions used everywhere else ($k$ and $K$ are the
+        same number of regressors). The page states
+        $\rank(Z)=K$; what the formula needs is $\rank(Z'x)=k$ (relevance), and
+        the step showing the collapse to $(Z'x)^{-1}Z'y$ is added.
+  \item On the last page the subspace is labelled $\ell(x)$ in the sketch (a cursive
+        lower-case letter); it is the column space of $X$ and is typeset $L(x)$.
+  \item The sketch also has an arrow from the origin to the label $\ell(x)$
+        inside the subspace; it is read as a pointer to the label and not redrawn.
+  \item The Gauss--Markov page writes ``$\Var(b^{*})=\sigma^{2}(x'x)^{-1}+\sigma^{2}AA'$
+        where $A=$'' and leaves the condition unfinished; it is $Ax=0$, stated
+        two lines earlier on the page.
+  \item \textbf{Corrected:} the conclusion was written ``for any,
+        $\Var(b^{*})>\Var(b)$''; the correct statement is that
+        $\Var(b^{*})-\Var(b)$ is positive semi-definite ($\ge$, with equality
+        when $A=0$).
+  \item \textbf{Added:} the remarks that the moments are weighted by the inverse
+        of their covariance (with the link to Lesson~1), that relevance means
+        $\rank\E(Z'X)=k$, that $\sigma^{-2}$ drops out of the minimisation, that
+        with $p=k$ the sample moments are set exactly to zero, that GLS is no longer
+        consistent when $\E(x'u)\ne0$, and that Gauss--Markov does not need
+        normality, are explanation, not on the page.
+  \item Pages of the original, for tracing back: page 2 the model and the
+        assumptions, the IV moment condition and the IV objective; page 3 the two-stage-least-squares and simple-IV formulas;
+        page 4 the summary of assumptions and estimators and the start of
+        $b=\beta+(x'x)^{-1}x'u$; page 5 $\E(b)$,
+        $\Var(b)$ and the start of $b^{*}$; page 6 the Gauss--Markov proof;
+        page 7 the geometric interpretation.
+\end{transcriptnotes}
+
+\end{document}

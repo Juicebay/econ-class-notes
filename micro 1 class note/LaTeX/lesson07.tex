@@ -1,0 +1,502 @@
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{7}{Chapter 3 (continued): continuity, utility maximization, and expenditure minimization}{}
+
+
+\section{Continuity: no preference reversal}
+
+Continuity has the implication that there is no preference reversal: the ranking
+of two bundles cannot flip in the limit.
+
+\topic{An equivalent definition}
+$\succsim$ is continuous if and only if, for every bundle $y$, the superior and
+inferior sets
+\[ \{\,x\in X : x\succsim y\,\}\qquad\text{and}\qquad \{\,x\in X : y\succsim x\,\} \]
+are \emph{closed}. Equivalently, their complements --- the sets with strict
+preference, $\{\,x\in X : y\succ x\,\}$ and $\{\,x\in X : x\succ y\,\}$ --- are
+\emph{open}. In words: there is no dramatic change in the ordering if $y$ changes
+a bit.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.9,
+    hint/.style={font=\footnotesize,align=left,inner sep=1pt},
+    lead/.style={thin,black!55}]
+  % ------------- panel (a): continuous preferences -------------
+  \begin{scope}
+    \fill[black!12] plot[domain=0.5:4.0,samples=60] (\x,{1.8/\x})
+          -- (4.0,4.0) -- (0.5,4.0) -- cycle;
+    \ecaxes{4.4}{4.4}
+    \node[ecnode,anchor=south west] at (0,4.45) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.5,0)   {$x_1$};
+    \draw[budget] plot[domain=0.5:4.0,samples=60] (\x,{1.8/\x});
+    \node[bundle] at (1.34,1.34) {};
+    \node[ecnode,anchor=north east] at (1.30,1.30) {$y$};
+    \node[ecnode] at (2.6,3.3) {$\{x : x\succsim y\}$};
+    \node[ecnode,anchor=south east] at (4.4,4.45) {$L=2$};
+    % a sequence inside the set converging to a point on the boundary
+    \foreach \d in {0.8,0.4,0.2,0.1} \node[bundle,inner sep=1.0pt] at ({2.4+\d},{0.75+\d}) {};
+    \node[bundle] at (2.4,0.75) {};
+    \node[ecnode,anchor=south east] at (3.15,1.6) {$z^{n}$};
+    \node[ecnode,anchor=north east] at (2.38,0.72) {$z$};
+    \node[hint,anchor=west] at (5.0,3.6) {\textbf{(a) Continuous preferences}};
+    \draw[lead] (4.95,2.3) -- (3.28,1.58);
+    \node[hint,anchor=west] at (5.0,2.3)
+         {$z^{n}$ inside the shaded set: $z^{n}\succsim y$};
+    \draw[lead] (4.95,1.0) -- (2.5,0.78);
+    \node[hint,anchor=west] at (5.0,1.0)
+         {limit $z$ on the curve: $z\sim y$,\\ so it is still in the set --- the\\
+          boundary belongs to the set};
+  \end{scope}
+  % ------------- panel (b): lexicographic preferences ------------
+  \begin{scope}[yshift=-6.0cm]
+    \fill[black!12] (1.8,0) rectangle (4.0,4.0);
+    \ecaxes{4.4}{4.4}
+    \node[ecnode,anchor=south west] at (0,4.45) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.5,0)   {$x_1$};
+    % ticks and guides for the worked example
+    \draw[thin] (1.8,0.08) -- (1.8,-0.08) node[ecnode,below] {$1$};
+    \draw[thin] (0.08,1.0) -- (-0.08,1.0) node[ecnode,left] {$1$};
+    \draw[thin] (0.08,2.2) -- (-0.08,2.2) node[ecnode,left] {$2$};
+    \draw[densely dotted,black!55] (0,1.0) -- (1.8,1.0);
+    \draw[densely dotted,black!55] (0,2.2) -- (1.8,2.2);
+    % the vertical line x_1 = 1: included above y, excluded below
+    \draw[budget] (1.8,2.2) -- (1.8,4.0);
+    \draw[dashed] (1.8,0) -- (1.8,2.2);
+    \node[bundle] at (1.8,2.2) {};
+    \node[ecnode,anchor=south east] at (1.75,2.25) {$y$};
+    \draw[fill=white] (1.8,1.0) circle (0.09);
+    \node[ecnode,anchor=south east] at (1.75,1.05) {$x$};
+    \foreach \a in {3.2,2.5,2.1,1.95} \node[bundle,inner sep=1.0pt] at (\a,1.0) {};
+    \draw[-{Stealth[length=3pt]},thin] (3.1,1.35) -- (2.1,1.35);
+    \node[hint,align=center] at (2.9,2.55) {$x_1>1$:\\ $\succ y$};
+    % callouts
+    \node[hint,anchor=west] at (5.2,4.5) {\textbf{(b) Lexicographic preferences}};
+    \draw[lead] (5.15,3.75) -- (1.88,3.7);
+    \node[hint,anchor=west] at (5.2,3.75)
+         {above $y$ on the line: tie in $x_1$,\\ more $x_2$ $\Rightarrow$ in the set};
+    \draw[lead] (5.15,2.6) -- (3.28,1.08);
+    \node[hint,anchor=west] at (5.2,2.6)
+         {$x^{n}=(1+\tfrac1n,\,1)$: more $x_1$\\ $\Rightarrow x^{n}\succ y$ for every $n$};
+    \draw[lead] (5.15,1.3) -- (4.3,0.85) -- (1.9,0.85);
+    \node[hint,anchor=north west] at (5.2,1.6)
+         {limit $x=(1,1)$ on the dashed part:\\ tie in $x_1$, less $x_2$ $\Rightarrow y\succ x$,\\
+          so $x$ is \emph{not} in the set (open circle):\\ the ranking has reversed};
+  \end{scope}
+\end{tikzpicture}
+\caption{\emph{Top:} with $L=2$ goods and continuous preferences the superior set
+of $y$ (shaded) contains its boundary, the indifference curve through $y$: it is
+closed, so a sequence $z^{n}$ of bundles at least as good as $y$ converges to a
+bundle $z$ that is still at least as good as $y$. \emph{Bottom:} the worked example
+below, with $y=(1,2)$ and $x^{n}=(1+\frac1n,1)\to x=(1,1)$ marked on the axes, for
+lexicographic preferences (good 1 compared first). The
+superior set of $y$ is everything to the right of the vertical line through $y$,
+plus the part of that line \emph{above} $y$; the part below $y$ (dashed) is not in
+it. The bundles $x^{n}$ lie to the right, so $x^{n}\succ y$ for every $n$, but their
+limit $x$ lies on the dashed part, so $y\succ x$: a preference reversal. The
+superior set is not closed.}
+\end{figure}
+
+\topic{Why lexicographic preferences reverse: a worked example}
+Recall the sequence definition of continuity from Lesson 6: if $x^{n}\succsim y^{n}$
+for every $n$, and $x^{n}\to x$, $y^{n}\to y$, then $x\succsim y$. A \emph{preference
+reversal} is exactly a failure of this: the ranking holds all along the sequence
+but flips at the limit.
+
+Take lexicographic preferences with good 1 compared first,
+\[ x\succ y \iff x_1>y_1,\ \text{or}\ x_1=y_1\ \text{and}\ x_2>y_2 . \]
+Good 1 is infinitely more important than good 2: any extra amount of good 1, however
+small, beats any amount of good 2. Good 2 only matters to break an exact tie in good
+1. Now fix
+\[ y=(1,\,2)\qquad(\text{so } y^{n}=y \text{ for all } n), \qquad
+   x^{n}=\Bigl(1+\tfrac1n,\ 1\Bigr)\ \longrightarrow\ x=(1,\,1). \]
+\begin{flatnum}
+  \item \emph{Along the sequence.} For every $n$, $x^{n}_1=1+\frac1n>1=y_1$, so good 1
+        decides and $x^{n}\succ y$. It does not matter that $x^{n}$ has less of good
+        2 (1 against 2): the tiny surplus $\frac1n$ of good 1 outweighs it.
+  \item \emph{At the limit.} $x=(1,1)$ has exactly as much good 1 as $y$, so good 1
+        no longer decides. The tie is broken by good 2, and $1<2$, so $y\succ x$.
+  \item \emph{The reversal.} $x^{n}\succ y$ for every $n$, yet $y\succ x$ for the
+        limit. The surplus of good 1 shrinks smoothly to zero, but its
+        \emph{effect} on the ranking does not shrink: it stays decisive right up to
+        the limit and then vanishes all at once, handing the decision to good 2.
+        Continuity says exactly that this cannot happen, so lexicographic
+        preferences are not continuous.
+\end{flatnum}
+
+\runin{The same thing in terms of closed sets.} Every $x^{n}$ lies in the superior
+set of $y$, but the limit $x$ does not. A set that does not contain
+the limits of its own sequences is not closed, so the superior set of $y$ is not
+closed --- in panel (b) of Figure 1, the missing piece is the dashed part of
+the vertical line below $y$, where $x$ sits. With continuous preferences (panel
+(a)) the boundary, the indifference curve, belongs to the set, and the limit of
+bundles that are at least as good as $y$ is still at least as good as $y$.
+
+\runin{Why the picture looks so odd.} Under lexicographic preferences no two
+different bundles are indifferent, so there are no indifference curves at all: each
+``indifference set'' is a single point. The same jump is behind the fact that no
+utility function can represent them: a utility $u$ would have to give each vertical
+line $\{x_1=a\}$ its own interval of values $\bigl(u(a,0),\,u(a,1)\bigr)$, with
+the intervals of different lines not overlapping (everything on a line with more
+good 1 ranks higher). That would be uncountably many disjoint intervals in $\R$,
+each containing a different rational number --- impossible, since there are only
+countably many rationals.
+
+\section{Utility representation}
+
+\topic{The main conclusion}
+If $\succsim$ is rational and continuous, there exists a \emph{continuous} utility
+function $u(x)$ that represents $\succsim$ (Debreu's theorem). There is no utility
+function at all representing lexicographic preferences, which are rational but not
+continuous.
+
+\topic{Differentiability}
+For calculus we need the extra assumption that $u(x)$ is differentiable. This is a
+genuine restriction: it rules out, for example, Leontief (perfect-complement)
+preferences,
+\[ u(x_1,x_2)=\min\{x_1,x_2\}, \]
+which are continuous but have a kink wherever $x_1=x_2$.
+
+\topic{Other connections between $\succsim$ and $u(x)$}
+\[ \succsim\ \text{is convex}\iff u(x)\ \text{is quasiconcave}, \]
+that is, $u\bigl(\alpha y+(1-\alpha)z\bigr)\ge\min\{u(y),u(z)\}$ for all
+$\alpha\in[0,1]$: every superior set $\{x:u(x)\ge c\}$ is convex. Likewise
+$\succsim$ is strictly convex if and only if $u$ is strictly quasiconcave.
+
+
+\section{Utility maximization}
+
+Assume $u(x)$ exists and is continuous, and assume preferences are locally
+non-satiated. The \emph{utility maximization problem} (UMP) is
+\[ \max_{x\ge 0}\ u(x)\qquad\text{s.t.}\qquad p\cdot x\le w . \]
+
+\begin{flatlist}
+  \item \emph{Existence.} A solution exists, since $u(x)$ is continuous and, for
+        $p\gg0$ and $w\ge0$, the budget set $B_{p,w}$ is non-empty and compact
+        (Lesson 1), and a continuous function attains its maximum on a non-empty
+        compact set (Weierstrass).
+  \item The solution is the \emph{Marshallian} (or \emph{Walrasian}) demand
+        $x(p,w)$.
+  \item We may have many solutions, in which case we have a demand
+        \emph{correspondence}.
+\end{flatlist}
+
+\topic{Some properties of $x(p,w)$}
+\begin{flatlist}
+  \item \emph{Walras' law}, $p\cdot x=w$ for every $x\in x(p,w)$: the budget
+        binds, due to local non-satiation (Lesson 6).
+  \item \emph{Homogeneity of degree zero} in $(p,w)$:
+        $x(\alpha p,\alpha w)=x(p,w)$ for $\alpha>0$, because the feasible set
+        does not change, $B_{\alpha p,\alpha w}=B_{p,w}$.
+\end{flatlist}
+
+\section{The indirect utility function}
+
+The indirect utility function is the maximum value function of the UMP,
+\[ v(p,w)=u\bigl(x(p,w)\bigr): \]
+the highest utility one can achieve at prices $p$ and wealth $w$. Its properties:
+\begin{flatlist}
+  \item $v(p,w)$ is continuous in $(p,w)$ (for $p\gg0$, $w>0$), as a consequence
+        of the more general \emph{theorem of the maximum}.
+  \item $v(p,w)$ is homogeneous of degree zero in $(p,w)$, because the feasible set
+        does not change.
+  \item $v(p,w)$ is strictly increasing in $w$ (by local non-satiation, more
+        wealth always allows a better bundle) and non-increasing in $p_i$, for all
+        $i=1,\dots,L$ (a higher price only shrinks the budget set).
+  \item $v(p,w)$ is \emph{quasi-convex} in $(p,w)$: the inferior set
+        $\{(p,w) : v(p,w)\le\bar v\}$ is convex for every $\bar v$.
+\end{flatlist}
+
+\runin{Why quasi-convex.} Let $v(p,w)\le\bar v$ and $v(p',w')\le\bar v$, and put
+$(p'',w'')=\alpha(p,w)+(1-\alpha)(p',w')$ with $\alpha\in[0,1]$. Any $x$ affordable
+at $(p'',w'')$ satisfies
+$\alpha(p\cdot x)+(1-\alpha)(p'\cdot x)\le\alpha w+(1-\alpha)w'$, so either
+$p\cdot x\le w$ or $p'\cdot x\le w'$: $x$ was affordable in one of the two original
+situations, hence $u(x)\le\bar v$. Taking the best such $x$,
+$v(p'',w'')\le\bar v$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \fill[black!12] (0.05,0) -- plot[domain=0.05:4.2,samples=60] (\x,{1.6*sqrt(\x)})
+        -- (4.2,0) -- cycle;
+  \ecaxes{4.8}{4.2}
+  \node[ecnode,anchor=south west] at (0,4.25) {$w$};
+  \node[ecnode,anchor=west]      at (4.9,0)   {$p_i$};
+  \draw[budget] plot[domain=0.05:4.2,samples=60] (\x,{1.6*sqrt(\x)});
+  \node[ecnode,anchor=west] at (4.25,3.28) {$v(p,w)=\bar v$};
+  \node[ecnode] at (2.9,1.1) {$\{v(p,w)\le\bar v\}$};
+\end{tikzpicture}
+\caption{Quasi-convexity of $v$, drawn in the $(p_i,w)$ plane with the other prices
+fixed. Along the curve utility stays at $\bar v$; below it (less wealth, or a higher
+price) utility is at most $\bar v$. That inferior set is convex, so the curve is
+concave.}
+\end{figure}
+
+\topic{The intuition}
+The slope of the curve $v(p,w)=\bar v$ is the extra wealth needed to keep utility
+at $\bar v$ when $p_i$ rises: to first order, one unit of $p_i$ costs $x_i$, the
+amount of good $i$ being bought. The lower the price was to start with, the more of
+good $i$ is bought (along the curve utility is held at $\bar v$, so this is the
+compensated response, which never goes the wrong way), so I need to be compensated more for a price change the lower
+the price was to start with. The curve is steep at low $p_i$ and flattens out: it is
+concave.
+
+
+\section{More structure: uniqueness and differentiability}
+
+Impose more structure by assuming that $u(x)$ --- which is \emph{exogenous}, a
+primitive of the model --- is strictly quasiconcave. Then the solution is
+\emph{unique}, and $x(p,w)$ is a demand \emph{function}. (Two different solutions
+would give the same utility, and by strict quasiconcavity their average --- also
+affordable, since $B_{p,w}$ is convex --- would give strictly more.)
+
+Let us also assume that $x(p,w)$ and $v(p,w)$ are differentiable. Strictly speaking
+this is ``a crime'': they are \emph{endogenous}, derived from the model, so their
+properties should be proved rather than assumed. The good news is that we can now
+use a wonderful and elegant theorem, the \emph{envelope theorem}.
+
+\section{The envelope theorem and Roy's identity}
+
+The envelope theorem tells us what happens to the maximum value, here the indirect
+utility, when a parameter changes: the derivative of the value function equals the
+partial derivative of the Lagrangian with respect to the parameter, evaluated at the
+optimum. The UMP
+\[ \max_{x}\ u(x)\qquad\text{s.t.}\qquad p\cdot x\le w \]
+has the Lagrangian
+\[ \mathcal{L}=u(x)-\lambda\,(p\cdot x-w). \]
+
+\topic{The effect of wealth}
+\[ \pd{v(p,w)}{w}
+   =\pd{\mathcal{L}}{w}\bigg|_{\substack{x=x(p,w)\\ \lambda=\lambda^{*}}}
+   =\lambda^{*}>0 . \]
+The multiplier $\lambda^{*}$ is the \emph{marginal utility of wealth}; it is
+positive because $v$ is strictly increasing in $w$.
+
+\topic{The effect of a price}
+\[ \pd{v(p,w)}{p_i}
+   =\pd{\mathcal{L}}{p_i}\bigg|_{\substack{x=x(p,w)\\ \lambda=\lambda^{*}}}
+   =-\lambda^{*}x_i(p,w)\le 0 . \]
+
+\topic{Roy's identity}
+Combining the two (dividing the second by the first) gives
+\[ x_i(p,w)=-\,\frac{\partial v(p,w)/\partial p_i}{\partial v(p,w)/\partial w}, \]
+so we can infer demand from the indirect utility function.
+
+
+\section{The first-order conditions}
+
+Start from the Lagrangian and assume the solution is interior, $x\gg0$. Then the
+Karush--Kuhn--Tucker (KKT) conditions are
+\[ \pd{u(x)}{x_i}-\lambda p_i=0
+   \quad\iff\quad
+   \pd{u(x)}{x_i}=\lambda p_i,\qquad i=1,\dots,L, \]
+together with $\lambda\ge0$ and complementary slackness,
+$\lambda\,(w-p\cdot x)=0$.
+
+\topic{Is the constraint binding?}
+If $\partial u(x)/\partial x_i>0$ for some good $i$ --- in particular if
+$\nabla u(x)\gg0$ --- then $\lambda^{*}=\dfrac{\partial u/\partial x_i}{p_i}>0$, and
+by complementary slackness $p\cdot x=w$: the constraint is binding, as Walras' law
+says.
+
+\topic{The tangency condition}
+Dividing the conditions for $x_i$ and $x_j$, the multiplier cancels:
+\[ \frac{\partial u(x)/\partial x_i}{\partial u(x)/\partial x_j}=\frac{p_i}{p_j}. \]
+The marginal rate of substitution equals the relative price. This is the
+\emph{tangency condition}: at the optimum the indifference curve is tangent to the
+budget line.
+
+
+\section{Expenditure minimization}
+
+\topic{A thought experiment}
+The \emph{expenditure minimization problem} (EMP) is
+\[ \min_{x\ge0}\ p\cdot x\qquad\text{s.t.}\qquad u(x)\ge\bar u : \]
+the cheapest way of getting utility no less than $\bar u$ (for a level
+$\bar u>u(0)$). It is the \emph{dual} of utility maximization: we switched the
+objective and the constraint. Instead of fixing the budget and reaching the highest
+indifference curve, we fix the indifference curve ($\bar u$) and find the lowest
+budget that reaches it.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.62]
+  % ------------- panel (a): utility maximization -------------
+  \begin{scope}
+    \ecaxes{4.4}{4.4}
+    \node[ecnode,anchor=south west] at (0,4.45) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.5,0)   {$x_1$};
+    \draw[budget] (0,3.0) -- (3.6,0);
+    \foreach \c in {1.3,2.7,4.4}
+      \draw[thin] plot[domain={\c/4.2}:4.2,samples=60] (\x,{\c/\x});
+    \node[bundle] at (1.8,1.5) {};
+    \draw[-{Stealth[length=4pt]},thin] (0.55,0.55) -- (1.25,1.25);
+  \end{scope}
+  % ------------- panel (b): expenditure minimization ----------
+  \begin{scope}[xshift=7.2cm]
+    \ecaxes{4.4}{4.4}
+    \node[ecnode,anchor=south west] at (0,4.45) {$x_2$};
+    \node[ecnode,anchor=west]      at (4.5,0)   {$x_1$};
+    \draw[budget] plot[domain={2.7/4.2}:4.2,samples=60] (\x,{2.7/\x});
+    \node[ecnode,anchor=south] at (3.9,0.72) {$\bar u$};
+    \draw[dashed] (0,3.9) -- (4.68,0);
+    \draw[thin] (0,3.0) -- (3.6,0);
+    \node[bundle] at (1.8,1.5) {};
+    \draw[-{Stealth[length=4pt]},thin] (3.0,1.9) -- (2.55,1.45);
+  \end{scope}
+\end{tikzpicture}
+\caption{The two problems reach the same tangency from opposite sides.
+\emph{Left, utility maximization:} the budget line is fixed and the consumer moves out to the highest
+indifference curve that touches it. \emph{Right, expenditure minimization:} the indifference curve $\bar u$ is
+fixed and the budget line, keeping its slope $-p_1/p_2$, is shifted in until it just
+touches the curve.}
+\end{figure}
+
+When the two problems are matched --- the EMP at $\bar u=v(p,w)$ --- they pick the
+same bundle, and the minimum expenditure is exactly $w$.
+
+
+\section{The expenditure function}
+
+The expenditure function is the minimum value function of the EMP,
+\[ e(p,\bar u)=p\cdot h(p,\bar u), \]
+where $h(p,\bar u)$ denotes the solution of the EMP. Its properties (for $p\gg0$):
+\begin{flatlist}
+  \item $e(p,\bar u)$ is continuous in $(p,\bar u)$.
+  \item $e(p,\bar u)$ is homogeneous of degree 1 in $p$: if all prices are scaled
+        by $\alpha$, relative prices are unchanged, so the solution is unchanged,
+        $h(\alpha p,\bar u)=h(p,\bar u)$. But the bundle now costs more:
+        \[ e(\alpha p,\bar u)=\alpha\,e(p,\bar u),\qquad \alpha>0 . \]
+  \item $e(p,\bar u)$ is increasing in $\bar u$ (a higher target costs more) and
+        non-decreasing in $p_i$, for all $i=1,\dots,L$.
+  \item $e(p,\bar u)$ is \emph{concave} in $p$.
+\end{flatlist}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \ecaxes{4.8}{4.4}
+  \node[ecnode,anchor=south west] at (0,4.45) {Exp};
+  \node[ecnode,anchor=west]      at (4.9,0)   {$p_i$};
+  \draw[budget] plot[domain=0.12:4.4,samples=60] (\x,{1.9*sqrt(\x)});
+  \node[ecnode,anchor=west] at (4.45,3.99) {$e(p,\bar u)$};
+  \draw[dashed] (0.3,1.40) -- (4.4,4.58);
+  \node[bundle] at (1.5,2.33) {};
+  \draw[thin] (1.5,0.08) -- (1.5,-0.08);
+  \node[ecnode,anchor=north] at (1.5,-0.08) {$\bar p_i$};
+  \node[ecnode,anchor=south east] at (4.4,4.62) {$p\cdot h(\bar p,\bar u)$};
+\end{tikzpicture}
+\caption{The expenditure function is concave in each price. The dashed line is the
+cost, at prices $p$, of the bundle $h(\bar p,\bar u)$ that is optimal at $\bar p$:
+it is linear in $p_i$, touches $e$ at $\bar p$, and lies above it everywhere else,
+because re-optimizing at the new prices can only lower the cost.}
+\end{figure}
+
+\topic{Proof of concavity}
+Let $p''=\alpha p+(1-\alpha)p'$ with $\alpha\in[0,1]$, and let $x''$ denote the
+solution of the expenditure minimization problem at prices $p''$. Then
+\[
+\begin{aligned}
+  e(p'',\bar u)=p''\cdot x''
+  &=\alpha\,p\cdot x''+(1-\alpha)\,p'\cdot x''\\
+  &\ge\alpha\,e(p,\bar u)+(1-\alpha)\,e(p',\bar u).
+\end{aligned}
+\]
+The inequality holds because $x''$ reaches utility $\bar u$, so it is a feasible
+choice in the EMP at $p$ and at $p'$; the cheapest feasible bundle costs no more,
+$p\cdot x''\ge e(p,\bar u)$ and $p'\cdot x''\ge e(p',\bar u)$. This confirms
+concavity.
+
+\begin{transcriptnotes}
+  \item Page 1 of the original is a title page reading only ``Lesson 7''; it is
+        not reproduced.
+  \item The direct utility function is written $V(x)$ throughout the original,
+        and the indirect utility function $V(P,w)$ on some pages and $v(P,w)$ on
+        others. Both are typeset in the course (MWG) notation: $u(x)$ for utility
+        and $v(p,w)$ for indirect utility. Prices are typeset in lower case $p$;
+        the original writes $P$. The expenditure function, written $E(P,u)$, is
+        typeset $e(p,\bar u)$, with the utility target written $\bar u$ so that it
+        is not confused with the function $u(\cdot)$.
+  \item ``equivilent'' $\to$ \emph{equivalent}; ``Walra's'' $\to$ \emph{Walras'};
+        ``Homongenity'' $\to$ \emph{homogeneity}; ``continous'' $\to$
+        \emph{continuous}; ``Lagrangian'', ``Kuhn--Tucker'', ``marginal'' and
+        ``tangency'' are spelled out where the original abbreviates or misspells
+        them (``managin'', ``tangent condition''); ``KKT'' is expanded as
+        Karush--Kuhn--Tucker.
+  \item \textbf{Corrected:} the set beside the first sketch on page 2 reads
+        $\{x\in X \mid y\succ x\}$, which is the strict \emph{inferior} set of $y$.
+        The shading is above the indifference curve, and the sentence it
+        illustrates is about the superior set being closed, so the label is
+        typeset as the superior set $\{x : x\succsim y\}$.
+  \item The second sketch on page 2 is the lexicographic order with good 1 compared
+        first (the vertical line through $y$ bounds the superior set), whereas the
+        definition in Lesson 6 compares good 2 first. The labels
+        ``$x^{n}\succ y^{n}$, $y\succ x$'' are read with $y^{n}=y$, as drawn; the
+        figure shows the sequence $x^{n}\to x$. \textbf{Added:} a worked numerical example,
+        $y=(1,2)$ and $x^{n}=(1+\frac1n,1)\to x=(1,1)$, showing step by step how the
+        ranking $x^{n}\succ y$ flips to $y\succ x$ at the limit, tied to both the
+        sequence and the closed-set definitions of continuity. Figure 1 is
+        stacked vertically and annotated: the coordinates of the example on
+        the axes, a converging sequence $z^{n}\to z$ in the continuous panel,
+        and callouts explaining each region and point.
+  \item ``Solution is manshallian on Walrasian demand'' $\to$ \emph{Marshallian
+        or Walrasian demand}; ``demand corresponse'' $\to$ \emph{correspondence}.
+  \item ``$V(P,w)$ is homogeity degree zero'' and ``$E(P,u)$ condition in
+        $(P,u)$'' are read as \emph{homogeneous of degree zero} and
+        \emph{continuous in $(p,\bar u)$}.
+  \item The sentence beside the quasi-convexity sketch, ``I need to be compensated
+        more for a price change the lower price was to start with'', is read as
+        \emph{the lower the price was to start with}.
+  \item ``Assume preferences are non-satiated'' carries an insertion mark with
+        ``loc'' above it; it is read as \emph{locally non-satiated}.
+  \item ``I'm pose more structure'' $\to$ \emph{Impose more structure}. The
+        remark ``A crime'' after assuming $x(p,w)$ and $v(p,w)$ differentiable is
+        kept, with the reason it is a crime (they are endogenous) spelled out.
+  \item \textbf{Corrected:} the tangency condition divides
+        $\partial V/\partial x_i$ by $\partial V/\partial x_i$ in the original;
+        the denominator is $\partial u/\partial x_j$, which is what gives $p_j$ on
+        the right.
+  \item \textbf{Corrected:} the KKT condition is written
+        $\partial V/\partial x_i=\partial P_i$ on the right of the ``$\iff$''; it
+        is $\lambda p_i$.
+  \item \textbf{Corrected:} ``$E(P,w)$ is concave in $P$'' is written with $w$ in
+        place of the utility level; it is $e(p,\bar u)$.
+  \item On page 10 the monotonicity property reads ``non-decreasing in $u$ and in
+        $P_i$''. That is true, but in $\bar u$ the standard statement is stronger:
+        with continuous, locally non-satiated preferences $e$ is \emph{strictly}
+        increasing in $\bar u$; it is typeset as ``increasing''.
+  \item \textbf{Added:} the definition of quasiconcavity and the strict-convexity
+        counterpart; the reason the UMP has a solution (Weierstrass); a proof that
+        $v$ is quasi-convex; the argument for uniqueness under strict
+        quasiconcavity; the Lagrangian written out for the envelope theorem, with
+        $\lambda^{*}$ named the marginal utility of wealth; complementary
+        slackness; the reason for the inequality in the concavity proof (feasibility
+        of $x''$); ``rational'' in the representation theorem and the name
+        Debreu; the countable-rationals argument for why lexicographic preferences
+        have no utility representation (``Why the picture looks so odd''); the
+        kink as the reason Leontief is not differentiable; the first-order reading
+        of the slope of $v(p,w)=\bar v$ as $x_i$ in ``The intuition''; the
+        restrictions $p\gg0$, $w\ge0$ or $w>0$, and $\bar u>u(0)$; the remark that the UMP and EMP pick the same bundle when
+        $\bar u=v(p,w)$; and, in the last figure, the dashed cost line of a fixed
+        bundle, which shows why $e$ is concave.
+  \item The sketches were redrawn: the superior set for $L=2$ and the lexicographic
+        counter-example (page 2); the inferior set of $v$ in the $(p_i,w)$ plane
+        (page 5); utility maximization against expenditure minimization (page 9);
+        and $e(p,\bar u)$ against $p_i$ (page 10).
+  \item Pages of the original, for tracing back: page 2 continuity, closed and
+        open sets, and the two sketches; page 3 the representation theorem,
+        lexicographic and Leontief preferences, convexity and quasiconcavity, and
+        the UMP; page 4 existence, Marshallian demand, Walras' law, homogeneity and
+        $v(p,w)$; page 5 the properties of $v$ and the quasi-convexity sketch;
+        page 6 strict quasiconcavity, differentiability and the envelope theorem
+        for $w$; page 7 the envelope theorem for $p_i$, Roy's identity and the KKT
+        conditions; page 8 the binding constraint and the tangency condition;
+        page 9 the EMP and its sketches; page 10 the expenditure function and its
+        properties; page 11 the proof of concavity.
+\end{transcriptnotes}
+
+\end{document}

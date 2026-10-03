@@ -1,0 +1,83 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "43185c01",
+   "metadata": {},
+   "source": [
+    "# ECON*6140 — Assignment 1\n",
+    "Kernel: **Python (Metrics HW1)** (`.venv` in this folder)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "793943d3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import statsmodels.api as sm\n",
+    "import statsmodels.formula.api as smf\n",
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "pd.set_option('display.precision', 4)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "514c9883",
+   "metadata": {},
+   "source": [
+    "## Question 2 — tbrate data\n",
+    "`tbrate.xlsx` (converted from `tbrate.docx`): 1950Q1–1996Q4, columns `r` (91-day T-bill rate), `y` (log real GDP), `pi` (inflation)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "99aea33b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_excel('tbrate.xlsx', sheet_name='data')\n",
+    "df.index = pd.PeriodIndex(df['period'], freq='Q')\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0728d655",
+   "metadata": {},
+   "source": [
+    "## Question 3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ad8f0fe1",
+   "metadata": {},
+   "source": [
+    "## Question 4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "879a6a23",
+   "metadata": {},
+   "source": [
+    "## Question 5"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python (Metrics HW1)",
+   "language": "python",
+   "name": "metrics-hw1"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

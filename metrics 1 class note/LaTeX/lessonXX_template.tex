@@ -1,0 +1,33 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+%% FOR A NEW LESSON: copy this file, rename it lessonNN.tex, fill in the header,
+%% and write the body with the commands below. Do not add packages here --
+%% everything goes in metricsstyle.sty so that all lessons keep the same look.
+%%
+%%   \section{...}        numbered section
+%%   \topic{...}          bold heading on its own line
+%%   \runin{...}          bold run-in heading
+%%   flatlist / flatnum   bullet / numbered list
+%%   transcriptnotes      small-print list of corrections, at the very end
+%%   \ecaxes{x}{y}        plain axes for a diagram; styles: budget, bundle, ecnode
+%%   \E \Var \Cov \rank   operators        \xT  transpose mark        \R  reals
+
+\begin{document}
+
+\lessonheader{NN}{<subtitle: topic of the lecture>}{<date, or nothing>}
+
+\section{First section}
+
+Text, with display maths:
+\[ y=X\beta+u,\qquad u\sim N(0,\sigma^2I_n). \]
+
+\topic{A named result or assumption}
+Statement.
+
+\begin{flatlist}
+  \item A bullet point.
+  \item Another one.
+\end{flatlist}
+
+\end{document}
