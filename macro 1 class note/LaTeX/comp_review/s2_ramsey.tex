@@ -1,0 +1,666 @@
+\section{The Ramsey(-Cass-Koopmans) Model and Fiscal Policy / Endogenous Growth}
+
+The Solow model takes the saving rate as a fixed parameter. The Ramsey(-Cass-Koopmans) model keeps the same production side but lets households \emph{choose} how much to consume and save by maximising lifetime utility. The saving rate therefore becomes an outcome that depends on preferences. We then use the model to study fiscal policy (lump-sum and proportional taxes), and finally productive government spending, which can generate endogenous (policy-dependent) long-run growth.
+
+%==============================================================
+\subsection{Setup \pg{27}}
+
+\paragraph{Timing and notation.} Time $t\ge0$ is \emph{continuous}. A dot denotes a time derivative, $\dot z_t\equiv dz_t/dt$, and $\dot z_t/z_t$ is the growth rate of $z_t$. A hat denotes a quantity \emph{per effective worker}, i.e.\ divided by $A_tL_t$.
+
+\begin{itemize}
+\item $Y_t$, $K_t$, $C_t$, $I_t$: aggregate output, capital stock, consumption, gross investment.
+\item $L_t=L_0e^{nt}$: population = labour force; $n$ = population growth rate. Normalise $L_0=1$.
+\item $A_t=A_0e^{xt}$: labour-augmenting technology, so $\dot A_t/A_t=x$; $x$ = rate of technological progress. Normalise $A_0=1$ where convenient.
+\item $\hat k_t=K_t/(A_tL_t)$, $\hat y_t=Y_t/(A_tL_t)$, $\hat c_t=C_t/(A_tL_t)$, $\hat i_t=I_t/(A_tL_t)$: capital, output, consumption, investment per effective worker.
+\item $w_t$: real wage per worker; $r_t$: rental rate of capital (gross of depreciation); $\delta$: depreciation rate.
+\item $\alpha\in(0,1)$: capital share in production.
+\item $\rho>0$: rate of time preference (subjective discount rate).
+\item $\theta>0$: curvature of utility; $1/\theta$ is the intertemporal elasticity of substitution (IES).
+\end{itemize}
+
+\paragraph{Firms.} Many competitive firms rent capital and hire labour. They take the prices $w_t$ and $r_t$ as given and choose the \emph{inputs} $K_t$ and $L_t$:
+\[
+\max_{K_t,\,L_t}\ \pi_t = Y_t - w_tL_t - r_tK_t,\qquad Y_t=(A_tL_t)^{1-\alpha}K_t^{\alpha}.
+\]
+Dividing the production function by $A_tL_t$ gives the intensive form
+\[
+\hat y_t=\frac{(A_tL_t)^{1-\alpha}K_t^\alpha}{A_tL_t}=\Big(\frac{K_t}{A_tL_t}\Big)^{\alpha}=\hat k_t^{\alpha}.
+\]
+The first-order conditions set each price equal to the marginal product:
+\begin{align}
+r_t&=\frac{\partial Y_t}{\partial K_t}=\alpha (A_tL_t)^{1-\alpha}K_t^{\alpha-1}=\alpha\hat k_t^{\alpha-1}\qquad(=MPK), \label{rm:r}\\
+w_t&=\frac{\partial Y_t}{\partial L_t}=(1-\alpha)A_t^{1-\alpha}L_t^{-\alpha}K_t^{\alpha}=(1-\alpha)A_t\hat k_t^{\alpha}. \label{rm:w}
+\end{align}
+A useful identity follows (Euler's theorem for constant returns to scale, i.e.\ factor payments exhaust output):
+\begin{equation}
+\frac{w_t}{A_t}+r_t\hat k_t=(1-\alpha)\hat k_t^\alpha+\alpha\hat k_t^{\alpha-1}\hat k_t=\hat k_t^\alpha=\hat y_t. \label{rm:exhaust}
+\end{equation}
+
+\paragraph{Households.} The economy has a large number of identical, infinitely lived households, so we can study one representative household. It owns the capital, rents it to firms, supplies labour inelastically, and takes $w_t,r_t$ as given. Period utility is CRRA:
+\[
+u(c)=\frac{c^{1-\theta}}{1-\theta},\qquad u'(c)=c^{-\theta}>0,\qquad u''(c)=-\theta c^{-\theta-1}<0 .
+\]
+
+\emph{From per-capita to per-effective-worker utility.} The household weights each member's utility, $L_t\,u(c_t)$ with $c_t=C_t/L_t=A_t\hat c_t$ consumption per person, and discounts at $\rho$:
+\begin{align*}
+U&=\int_0^\infty \frac{c_t^{1-\theta}}{1-\theta}\,L_t\,e^{-\rho t}\,dt
+=\int_0^\infty \frac{(e^{xt}\hat c_t)^{1-\theta}}{1-\theta}\,e^{nt}e^{-\rho t}\,dt
+&&\text{(using $c_t=A_t\hat c_t$, $A_t=e^{xt}$, $L_t=e^{nt}$)}\\
+&=\int_0^\infty \frac{\hat c_t^{\,1-\theta}}{1-\theta}\,e^{-[\rho-n-(1-\theta)x]t}\,dt
+&&\text{(collect the exponents)}.
+\end{align*}
+Define the \emph{effective discount rate}
+\begin{equation}
+\gamma\equiv\rho-n-(1-\theta)x>0 . \label{rm:gamma}
+\end{equation}
+The assumption $\gamma>0$ guarantees that lifetime utility is finite.
+
+\emph{Budget constraint.} Income is wages plus capital rentals; it is spent on consumption and gross investment:
+\[
+C_t+I_t=w_tL_t+r_tK_t,\qquad I_t=\dot K_t+\delta K_t .
+\]
+Divide by $A_tL_t$:
+\[
+\hat c_t+\hat i_t=\frac{w_t}{A_t}+r_t\hat k_t .
+\]
+To write $\hat i_t$ in terms of $\hat k_t$, take logs of $\hat k_t=K_t/(A_tL_t)$ and differentiate with respect to $t$:
+\begin{align*}
+\frac{\dot{\hat k}_t}{\hat k_t}&=\frac{\dot K_t}{K_t}-\frac{\dot A_t}{A_t}-\frac{\dot L_t}{L_t}=\frac{\dot K_t}{K_t}-x-n
+&&\text{(growth rate of a ratio = difference of growth rates)}\\
+\Rightarrow\ \frac{\dot K_t}{A_tL_t}&=\dot{\hat k}_t+(n+x)\hat k_t
+&&\text{(multiply by $\hat k_t$)}\\
+\Rightarrow\ \hat i_t&=\frac{\dot K_t+\delta K_t}{A_tL_t}=\dot{\hat k}_t+(\delta+n+x)\hat k_t .
+\end{align*}
+So gross investment per effective worker must cover depreciation ($\delta$), the new workers ($n$) and the extra efficiency units ($x$) before $\hat k$ can rise. In a steady state ($\dot{\hat k}=0$), $\hat i=(\delta+n+x)\hat k$. Substituting $\hat i_t$ out of the budget constraint:
+\begin{equation}
+\boxed{\ \dot{\hat k}_t=\frac{w_t}{A_t}+(r_t-\delta-n-x)\hat k_t-\hat c_t\ } \label{rm:bc}
+\end{equation}
+Substituting $\hat i$ out makes $\hat k_t$ the variable that the household controls over time (through its choice of $\hat c_t$).
+
+\paragraph{Household problem.} Choose paths $\{\hat c_t,\hat k_t\}_{t\ge0}$ to
+\[
+\max\ \int_0^\infty \frac{\hat c_t^{\,1-\theta}}{1-\theta}\,e^{-\gamma t}\,dt
+\quad\text{s.t. \eqref{rm:bc}, given } \hat k_0>0 \text{ and the price paths } \{w_t,r_t\}.
+\]
+
+%==============================================================
+\subsection{Optimal control: Hamiltonian and the Euler equation \pg{27--28}}
+
+\paragraph{The maximum principle (tool).} Consider $\max\int_0^\infty v(c_t,k_t,t)\,dt$ subject to $\dot k_t=g(c_t,k_t,t)$ with $k_0$ given. Here $c$ is the \emph{control} variable (it can jump), $k$ is the \emph{state} variable (predetermined, it moves only through $\dot k$), and $\psi_t$ is the \emph{co-state} variable (a multiplier on the law of motion). Form the (present-value) Hamiltonian
+\[
+\mathcal H(c_t,k_t,\psi_t,t)=v(c_t,k_t,t)+\psi_t\,g(c_t,k_t,t).
+\]
+An optimal path must satisfy
+\begin{align*}
+&\text{(i)}\ \frac{\partial\mathcal H}{\partial c_t}=0,\qquad
+\text{(ii)}\ -\frac{\partial\mathcal H}{\partial k_t}=\dot\psi_t,\qquad
+\text{(iii)}\ \frac{\partial\mathcal H}{\partial \psi_t}=\dot k_t,\\
+&\text{(iv) transversality condition (TC): }\ \lim_{t\to\infty}\psi_tk_t=0 .
+\end{align*}
+Condition (iii) just returns the constraint (as with a Lagrangian, differentiating with respect to the multiplier gives back the constraint). The TC says the discounted value of capital left over ``at the end of time'' must be zero: it is never optimal to die with valuable unused capital.
+
+\paragraph{Applying it.} Here $c=\hat c$, $k=\hat k$, $v=\frac{\hat c^{1-\theta}}{1-\theta}e^{-\gamma t}$, $g$ = RHS of \eqref{rm:bc}:
+\[
+\mathcal H_t=\frac{\hat c_t^{\,1-\theta}}{1-\theta}e^{-\gamma t}+\psi_t\Big[\frac{w_t}{A_t}+(r_t-\delta-n-x)\hat k_t-\hat c_t\Big].
+\]
+The household takes $w_t$ and $r_t$ as given, so they do not depend on its own $\hat k_t$. The conditions are:
+\begin{align}
+\frac{\partial\mathcal H_t}{\partial\hat c_t}=0:&\qquad \hat c_t^{-\theta}e^{-\gamma t}=\psi_t, \label{rm:foc1}\\
+-\frac{\partial\mathcal H_t}{\partial\hat k_t}=\dot\psi_t:&\qquad \dot\psi_t=-\psi_t(r_t-\delta-n-x)\ \Longleftrightarrow\ \frac{\dot\psi_t}{\psi_t}=-(r_t-\delta-n-x), \label{rm:foc2}\\
+\frac{\partial\mathcal H_t}{\partial\psi_t}=\dot{\hat k}_t:&\qquad \dot{\hat k}_t=\frac{w_t}{A_t}+(r_t-\delta-n-x)\hat k_t-\hat c_t, \label{rm:foc3}
+\end{align}
+plus the TC $\lim_{t\to\infty}\psi_t\hat k_t=0$.
+
+\emph{Interpretation of $\psi_t$.} By \eqref{rm:foc1}, $\psi_t$ equals the discounted marginal utility of consumption at $t$. It is the \emph{present-value shadow price} of one unit of income (or capital) at date $t$. The TC therefore says the present value of the capital stock must go to zero.
+
+\paragraph{Deriving the Euler equation.} Differentiate \eqref{rm:foc1} with respect to $t$. Use the product rule and the chain rule, $\frac{d}{dt}\hat c_t^{-\theta}=-\theta\hat c_t^{-\theta-1}\dot{\hat c}_t$:
+\begin{align*}
+\dot\psi_t&=-\theta\,\hat c_t^{-\theta-1}\dot{\hat c}_t\,e^{-\gamma t}-\gamma\,\hat c_t^{-\theta}e^{-\gamma t}\\
+&=-\theta\,\underbrace{\hat c_t^{-\theta}e^{-\gamma t}}_{=\psi_t}\,\frac{\dot{\hat c}_t}{\hat c_t}-\gamma\,\underbrace{\hat c_t^{-\theta}e^{-\gamma t}}_{=\psi_t}
+&&\text{(factor out $\hat c_t^{-\theta}e^{-\gamma t}$)}\\
+\Rightarrow\ \frac{\dot\psi_t}{\psi_t}&=-\theta\frac{\dot{\hat c}_t}{\hat c_t}-\gamma
+&&\text{(divide by $\psi_t$).}
+\end{align*}
+Set this equal to \eqref{rm:foc2}:
+\begin{align*}
+-\theta\frac{\dot{\hat c}_t}{\hat c_t}-\gamma&=-(r_t-\delta-n-x)\\
+\theta\frac{\dot{\hat c}_t}{\hat c_t}&=r_t-\delta-n-x-\gamma
+&&\text{(multiply by $-1$, move $\gamma$)}\\
+&=r_t-\delta-n-x-\rho+n+(1-\theta)x
+&&\text{(substitute $\gamma$ from \eqref{rm:gamma})}\\
+&=r_t-\delta-\rho-\theta x
+&&\text{($n$ cancels; $-x+x-\theta x=-\theta x$).}
+\end{align*}
+Hence
+\begin{equation}
+\frac{\dot{\hat c}_t}{\hat c_t}=\frac1\theta\big[r_t-\delta-\rho-\theta x\big]. \label{rm:euler0}
+\end{equation}
+\emph{Interpretation.} Consumption per effective worker rises when the net return to saving, $r_t-\delta$, exceeds the ``required'' return $\rho+\theta x$. Here $\rho$ is impatience and $\theta x$ reflects that per-capita consumption already grows at $x$, so with high $\theta$ the household is reluctant to make it grow even faster. The IES $1/\theta$ scales how strongly consumption growth reacts to the return gap.
+
+\paragraph{Imposing equilibrium.} Substitute the firm conditions \eqref{rm:r}--\eqref{rm:w} into \eqref{rm:euler0} and \eqref{rm:foc3}. For the capital equation:
+\begin{align*}
+\dot{\hat k}_t&=\frac{w_t}{A_t}+(r_t-\delta-n-x)\hat k_t-\hat c_t\\
+&=(1-\alpha)\hat k_t^\alpha+(\alpha\hat k_t^{\alpha-1}-\delta-n-x)\hat k_t-\hat c_t
+&&\text{(substitute $w_t,r_t$)}\\
+&=(1-\alpha)\hat k_t^\alpha+\alpha\hat k_t^{\alpha}-(\delta+n+x)\hat k_t-\hat c_t
+&&\text{(multiply out)}\\
+&=\hat k_t^\alpha-(\delta+n+x)\hat k_t-\hat c_t .
+\end{align*}
+
+\begin{keybox}[title={Ramsey system: 2 nonlinear ODEs in 2 unknowns $(\hat c_t,\hat k_t)$}]
+\begin{align}
+\text{Euler equation (EE):}&\qquad \frac{\dot{\hat c}_t}{\hat c_t}=\frac1\theta\big[\alpha\hat k_t^{\alpha-1}-\delta-\rho-\theta x\big], \label{rm:EE}\\
+\text{Resource constraint (RC):}&\qquad \dot{\hat k}_t=\hat k_t^\alpha-(\delta+n+x)\hat k_t-\hat c_t . \label{rm:RC}
+\end{align}
+The RC says that output not consumed is invested. The EE describes optimal saving. There are two ways to study the time paths: (1) a phase diagram; (2) log-linearise \eqref{rm:EE}--\eqref{rm:RC} around the steady state and solve the linear system for the policy functions.
+\end{keybox}
+
+%==============================================================
+\subsection{Steady state and phase diagram \pg{29}}
+
+\paragraph{Steady state.} In a steady state, $\dot{\hat c}=0$ and $\dot{\hat k}=0$.
+
+From \eqref{rm:EE} with $\dot{\hat c}=0$ (and $\hat c>0$):
+\begin{align}
+\alpha\hat k_{ss}^{\alpha-1}&=\delta+\rho+\theta x \notag\\
+\hat k_{ss}^{\alpha-1}&=\frac{\delta+\rho+\theta x}{\alpha}\notag\\
+\hat k_{ss}&=\Big[\frac{\alpha}{\delta+\rho+\theta x}\Big]^{\frac1{1-\alpha}}
+&&\text{(raise both sides to the power $\tfrac{1}{\alpha-1}$).} \label{rm:kss}
+\end{align}
+From \eqref{rm:RC} with $\dot{\hat k}=0$, evaluated at $\hat k_{ss}$:
+\begin{equation}
+\hat c_{ss}=\hat k_{ss}^\alpha-(\delta+n+x)\hat k_{ss}. \label{rm:css}
+\end{equation}
+Note that $\hat k_{ss}$ is pinned down by the EE alone, and $\hat c_{ss}$ then follows from the RC.
+
+\paragraph{The $\dot{\hat c}=0$ locus.} This is the vertical line $\hat k=\hat k_{ss}$: $\dot{\hat c}=0$ for any $\hat c$ when $\hat k=\hat k_{ss}$.
+\begin{itemize}
+\item Left of it ($\hat k<\hat k_{ss}$), the MPK is higher (since $\alpha-1<0$), so $\dot{\hat c}>0$: $\hat c$ rises (arrows point up). Example: at $\hat k=\tfrac12\hat k_{ss}$,
+\[
+\alpha\hat k^{\alpha-1}=\alpha\big(\tfrac12\big)^{\alpha-1}\hat k_{ss}^{\alpha-1}=\big(\tfrac12\big)^{\alpha-1}(\delta+\rho+\theta x)>\delta+\rho+\theta x,
+\]
+because $(\tfrac12)^{\alpha-1}=2^{1-\alpha}>1$. So the bracket in \eqref{rm:EE} is positive.
+\item Right of it ($\hat k>\hat k_{ss}$), $\dot{\hat c}<0$: $\hat c$ falls (arrows point down).
+\end{itemize}
+
+\paragraph{The $\dot{\hat k}=0$ locus.} From \eqref{rm:RC}, $\dot{\hat k}=0\iff \hat c=\hat k^\alpha-(\delta+n+x)\hat k$. This is a hump: it starts at the origin, peaks at the golden-rule capital stock $\hat k_{gr}$ (derived below, and $\hat k_{gr}>\hat k_{ss}$), and returns to zero at $\hat k_{max}=(\delta+n+x)^{-1/(1-\alpha)}$, where all output is needed just to maintain $\hat k$.
+\begin{itemize}
+\item Above the hump, $\hat c_t$ exceeds $\hat k_t^\alpha-(\delta+n+x)\hat k_t$ at the \emph{current} $\hat k_t$, so $\dot{\hat k}<0$: $\hat k$ moves left.
+\item Below the hump, $\dot{\hat k}>0$: $\hat k$ moves right.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=0.38cm,y=2.6cm,>=Stealth]
+\draw[->] (0,0)--(18.5,0) node[below]{$\hat k$};
+\draw[->] (0,0)--(0,1.85) node[left]{$\hat c$};
+\draw[thick,domain=0:16,samples=80] plot (\x,{sqrt(\x)-0.25*\x}) node[above right]{$\dot{\hat k}=0$};
+\draw[thick] (2.25,0)--(2.25,1.8) node[above]{$\dot{\hat c}=0$};
+\draw[thick,blue!70!black,domain=0.02:7,samples=40] plot (\x,{0.9375*(\x/2.25)^0.55}) node[right,align=left,font=\small]{saddle path\\(stable arm)};
+\draw[dashed] (0,0.9375) node[left]{$\hat c_{ss}$}--(2.25,0.9375);
+\fill (2.25,0.9375) circle (1.5pt);
+\node[below] at (2.25,0) {$\hat k_{ss}$}; \node[below] at (4,0) {$\hat k_{gr}$}; \node[below] at (16,0) {$\hat k_{max}$};
+\draw[dotted] (4,0)--(4,1);
+\draw[->,blue!70!black] (0.8,0.53)--(1.3,0.69); \draw[->,blue!70!black] (6,1.61)--(4.6,1.39);
+% quadrant arrows
+\draw[->] (1,1.15)--(1,1.3); \draw[->] (1,1.15)--(0.3,1.15);
+\draw[->] (6,1.15)--(6,1.0);\draw[->] (6,1.15)--(5.3,1.15);
+\draw[->] (1.2,0.15)--(1.2,0.3);\draw[->] (1.2,0.15)--(1.9,0.15);
+\draw[->] (8,0.4)--(8,0.25);\draw[->] (8,0.4)--(8.7,0.4);
+% divergent trajectories
+\draw[gray,->] (1.7,1.0) .. controls (1.0,1.15) .. (0.3,1.6);
+\draw[gray,->] (1.5,0.45) .. controls (5,0.9) and (9,0.75) .. (15.2,0.05);
+\end{tikzpicture}
+\end{center}
+\emph{How to read it.} The horizontal axis is capital per effective worker, the vertical axis consumption per effective worker. The two loci split the plane into four regions. In each region the black arrows show the direction of motion: vertical arrows from the EE (up left of $\hat k_{ss}$, down right of it), horizontal arrows from the RC (left above the hump, right below it). Only paths on the blue \emph{saddle path} (stable arm) converge to the steady state; grey paths that start off it diverge.
+
+\paragraph{Why the saddle path is the solution.} $\hat k_0$ is given, but $\hat c_0$ is free (a control can jump). We show that every starting $\hat c_0$ other than the one on the saddle path violates an optimality condition.
+\begin{enumerate}
+\item \textbf{Start below the saddle path} (consumption too low). The path heads right and down and eventually reaches $\hat k_{max}$ with $\hat c=0$: the saving rate equals 1. This cannot be optimal, since $u'(\hat c)=\hat c^{-\theta}\to\infty$ as $\hat c\to0$, so moving some consumption to those dates raises utility. Formally, it violates the TC. Since $\hat k_{max}>\hat k_{gr}$, the MPK there is low: $\alpha\hat k_{max}^{\alpha-1}-\delta<n+x$. Then by \eqref{rm:foc2}
+\[
+\frac{\dot\psi_t}{\psi_t}=-\big[\alpha\hat k_{max}^{\alpha-1}-\delta-n-x\big]>0,
+\]
+so $\psi_t$ does not shrink and $\lim_{t\to\infty}\psi_t\hat k_t=\lim\psi_t\hat k_{max}>0$. The household is \emph{over-saving}.
+\item \textbf{Start above the saddle path} (consumption too high). The path ends up in the upper-left region where $\hat c$ rises and $\hat k$ falls. With $\hat k$ falling, rising consumption can only be financed by saving less and less. $\hat k$ hits zero in finite time, output then becomes zero, and the consumption level cannot be sustained. This \emph{violates the resource constraint} (and the Euler equation, since $\hat c$ would have to jump down).
+\item \textbf{Start on the saddle path.} The economy converges to $(\hat k_{ss},\hat c_{ss})$, which lies on both loci and so satisfies the EE and the RC. It also satisfies the TC. At $\hat k_{ss}$, $\alpha\hat k_{ss}^{\alpha-1}-\delta=\rho+\theta x$, so
+\[
+\frac{\dot\psi_t}{\psi_t}=-\big[\rho+\theta x-n-x\big]=-\big[\rho-n-(1-\theta)x\big]=-\gamma<0 .
+\]
+So $\psi_t\to0$ exponentially while $\hat k_t\to\hat k_{ss}$, and $\psi_t\hat k_t\to0$.
+\end{enumerate}
+\begin{keybox}[title={Equilibrium path}]
+Given $\hat k_0$, $\hat c_0$ jumps to the unique point on the saddle path, and the economy then moves along it monotonically to $(\hat k_{ss},\hat c_{ss})$. If $\hat k_0<\hat k_{ss}$, both $\hat k$ and $\hat c$ rise over time. This is the model's predicted development path.
+\end{keybox}
+
+%==============================================================
+\subsection{Golden rule vs.\ modified golden rule \pg{31}}
+
+The \textbf{golden rule} capital stock maximises steady-state consumption (exactly as in Solow). Steady-state consumption is output minus the investment needed to keep $\hat k$ constant:
+\[
+\max_{\hat k}\ \hat c=\hat y-\hat i=\hat k^\alpha-(\delta+n+x)\hat k .
+\]
+FOC: $\alpha\hat k^{\alpha-1}-(\delta+n+x)=0$. Solving as in \eqref{rm:kss}:
+\begin{equation}
+\hat k_{gr}=\Big[\frac{\alpha}{\delta+n+x}\Big]^{\frac1{1-\alpha}} . \label{rm:kgr}
+\end{equation}
+(The second derivative, $\alpha(\alpha-1)\hat k^{\alpha-2}<0$, confirms a maximum.)
+
+\paragraph{Comparison with $\hat k_{ss}$.} The map $z\mapsto z^{1/(1-\alpha)}$ is increasing, so
+\begin{align*}
+\hat k_{gr}>\hat k_{ss}
+&\iff \frac{\alpha}{\delta+n+x}>\frac{\alpha}{\delta+\rho+\theta x}
+\iff \delta+\rho+\theta x>\delta+n+x\\
+&\iff \rho-n-(1-\theta)x>0\iff\gamma>0,
+\end{align*}
+which holds by assumption \eqref{rm:gamma}.
+
+\begin{keybox}[title={Modified golden rule: $\hat k_{ss}<\hat k_{gr}$}]
+In the Ramsey steady state the net return is $\alpha\hat k_{ss}^{\alpha-1}-\delta=\rho+\theta x$, while the golden rule requires $\alpha\hat k_{gr}^{\alpha-1}-\delta=n+x$. Impatient households stop accumulating before reaching the golden rule: raising $\hat k$ further would raise consumption only in the far future, which they discount too heavily. Hence the Ramsey economy can never be dynamically inefficient (over-accumulate capital), unlike Solow with an arbitrary saving rate.
+\end{keybox}
+
+\paragraph{Co-state dynamics.} From \eqref{rm:foc2} with $r=\alpha\hat k^{\alpha-1}$, $\dfrac{\dot\psi}{\psi}=-\big[\alpha\hat k^{\alpha-1}-\delta-n-x\big]$, and by \eqref{rm:kgr}:
+\begin{itemize}
+\item at $\hat k=\hat k_{gr}$: $\dot\psi/\psi=0$;
+\item at $\hat k<\hat k_{gr}$ (MPK high): $\dot\psi/\psi<0$, so $\psi$ shrinks;
+\item at $\hat k>\hat k_{gr}$ (MPK low): $\dot\psi/\psi>0$, so $\psi$ grows.
+\end{itemize}
+This is why paths ending at $\hat k_{max}>\hat k_{gr}$ violate the TC, while the path ending at $\hat k_{ss}<\hat k_{gr}$ satisfies it.
+
+%==============================================================
+\subsection{Growth properties and income levels \pg{31--32}}
+
+In the steady state, $\hat k$, $\hat y=\hat k^\alpha$ and $\hat c$ are constant. Recover per-capita and aggregate variables using ``growth rate of a product = sum of growth rates'':
+\begin{align*}
+\frac{Y_t}{L_t}=A_t\hat y_t\ &\Rightarrow\ \text{growth}\Big(\frac{Y}{L}\Big)=x+\underbrace{\text{growth}(\hat y)}_{0}=x,\\
+Y_t=A_tL_t\hat y_t\ &\Rightarrow\ \text{growth}(Y)=x+n .
+\end{align*}
+The same holds for $K/L$ and $C/L$ (growth $x$) and for $K$ and $C$ (growth $x+n$).
+
+\begin{keybox}[title={Long-run growth properties (also hold in Solow)}]
+\begin{itemize}
+\item Per-capita variables ($Y/L$, $K/L$, $C/L$, and the wage $w=(1-\alpha)A\hat k^\alpha$) grow at rate $x$; aggregates grow at $x+n$.
+\item The capital--output ratio $K/Y=\hat k/\hat y$ is constant.
+\item The rate of return to capital $r-\delta=\alpha\hat k^{\alpha-1}-\delta$ is constant. Both $K/L$ and $A$ rise over time, but they have exactly offsetting effects on the MPK.
+\item Factor shares are constant: $wL/Y=1-\alpha$, $rK/Y=\alpha$.
+\end{itemize}
+These are consistent with the Kaldor stylised facts of long-run growth.
+\end{keybox}
+
+\paragraph{Income levels.} Output per capita on the steady-state path is
+\[
+\frac{Y_t}{L_t}=A_t\hat y_{ss}=A_t\hat k_{ss}^{\alpha}=\Big[\frac{\alpha}{\delta+\rho+\theta x}\Big]^{\frac{\alpha}{1-\alpha}}A_0e^{xt}.
+\]
+\begin{itemize}
+\item Income convergence across countries requires similar $A_0$ and $x$, and, to a lesser extent, similar preference parameters $\rho,\theta$.
+\item A growth ``miracle'' corresponds to a high $x$, a growth ``disaster'' to a low $x$.
+\item Because the bracket varies little for plausible parameters, a factor-10 difference in income requires roughly a factor-10 difference in technology $A$.
+\end{itemize}
+
+%==============================================================
+\subsection{The saving rate \pg{32--33}}
+
+Why do the preference parameters $\rho,\theta$ affect income? Because they pin down the saving rate, which in Solow was exogenous. Define the gross saving rate $s_t\equiv\hat i_t/\hat y_t$. In the steady state, $\hat i=(\delta+n+x)\hat k_{ss}$ and $\hat y=\hat k_{ss}^\alpha$:
+\begin{align*}
+s_{ss}&=\frac{(\delta+n+x)\hat k_{ss}}{\hat k_{ss}^\alpha}=(\delta+n+x)\hat k_{ss}^{1-\alpha}\\
+&=(\delta+n+x)\Big[\Big(\frac{\alpha}{\delta+\rho+\theta x}\Big)^{\frac1{1-\alpha}}\Big]^{1-\alpha}
+&&\text{(substitute \eqref{rm:kss})}\\
+&=\frac{\alpha(\delta+n+x)}{\delta+\rho+\theta x}.
+\end{align*}
+\begin{keybox}[title={Steady-state saving rate}]
+\[
+s_{ss}=\frac{\alpha(\delta+n+x)}{\delta+\rho+\theta x}\qquad(<\alpha\text{, since }\gamma>0;\ \alpha=\text{golden-rule saving rate}).
+\]
+\end{keybox}
+
+\paragraph{Comparative statics} (sign of each partial derivative):
+\begin{itemize}
+\item $\rho$: $\dfrac{\partial s_{ss}}{\partial\rho}=-\dfrac{\alpha(\delta+n+x)}{(\delta+\rho+\theta x)^2}<0$. Households discount the future more heavily (the factor $e^{-\rho t}$ falls), so they are less willing to save.
+\item $\theta$: $\dfrac{\partial s_{ss}}{\partial\theta}=-\dfrac{\alpha(\delta+n+x)\,x}{(\delta+\rho+\theta x)^2}<0$ (for $x>0$). A larger $\theta$ means more curvature in $u$ and a stronger desire to smooth consumption. Since consumption per capita grows at $x$, smoothing means shifting consumption toward the present, so households save less.
+\item $n$: $\dfrac{\partial s_{ss}}{\partial n}=\dfrac{\alpha}{\delta+\rho+\theta x}>0$. Note that $\hat k_{ss}$ and $\hat y_{ss}$ do not depend on $n$ (see \eqref{rm:kss}), so the MPK in steady state is unaffected. The saving rate rises because more investment, $(\delta+n+x)\hat k_{ss}$, is needed just to equip the new workers and keep $\hat k$ at $\hat k_{ss}$ (``capital widening'').
+\end{itemize}
+
+\paragraph{Transitional dynamics of the saving rate.} Along the saddle path (say $\hat k_0<\hat k_{ss}$), $s_t$ may rise or fall toward $s_{ss}$, because two effects push in opposite directions:
+\begin{itemize}
+\item \textbf{Substitution effect (SE):} as $\hat k\uparrow$, the return $MPK-\delta$ falls, so saving becomes less rewarding and $s_t\downarrow$.
+\item \textbf{Income effect (IE):} households want a reasonably flat profile for $\hat c$. Early in development, income $\hat y$ is low relative to its future level, so they consume a large share of it. As $\hat y$ rises, $\hat c$ rises more slowly than $\hat y$, so $\hat c/\hat y\downarrow$, i.e.\ $s_t=\hat i/\hat y\uparrow$.
+\end{itemize}
+The parameter $\theta$ governs the strength of the IE. A high $\theta$ (strong smoothing motive) gives a large IE: the initial consumption share $\hat c/\hat y$ is high and falls over time, so $s_t$ rises during the transition. (Barro--Sala-i-Martin, Cobb--Douglas case: $s_t$ is constant if $s_{ss}=1/\theta$, rises over the transition if $s_{ss}>1/\theta$, and falls if $s_{ss}<1/\theta$.)
+
+%==============================================================
+\subsection{Fiscal policy I: lump-sum tax \pg{33--34}}
+
+\paragraph{Setup.} Add a government to the baseline model.
+\begin{itemize}
+\item $G_t$: government spending. It is \emph{completely wasteful}: it enters neither the utility function nor the production function.
+\item $T_t$: aggregate tax revenue, raised \emph{lump-sum} (the amount paid does not depend on any household choice).
+\item Balanced budget: $T_t=G_t$. Per effective worker, $\tau\equiv T_t/(A_tL_t)$ and $\hat g\equiv G_t/(A_tL_t)$, so $\tau=\hat g$ for all $t$.
+\item Firms face the same problem as before, so $r_t,w_t$ are still given by \eqref{rm:r}--\eqref{rm:w}.
+\end{itemize}
+
+\paragraph{Household problem.} Same objective, but taxes reduce resources:
+\[
+\max\int_0^\infty\frac{\hat c_t^{1-\theta}}{1-\theta}e^{-\gamma t}dt\quad\text{s.t.}\quad
+\dot{\hat k}_t=\frac{w_t}{A_t}+(r_t-\delta-n-x)\hat k_t-\hat c_t-\tau .
+\]
+The Hamiltonian adds the term $-\psi_t\tau$. Because $\tau$ depends on neither $\hat c_t$ nor $\hat k_t$, the derivatives $\partial\mathcal H/\partial\hat c$ and $\partial\mathcal H/\partial\hat k$ are unchanged. Conditions \eqref{rm:foc1}--\eqref{rm:foc2}, and hence the Euler equation, are exactly as in the baseline. Using \eqref{rm:exhaust} and $\tau=\hat g$ in the budget constraint:
+\begin{align}
+\frac{\dot{\hat c}_t}{\hat c_t}&=\frac1\theta\big[\alpha\hat k_t^{\alpha-1}-\delta-\rho-\theta x\big] &&\text{(same as baseline)}, \label{rm:EEls}\\
+\dot{\hat k}_t&=\hat k_t^\alpha-(\delta+n+x)\hat k_t-\hat c_t-\hat g &&\text{(one extra term, $-\hat g$)}. \label{rm:RCls}
+\end{align}
+
+\paragraph{Steady state.} $\dot{\hat c}=0$ in \eqref{rm:EEls} gives the same $\hat k_{ss}=\big[\frac{\alpha}{\delta+\rho+\theta x}\big]^{\frac1{1-\alpha}}$ as \eqref{rm:kss}. $\dot{\hat k}=0$ in \eqref{rm:RCls} gives
+\[
+\hat c_{ss}=\hat k_{ss}^\alpha-(\delta+n+x)\hat k_{ss}-\hat g .
+\]
+
+\begin{center}
+\begin{tikzpicture}[x=0.38cm,y=2.6cm,>=Stealth]
+\draw[->] (0,0)--(17,0) node[below]{$\hat k$};
+\draw[->] (0,-0.35)--(0,1.3) node[left]{$\hat c$};
+\draw[thick,domain=0:16,samples=80] plot (\x,{sqrt(\x)-0.25*\x}) node[above right,font=\small]{$\dot{\hat k}=0,\ \hat g=0$};
+\draw[thick,red!70!black,domain=0:13.5,samples=80] plot (\x,{sqrt(\x)-0.25*\x-0.3}) node[below right,font=\small]{$\dot{\hat k}=0,\ \hat g>0$};
+\draw[thick] (2.25,-0.35)--(2.25,1.25) node[above]{$\dot{\hat c}=0$};
+\draw[blue!70!black,domain=0.3:6,samples=30] plot (\x,{0.9375*(\x/2.25)^0.55});
+\draw[red!70!black,dashed,domain=0.6:6,samples=30] plot (\x,{0.9375*(\x/2.25)^0.55-0.3});
+\fill (2.25,0.9375) circle (1.5pt) node[above left]{$a$};
+\fill[red!70!black] (2.25,0.6375) circle (1.5pt) node[below right]{$b$};
+\draw[->,thick,red!70!black] (2.45,0.9)--(2.45,0.68);
+\node[left] at (0,-0.3) {$-\hat g$};
+\node[below] at (2.25,-0.35) {$\hat k_{ss}$};
+\end{tikzpicture}
+\end{center}
+\emph{How to read it.} The black hump is the baseline $\dot{\hat k}=0$ locus; the red hump is the same curve shifted down by $\hat g$ at every $\hat k$ (a parallel shift, starting at $-\hat g$ on the vertical axis). The vertical $\dot{\hat c}=0$ line does not move, because the Euler equation is unchanged. The steady state moves straight down from $a$ to $b$. The solid blue and dashed red curves are the old and new saddle paths.
+
+\begin{keybox}[title={Permanent rise in a lump-sum tax ($\hat g=0\to\hat g>0$)}]
+The tax is a pure drain on wealth. The $\dot{\hat k}=0$ locus shifts down in parallel by $\hat g$; the $\dot{\hat c}=0$ locus does not move. At the moment of the change, $\hat k=\hat k_{ss}$ is already at the new steady-state value, so $\hat c$ jumps immediately from $a$ to $b$, falling one-for-one with the tax. There are no transitional dynamics: short-run effect = long-run effect. $\hat k_{ss}$, and therefore income $\hat y_{ss}$, are unaffected by $\hat g$. Foreign aid is a negative lump-sum tax: a parallel shift \emph{up}, and $\hat c$ jumps up by the amount of aid.
+\end{keybox}
+\begin{tipbox}
+Lump-sum taxes do not change the after-tax return to capital, so the saving incentive (the EE) is untouched. To smooth consumption, the household absorbs the whole permanent tax at once by cutting $\hat c$ by exactly $\tau$. Does the ``taxes don't affect income'' result survive distortionary taxation? No, as shown next.
+\end{tipbox}
+
+%==============================================================
+\subsection{Fiscal policy II: proportional income tax \pg{34--36}}
+
+\paragraph{Setup.} Now the government taxes all income (wages and capital rentals) at a constant rate $\tau\in[0,1]$. Spending $G_t$ is still wasteful.
+\begin{itemize}
+\item \textbf{Firms:} unchanged, $w_t=(1-\alpha)Y_t/L_t=(1-\alpha)A_t\hat k_t^\alpha$ and $r_t=\alpha Y_t/K_t=\alpha\hat k_t^{\alpha-1}$.
+\item \textbf{Government:} $\tau(w_tL_t+r_tK_t)=G_t$. Divide both sides by $A_tL_t$ and use \eqref{rm:exhaust}:
+\[
+\tau\Big(\frac{w_t}{A_t}+r_t\hat k_t\Big)=\hat g_t\ \Longrightarrow\ \hat g_t=\tau\hat y_t=\tau\hat k_t^{\alpha}.
+\]
+\item \textbf{Households:} after-tax income is $(1-\tau)(w_tL_t+r_tK_t)$. Repeating the steps behind \eqref{rm:bc}:
+\begin{equation}
+\dot{\hat k}_t=(1-\tau)\frac{w_t}{A_t}+\big[(1-\tau)r_t-\delta-n-x\big]\hat k_t-\hat c_t . \label{rm:bcpt}
+\end{equation}
+Depreciation is not tax-deductible here: the household earns $(1-\tau)r_t$ and loses $\delta$.
+\end{itemize}
+
+\paragraph{Optimality.} The Hamiltonian is
+\[
+\mathcal H_t=\frac{\hat c_t^{1-\theta}}{1-\theta}e^{-\gamma t}+\psi_t\Big[(1-\tau)\frac{w_t}{A_t}+\big[(1-\tau)r_t-\delta-n-x\big]\hat k_t-\hat c_t\Big].
+\]
+(As before, the constraint enters only through $\psi_t$ times its right-hand side, much like a Lagrange multiplier.) Conditions:
+\begin{align}
+\frac{\partial\mathcal H_t}{\partial\hat c_t}=0:&\qquad \hat c_t^{-\theta}e^{-\gamma t}=\psi_t, \label{rm:pt1}\\
+-\frac{\partial\mathcal H_t}{\partial\hat k_t}=\dot\psi_t:&\qquad \frac{\dot\psi_t}{\psi_t}=-\big[(1-\tau)r_t-\delta-n-x\big], \label{rm:pt2}
+\end{align}
+plus \eqref{rm:bcpt} and the TC $\lim_{t\to\infty}\psi_t\hat k_t=0$. Differentiating \eqref{rm:pt1} gives $\dot\psi_t/\psi_t=-\theta\dot{\hat c}_t/\hat c_t-\gamma$ (same steps as before). Equating with \eqref{rm:pt2}:
+\begin{align*}
+\theta\frac{\dot{\hat c}_t}{\hat c_t}&=(1-\tau)r_t-\delta-n-x-\gamma=(1-\tau)r_t-\delta-\rho-\theta x .
+\end{align*}
+For the capital equation, substitute the firm conditions into \eqref{rm:bcpt}:
+\begin{align*}
+\dot{\hat k}_t&=(1-\tau)(1-\alpha)\hat k_t^\alpha+(1-\tau)\alpha\hat k_t^{\alpha}-(\delta+n+x)\hat k_t-\hat c_t\\
+&=(1-\tau)\hat k_t^\alpha-(\delta+n+x)\hat k_t-\hat c_t .
+\end{align*}
+(Equivalently: output $\hat k^\alpha$ = $\hat c+\hat i+\hat g$ with $\hat g=\tau\hat k^\alpha$.)
+
+\begin{keybox}[title={Ramsey model with a proportional income tax}]
+\begin{align}
+\frac{\dot{\hat c}_t}{\hat c_t}&=\frac1\theta\big[(1-\tau)\alpha\hat k_t^{\alpha-1}-\delta-\rho-\theta x\big], \label{rm:EEpt}\\
+\dot{\hat k}_t&=(1-\tau)\hat k_t^\alpha-(\delta+n+x)\hat k_t-\hat c_t . \label{rm:RCpt}
+\end{align}
+Steady state (solve \eqref{rm:EEpt}$=0$ exactly as for \eqref{rm:kss}, with $\alpha$ replaced by $\alpha(1-\tau)$):
+\[
+\hat k_{ss}=\Big[\frac{\alpha(1-\tau)}{\delta+\rho+\theta x}\Big]^{\frac1{1-\alpha}},\qquad
+\hat c_{ss}=(1-\tau)\hat k_{ss}^\alpha-(\delta+n+x)\hat k_{ss}.
+\]
+\end{keybox}
+
+\begin{center}
+\begin{tikzpicture}[x=0.55cm,y=2.6cm,>=Stealth]
+\draw[->] (0,0)--(17.5,0) node[below]{$\hat k$};
+\draw[->] (0,0)--(0,1.25) node[left]{$\hat c$};
+\draw[thick,domain=0:16,samples=80] plot (\x,{sqrt(\x)-0.25*\x}) node[above,font=\small]{$\tau=0$};
+\draw[thick,green!50!black,domain=0:7.84,samples=80] plot (\x,{0.7*sqrt(\x)-0.25*\x}) node[above right,font=\small]{$\tau>0$};
+\draw[dashed,thick] (2.25,0)--(2.25,1.15) node[above]{$\dot{\hat c}=0$};
+\draw[dashed,thick,green!50!black] (1.1,0)--(1.1,1.15);
+\draw[->,green!50!black] (2.1,1.05)--(1.25,1.05);
+\node[below] at (2.25,0) {$\hat k_{ss}$}; \node[below,green!50!black] at (1.1,0) {$\hat k_{ss}'$};
+\node[below] at (16,0) {$\hat k_{max}$}; \node[below,green!50!black] at (7.84,0) {$\hat k_{max}'$};
+\end{tikzpicture}
+\end{center}
+\emph{How to read it.} Black curves are for $\tau=0$, green curves for $\tau>0$. The vertical $\dot{\hat c}=0$ line shifts left (from $\hat k_{ss}$ to $\hat k'_{ss}$) because the after-tax return is lower. The $\dot{\hat k}=0$ hump falls by $\tau\hat k^\alpha$. This gap is small at low $\hat k$ and grows with $\hat k$, so the shift is \emph{not} parallel, and the right intercept $\hat k_{max}=\big[(1-\tau)/(\delta+n+x)\big]^{1/(1-\alpha)}$ also moves left.
+
+\paragraph{Two effects of a tax increase.}
+\begin{enumerate}
+\item \textbf{Distortion of the return to capital.} The after-tax MPK $(1-\tau)\alpha\hat k^{\alpha-1}$ falls, so the $\dot{\hat c}=0$ locus shifts left: $\hat k_{ss}\downarrow$. The saving rate also falls:
+\[
+s_{ss}=(\delta+n+x)\hat k_{ss}^{1-\alpha}=\frac{\alpha(1-\tau)(\delta+n+x)}{\delta+\rho+\theta x}.
+\]
+\item \textbf{Lower disposable income.} The $\dot{\hat k}=0$ locus shifts down, non-parallel, as described above.
+\end{enumerate}
+\begin{keybox}[title={Proportional vs.\ lump-sum taxation}]
+Unlike the lump-sum case, a proportional tax lowers long-run capital and income, $\hat y_{ss}=\hat k_{ss}^\alpha$, because it distorts the saving decision. After a permanent increase in $\tau$, $\hat k$ cannot jump. $\hat c$ jumps onto the new saddle path (up or down, depending on whether the substitution or the income effect dominates), and then $\hat k$ and $\hat c$ decline gradually toward the new, lower steady state. So, unlike the lump-sum case, there are transitional dynamics.
+\end{keybox}
+
+\paragraph{Revenue and the Laffer curve.} In steady state the revenue per effective worker is
+\[
+\hat g^*=\tau\hat y^*=\tau\hat k_{ss}^\alpha=\tau\Big[\frac{\alpha(1-\tau)}{\delta+\rho+\theta x}\Big]^{\frac{\alpha}{1-\alpha}}.
+\]
+\begin{enumerate}[label=(\roman*)]
+\item $\tau=0\Rightarrow\hat g^*=0$: no tax, no revenue.
+\item $\tau=1\Rightarrow\hat g^*=0$: with a 100\% tax there is no disposable income, hence no investment, so $\hat k_{ss}=0$ and there is no output in the long run.
+\item $0<\tau<1\Rightarrow\hat g^*>0$.
+\end{enumerate}
+So revenue is hump-shaped in $\tau$. Which $\tau$ maximises it? Write $a\equiv\frac{\alpha}{1-\alpha}$ and $B\equiv\big[\frac{\alpha}{\delta+\rho+\theta x}\big]^{a}>0$, so $\hat g^*=B\,\tau(1-\tau)^{a}$. By the product rule:
+\begin{align*}
+\frac{d\hat g^*}{d\tau}&=B\Big[(1-\tau)^{a}+\tau\cdot a(1-\tau)^{a-1}\cdot(-1)\Big]\\
+&=B(1-\tau)^{a-1}\big[(1-\tau)-a\tau\big]
+&&\text{(factor out $(1-\tau)^{a-1}$)}.
+\end{align*}
+Set it to zero (for $\tau<1$, $B(1-\tau)^{a-1}>0$, so the bracket must vanish):
+\begin{align*}
+1-\tau&=\frac{\alpha}{1-\alpha}\tau\\
+(1-\alpha)(1-\tau)&=\alpha\tau &&\text{(multiply by $1-\alpha$)}\\
+1-\alpha-\tau+\alpha\tau&=\alpha\tau\\
+\tau&=1-\alpha .
+\end{align*}
+The bracket is positive for $\tau<1-\alpha$ and negative for $\tau>1-\alpha$, so this is a maximum. The constant $B$ dropped out.
+
+\begin{center}
+\begin{tikzpicture}[x=5cm,y=7cm,>=Stealth]
+\draw[->] (0,0)--(1.1,0) node[below]{$\tau$};
+\draw[->] (0,0)--(0,0.48) node[left]{$\hat g^*$};
+\draw[thick,domain=0:1,samples=80] plot (\x,{\x*sqrt(1-\x)});
+\draw[dashed] (0.6667,0)--(0.6667,0.3849);
+\node[below] at (0.6667,0) {$1-\alpha$};
+\node[below] at (1,0) {$1$}; \node[below left] at (0,0) {$0$};
+\end{tikzpicture}
+\end{center}
+\emph{How to read it.} The horizontal axis is the tax rate, the vertical axis steady-state revenue (drawn for $\alpha=1/3$). Revenue is zero at both ends. Raising $\tau$ above $1-\alpha$ shrinks the tax base $\hat y^*$ so much that revenue falls: this is the wrong side of the Laffer curve.
+
+\begin{keybox}[title={Revenue-maximising tax rate}]
+\[
+\tau^*=1-\alpha\qquad(\text{the labour share}).
+\]
+\end{keybox}
+
+%==============================================================
+\subsection{Infrastructure (productive public capital) in the Ramsey model \pg{36--37}}
+
+\paragraph{Setup.} The government taxes income at rate $\tau$ and spends the revenue on infrastructure, which raises firms' productivity.
+\begin{itemize}
+\item \textbf{No technological change:} $A$ is a constant ($x=0$, no $A_0e^{xt}$). We therefore work in \emph{per-capita} terms (no hats): $k_t=K_t/L_t$, $c_t=C_t/L_t$, $y_t=Y_t/L_t$.
+\item $g_t$: productive government services per capita. Firms and households take it as given.
+\item $\beta\in(0,1)$: elasticity of output with respect to $g$. We assume $\alpha+\beta<1$ (relaxed in the next subsection).
+\item Other notation as before; $\rho>n$ so that utility is finite.
+\end{itemize}
+
+\paragraph{Households.} With $x=0$ the effective discount rate \eqref{rm:gamma} becomes $\rho-n$. Per capita, the budget constraint (same steps as \eqref{rm:bcpt} with $x=0$) is
+\[
+\max\int_0^\infty\frac{c_t^{1-\theta}}{1-\theta}e^{-(\rho-n)t}dt\quad\text{s.t.}\quad
+\dot k_t=(1-\tau)w_t+\big[(1-\tau)r_t-\delta-n\big]k_t-c_t .
+\]
+Hamiltonian:
+\[
+\mathcal H_t=\frac{c_t^{1-\theta}}{1-\theta}e^{-(\rho-n)t}+\psi_t\Big[(1-\tau)w_t+\big((1-\tau)r_t-\delta-n\big)k_t-c_t\Big].
+\]
+Conditions:
+\begin{align}
+c_t^{-\theta}e^{-(\rho-n)t}&=\psi_t, \label{rm:in1}\\
+\dot\psi_t&=-\big[(1-\tau)r_t-\delta-n\big]\psi_t,\qquad \lim_{t\to\infty}\psi_tk_t=0, \label{rm:in2}\\
+\dot k_t&=(1-\tau)w_t+\big[(1-\tau)r_t-\delta-n\big]k_t-c_t . \label{rm:in3}
+\end{align}
+Differentiate \eqref{rm:in1} with respect to $t$ and divide by $\psi_t$: $\dot\psi_t/\psi_t=-\theta\dot c_t/c_t-(\rho-n)$. Equate with \eqref{rm:in2}:
+\begin{align*}
+-\theta\frac{\dot c_t}{c_t}-(\rho-n)&=-\big[(1-\tau)r_t-\delta-n\big]\\
+\theta\frac{\dot c_t}{c_t}&=(1-\tau)r_t-\delta-n-\rho+n=(1-\tau)r_t-\delta-\rho,
+\end{align*}
+\begin{equation}
+\frac{\dot c_t}{c_t}=\frac1\theta\big[(1-\tau)r_t-\delta-\rho\big]. \label{rm:in4}
+\end{equation}
+
+\paragraph{Firms.} $\max\{Y_t-w_tL_t-r_tK_t\}$ s.t.
+\begin{equation}
+Y_t=AL_t^{1-\alpha}K_t^\alpha g_t^\beta\quad\Longleftrightarrow\quad y_t=Ak_t^\alpha g_t^\beta\quad\text{(divide by $L_t$)}. \label{rm:in5}
+\end{equation}
+For given $g_t$ there are constant returns in $(K,L)$, so factor payments exhaust output. FOCs:
+\begin{align}
+w_t&=\frac{\partial Y_t}{\partial L_t}=(1-\alpha)AL_t^{-\alpha}K_t^\alpha g_t^\beta=(1-\alpha)\underbrace{Ak_t^\alpha g_t^\beta}_{y_t}=(1-\alpha)y_t, \label{rm:in6}\\
+r_t&=\frac{\partial Y_t}{\partial K_t}=\alpha Ak_t^{\alpha-1}g_t^\beta=\alpha\frac{y_t}{k_t}. \label{rm:in7}
+\end{align}
+Hence $w_t+r_tk_t=(1-\alpha)y_t+\alpha y_t=y_t$.
+
+\paragraph{Government.} Balanced budget, all revenue spent on infrastructure:
+\begin{equation}
+G_t=\tau(w_tL_t+r_tK_t)=\tau Y_t\ \Longrightarrow\ g_t=\frac{G_t}{L_t}=\tau y_t . \label{rm:in8}
+\end{equation}
+
+\paragraph{Reduced form.} Substitute \eqref{rm:in8} into \eqref{rm:in5} and solve for $y_t$:
+\begin{align}
+y_t&=Ak_t^\alpha(\tau y_t)^\beta=A\tau^\beta k_t^\alpha y_t^\beta \notag\\
+y_t^{1-\beta}&=A\tau^\beta k_t^\alpha &&\text{(divide by $y_t^\beta$)} \notag\\
+y_t&=A^{\frac1{1-\beta}}\tau^{\frac{\beta}{1-\beta}}k_t^{\frac{\alpha}{1-\beta}} &&\text{(raise to the power $\tfrac1{1-\beta}$).} \label{rm:in9}
+\end{align}
+Then from \eqref{rm:in7}:
+\begin{equation}
+r_t=\alpha\frac{y_t}{k_t}=\alpha A^{\frac1{1-\beta}}\tau^{\frac{\beta}{1-\beta}}k_t^{\frac{\alpha}{1-\beta}-1}
+=\alpha A^{\frac1{1-\beta}}\tau^{\frac{\beta}{1-\beta}}k_t^{\frac{\alpha+\beta-1}{1-\beta}}, \label{rm:in10}
+\end{equation}
+using $\frac{\alpha}{1-\beta}-1=\frac{\alpha-(1-\beta)}{1-\beta}$. With $\alpha+\beta<1$ the exponent is negative, so the private return to capital still diminishes in $k$.
+
+\paragraph{Dynamic system.} Use $w_t+r_tk_t=y_t$ in \eqref{rm:in3}, i.e.\ $(1-\tau)w_t+(1-\tau)r_tk_t=(1-\tau)y_t$, then \eqref{rm:in9}. For the EE, use \eqref{rm:in10} in \eqref{rm:in4}.
+\begin{keybox}[title={Infrastructure model}]
+\begin{align*}
+\text{RC:}\quad \dot k_t&=(1-\tau)y_t-(\delta+n)k_t-c_t\\
+&=(1-\tau)A^{\frac1{1-\beta}}\tau^{\frac{\beta}{1-\beta}}k_t^{\frac{\alpha}{1-\beta}}-(\delta+n)k_t-c_t,\\
+\text{EE:}\quad \frac{\dot c_t}{c_t}&=\frac1\theta\Big[(1-\tau)\alpha A^{\frac1{1-\beta}}\tau^{\frac{\beta}{1-\beta}}k_t^{\frac{\alpha+\beta-1}{1-\beta}}-\delta-\rho\Big].
+\end{align*}
+\end{keybox}
+This has the same structure as the proportional-tax model, with output $\propto k^{\alpha/(1-\beta)}$ instead of $\hat k^\alpha$. The phase diagram looks the same.
+
+\paragraph{Steady state} ($\dot c=\dot k=0$). Let $\Phi(\tau)\equiv(1-\tau)\tau^{\frac{\beta}{1-\beta}}$. Setting the EE bracket to zero:
+\begin{align*}
+\alpha\,\Phi(\tau)A^{\frac1{1-\beta}}k_{ss}^{\frac{\alpha+\beta-1}{1-\beta}}&=\delta+\rho\\
+k_{ss}^{-\frac{1-\alpha-\beta}{1-\beta}}&=\frac{\delta+\rho}{\alpha\Phi(\tau)A^{\frac1{1-\beta}}}\\
+k_{ss}&=\Big[\frac{\alpha\Phi(\tau)A^{\frac1{1-\beta}}}{\delta+\rho}\Big]^{\frac{1-\beta}{1-\alpha-\beta}}
+&&\text{(raise to the power $-\tfrac{1-\beta}{1-\alpha-\beta}$).}
+\end{align*}
+\begin{keybox}[title={Steady state with infrastructure (requires $\alpha+\beta<1$)}]
+\begin{align}
+k_{ss}&=\Big[\frac{\alpha(1-\tau)\tau^{\frac{\beta}{1-\beta}}A^{\frac1{1-\beta}}}{\delta+\rho}\Big]^{\frac{1-\beta}{1-\alpha-\beta}}, \label{rm:in11}\\
+c_{ss}&=(1-\tau)\tau^{\frac{\beta}{1-\beta}}A^{\frac1{1-\beta}}k_{ss}^{\frac{\alpha}{1-\beta}}-(\delta+n)k_{ss}. \label{rm:in12}
+\end{align}
+\end{keybox}
+
+\paragraph{Effect of $\tau$ on $k_{ss}$.} It is not obvious, because the tax works in two directions: it finances productive $g$ (good for the return to capital) and it lowers the after-tax return (bad). The outer exponent $\frac{1-\beta}{1-\alpha-\beta}$ is positive, so $k_{ss}$ moves in the same direction as $\Phi(\tau)$. Differentiate $\Phi$ with the product rule:
+\begin{align*}
+\Phi'(\tau)&=-\tau^{\frac{\beta}{1-\beta}}+\frac{\beta}{1-\beta}(1-\tau)\tau^{\frac{\beta}{1-\beta}-1}\\
+&=\frac{\tau^{\frac{\beta}{1-\beta}-1}}{1-\beta}\Big[-(1-\beta)\tau+\beta(1-\tau)\Big]
+&&\text{(factor out $\tfrac{1}{1-\beta}\tau^{\frac{\beta}{1-\beta}-1}$)}\\
+&=\frac{\tau^{\frac{\beta}{1-\beta}-1}}{1-\beta}\,(\beta-\tau)
+&&\text{($-\tau+\beta\tau+\beta-\beta\tau=\beta-\tau$).}
+\end{align*}
+The prefactor is positive, so $\operatorname{sign}\Phi'(\tau)=\operatorname{sign}(\beta-\tau)$.
+\begin{keybox}[title={Tax and steady-state capital with productive spending}]
+\begin{itemize}
+\item $\tau<\beta$: $\Phi'>0$, so raising $\tau$ \emph{raises} $k_{ss}$. Infrastructure is scarce and its productivity gain dominates.
+\item $\tau>\beta$: $\Phi'<0$, so raising $\tau$ \emph{lowers} $k_{ss}$. The distortion of the after-tax return dominates.
+\item $k_{ss}$ (and hence $y_{ss}$) is maximised at $\tau=\beta$: set the tax share equal to the output elasticity of public services (natural efficiency condition $\partial Y/\partial G=1$, since $\partial Y/\partial G=\beta Y/G=\beta/\tau$).
+\end{itemize}
+\end{keybox}
+
+%==============================================================
+\subsection{Endogenous growth: the AK case $\beta=1-\alpha$ \pg{38}}
+
+\paragraph{Setup.} Same model, but now $\alpha+\beta=1$, i.e.\ $\beta=1-\alpha$. Then
+\[
+\frac1{1-\beta}=\frac1\alpha,\qquad \frac{\beta}{1-\beta}=\frac{1-\alpha}{\alpha},\qquad \frac{\alpha}{1-\beta}=1,\qquad \frac{\alpha+\beta-1}{1-\beta}=0 .
+\]
+Substitute into \eqref{rm:in9}--\eqref{rm:in10}:
+\[
+y_t=\underbrace{A^{\frac1\alpha}\tau^{\frac{1-\alpha}{\alpha}}}_{\equiv\tilde A}\,k_t\quad(\text{linear in }k:\ \text{an ``AK'' technology}),\qquad
+r_t=\alpha\tilde A\quad(\text{constant}).
+\]
+Because the government expands $g$ in proportion to output, the return to private capital no longer diminishes as $k$ grows.
+
+\paragraph{Dynamics.} The EE \eqref{rm:in4} becomes
+\[
+\frac{\dot c_t}{c_t}=\frac1\theta\Big[(1-\tau)\alpha A^{\frac1\alpha}\tau^{\frac{1-\alpha}{\alpha}}-\delta-\rho\Big]\equiv\gamma_c\qquad\text{(a constant)}.
+\]
+Here $\gamma_c$ denotes the consumption growth rate, not the effective discount rate $\gamma$ of \eqref{rm:gamma}. Assume $\gamma_c>0$, i.e.\ $(1-\tau)\alpha\tilde A>\delta+\rho$. Divide the RC $\dot k_t=(1-\tau)\tilde Ak_t-(\delta+n)k_t-c_t$ by $k_t$:
+\[
+\frac{\dot k_t}{k_t}=(1-\tau)A^{\frac1\alpha}\tau^{\frac{1-\alpha}{\alpha}}-(\delta+n)-\frac{c_t}{k_t}.
+\]
+So $\dot c/c$ is constant, while $\dot k/k$ is a decreasing linear function of the ratio $c/k$.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm,>=Stealth]
+\draw[->] (0,-1.2)--(0,3) node[left]{$\frac{\dot c}{c},\ \frac{\dot k}{k}$};
+\draw[->] (0,0)--(5.5,0) node[below]{$\frac ck$};
+\draw[thick] (0,1.2)--(5,1.2) node[right]{$\frac{\dot c}{c}=\gamma_c$};
+\draw[thick,blue!70!black] (0,2.6)--(3.8,-1.2) node[right]{$\frac{\dot k}{k}$};
+\node[left,font=\small] at (0,2.6) {$(1-\tau)\frac yk-\delta-n$};
+\draw[dashed] (1.4,1.2)--(1.4,0) node[below]{$(\frac ck)^*$};
+\draw[->,blue!70!black] (0.9,1.7)--(0.4,2.2);
+\draw[->,blue!70!black] (2.0,0.6)--(2.6,0.0);
+\end{tikzpicture}
+\end{center}
+\emph{How to read it.} The horizontal axis is the consumption--capital ratio, the vertical axis growth rates. The flat line is consumption growth $\gamma_c$, which does not depend on $c/k$. The downward-sloping line is capital growth: more consumption out of a given capital stock leaves less for investment. Its intercept is $(1-\tau)\frac yk-\delta-n$ with $\frac yk=\tilde A$. They cross at $(c/k)^*$, where $c$ and $k$ grow at the same rate. The arrows show that $c/k$ moves away from the crossing.
+
+\paragraph{Instability of $c/k$ away from $(c/k)^*$.} Setting $\gamma_c=(1-\tau)\tilde A-(\delta+n)-(c/k)^*$ defines
+\[
+\Big(\frac ck\Big)^*=(1-\tau)\tilde A-(\delta+n)-\gamma_c .
+\]
+The growth rate of a ratio is the difference of growth rates, so
+\begin{align*}
+\frac{d}{dt}\ln\frac{c_t}{k_t}&=\frac{\dot c_t}{c_t}-\frac{\dot k_t}{k_t}
+=\gamma_c-\Big[(1-\tau)\tilde A-(\delta+n)-\frac{c_t}{k_t}\Big]
+=\frac{c_t}{k_t}-\Big(\frac ck\Big)^* .
+\end{align*}
+\begin{itemize}
+\item If $\frac ck<(\frac ck)^*$: $c/k$ falls and keeps falling toward 0. Consumption is too low and capital piles up, so the value of capital does not vanish: this \emph{violates the TC}.
+\item If $\frac ck>(\frac ck)^*$: $c/k$ rises without bound. Consumption grows faster than output can support, $k$ eventually hits zero: this \emph{violates the RC}.
+\end{itemize}
+(For the TC to hold on the balanced path we need $(c/k)^*>0$, i.e.\ $(1-\tau)\tilde A-\delta-n>\gamma_c$.)
+
+\begin{keybox}[title={AK growth with productive government: no transitional dynamics}]
+The only optimal choice is for $c_0$ to jump so that $c_0/k_0=(c/k)^*$ immediately. From then on $c$, $k$ and $y=\tilde Ak$ all grow at the same constant rate
+\[
+\gamma_c=\frac1\theta\Big[(1-\tau)\alpha A^{\frac1\alpha}\tau^{\frac{1-\alpha}{\alpha}}-\delta-\rho\Big]
+\]
+forever. The ``steady state'' is now a constant \emph{growth rate} (balanced growth), not $\dot c=\dot k=0$ as in the baseline. Long-run growth is \emph{endogenous}: policy ($\tau$) and preferences ($\rho,\theta$) affect the growth rate, not just income levels. Growth is maximised where $(1-\tau)\tau^{\frac{1-\alpha}{\alpha}}=\Phi(\tau)$ peaks. By the derivative computed above with $\beta=1-\alpha$, this is at $\tau=\beta=1-\alpha$.
+\end{keybox}
+\begin{tipbox}
+Compare: with $\alpha+\beta<1$, taxes for infrastructure change the \emph{level} of $k_{ss}$ (maximised at $\tau=\beta$). With $\alpha+\beta=1$, the same tax changes the \emph{growth rate} (also maximised at $\tau=\beta$). The knife-edge $\alpha+\beta=1$ removes diminishing returns to the accumulable factor, which is what makes growth endogenous.
+\end{tipbox}

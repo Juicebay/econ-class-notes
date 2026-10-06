@@ -1,0 +1,38 @@
+\documentclass[10.5pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{enumitem}\setlist{nosep,leftmargin=1.4em}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz,pgfplots}\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,calc,decorations.markings}
+\usepackage{hyperref}\hypersetup{colorlinks,linkcolor=blue!50!black}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{blue!40!black}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+% key result box
+\newtcolorbox{keybox}[1][]{colback=blue!4,colframe=blue!45!black,boxrule=0.6pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fonttitle=\bfseries\small,#1}
+% intuition / exam tip box
+\newtcolorbox{tipbox}[1][]{colback=yellow!8,colframe=orange!70!black,boxrule=0.5pt,arc=2pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fonttitle=\bfseries\small,title=Intuition / exam tip,#1}
+% correction marker: \fix{what was in the notes -> what is correct}
+\newcommand{\fix}[1]{{\color{red!65!black}\small[\textbf{Correction:} #1]}}
+\newcommand{\pg}[1]{{\color{gray}\scriptsize(notes p.\,#1)}}
+\pdfstringdefDisableCommands{\def\pg#1{}\def\fix#1{}}
+\title{\textbf{Macroeconomics Comprehensive Exam Review}\\[2pt]\large Consolidated notes, transcribed from handwritten notes}
+\author{}\date{}
+\begin{document}
+\maketitle
+\vspace{-2.5em}
+\begin{center}\small Grey page tags refer to the scanned handwritten notes (CamScanner 2026-10-06).\end{center}
+\tableofcontents
+\newpage
+\input{s1_growth}
+\input{s2_ramsey}
+\input{s3_tools}
+\input{s4_assets}
+\input{s5_hetero}
+\input{s6_cycles}
+\input{s7_monetary}
+\appendix
+\input{s8_micro}
+\end{document}
