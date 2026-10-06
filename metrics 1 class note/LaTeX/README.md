@@ -16,6 +16,8 @@ metrics 1 class note*/
 ├── Lesson 4 (LaTeX).pdf    built from lesson04.tex
 ├── lecture 5.pdf           original export
 ├── Lesson 5 (LaTeX).pdf    built from lesson05.tex
+├── Lesson 6.pdf            original export
+├── Lesson 6 (LaTeX).pdf    built from lesson06.tex
 ├── Metrics HW1/
 │   ├── HW 1.pdf                           built from hw01.tex  (Assignment #1, ECON*6140)
 │   ├── HW 1 solution for question 1.tex/.pdf   Q1 solution; source lives here, uses ../LaTeX/metricsstyle
@@ -27,6 +29,7 @@ metrics 1 class note*/
     ├── lesson03.tex
     ├── lesson04.tex            FWL, omitted/irrelevant variables, Rβ = r
     ├── lesson05.tex            χ² quadratic forms, spectral decomposition, F test of Rβ = r
+    ├── lesson06.tex            F as RSSR vs USSR, restricted least squares, bias/variance of b*
     ├── hw01.tex                Assignment #1, ECON*6140, due 2026-10-14
     ├── lessonXX_template.tex   copy this to start a new lesson
     ├── extract_pages.py        render a handwritten PDF to PNGs for reading

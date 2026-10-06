@@ -5,4 +5,3 @@ __pycache__/
 *.aux
 *.log
 *.synctex.gz
-macro 1 class note/LaTeX/comp_review/main.pdf

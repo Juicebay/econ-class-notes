@@ -11,7 +11,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\small ECON*6000 --- Midterm pack}
+\lhead{\small ECON*6000 --- Midterm pack (rev.\ Oct 5)}
 \rhead{\small\thepage}
 \setlength{\headheight}{14pt}
 \setcounter{tocdepth}{2}
@@ -39,7 +39,7 @@
 
 \title{\textbf{ECON*6000 Midterm Pack}\\[3pt]\large Plan, MWG review with proofs, practice questions and exercises --- in course order\\[2pt]
 \normalsize Microeconomics I, Fall 2026 (R.~Kirkegaard) --- Midterm Thursday October 29}
-\author{}\date{Built October 3, 2026}
+\author{}\date{Revised October 5, 2026: Chapter 2 removed; focus is Chapters 3--4, labs are supporting material}
 
 \begin{document}
 \maketitle
@@ -48,15 +48,16 @@
 \section*{How to use this pack}
 \begin{itemize}
 \item The pack follows the course sequence. Each unit has four parts: \textbf{Read} (MWG summarised, with the proofs he can ask for and the page in the book and in \texttt{dokumen.pdf}, where scan page $=$ book page $+20$), \textbf{Do} (practice questions in his format), \textbf{MWG exercises} (verified numbers, one line each), and \textbf{Check} (what you must be able to write from a blank page).
-\item A ``You are here'' marker sits at the end of Unit~3, which is where the lecture notes stop (Lesson~7, expenditure function). Units 1--3 are review; Units 4--8 are pre-reading for the lectures to come; Unit~9 is the last three days.
+\item \textbf{Scope, from the instructor: the midterm is mainly Chapters 3 and 4; Chapter 2 is out; the lab handouts are ``good to know''.} Each unit is tagged CORE (Units 1, 2, 3, 6: MWG 3.B--3.G and 4.B, 4.D), SUPPORTING (Units 4--5: 3.H, 3.I) or GOOD TO KNOW (Appendix: comparative statics, Ch.~10). Note that the lab material MWG also covers is still Chapter 3: strict convexity vs strict quasiconcavity (p.~49, Midterm 2025 Q1.4), Kuhn--Tucker and the envelope theorem (3.D, Q2.1), integrability (3.H). What is only ``good to know'' is the labs' extras: convexification, constraint qualification, ODE mechanics, monotone comparative statics.
+\item A ``You are here'' marker sits at the end of Unit~2, which is where the lecture notes stop (Lesson~7, expenditure function). Units 1--2 are review; Units 3--6 are pre-reading for the lectures to come; Unit~7 is the last three days; the Appendix is the ``good to know'' material.
 \item Proofs marked \emph{reproduce} are exam material. Proofs marked \emph{know the idea} are not worth memorising.
 \item Every ``Do you agree \dots?'' part is answered the same way: \textbf{verdict in the first sentence}, then a proof or an explicit counterexample, then one precise sentence of economics. Name the assumption that does the work at each step (LNS, continuity, convexity, Walras' law, homogeneity).
 \item No calculator on the exam. If an expression does not simplify by hand, you have made an algebra error. Pace: \textbf{10 minutes per sub-part}.
 \item Blue boxes are propositions, grey boxes definitions, orange boxes show how he has turned the result into a question, green boxes are things to do.
 \end{itemize}
 
-\begin{here}[Start here (Saturday, October 3)]
-Do \textbf{Question~5} (Unit~3) cold, under 40 minutes. It is the ``compute everything'' question and will show you exactly which of Units 1--3 need re-reading. Then work Units 1--3 in order, finish HW1 (due Sunday October 11, 23:59; your draft is in \texttt{HW1/Assignment1.tex}), and move to Unit~4 before the Tuesday October 6 lecture.
+\begin{here}[Start here (Tuesday, October 6)]
+If you have not yet done the quasilinear ``compute everything'' question (Question~2 here; it was Question~5 in the October~3 version), do it first, cold, in 40 minutes. It shows which parts of Units 1--2 need re-reading. Then Question~3 (new: homothetic and quasilinear structure), finish HW1 (due Sunday October 11, 23:59; your draft is in \texttt{HW1/Assignment1.tex}), and read Unit~3 before this week's lectures finish Chapter 3.
 \end{here}
 
 \tableofcontents
@@ -67,6 +68,7 @@ Do \textbf{Question~5} (Unit~3) cold, under 40 minutes. It is the ``compute ever
 \subsection*{Facts}\addcontentsline{toc}{subsection}{Facts}
 \begin{itemize}
 \item Thursday October 29, in class, 20\% of the grade. No calculator. Past class average about 35\%; your target is 65\%.
+\item \textbf{Not examinable:} Chapter 2 (instructor's confirmation, October 5). Chapter 6 is lectured on October 26--27 and is assumed not examinable.
 \item Format of the 2025 paper: 2 questions $\times$ 50\%, each with 4 sub-parts, roughly 12.5\% per sub-part.
 \item Each question pairs a concrete functional form with the general theorem behind it: compute first, then ``Do you agree that \dots\ for \emph{any} preferences with property X? Prove and explain.'' Some statements are true, some false.
 \item The mechanical parts (demand, $v$, Roy's identity) are about 40\% of the paper. To reach 65\% you need those clean and two of the four proof parts.
@@ -74,20 +76,39 @@ Do \textbf{Question~5} (Unit~3) cold, under 40 minutes. It is the ``compute ever
 \item Written precision is graded. He states assumptions explicitly and expects you to say which one does the work.
 \item He likes utilities that punish Lagrangian autopilot: $(x_1-1)(x_2-1)$, $x_1x_2+x_1^2$, $(\sqrt{x_1}+\sqrt{x_2})^2$. Check convexity and corners before writing a Lagrangian.
 \item The envelope theorem appears on both 2025 papers (Roy, planner's value function, concavity of $e$).
+\item With Chapter 2 gone, the 2025 midterm is the template almost exactly: Q1 on Chapter 3 (UMP, $v$, convexity), Q2 on the envelope theorem and Chapter 4.
 \end{itemize}
 
-\subsection*{Roadmap: October 3 to October 29}\addcontentsline{toc}{subsection}{Roadmap: October 3 to October 29}
+\subsection*{Anatomy of Midterm 2025 (the template)}\addcontentsline{toc}{subsection}{Anatomy of Midterm 2025 (the template)}
+Five of eight parts are Chapter 3, three are Chapter 4; nothing from Chapters 2 or 6. Expect the same shape.
 \begin{center}\small
-\begin{tabular}{p{2.3cm}p{4.5cm}p{5.3cm}p{2.5cm}}
+\begin{tabular}{p{1.2cm}p{7.6cm}p{2.6cm}p{3.4cm}}
 \toprule
-Dates & Course & This pack & Deliverable\\
+Part & Asks & MWG & Pack\\
 \midrule
-Sat Oct 3 -- Mon Oct 5 & Week 4 cancelled; Mon Oct 5 lab: integration, ODEs, recovering preferences & Units 1--3 (review). Questions 1--5. Read Unit 5 before the Monday lab. & Q5 attempted; HW1 draft complete\\
-Tue Oct 6 -- Sun Oct 11 & Week 5: finishing classical demand theory (3.G--3.I) & Units 4--6. Questions 6, 7, 8.1--8.3. Exercises 3.G.15, 3.H.6, 3.I.5 at minimum. & \textbf{HW1 due Sun Oct 11}\\
-Mon Oct 12 -- Sun Oct 18 & Week 6: Thanksgiving; only Thu Oct 15 lecture (aggregate demand, Ch.~4) & Unit 7 before the Thursday lecture. Question 9. Exercises 4.B.1, 4.D.2, 4.D.7. First pass of the proof checklist from memory. & Checklist rows 1--17 from a blank page\\
-Mon Oct 19 -- Sun Oct 25 & Week 7: Mon Oct 19 lab (comparative statics); lectures on aggregate demand and welfare (Ch.~4, optional Ch.~10) & Unit 8. Questions 8.4--8.5 and 10. HW2: send me the questions the day they are posted; a mock midterm is built from them. & \textbf{HW2 due Sun Oct 25}\\
-Mon Oct 26 -- Wed Oct 28 & Week 8: Mon/Tue lectures on choice under uncertainty (Ch.~6, assumed not examinable) & Unit 9: Midterm 2025 closed-book in 80 minutes; mock; checklist rows 1--22 from a blank page; HW1 Q4 again. & Two timed papers graded\\
-Thu Oct 29 & \textbf{Midterm} & Exam-day protocol (Unit 9) & \\
+1.1 & $x(p,w)$ and $v(p,w)$ for $(\sqrt{x_1}+\sqrt{x_2})^2$ & 3.D & Unit 2, Drill A\\
+1.2 & rank $v$ at $p^1,p^2,p^3$ & 3.D & Unit 2\\
+1.3 & $p^2$ cannot beat both $p^1$ and $p^3$ for any LNS continuous $\pref$ & 3.D.3(iii) & Unit 2, \S\ref{sec:v}\\
+1.4 & strictly convex $\iff$ strictly quasiconcave; separable $u$ & 3.B--3.C & Unit 1, Question 1\\
+2.1 & Roy's identity by the envelope theorem; interpret $\lambda$ & 3.G.4 & Unit 3, Question 4\\
+2.2 & planner's wealth-distribution problem; FOC; envelope in $p_j$, $w$ & 4.D & Unit 6, Question 7\\
+2.3 & representative consumer's demand $=$ aggregate demand & 4.D.1 & Unit 6, Question 7\\
+2.4 & Gorman form, symmetric $W$: equal utilities, optimal rule & 4.B, 4.D & Unit 6, Question 7, Drill B\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Roadmap: October 6 to October 29}\addcontentsline{toc}{subsection}{Roadmap: October 6 to October 29}
+\begin{center}\small
+\begin{tabular}{p{2.3cm}p{4.3cm}p{5.5cm}p{2.5cm}}
+\toprule
+Dates & Course & This pack (time share) & Deliverable\\
+\midrule
+Tue Oct 6 -- Sun Oct 11 & Week 5: lectures finishing Chapter 3 (3.G--3.I) & Units 1--3 (CORE, 70\%): Questions 1--4 and Drill A. Units 4--5 (SUPPORTING, 30\%): one pass each, Question 5, Question 6.1--6.3. & \textbf{HW1 due Sun Oct 11}\\
+Mon Oct 12 -- Sun Oct 18 & Week 6: Thanksgiving; only Thu Oct 15 lecture (aggregate demand, Ch.~4) & Unit 6 (CORE) before Thursday: Question 7 and Drill B; exercises 4.B.1, 4.D.2, 4.D.7. Then checklist rows 1--12 from memory. & Checklist rows 1--12 from a blank page\\
+Mon Oct 19 -- Sun Oct 25 & Week 7: comparative statics lab; aggregate demand and welfare lectures & Unit 6 second pass against the lectures; Question 6.4--6.5; Appendix read once. HW2: send me the questions the day they are posted; mock built from them. & \textbf{HW2 due Sun Oct 25}\\
+Mon Oct 26 -- Wed Oct 28 & Week 8: Ch.~6 lectures (not examinable) & Unit 7: Midterm 2025 closed-book in 80 minutes; mock; checklist rows 1--17 from a blank page; HW1 Q4 again. & Two timed papers graded\\
+Thu Oct 29 & \textbf{Midterm} & Exam-day protocol (Unit 7) & \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -109,10 +130,8 @@ Final 25 Q1.1--1.3 & convexity; $x$, $v$; $e$ from $v$; $h$ via Shephard & his u
 Final 25 Q1.4--1.5 & price change along $(+t,-t)$ & Prop.~3.E.2(iii) $+$ Shephard & \S\ref{sec:app-e}\\
 Final 25 Q2 & median-of-three lottery; SOSD & not in MWG (Ch.~6 topic) & ---\\
 Final 25 Q3 & Edgeworth economy; planner distributes wealth vs.\ bundles & Ex.~4.D.1; Ch.~15--16 & \S\ref{sec:4d}\\
-HW1 Q1.1 & $S$ symmetric when $L=2$ & \textbf{Ex.~2.F.11 verbatim}, same hint & \S\ref{sec:ch2}\\
-HW1 Q1.2 & does it extend to $L=3$ & text p.~34; Ex.~2.F.10, 2.F.15 & \S\ref{sec:ch2}\\
-HW1 Q1.3 & SARP, $L=2$ vs $L=3$ & Ex.~3.J.1; Prop.~3.J.1 & \S\ref{sec:sarp}\\
-HW1 Q2 & revealed-preference table & style of Ex.~2.F.2, 2.F.3, 3.D.7 & \S\ref{sec:warp}\\
+HW1 Q1.1--1.3 & Slutsky symmetry at $L=2$; $L=3$; SARP & Ex.~2.F.11 verbatim; p.~34, Ex.~2.F.10, 2.F.15; Ex.~3.J.1 & Ch.~2: not examinable\\
+HW1 Q2 & revealed-preference table & style of Ex.~2.F.2, 2.F.3, 3.D.7 & Ch.~2: not examinable\\
 HW1 Q3 & $(x_1-1)(x_2-1)$: LNS, monotone, convex & Stone--Geary twist on Ex.~3.D.6 & \S\ref{sec:prefs}\\
 HW1 Q4 & additively separable: strictly convex? & his own (cf.\ Ex.~3.G.4) & \S\ref{sec:convex}\\
 Oct.~5 lab & recovering preferences from demand & 3.H; Ex.~3.H.6, 3.H.7 & \S\ref{sec:integrability}\\
@@ -121,202 +140,19 @@ Oct.~5 lab & recovering preferences from demand & 3.H; Ex.~3.H.6, 3.H.7 & \S\ref
 \end{center}
 
 \clearpage
-\section{Unit 1: Choice, Walras' law, WARP, Slutsky, SARP}
-\begin{unit}{MWG Chapter 1, 2.E--2.F, 3.J. Your notes: Lessons 1 and 3. Status: lectured; HW1 Q1--Q2 live here.}
-What he tests: the derivative versions of homogeneity and Walras' law; what WARP does and does not deliver (negative semidefiniteness yes, symmetry only when $L=2$); revealed-preference tables; why SARP is needed for $L\ge3$.
-\end{unit}
-\subsection{Read: Chapter 2 --- Walrasian demand without preferences}\label{sec:ch2}
-
-\subsubsection{Homogeneity, Walras' law and their derivative versions}
-Budget set: $B_{p,w}=\{x\in\R^L_+: p\cdot x\le w\}$. Walrasian demand $x(p,w)$ is the chosen bundle.
-
-\begin{defn}{Definitions 2.E.1--2.E.2 \mwg{23}{43}}
-\textbf{Homogeneous of degree zero (HD0):} $x(\alpha p,\alpha w)=x(p,w)$ for all $\alpha>0$.\\
-\textbf{Walras' law (WL):} $p\cdot x(p,w)=w$ for all $p\gg0$, $w>0$.
-\end{defn}
-
-\begin{prop}{Propositions 2.E.1--2.E.3 \mwg{27--28}{47--48}}
-\begin{enumerate}
-\item[(2.E.1)] HD0 $\Rightarrow$ $D_px(p,w)\,p+D_wx(p,w)\,w=0$. \quad (price and wealth derivatives, weighted, sum to zero)
-\item[(2.E.2)] WL $\Rightarrow$ $p\T D_px(p,w)+x(p,w)\T=0\T$. \quad (\emph{Cournot aggregation})
-\item[(2.E.3)] WL $\Rightarrow$ $p\cdot D_wx(p,w)=1$. \quad (\emph{Engel aggregation})
-\end{enumerate}
-\end{prop}
-\begin{proof}[Proof (reproduce)]
-(2.E.1): differentiate $x(\alpha p,\alpha w)-x(p,w)=0$ with respect to $\alpha$ and evaluate at $\alpha=1$ (Euler's theorem for degree 0).
-(2.E.2): differentiate the identity $\sum_\ell p_\ell x_\ell(p,w)=w$ with respect to $p_k$: $\sum_\ell p_\ell\,\partial x_\ell/\partial p_k+x_k=0$.
-(2.E.3): differentiate the same identity with respect to $w$.
-\end{proof}
-
-\subsubsection{The weak axiom and the compensated law of demand}\label{sec:warp}
-\begin{defn}{Definition 2.F.1 (WARP for Walrasian demand) \mwg{29}{49}}
-For any $(p,w)$, $(p',w')$: if $p\cdot x(p',w')\le w$ and $x(p',w')\neq x(p,w)$, then $p'\cdot x(p,w)>w'$.\\
-In words: if $x(p',w')$ was affordable when $x(p,w)$ was chosen (so $x(p,w)$ is revealed preferred), then $x(p,w)$ must be unaffordable whenever $x(p',w')$ is chosen.
-\end{defn}
-
-A \textbf{Slutsky-compensated price change} from $(p,w)$ moves to $(p',w')$ with $w'=p'\cdot x(p,w)$: the old bundle is exactly affordable at the new prices.
-
-\begin{prop}{Proposition 2.F.1 (WARP $\Leftrightarrow$ compensated law of demand) \mwg{30--32}{50--52}}
-Let $x(p,w)$ satisfy HD0 and WL. Then $x$ satisfies WARP if and only if, for every compensated change $(p,w)\to(p',w')$ with $w'=p'\cdot x(p,w)$,
-\[
-(p'-p)\cdot[x(p',w')-x(p,w)]\le 0,\quad\text{strictly if } x(p',w')\neq x(p,w).
-\]
-\end{prop}
-\begin{proof}[Proof (reproduce ``$\Rightarrow$''; know the idea of ``$\Leftarrow$'')]
-Write $x=x(p,w)$, $x'=x(p',w')$.
-
-\emph{WARP $\Rightarrow$ CLD.} If $x'=x$ the expression is $0$. Otherwise split
-$(p'-p)\cdot(x'-x)=p'\cdot(x'-x)-p\cdot(x'-x)$.
-First term: $p'\cdot x'=w'$ (WL) and $p'\cdot x=w'$ (compensation), so it is $0$.
-Second term: $x$ is affordable at $(p',w')$ and $x'\ne x$ was chosen there, so by WARP $x'$ is not affordable at $(p,w)$: $p\cdot x'>w=p\cdot x$ (WL). Hence $p\cdot(x'-x)>0$ and the whole expression is $<0$.
-
-\emph{CLD $\Rightarrow$ WARP.} Step 1: it suffices to check WARP on compensated changes. If a violation exists between $(p',w')$ and $(p'',w'')$ with both inequalities strict, pick $\alpha\in(0,1)$ so that $\bar p=\alpha p'+(1-\alpha)p''$ prices $x(p',w')$ and $x(p'',w'')$ equally, and set $\bar w=\bar p\cdot x(p',w')$. A weighted-average argument shows $\bar x=x(\bar p,\bar w)$ is strictly cheaper than $w'$ at $p'$ or than $w''$ at $p''$, which is a WARP violation for a \emph{compensated} change.
-Step 2: suppose a compensated violation: $p\cdot x'=w$, $x'\neq x$, $p'\cdot x\le w'$. Then by WL $p\cdot(x'-x)=0$ and $p'\cdot(x'-x)\ge0$, so $(p'-p)\cdot(x'-x)\ge0$ with $x'\neq x$, contradicting the strict CLD.
-\end{proof}
-
-\subsubsection{The Slutsky matrix}
-Differential version: compensate a price change $dp$ with $dw=x(p,w)\cdot dp$. Then
-$dx=[D_px+D_wx\,x\T]dp$, and CLD gives $dp\cdot dx\le0$. Define
-\[
-S(p,w)=D_px(p,w)+D_wx(p,w)\,x(p,w)\T,\qquad s_{\ell k}=\frac{\partial x_\ell}{\partial p_k}+\frac{\partial x_\ell}{\partial w}\,x_k .
-\]
-$s_{\ell k}$ is the effect on $x_\ell$ of a change in $p_k$ when wealth is adjusted so the old bundle stays exactly affordable.
-
-\begin{prop}{Propositions 2.F.2 and 2.F.3 \mwg{34--35}{54--55}}
-\textbf{2.F.2:} differentiable $x$ with WL, HD0 and WARP $\Rightarrow$ $v\cdot S(p,w)v\le0$ for all $v$ (negative semidefinite).\\
-\textbf{2.F.3:} differentiable $x$ with HD0 and WL $\Rightarrow$ $p\T S(p,w)=0$ and $S(p,w)\,p=0$.
-\end{prop}
-\begin{proof}[Proof of 2.F.3 (reproduce; this is MWG Exercise 2.F.7)]
-$S p=D_px\,p+D_wx\,(x\cdot p)=D_px\,p+D_wx\,w=0$ by WL and Prop.~2.E.1.
-$p\T S=p\T D_px+(p\cdot D_wx)\,x\T=-x\T+x\T=0\T$ by Props.~2.E.2 and 2.E.3.
-\end{proof}
-
-\paragraph{Consequences you must be able to state.}
+\section*{Background from Chapter 2 (not examinable; used in 3.G--3.H)}\addcontentsline{toc}{section}{Background from Chapter 2 (not examinable; used in 3.G--3.H)}\label{sec:ch2}
+Chapter 2 builds demand without preferences. What survives into Chapter 3 is notation and two identities; everything else (WARP, the compensated law of demand, revealed-preference tables, SARP in 3.J) is out of scope. If HW2 touches any of it, tell me.
 \begin{itemize}
-\item $s_{\ell\ell}\le0$: the own-price substitution effect is nonpositive. Since $\partial x_\ell/\partial p_\ell=s_{\ell\ell}-x_\ell\,\partial x_\ell/\partial w$, a \textbf{Giffen good must be inferior}. The converse fails.
-\item $S$ is singular (rank $\le L-1$), so NSD cannot be strengthened to negative definite.
-\item \textbf{WARP does not give symmetry.} For $L\ge3$ there are demand functions satisfying WL, HD0 and WARP with $S$ not symmetric (MWG discusses this around p.~35 and in Exercise 2.F.10). Symmetry is what utility maximization adds (\S\ref{sec:slutsky}).
-\item NSD of $S$ does \emph{not} imply WARP: only \emph{negative definiteness on vectors not proportional to $p$} does. NSD is necessary, not sufficient.
+\item \textbf{Walras' law} $p\cdot x(p,w)=w$ and \textbf{homogeneity of degree zero} $x(\alpha p,\alpha w)=x(p,w)$. In Chapter 3 both are \emph{theorems}: Prop.~3.D.2 derives them from LNS and from the budget set being unchanged by scaling.
+\item \textbf{Derivative versions} (Props.~2.E.1--2.E.3, p.~27--28): differentiate $x(\alpha p,\alpha w)=x(p,w)$ in $\alpha$ at $\alpha=1$ to get $D_px\,p+D_wx\,w=0$; differentiate $p\cdot x=w$ in $p_k$ and in $w$ to get Cournot aggregation $p\T D_px+x\T=0\T$ and Engel aggregation $p\cdot D_wx=1$ (so not all goods can be inferior).
+\item \textbf{Slutsky matrix} $S(p,w)=D_px(p,w)+D_wx(p,w)\,x(p,w)\T$, entries $s_{\ell k}=\partial x_\ell/\partial p_k+(\partial x_\ell/\partial w)\,x_k$: the effect of $p_k$ on $x_\ell$ when wealth is adjusted by $x_k\,dp_k$ so the old bundle stays exactly affordable. From the derivative versions, $S\,p=0$ and $p\T S=0$ (Prop.~2.F.3; two lines each).
+\item \textbf{What Chapter 3 adds} (Props.~3.G.2--3.G.3): with utility maximization, $S=D_ph=D^2_pe$, so $S$ is symmetric and negative semidefinite. Hence $s_{\ell\ell}\le0$ and, since $\partial x_\ell/\partial p_\ell=s_{\ell\ell}-x_\ell\,\partial x_\ell/\partial w$, a Giffen good must be inferior. These are the only Chapter 2 facts the exam can reach, and it reaches them through 3.G and 3.H.
 \end{itemize}
-
-\begin{exam}
-HW1 Q1 asks you to combine 2.E.1--2.E.3 / 2.F.3 to get symmetry when $L=2$. Write out $S p=0$ and $p\T S=0$ component-wise for $L=2$ and compare the two equations. Then ask yourself which step uses $L=2$ and fails for $L=3$.
-Midterm-style trap: ``A demand function satisfying WL, HD0 and with NSD Slutsky matrix satisfies WARP.'' \textbf{Disagree} (necessary, not sufficient).
-\end{exam}
-
-%=====================================================================
-\subsection{Read: Chapter 3.J --- the strong axiom}\label{sec:sarp}
-\mwg{91--92}{111--112}
-
-\textbf{SARP:} if $x^1$ is revealed preferred to $x^2$, $x^2$ to $x^3$, \dots, $x^{N-1}$ to $x^N$, all distinct, then $x^N$ is not revealed preferred to $x^1$. Equivalently, the indirect revealed preference relation has no cycles.
-
-\begin{prop}{Proposition 3.J.1 \mwg{91}{111}}
-If $x(p,w)$ satisfies SARP, there is a rational preference relation that rationalizes it.
-\end{prop}
-\begin{itemize}
-\item WARP is SARP for chains of length two. WARP rules out 2-cycles, SARP rules out cycles of every length.
-\item SARP $\Rightarrow$ rationalizable $\Rightarrow$ (with differentiability) symmetric NSD Slutsky matrix. That is the logical route for HW1 Q1.3.
-\item For $L=2$, WARP implies SARP for demand functions (Rose, 1958). For $L\ge3$ a three-cycle can satisfy WARP (Practice Q3).
-\end{itemize}
-
-%=====================================================================
-\subsection{Do: Question 1 --- Choice structures and rationalizability}
-\covers{MWG Chapter 1 (1.B--1.D). Lecture 1.}
-\mimic{the ``does your answer change if \dots'' pattern; the L=2 vs L=3 pattern from HW1 Q1.}
-
-Let $X=\{x,y,z\}$ and consider the choice structure $(\mathcal{B},C(\cdot))$ with
-\[
-\mathcal{B}=\big\{\{x,y\},\{y,z\},\{x,z\}\big\},\qquad
-C(\{x,y\})=\{x\},\quad C(\{y,z\})=\{y\},\quad C(\{x,z\})=\{z\}.
-\]
-\begin{enumerate}[label=\textbf{1.\arabic*}]
-  \item Does $(\mathcal{B},C(\cdot))$ satisfy the weak axiom of revealed preference? Prove your answer directly from the definition.
-  \item Is $(\mathcal{B},C(\cdot))$ rationalizable by a rational (complete and transitive) preference relation? Prove your answer.
-  \item Do you agree that ``if a choice structure satisfies the weak axiom, then it is rationalizable''? If you disagree,
-  state precisely what additional condition on $\mathcal{B}$ restores the claim, and prove the claim under that condition.
-  \item Now add the budget $\{x,y,z\}$ to $\mathcal{B}$. Do you agree that there is \emph{no} way to define $C(\{x,y,z\})$ so that the weak axiom holds? Prove and explain.
-\end{enumerate}
-
-
-\subsection{Do: Question 2 --- Walras' law, homogeneity and WARP}
-\covers{MWG Chapter 2 (2.E--2.F). Lectures 1--2.}
-\mimic{HW1 Q1--Q2; the instructor's habit of giving a demand function and asking what it does or does not satisfy.}
-
-Consider an economy with $L=2$ commodities and a consumer whose Walrasian demand function is
-\[
-\tilde x(p,w)=\left(\frac{w\,p_1}{p_1^2+p_2^2},\;\frac{w\,p_2}{p_1^2+p_2^2}\right),\qquad p\gg0,\; w>0 .
-\]
-\begin{enumerate}[label=\textbf{2.\arabic*}]
-  \item Verify that $\tilde x$ satisfies Walras' law and is homogeneous of degree zero. Compute the budget shares. What is unusual about them?
-  \item Compute the Slutsky substitution matrix $S(p,w)$. Is it symmetric? Is it negative semidefinite? Show that $S(p,w)\,p=0$. Do you agree that $S(p,w)p=0$ must hold for \emph{any} demand function satisfying Walras' law and homogeneity of degree zero? Prove.
-  \item Do you agree that $\tilde x$ satisfies the weak axiom of revealed preference? Prove and explain. Be explicit about which direction of the relationship between WARP and negative semidefiniteness you are using, and why it is valid.
-  \item (Harder, optional.) Find explicit price--wealth pairs $(p,w)$ and $(p',w')$ at which $\tilde x$ violates WARP. [Hint: Slutsky-compensate a change in $p_1$ and use the sign you found in 2.2.]
-  \item Do you agree with the following statement: ``When $L=2$, a differentiable demand function satisfying Walras' law, homogeneity of degree zero and WARP is generated by some rational preference relation''? Does your answer change when $L=3$? Prove and explain, using only what you know from Chapters 2 and 3.H. [Hint: HW1 Q1.1.]
-\end{enumerate}
-
-
-\subsection{Do: Question 3 --- Revealed preference data, WARP vs.\ SARP}
-\covers{MWG Chapter 2 (2.F) and Chapter 3.J. Lecture 2.}
-\mimic{HW1 Q2 (the table format is his), with the L=3 twist he asks about in HW1 Q1.3.}
-
-A consumer with $L=3$ goods is observed in three periods. The chosen bundles and prices are
-\[
-x^1=(3,1,2),\quad x^2=(2,3,1),\quad x^3=(1,2,3);\qquad
-p^1=(1,1,3),\quad p^2=(3,1,1),\quad p^3=(1,3,1).
-\]
-The table reports the cost $p^i\cdot x^j$ of bundle $x^j$ at prices $p^i$. Bold entries are the chosen bundles; Walras' law holds.
-\begin{center}
-\begin{tabular}{lccc}
-\toprule
- & $p^1=(1,1,3)$ & $p^2=(3,1,1)$ & $p^3=(1,3,1)$\\
-\midrule
-$x^1=(3,1,2)$ & $\mathbf{10}$ & 12 & 8\\
-$x^2=(2,3,1)$ & 8 & $\mathbf{10}$ & 12\\
-$x^3=(1,2,3)$ & 12 & 8 & $\mathbf{10}$\\
-\bottomrule
-\end{tabular}
-\end{center}
-\begin{enumerate}[label=\textbf{3.\arabic*}]
-  \item Which bundles are (directly) revealed preferred to which? Is WARP satisfied? Prove and explain.
-  \item Is the strong axiom (SARP) satisfied? Can this data be generated by a consumer with a rational preference relation? Prove and explain.
-  \item Do you agree that a data set of this type (WARP satisfied, SARP violated) could also arise when $L=2$? Explain, relating your answer to Question 2.5.
-  \item Suppose a fourth observation $x^4=(2,2,2)$ at prices $p^4=(1,1,1)$ is added. Is $x^4$ revealed preferred to $x^1$? Is $x^1$ revealed preferred to $x^4$? Does the enlarged data set satisfy WARP?
-\end{enumerate}
-
-
-\subsection{MWG exercises}
-\begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
-\begin{itemize}
-\item \textbf{1.B.5}\ finite $X$ and rational $\pref$ $\Rightarrow$ a utility representation exists.
-\item \textbf{1.C.2}\ an equivalent formulation of the weak axiom for choice structures.
-\item \textbf{1.D.3}$^\star$\ the choice structure of Question~1 with $\{x,y,z\}$ included: is it rationalizable? (Question~1 is adapted from this.)
-\item \textbf{1.D.4}\ rationalizable $\Rightarrow$ path invariance, $C(B_1\cup B_2)=C(C(B_1)\cup C(B_2))$.
-\item \textbf{2.E.3}\ use 2.E.1--2.E.3 to show $p\cdot D_px(p,w)\,p=-w$; interpret.
-\item \textbf{2.E.7}\ $L=2$, $x_1=\alpha w/p_1$ and Walras' law: derive $x_2$; is $x$ HD0?
-\item \textbf{2.F.3}$^\star$\ partial purchase data over two years: for which quantities is WARP violated, which bundle is revealed preferred, which good inferior.
-\item \textbf{2.F.5}\ demand HD1 in $w$ $+$ WARP $\Rightarrow$ the law of demand holds even for uncompensated price changes.
-\item \textbf{2.F.9(b)}$^\star$\ $L=2$: a rank-one $S$ is NSD iff one diagonal entry is $\le0$.
-\item \textbf{2.F.10}\ a demand whose $S$ is NSD but not symmetric at one price vector, and which violates WARP at another.
-\item \textbf{2.F.11}$^\star$\ $L=2$ $\Rightarrow$ $S$ symmetric. \textbf{This is HW1 Q1.1.}
-\item \textbf{2.F.15}$^\star$\ $L=3$: a demand satisfying WARP whose $S$ is not symmetric.
-\item \textbf{2.F.16}$^\star$\ $L=3$: HD0 and Walras' law but WARP fails; $v\cdot Sv=0$ for all $v$.
-\item \textbf{2.F.17}$^\star$\ $x_k=w/\sum_\ell p_\ell$ for all $k$: HD0? Walras? WARP? Slutsky matrix? (Reused in 3.H.7.)
-\item \textbf{3.J.1}$^\star$\ $L=2$ $\Rightarrow$ WARP $\iff$ SARP. \textbf{Behind HW1 Q1.3.}
-\end{itemize}
-\end{todo}
-\subsection{Check}
-Before leaving this unit, write each of these on a blank page in under five minutes.
-\begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-1 & 2.E.1--2.E.3 (derivative versions of HD0 and Walras' law) & p.~27--28 & HW1 Q1\\
-2 & $Sp=0$ and $p\T S=0$ & 2.F.3, p.~35 & HW1 Q1\\
-3 & WARP $\Rightarrow$ compensated law of demand & 2.F.1, p.~30 & ---\\
-4 & Giffen $\Rightarrow$ inferior; $L=2$ $\Rightarrow$ $S$ symmetric & p.~34; Ex.~2.F.11 & HW1 Q1.1\\
-\bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 2: Preferences, utility representation, convexity}
-\begin{unit}{MWG 3.B--3.C and the convexity lab (Lesson 2 handout). Your notes: Lesson 4. Status: lectured; HW1 Q3--Q4 live here.}
-What he tests: which axiom buys what (LNS vs monotone vs strongly monotone; continuity for representation); convex preferences vs quasiconcave utility, with the strict versions; what is ordinal and what is cardinal; additively separable utilities.
+\section{Unit 1: Preferences, utility representation, convexity}
+\begin{unit}{CORE. MWG 3.B--3.C and the convexity lab (Lesson 2 handout). Your notes: Lesson 4. Status: lectured; HW1 Q3--Q4 live here.}
+What he tests: which axiom buys what (LNS vs monotone vs strongly monotone; continuity for representation); convex preferences vs quasiconcave utility, with the strict versions; what is ordinal and what is cardinal; additively separable utilities. Midterm 2025 Q1.4 and Final 2025 Q1.1 are this unit.
 \end{unit}
 \subsection{Read: Chapter 3.B--3.C --- preferences and utility}\label{sec:prefs}
 
@@ -390,11 +226,11 @@ The weak version is identical with $\ge$ in place of $>$.
 \end{itemize}
 
 %=====================================================================
-\subsection{Do: Question 4 --- Preferences, convexity and utility representation}
+\subsection{Do: Question 1 --- Preferences, convexity and utility representation}
 \covers{MWG Chapter 3 (3.B--3.C); Convexity lab (quasiconcavity, existence/uniqueness).}
 \mimic{Midterm 2025 Q1.4; HW1 Q3--Q4; Final 2025 Q1.1.}
 
-\begin{enumerate}[label=\textbf{4.\arabic*}]
+\begin{enumerate}[label=\textbf{1.\arabic*}]
   \item Do you agree that any preference relation on $\R^2_+$ that is complete, transitive and strongly monotone admits a utility representation? Prove or give a counterexample. What assumption, if added, restores the claim?
   \item Let $u$ represent $\pref$. Do you agree with each of the following? Prove or give a counterexample.
   \begin{enumerate}[label=(\alph*)]
@@ -417,23 +253,23 @@ The weak version is identical with $\ge$ in place of $>$.
 \item \textbf{3.C.1}$^\star$\ verify that the lexicographic ordering is complete, transitive, strongly monotone and strictly convex (and still has no utility).
 \item \textbf{3.C.3}\ closed upper and lower contour sets $\Rightarrow$ continuity in the sense of Definition 3.C.1.
 \item \textbf{3.C.4}\ a discontinuous preference that is nonetheless represented by a utility function.
-\item \textbf{3.C.5}$^\star$\ continuous $\pref$ is homothetic iff some representation is HD1; quasilinear iff some representation is $x_1+\phi(x_2,\dots,x_L)$; why these are cardinal properties.
+\item \textbf{3.C.5}$^\star$\ continuous $\pref$ is homothetic iff some representation is HD1; quasilinear iff some representation is $x_1+\phi(x_2,\dots,x_L)$; why these are cardinal properties. \textbf{Feeds Question~3.}
 \item \textbf{3.C.6}\ CES: $\rho=1$ linear, $\rho\to0$ Cobb--Douglas, $\rho\to-\infty$ Leontief.
 \end{itemize}
 \end{todo}
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-5 & LNS $\Rightarrow$ Walras' law at the optimum & 3.D.2, p.~51 & HW1 Q3\\
-6 & Lexicographic preferences: no utility representation & p.~46 & ---\\
-7 & Continuous $+$ monotone $\Rightarrow$ utility (diagonal construction) & 3.C.1, p.~47 & ---\\
-8 & Strictly convex $\iff$ strictly quasiconcave; sums of concave functions & p.~49 & Midterm 25 Q1.4; HW1 Q4\\
+1 & LNS $\Rightarrow$ Walras' law at the optimum & 3.D.2, p.~51 & HW1 Q3\\
+2 & Lexicographic preferences: no utility representation & p.~46 & ---\\
+3 & Continuous $+$ monotone $\Rightarrow$ utility (diagonal construction) & 3.C.1, p.~47 & ---\\
+4 & Strictly convex $\iff$ strictly quasiconcave; sums of concave functions & p.~49 & Midterm 25 Q1.4; HW1 Q4\\
 \bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 3: UMP, EMP, Kuhn--Tucker, the envelope theorem}
-\begin{unit}{MWG 3.D--3.E and the optimization lab (Lesson 5 handout). Your notes: Lessons 6--7. Status: lectured up to the expenditure function.}
-What he tests: deriving $x$, $v$, $h$, $e$ by hand for non-standard utilities, with corners; the properties of $v$ (quasiconvex) and $e$ (concave) and their proofs without derivatives; the duality identities.
+\section{Unit 2: UMP, EMP, Kuhn--Tucker, the envelope theorem}
+\begin{unit}{CORE. MWG 3.D--3.E and the optimization lab (Lesson 5 handout). Your notes: Lessons 6--7. Status: lectured up to the expenditure function.}
+What he tests: deriving $x$, $v$, $h$, $e$ by hand for non-standard utilities, with corners; the properties of $v$ (quasiconvex) and $e$ (concave) and their proofs without derivatives; the duality identities; what homotheticity and quasilinearity do to all four objects. Midterm 2025 Q1.1--1.3 and Final 2025 Q1.2--1.5 are this unit.
 \end{unit}
 \subsection{Read: Chapter 3.D --- the utility maximization problem}\label{sec:ump}
 \[
@@ -529,7 +365,7 @@ Own-price version: $\partial h_\ell/\partial p_\ell\le0$. \textbf{Hicksian deman
 At $p$, $x_1=x_2$, so $h_1(p,u)=h_2(p,u)$. Consider $g(t)=e(p+t(1,-1),u)$. $g$ is concave in $t$ (restriction of a concave function to a line) and, by Shephard, $g'(0)=h_1-h_2=0$. A concave function lies below its tangent, so $g(t)\le g(0)$: the consumer needs \textbf{weakly less} money to reach the same utility. Intuition: at the starting bundle the cost of the old bundle is unchanged ($t x_1-t x_2=0$), and re-optimizing can only lower cost. This uses only LNS and continuity (plus strict convexity for single-valued $h$), not the functional form.
 
 %=====================================================================
-\subsection{Do: Question 5 --- Quasilinear utility, corner solutions and duality}
+\subsection{Do: Question 2 --- Quasilinear utility, corner solutions and duality}
 \covers{MWG Chapter 3 (3.D--3.G); Optimization lab (KKT, corner solutions, constraint qualification, envelope theorem).}
 \mimic{Midterm 2025 Q1.1--1.3; Final 2025 Q1.2--1.5. This is the ``compute everything'' question.}
 
@@ -537,7 +373,7 @@ A consumer has preferences on $\R^2_+$ represented by
 \[
 u(x_1,x_2)=x_1+2\sqrt{x_2}.
 \]
-\begin{enumerate}[label=\textbf{5.\arabic*}]
+\begin{enumerate}[label=\textbf{2.\arabic*}]
   \item Are the preferences convex? Strictly convex? Strongly monotone? Explain briefly.
   \item Derive the Walrasian demand function $x(p,w)$ for all $p\gg0$, $w>0$, \emph{including the corner solution}. Write down the Kuhn--Tucker conditions and explain why they are necessary and sufficient here. Under what condition on $(p,w)$ is the solution interior?
   \item For the interior case, derive the indirect utility function $v(p,w)$. Verify that it is homogeneous of degree zero and verify Roy's identity for good 1.
@@ -547,20 +383,44 @@ u(x_1,x_2)=x_1+2\sqrt{x_2}.
 \end{enumerate}
 
 
+\subsection{Do: Question 3 --- Homothetic and quasilinear preferences: the structure of $x$, $v$, $h$, $e$}
+\covers{MWG 3.C (Ex.~3.C.5), 3.D (Ex.~3.D.3, 3.D.4), 3.E (Ex.~3.E.5, 3.E.7), 3.G (Gorman form, Ex.~3.G.10--3.G.12). Parts 3.2 and 3.4 use Roy's identity (Lesson 7).}
+\mimic{his ``is this specific to \dots?'' pattern, and the two preference classes that produce the Gorman form on which Midterm 2025 Q2.4 rests.}
+
+Throughout, $u$ is continuous and represents a locally nonsatiated, strictly convex preference relation; $p\gg0$, $w>0$; solutions are interior where differentiability is used.
+\begin{enumerate}[label=\textbf{3.\arabic*}]
+  \item Suppose $u$ is homogeneous of degree one on $\R^L_+$. Do you agree that $x(p,w)=w\,x(p,1)$ and $v(p,w)=w\,v(p,1)$? Prove. [Hint: if $x^*$ solves the UMP at $(p,1)$, what does $wx^*$ do at $(p,w)$?] Conclude that $h(p,u)=u\,h(p,1)$ and $e(p,u)=u\,e(p,1)$, and that the wealth expansion path at any $p$ is a ray through the origin.
+  \item Now the converse. Assume in addition that $u$ is differentiable and strictly quasiconcave. Do you agree that ``if $v(p,w)$ is homogeneous of degree one in $w$, then preferences are homothetic''? Prove or give a counterexample. [Hint: Roy's identity makes $x(p,w)$ linear in $w$; every $x\gg0$ is demanded at $p=\nabla u(x)$, $w=p\cdot x$; evaluate $v$ along the ray through $x$.]
+  \item Quasilinear case: $X=\R\times\R_+$, $u(x_1,x_2)=x_1+\phi(x_2)$ with $\phi$ strictly concave, differentiable and $\phi'>0$; normalize $p_1=1$. Do you agree that (a) $x_2(p,w)$ does not depend on $w$; (b) $v(p,w)=w+\psi(p_2)$ for some function $\psi$; (c) $h_2(p,u)$ does not depend on $u$; (d) $e(p,u)=u-\psi(p_2)$? Prove each, give $\psi$ explicitly in terms of $\phi$ and $x_2(p_2)$, and verify that Shephard's lemma applied to (d) returns the $x_2$ of (a). What is the wealth expansion path?
+  \item Both classes have indirect utility of the Gorman form $v(p,w)=a(p)+b(p)\,w$. Identify $a$ and $b$ in each case (without the normalization $p_1=1$ in the quasilinear case) and check that $v$ is homogeneous of degree zero. Do you agree that ``the wealth expansion path of a consumer at fixed $p$ is a straight line if $v$ is of the Gorman form''? Prove it using Roy's identity. State what the converse claims and why it is harder (you may cite Prop.~4.B.1).
+  \item Concrete check: for $u=x_1^{1/3}x_2^{2/3}$ and for $u=x_1+2\ln x_2$ (with $p_1=1$ and $w\ge2$), compute $x$, $v$, $e$ and $h$, sketch the wealth expansion paths at $p=(1,1)$, and verify 3.1 and 3.3. Then: do you agree that for the quasilinear consumer, good 2 is neither normal nor inferior, and that therefore its Marshallian and Hicksian demands coincide as functions of $p$? Explain using the Slutsky equation.
+\end{enumerate}
+\subsection{Drill A: Chapter 3 computations by hand}
+\begin{todo}{Six utilities, same routine each time. This is the 40\% of the paper that must be automatic. No calculator; every line must close by hand.}
+For each utility: (i) convexity and monotonicity of the preferences, and whether a corner or a kink is possible; (ii) $x(p,w)$, including the corner region; (iii) $v(p,w)$, check homogeneity of degree zero and Walras' law; (iv) $e(p,u)$ by inverting $v$; (v) $h(p,u)$ by Shephard's lemma, and check $h(p,v(p,w))=x(p,w)$; (vi) verify Roy's identity for good 1; (vii) sign $s_{11}$.
+\begin{enumerate}
+\item $u=x_1^{\alpha}x_2^{1-\alpha}$, $\alpha\in(0,1)$. \emph{Checkpoint:} $v=w\,\alpha^\alpha(1-\alpha)^{1-\alpha}p_1^{-\alpha}p_2^{-(1-\alpha)}$.
+\item $u=(x_1^{-1}+x_2^{-1})^{-1}=\dfrac{x_1x_2}{x_1+x_2}$ (CES with $\rho=-1$; the dual twin of his $\rho=\tfrac12$ midterm utility). \emph{Checkpoint:} $v=\dfrac{w}{(\sqrt{p_1}+\sqrt{p_2})^2}$, so $e=u(\sqrt{p_1}+\sqrt{p_2})^2$.
+\item $u=\min\{x_1,2x_2\}$ (kink: no FOC, use the structure). \emph{Checkpoint:} $v=\dfrac{2w}{2p_1+p_2}$.
+\item $u=x_1+2x_2$ (corners; demand is a correspondence on one price ray). \emph{Checkpoint:} $v=\max\{w/p_1,\,2w/p_2\}$.
+\item $u=(x_1-1)(x_2-1)$ on the region $w>p_1+p_2$ (HW1 Q3's utility, Stone--Geary). \emph{Checkpoint:} $v=\dfrac{(w-p_1-p_2)^2}{4p_1p_2}$, so $e=p_1+p_2+2\sqrt{up_1p_2}$.
+\item $u=x_1x_2+x_1^2$ (Final 2025 Q1). First show the preferences are strictly convex on the interior (bordered Hessian), then find the price region with an interior solution and the corner outside it. \emph{Checkpoint:} interior iff $p_1>2p_2$, and there $v=\dfrac{w^2}{4p_2(p_1-p_2)}$; $x_1=x_2$ exactly when $p_1=3p_2$.
+\end{enumerate}
+Then the two ``do you agree'' add-ons he attaches to such computations: (a) for utility 2, are $v$ and $e$ consistent with Props.~3.D.3 and 3.E.2 (quasiconvex, concave)? Show it directly from your formulas. (b) For utility 6, starting from $p_1=3p_2$ and moving to $(p_1+t,p_2-t)$, does the consumer need more or less wealth to keep utility fixed? First by computation, then for any LNS continuous preferences (Unit 2, \S\ref{sec:app-e}).
+\end{todo}
 \subsection{MWG exercises}
 \begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
 \begin{itemize}
-\item \textbf{3.D.3}\ HD1 utility $\Rightarrow$ $x$ and $v$ are HD1 in $w$ (straight wealth-expansion paths); converse.
-\item \textbf{3.D.4}$^\star$\ quasilinear, strictly convex: demands for goods $2,\dots,L$ do not depend on $w$; $v=w+\phi(p)$; when the nonnegativity constraint on the numeraire binds. \textbf{Question~5 is this.}
+\item \textbf{3.D.3}$^\star$\ HD1 utility $\Rightarrow$ $x$ and $v$ are HD1 in $w$ (straight wealth-expansion paths through the origin); converse. \textbf{Question 3.1--3.2.}
+\item \textbf{3.D.4}$^\star$\ quasilinear, strictly convex: demands for goods $2,\dots,L$ do not depend on $w$; $v=w+\phi(p)$; when the nonnegativity constraint on the numeraire binds. \textbf{Questions 2 and 3.3.}
 \item \textbf{3.D.5}$^\star$\ CES with $\alpha_1=\alpha_2=1$: $x$ and $v$; verify 3.D.2--3.D.3; limits; elasticity of substitution $1/(1-\rho)$. \textbf{Midterm 2025 Q1.1 is $\rho=\tfrac12$.}
 \item \textbf{3.D.6}\ Stone--Geary (linear expenditure system): FOCs, $x$, $v$, properties.
-\item \textbf{3.D.7}$^\star$\ regions of permissible second choices consistent with rationality, quasilinearity, normality, homotheticity: pictures. \textbf{HW1 Q2.2 style.}
 \item \textbf{3.D.8}\ $w\,\partial v/\partial w=-p\cdot\nabla_pv$ (Euler for a HD0 function).
 \item \textbf{3.E.3}\ existence of an EMP solution when $p\gg0$ and some $x$ reaches $u$.
 \item \textbf{3.E.4}\ convex $\pref$ $\Rightarrow$ $h$ convex-valued; strictly convex $\Rightarrow$ single-valued.
-\item \textbf{3.E.5}\ HD1 utility $\Rightarrow$ $h(p,u)=h(p)u$ and $e(p,u)=e(p)u$.
+\item \textbf{3.E.5}$^\star$\ HD1 utility $\Rightarrow$ $h(p,u)=h(p)u$ and $e(p,u)=e(p)u$. \textbf{Question 3.1.}
 \item \textbf{3.E.6}$^\star$\ CES Hicksian demand and expenditure function; verify 3.E.2--3.E.3.
-\item \textbf{3.E.7}$^\star$\ quasilinear $\Rightarrow$ Hicksian demands for goods $2,\dots,L$ do not depend on $u$; form of $e$.
+\item \textbf{3.E.7}$^\star$\ quasilinear $\Rightarrow$ Hicksian demands for goods $2,\dots,L$ do not depend on $u$; form of $e$. \textbf{Question 3.3.}
 \item \textbf{3.E.8}\ Cobb--Douglas: verify the duality identities; $e$ by inverting $v$.
 \item \textbf{3.E.9}$^\star$\ derive Prop.~3.E.2 from Prop.~3.D.3 through the duality identities, and back.
 \end{itemize}
@@ -568,21 +428,21 @@ u(x_1,x_2)=x_1+2\sqrt{x_2}.
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-9 & Existence (Weierstrass); convexity/uniqueness of $x(p,w)$ & 3.D.1--3.D.2, p.~50--51 & ---\\
-10 & $v$ quasiconvex in $(p,w)$ & 3.D.3, p.~56 & Midterm 25 Q1.3\\
-11 & UMP solution solves EMP, and back & 3.E.1, p.~58 & ---\\
-12 & $e$ concave in $p$ & 3.E.2, p.~59 & Final 25 Q1.5\\
-13 & Compensated law of demand for $h$ & 3.E.4, p.~62 & ---\\
+5 & Existence (Weierstrass); convexity/uniqueness of $x(p,w)$ & 3.D.1--3.D.2, p.~50--51 & ---\\
+6 & $v$ quasiconvex in $(p,w)$ & 3.D.3, p.~56 & Midterm 25 Q1.3\\
+7 & UMP solution solves EMP, and back & 3.E.1, p.~58 & ---\\
+8 & $e$ concave in $p$ & 3.E.2, p.~59 & Final 25 Q1.5\\
+9 & Compensated law of demand for $h$; HD1 $u$ $\Rightarrow$ $x$, $v$ linear in $w$; quasilinear $\Rightarrow$ $x_2$ free of $w$ & 3.E.4, p.~62; Ex.~3.D.3--3.D.4 & ---\\
 \bottomrule\end{tabular}\end{center}
 
 \begin{here}
-The lecture notes end here (Lesson 7: expenditure function). Everything above is review; everything below is pre-reading. The next lectures (week of October 6) finish Chapter 3: Unit~4 (3.G) first, Unit~5 (3.H) is the Monday lab, Unit~6 (3.I) closes the chapter.
+The lecture notes end here (Lesson 7: expenditure function). Everything above is review; everything below is pre-reading. This week's lectures finish Chapter 3: Unit~3 (3.G) first, Unit~4 (3.H) was Monday's lab, Unit~5 (3.I) closes the chapter.
 \end{here}
 
 \clearpage
-\section{Unit 4: Shephard, Roy, Slutsky --- the envelope theorem at work}
-\begin{unit}{MWG 3.G. Lectures: week of October 6. Lesson 7 already stated the envelope theorem and Roy's identity; the rest is new.}
-What he tests: Roy and Shephard as envelope-theorem statements, with the multiplier interpreted; the Slutsky equation and why utility maximization adds symmetry to what WARP gives; homothetic and Gorman special cases.
+\section{Unit 3: Shephard, Roy, Slutsky --- the envelope theorem at work}
+\begin{unit}{CORE. MWG 3.G. Lectures: week of October 6. Lesson 7 already stated the envelope theorem and Roy's identity; the rest is new.}
+What he tests: Roy and Shephard as envelope-theorem statements, with the multiplier interpreted; the Slutsky equation and why utility maximization makes $S$ symmetric; homothetic and Gorman special cases. Midterm 2025 Q2.1 and Final 2025 Q1.3 are this unit.
 \end{unit}
 \subsection{Read: Chapter 3.G --- relationships between demand, $v$ and $e$}\label{sec:slutsky}
 
@@ -616,7 +476,7 @@ For $u=v(p,w)$: $\displaystyle\frac{\partial h_\ell(p,u)}{\partial p_k}=\frac{\p
 Differentiate the identity $h_\ell(p,u)=x_\ell(p,e(p,u))$ with respect to $p_k$:
 $\partial h_\ell/\partial p_k=\partial x_\ell/\partial p_k+(\partial x_\ell/\partial w)(\partial e/\partial p_k)$, and $\partial e/\partial p_k=h_k(p,u)=x_k(p,w)$ by Shephard and duality.
 \end{proof}
-\textbf{Key corollary.} If demand comes from utility maximization, $S(p,w)=D_p^2e$ is \textbf{symmetric} and NSD. WARP alone gives only NSD. This is the precise content added by preferences, and why SARP is needed for $L\ge3$.
+\textbf{Key corollary.} If demand comes from utility maximization, $S(p,w)=D_p^2e$ is \textbf{symmetric} and NSD. Without preferences one gets only negative semidefiniteness; symmetry is the content added by utility maximization.
 
 \begin{prop}{Proposition 3.G.4 (Roy's identity) \mwg{73}{93}}
 If $v$ is differentiable at $(p,w)\gg0$: $\displaystyle x_\ell(p,w)=-\frac{\partial v(p,w)/\partial p_\ell}{\partial v(p,w)/\partial w}$.
@@ -639,12 +499,12 @@ x=-\nabla_pv/\partial_wv\ \text{(Roy)} & & h=\nabla_pe\ \text{(Shephard)}\\[3pt]
 \]
 
 %=====================================================================
-\subsection{Do: Question 6 --- Theory of $v$ and $e$; envelope theorem}
+\subsection{Do: Question 4 --- Theory of $v$ and $e$; envelope theorem}
 \covers{MWG Chapter 3 (3.D--3.E, 3.G); Optimization lab (envelope theorem).}
 \mimic{Midterm 2025 Q1.3 and Q2.1; the instructor explicitly asks to ``interpret the multiplier''.}
 
 Throughout, $\pref$ is rational, continuous and locally non-satiated on $\R^L_+$.
-\begin{enumerate}[label=\textbf{6.\arabic*}]
+\begin{enumerate}[label=\textbf{4.\arabic*}]
   \item Prove that $v(p,w)$ is quasiconvex in $(p,w)$, without assuming differentiability.
   \item A consumer with fixed wealth $w$ can live in town A (prices $(1,4)$), town B (prices $(4,1)$) or town C (prices $(\tfrac52,\tfrac52)$). Do you agree that, whatever the consumer's (rational, continuous, LNS) preferences, she cannot strictly prefer C to \emph{both} A and B? Prove. Then compute $v$ for $u=x_1x_2$ and for $u=x_1+x_2$ and rank the three towns in each case.
   \item Using the envelope theorem, prove Shephard's lemma. Interpret the Lagrange multiplier of the EMP. How is it related to the multiplier of the UMP?
@@ -661,8 +521,8 @@ Throughout, $\pref$ is rational, continuous and locally non-satiated on $\R^L_+$
 \item \textbf{3.G.3}\ linear expenditure system: Hicksian demand and $e$; check 3.E.2--3.E.3 and 3.G.1--3.G.3.
 \item \textbf{3.G.4}$^\star$\ additively separable $u$: additivity is cardinal; no inferior goods when each $u_\ell$ is strictly concave. \textbf{HW1 Q4 family.}
 \item \textbf{3.G.6}\ Fisher's three-good demand system: is it generated by preferences?
-\item \textbf{3.G.10}$^\star$\ Gorman form $v=a(p)+b(p)w$: what $a$ and $b$ must satisfy for $v$ to be an indirect utility function.
-\item \textbf{3.G.11}$^\star$\ Gorman form $\Rightarrow$ linear wealth-expansion curves.
+\item \textbf{3.G.10}$^\star$\ Gorman form $v=a(p)+b(p)w$: what $a$ and $b$ must satisfy for $v$ to be an indirect utility function. \textbf{Question 3.4.}
+\item \textbf{3.G.11}$^\star$\ Gorman form $\Rightarrow$ linear wealth-expansion curves. \textbf{Question 3.4.}
 \item \textbf{3.G.12}$^\star$\ which restrictions on the Gorman form give homothetic and quasilinear preferences.
 \item \textbf{3.G.15}$^\star$\ $u=2\sqrt{x_1}+4\sqrt{x_2}$: $x$, $h$, $e$, $v$; verify Roy. \textbf{The closest published cousin of Midterm 2025 Q1.1.}
 \item \textbf{3.G.16}$^\star$\ an expenditure function with parameters: restrictions for it to come from utility maximization; $v$; Roy; Slutsky.
@@ -672,14 +532,14 @@ Throughout, $\pref$ is rational, continuous and locally non-satiated on $\R^L_+$
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-14 & Shephard's lemma (envelope and supporting-hyperplane proofs) & 3.G.1, p.~68 & Final 25 Q1.3\\
-15 & Slutsky equation; $D_ph=S$ symmetric and NSD & 3.G.2--3.G.3, p.~69--71 & ---\\
-16 & Roy's identity (envelope proof); interpret $\lambda$; $\mu=1/\lambda$ & 3.G.4, p.~73 & Midterm 25 Q2.1\\
+10 & Shephard's lemma (envelope and supporting-hyperplane proofs) & 3.G.1, p.~68 & Final 25 Q1.3\\
+11 & Slutsky equation; $D_ph=S$ symmetric, NSD, $Sp=0$; Giffen $\Rightarrow$ inferior & 3.G.2--3.G.3, p.~69--71 & ---\\
+12 & Roy's identity (envelope proof); interpret $\lambda$; $\mu=1/\lambda$ & 3.G.4, p.~73 & Midterm 25 Q2.1\\
 \bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 5: Integrability --- recovering preferences from demand}
-\begin{unit}{MWG 3.H. Lab: Monday October 5 (integration, differential equations, recovering preferences). Read this unit before the lab.}
+\section{Unit 4: Integrability --- recovering preferences from demand}
+\begin{unit}{SUPPORTING. MWG 3.H. Lab: Monday October 5 (integration, differential equations, recovering preferences). Pair this unit with your lab notes.}
 What he tests: given a demand function, verify the conditions, write the PDE system from Shephard's lemma, solve it for $e$, invert to $v$, and recover $u$; say what symmetry and negative semidefiniteness each guarantee; say in what sense the recovered utility is unique.
 \end{unit}
 \subsection{Read: Chapter 3.H --- integrability}\label{sec:integrability}
@@ -699,7 +559,7 @@ Fix $p^0$ and normalize $e(p^0,u)=u$ (this pins down a utility scale). Shephard 
 \item \textbf{Why symmetry is needed (Frobenius):} a solution exists only if cross-partials agree. Differentiating, $\partial^2e/\partial p_k\partial p_\ell=\partial x_\ell/\partial p_k+(\partial x_\ell/\partial w)\,x_k=s_{\ell k}$. Equal cross-partials $\iff$ $s_{\ell k}=s_{k\ell}$.
 \item \textbf{Why NSD is needed:} it makes the recovered $e$ concave in $p$, as an expenditure function must be.
 \item WL and HD0 make the recovered $e$ HD1 in $p$.
-\item \textbf{When $L=2$:} after normalizing $p_2=1$ (by HD0) there is a single ODE $de/dp_1=x_1(p_1,1,e)$, which always has a solution, so symmetry imposes no restriction. Only NSD matters. This is the same fact as ``WARP implies symmetry when $L=2$''.
+\item \textbf{When $L=2$:} after normalizing $p_2=1$ (by HD0) there is a single ODE $de/dp_1=x_1(p_1,1,e)$, which always has a solution, so symmetry imposes no restriction. Only NSD matters. With two goods there is only one independent cross-partial, so there is nothing for symmetry to constrain.
 \end{itemize}
 
 \subsubsection*{Step 2: recover preferences from $e$}
@@ -714,11 +574,11 @@ $x_1=\alpha w/p_1$, $x_2=(1-\alpha)w/p_2$. The PDEs are $\partial\ln e/\partial 
 $\min_{p_1}\,(p_1x_1+x_2)/p_1^\alpha$ (setting $p_2=1$) is attained at $p_1=\alpha x_2/((1-\alpha)x_1)$, giving $u(x)=x_1^\alpha x_2^{1-\alpha}/(\alpha^\alpha(1-\alpha)^{1-\alpha})$, a Cobb--Douglas utility as expected.
 
 \begin{exam}
-\emph{Uniqueness:} the recovered preferences are unique; the utility function is unique only up to monotone transformation (the choice of $c(u)$). Expect: ``Given $x(p,w)=\dots$, verify the conditions, find $e$, $v$, $h$, and a utility function.'' Question~7 is exactly this.
+\emph{Uniqueness:} the recovered preferences are unique; the utility function is unique only up to monotone transformation (the choice of $c(u)$). Expect: ``Given $x(p,w)=\dots$, verify the conditions, find $e$, $v$, $h$, and a utility function.'' Question~5 is exactly this.
 \end{exam}
 
 %=====================================================================
-\subsection{Do: Question 7 --- Integrability --- recovering preferences from demand}
+\subsection{Do: Question 5 --- Integrability --- recovering preferences from demand}
 \covers{MWG Chapter 3.H and 3.E--3.G; Integration/ODE lab (Oct 5).}
 \mimic{the Oct 5 lab is new and sits right before the midterm. The demand below is the instructor's own Midterm 2025 utility in disguise --- do not look it up, derive it.}
 
@@ -726,13 +586,13 @@ A consumer's Walrasian demand is observed to be
 \[
 x(p,w)=\left(\frac{w\,p_2}{p_1(p_1+p_2)},\;\frac{w\,p_1}{p_2(p_1+p_2)}\right),\qquad p\gg0,\;w>0.
 \]
-\begin{enumerate}[label=\textbf{7.\arabic*}]
+\begin{enumerate}[label=\textbf{5.\arabic*}]
   \item Verify Walras' law and homogeneity of degree zero. Compute the Slutsky matrix and show that it is symmetric and negative semidefinite.
-  \item Explain precisely why the properties in 7.1 guarantee that there exists a rational, continuous, LNS preference relation generating $x(p,w)$. Which property is responsible for which step of the argument?
+  \item Explain precisely why the properties in 5.1 guarantee that there exists a rational, continuous, LNS preference relation generating $x(p,w)$. Which property is responsible for which step of the argument?
   \item Use Shephard's lemma, $\partial e/\partial p_\ell = x_\ell(p,e(p,u))$, to write down the system of partial differential equations that $e(p,u)$ must satisfy. Solve it. [Hint: divide by $e$ and work with $\ln e$; note $\frac{p_2}{p_1(p_1+p_2)}=\frac{1}{p_1}-\frac{1}{p_1+p_2}$.]
   \item Derive $v(p,w)$ and $h(p,u)$. Then recover a utility function $u(x_1,x_2)$ that generates this demand. [Hint: compute $\sqrt{h_1}+\sqrt{h_2}$.]
-  \item Do you agree that the utility function recovered in 7.4 is unique? Explain what uniqueness can and cannot mean here, and relate it to the constant of integration in 6.3.
-  \item Do you agree that the integrability argument in 7.3 works for \emph{any} $L$ as long as $S$ is symmetric and negative semidefinite? What is the role of symmetry (Frobenius' theorem) when $L\ge3$, and why is it automatic when $L=2$?
+  \item Do you agree that the utility function recovered in 5.4 is unique? Explain what uniqueness can and cannot mean here, and relate it to the constant of integration in 5.3.
+  \item Do you agree that the integrability argument in 5.3 works for \emph{any} $L$ as long as $S$ is symmetric and negative semidefinite? What is the role of symmetry (Frobenius' theorem) when $L\ge3$, and why is it automatic when $L=2$?
 \end{enumerate}
 
 
@@ -742,18 +602,18 @@ x(p,w)=\left(\frac{w\,p_2}{p_1(p_1+p_2)},\;\frac{w\,p_1}{p_2(p_1+p_2)}\right),\q
 \item \textbf{3.H.3}\ recover $v$ from $e$.
 \item \textbf{3.H.5}$^\star$\ given $v$, recover $e$ and the direct utility function.
 \item \textbf{3.H.6}$^\star$\ $x_\ell=\alpha_\ell w/p_\ell$ with $\sum\alpha_\ell=1$: derive the expenditure function; which utility is it?
-\item \textbf{3.H.7}$^\star$\ recover the preferences behind the demand of 2.F.17, normalising $u(1,\dots,1)=1$.
+\item \textbf{3.H.7}$^\star$\ recover the preferences behind the demand $x_k=w/\sum_\ell p_\ell$ (from Ex.~2.F.17), normalising $u(1,\dots,1)=1$.
 \end{itemize}
 \end{todo}
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-17 & Integrability: PDE system; role of symmetry and NSD & 3.H, p.~75--79 & Oct.~5 lab\\
+13 & Integrability: PDE system; role of symmetry and NSD & 3.H, p.~75--79 & Oct.~5 lab\\
 \bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 6: Welfare --- EV, CV, deadweight loss}
-\begin{unit}{MWG 3.I, then the partial-equilibrium welfare lectures of the week of October 19 (Ch.~4, optional Ch.~10). Do parts 8.1--8.3 now, 8.4--8.5 after those lectures.}
+\section{Unit 5: Welfare --- EV, CV, deadweight loss}
+\begin{unit}{SUPPORTING. MWG 3.I, then the partial-equilibrium welfare lectures of the week of October 19 (Ch.~4, optional Ch.~10). Do parts 6.1--6.3 now, 6.4--6.5 after those lectures.}
 What he tests: $EV$ and $CV$ as areas under Hicksian demand curves; why they coincide under quasilinearity; why a tax's deadweight loss is second order.
 \end{unit}
 \subsection{Read: Chapter 3.I --- welfare evaluation}
@@ -776,15 +636,15 @@ EV=\int_{p_1^1}^{p_1^0}h_1(s,p_{-1},u^1)\,ds,\qquad CV=\int_{p_1^1}^{p_1^0}h_1(s
 \end{itemize}
 
 %=====================================================================
-\subsection{Do: Question 8 --- Welfare measurement with quasilinear utility; partial equilibrium}
+\subsection{Do: Question 6 --- Welfare measurement with quasilinear utility; partial equilibrium}
 \covers{MWG Chapter 3.I and Chapter 10 (10.C--10.E); Chapter 4 (welfare).}
 \mimic{the ``welfare in partial equilibrium with quasilinear utility'' lectures of weeks 7--8.}
 
-Use the consumer of Question 5, $u=x_1+2\sqrt{x_2}$, with $p_1=1$ normalized and the solution interior.
-\begin{enumerate}[label=\textbf{8.\arabic*}]
+Use the consumer of Question~2, $u=x_1+2\sqrt{x_2}$, with $p_1=1$ normalized and the solution interior.
+\begin{enumerate}[label=\textbf{6.\arabic*}]
   \item The price of good 2 rises from $p_2^0$ to $p_2^1>p_2^0$. Compute the equivalent variation and the compensating variation. Do you agree that $EV=CV$? Is this specific to quasilinear preferences? Prove and explain.
   \item Show that $EV$ equals the change in the area to the left of the Hicksian demand curve for good 2, and that here it also equals the change in Marshallian consumer surplus. Why?
-  \item Do you agree that, for a price increase of a \emph{normal} good, $|CV|>|EV|$? Prove using the relationship between Hicksian demand curves at different utility levels, and reconcile with 9.1.
+  \item Do you agree that, for a price increase of a \emph{normal} good, $|CV|>|EV|$? Prove using the relationship between Hicksian demand curves at different utility levels, and reconcile with 6.1.
   \item Instead of a price change, the government levies a per-unit tax $t>0$ on good 2 and returns the revenue to the consumer as a lump sum. Compute the tax revenue, the deadweight loss, and show that the deadweight loss is of second order in $t$ (i.e.\ $DWL/t\to0$ as $t\to0$). Interpret.
   \item There are $I$ identical consumers as above and $J$ identical price-taking firms producing good 2 with cost $c(q)=q^2/2$ (in units of good 1). Derive the competitive equilibrium price of good 2 and quantities. Show that the equilibrium allocation maximizes Marshallian aggregate surplus, and explain why, with quasilinear utility, this is equivalent to Pareto optimality.
 \end{enumerate}
@@ -794,7 +654,7 @@ Use the consumer of Question 5, $u=x_1+2\sqrt{x_2}$, with $p_1=1$ normalized and
 \begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
 \begin{itemize}
 \item \textbf{3.I.3}$^\star$\ a price change in one good only: compare $CV$ and $EV$ according to whether the good is normal or inferior.
-\item \textbf{3.I.5}$^\star$\ quasilinear in good 1 (with $p_1=1$) $\Rightarrow$ $CV=EV$ for any price change. \textbf{Question 8.1.}
+\item \textbf{3.I.5}$^\star$\ quasilinear in good 1 (with $p_1=1$) $\Rightarrow$ $CV=EV$ for any price change. \textbf{Question 6.1.}
 \item \textbf{3.I.6}\ if aggregate $CV>0$, a compensation scheme makes every consumer better off.
 \item \textbf{3.I.7}\ $L=3$ with a numeraire and a linear demand system: welfare measures and the integrability restrictions on the coefficients.
 \end{itemize}
@@ -802,12 +662,12 @@ Use the consumer of Question 5, $u=x_1+2\sqrt{x_2}$, with $p_1=1$ normalized and
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-18 & $EV$, $CV$ as Hicksian areas; quasilinear $\Rightarrow EV=CV=\Delta CS$; DWL is second order & 3.I, p.~80--91 & ---\\
+14 & $EV$, $CV$ as Hicksian areas; quasilinear $\Rightarrow EV=CV=\Delta CS$; DWL is second order & 3.I, p.~80--91 & ---\\
 \bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 7: Aggregate demand, the Gorman form, representative consumers}
-\begin{unit}{MWG 4.B and 4.D. Lectures: Thursday October 15 and the week of October 19. Read this unit before October 15.}
+\section{Unit 6: Aggregate demand, the Gorman form, representative consumers}
+\begin{unit}{CORE. MWG 4.B and 4.D. Lectures: Thursday October 15 and the week of October 19. Read this unit before October 15.}
 What he tests: when aggregate demand depends only on total wealth; the planner's wealth-distribution problem, its FOC and its envelope properties; the proof that the planner's value function generates aggregate demand; what the Gorman form adds. Three of the four parts of Midterm 2025 Q2 are here.
 \end{unit}
 \subsection{Read: Chapter 4.B --- aggregate demand and aggregate wealth}
@@ -898,7 +758,7 @@ Solving $a_i(p)+b(p)w_i=\bar u$ for all $i$ with $\sum_iw_i=w$ gives the rule; d
 \end{exam}
 
 %=====================================================================
-\subsection{Do: Question 9 --- Aggregate demand, the Gorman form and representative consumers}
+\subsection{Do: Question 7 --- Aggregate demand, the Gorman form and representative consumers}
 \covers{MWG Chapter 4 (4.B--4.D).}
 \mimic{Midterm 2025 Q2.2--2.4, almost part for part. Expect something of this shape to come back.}
 
@@ -907,22 +767,30 @@ There are $I$ consumers. Consumer $i$ has wealth $w_i>0$ and preferences on $\R^
 u_i(x_{1i},x_{2i})=x_{1i}+\alpha_i\ln x_{2i},\qquad \alpha_i>0 .
 \]
 Prices are $p\gg0$ and wealth is large enough that every solution is interior.
-\begin{enumerate}[label=\textbf{9.\arabic*}]
+\begin{enumerate}[label=\textbf{7.\arabic*}]
   \item Derive $x_i(p,w_i)$ and $v_i(p,w_i)$. Show that $v_i$ is of the Gorman form $v_i(p,w_i)=a_i(p)+b(p)w_i$ and identify $a_i(p)$ and $b(p)$.
   \item Do you agree that aggregate demand $\sum_i x_i(p,w_i)$ depends on $(w_1,\dots,w_I)$ only through total wealth $w=\sum_i w_i$? Prove it for this economy. Then state and prove the general result for Gorman-form preferences, and state (without proof) whether the converse holds.
   \item Find a utility function $U(X_1,X_2)$ for a \emph{positive} representative consumer, i.e.\ one whose Walrasian demand at $(p,w)$ equals aggregate demand. Explain why its existence here does not depend on how wealth is distributed.
-  \item A planner chooses $(w_1,\dots,w_I)$ with $\sum_i w_i=w$ to maximize $W(u_1,\dots,u_I)=\sum_i u_i$. Do you agree that \emph{every} wealth distribution is optimal? Prove and explain. Is the positive representative consumer from 9.3 also a normative representative consumer in this case?
+  \item A planner chooses $(w_1,\dots,w_I)$ with $\sum_i w_i=w$ to maximize $W(u_1,\dots,u_I)=\sum_i u_i$. Do you agree that \emph{every} wealth distribution is optimal? Prove and explain. Is the positive representative consumer from 7.3 also a normative representative consumer in this case?
   \item Now let $W$ be strictly increasing, strictly concave, and symmetric. Derive the necessary conditions for the planner's problem. Do you agree that the solution satisfies $u_1=u_2=\dots=u_I$? Derive the optimal wealth distribution rule $w_i(p,w)$ explicitly. How does $w_i$ respond to an increase in total wealth $w$? Is this response specific to the common $b(p)$? Prove and explain.
-  \item Let $V(p,w)$ be the planner's maximum value function from 8.5. Use the envelope theorem to characterize $\partial V/\partial w$ and $\partial V/\partial p_2$, and interpret both.
+  \item Let $V(p,w)$ be the planner's maximum value function from 7.5. Use the envelope theorem to characterize $\partial V/\partial w$ and $\partial V/\partial p_2$, and interpret both.
 \end{enumerate}
 
 
+\subsection{Drill B: Chapter 4, the Q2 shape}
+\begin{todo}{Three economies, one routine: individual $v_i$, aggregate demand, planner's problem, representative consumer.}
+\begin{enumerate}
+\item \textbf{Two Cobb--Douglas consumers}, $u_i=x_{1i}^{\alpha_i}x_{2i}^{1-\alpha_i}$ with $\alpha_1\ne\alpha_2$. Write $v_i(p,w_i)$ in the form $b_i(p)w_i$. Show aggregate demand for good 1 depends on $(w_1,w_2)$ and not only on $w_1+w_2$. Which condition of Prop.~4.B.1 fails? What changes if $\alpha_1=\alpha_2$?
+\item \textbf{Identical homothetic consumers}, $u_i$ homogeneous of degree one, planner maximizes $W=\sum_i\alpha_i\ln u_i$ with $\sum_i\alpha_i=1$. Derive the optimal wealth-distribution rule and the planner's value function. \emph{Checkpoint:} $w_i(p,w)=\alpha_iw$, independent of $p$ (MWG Example 4.D.1, Ex.~4.D.6). Then: is the wealth rule price-independent for \emph{any} increasing concave $W$ here? Prove or give a counterexample.
+\item \textbf{A non-Gorman pair.} Consumer 1 has $u_1=\sqrt{x_{11}x_{21}}$, consumer 2 has $u_2=x_{12}+2\sqrt{x_{22}}$ (the consumer of Question~2), interior solutions, planner maximizes $W=\ln u_1+\ln u_2$ with $w_1+w_2=w$. Write the FOC (4.D.2), solve for the rule, and say how each $w_i$ responds to an increase in $w$. \emph{Checkpoint:} $v_1=\dfrac{w_1}{2\sqrt{p_1p_2}}$, $v_2=\dfrac{w_2}{p_1}+\dfrac{p_1}{p_2}$, and the rule is $w_1=\tfrac12\big(w+p_1^2/p_2\big)$ (state the range of $w$ for which it is interior). Then: is the positive representative consumer generated by this rule also normative relative to $W$? Relative to the utilitarian $W=u_1+u_2$? Explain using Definition 4.D.3 and the role of a common $b(p)$.
+\end{enumerate}
+\end{todo}
 \subsection{MWG exercises}
 \begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
 \begin{itemize}
 \item \textbf{4.B.1}$^\star$\ sufficiency in Prop.~4.B.1; Gorman $v_i$ $\Rightarrow$ $e_i(p,u_i)=c(p)u_i+d_i(p)$.
 \item \textbf{4.B.2}\ consumers differing by wealth and a family-size parameter: when does aggregate demand depend only on aggregates?
-\item \textbf{4.C.11}\ two quasilinear consumers, $x_1+4\sqrt{x_2}$ and $4\sqrt{x_1}+x_2$: does aggregate demand satisfy WARP?
+\item \textbf{4.C.11}\ two quasilinear consumers, $x_1+4\sqrt{x_2}$ and $4\sqrt{x_1}+x_2$: is aggregate demand well behaved?
 \item \textbf{4.D.1}$^\star$\ the planner distributing wealth vs.\ distributing bundles: same value, same allocation. \textbf{Final 2025 Q3.2--3.3 and 3.5.}
 \item \textbf{4.D.2}$^\star$\ the planner's value function has all the properties of an indirect utility function.
 \item \textbf{4.D.3}\ prove Prop.~4.D.1 allowing for corner solutions (Kuhn--Tucker).
@@ -934,72 +802,13 @@ Prices are $p\gg0$ and wealth is large enough that every solution is interior.
 \subsection{Check}
 Before leaving this unit, write each of these on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-19 & Gorman $\Rightarrow$ aggregate demand depends on $w$ only & 4.B.1, p.~107 & ---\\
-20 & Planner's value function is a positive representative consumer & 4.D.1, p.~117 & Midterm 25 Q2.2--2.3\\
-21 & Gorman $+$ symmetric strictly concave $W$ $\Rightarrow$ equal utilities & p.~119 & Midterm 25 Q2.4\\
+15 & Gorman $\Rightarrow$ aggregate demand depends on $w$ only & 4.B.1, p.~107 & ---\\
+16 & Planner's value function is a positive representative consumer & 4.D.1, p.~117 & Midterm 25 Q2.2--2.3\\
+17 & Gorman $+$ symmetric strictly concave $W$ $\Rightarrow$ equal utilities & p.~119 & Midterm 25 Q2.4\\
 \bottomrule\end{tabular}\end{center}
 
 \clearpage
-\section{Unit 8: Comparative statics and partial-equilibrium welfare}
-\begin{unit}{Comparative statics lab (Monday October 19) and the welfare lectures of that week (Ch.~4, optional Ch.~10). Syllabus topics: monotone comparative statics and the envelope theorem without differentiability.}
-What he tests: signing derivatives of demand through the FOCs and the Slutsky equation; proofs that need no differentiability; the surplus logic of quasilinear markets.
-\end{unit}
-
-\subsection{Read: comparative statics of the consumer problem}\label{sec:cs}
-\subsubsection{Differentiating the first-order conditions}
-For $L=2$, an interior solution and $u$ twice continuously differentiable, the FOCs are $u_1(x)-\lambda p_1=0$, $u_2(x)-\lambda p_2=0$, $w-p\cdot x=0$. Differentiating with respect to $w$ gives the bordered-Hessian system
-\[
-\begin{pmatrix}u_{11}&u_{12}&-p_1\\ u_{21}&u_{22}&-p_2\\ -p_1&-p_2&0\end{pmatrix}
-\begin{pmatrix}\partial x_1/\partial w\\ \partial x_2/\partial w\\ \partial\lambda/\partial w\end{pmatrix}
-=\begin{pmatrix}0\\0\\-1\end{pmatrix},
-\]
-which the implicit function theorem solves whenever the bordered Hessian is nonsingular (the same condition under which $x(p,w)$ is differentiable, MWG p.~94--95). The last row is Engel aggregation, $p\cdot\partial x/\partial w=1$ (Prop.~2.E.3): \textbf{not all goods can be inferior}. Differentiating with respect to $p_k$ instead and using the Slutsky equation $\partial x_\ell/\partial p_k=s_{\ell k}-x_k\,\partial x_\ell/\partial w$ gives the sign results: $s_{\ell\ell}\le0$ always, so a Giffen good must be inferior; an inferior good need not be Giffen.
-
-\subsubsection{Monotone comparative statics (no derivatives)}
-\begin{prop}{Increasing differences $\Rightarrow$ monotone maximizers}
-Let $\phi:X\times T\to\R$ with $X,T\subset\R$ have \emph{increasing differences}: $\phi(x',t')-\phi(x,t')\ge\phi(x',t)-\phi(x,t)$ whenever $x'>x$ and $t'>t$. If $x^*(t)$ is the unique maximizer of $\phi(\cdot,t)$ on $X$, then $x^*$ is nondecreasing in $t$.
-\end{prop}
-\begin{proof}[Proof (reproduce)]
-Let $t'>t$ and suppose, for a contradiction, $a=x^*(t)>b=x^*(t')$. Uniqueness at $t$ gives $\phi(a,t)>\phi(b,t)$. Increasing differences with $x'=a>x=b$ gives $\phi(a,t')-\phi(b,t')\ge\phi(a,t)-\phi(b,t)>0$, so $a$ beats $b$ at $t'$, contradicting the optimality of $b$ at $t'$.
-Without uniqueness the same argument shows that the largest and the smallest maximizers are nondecreasing.
-\end{proof}
-Application: for $u=x_1+f(x_2)$ with $f$ strictly increasing and strictly concave (not necessarily differentiable), $x_2$ solves $\max_{x_2}\ f(x_2)-(p_2/p_1)x_2$. With $t=-p_2/p_1$ and $\phi(x,t)=f(x)+tx$, $\phi(x',t')-\phi(x,t')-[\phi(x',t)-\phi(x,t)]=(t'-t)(x'-x)\ge0$. Hence $x_2$ is nonincreasing in $p_2/p_1$, with no concavity, differentiability or interiority used. This is the ``prove it without differentiability'' style of Midterm 2025 Q1.4.
-
-\subsubsection{Partial equilibrium with quasilinear utility (Chapter 10, essentials)}
-$I$ consumers with $u_i=m_i+\phi_i(x_i)$ ($m_i$ the numeraire, $\phi_i$ concave), $J$ firms producing the good from the numeraire at cost $c_j(q_j)$ (convex). A competitive equilibrium price $p^*$ satisfies $\phi_i'(x_i)=p^*=c_j'(q_j)$ for all $i,j$ and $\sum_ix_i=\sum_jq_j$.
-\begin{itemize}
-\item \textbf{Marshallian aggregate surplus} $S=\sum_i\phi_i(x_i)-\sum_jc_j(q_j)$. The equilibrium allocation maximizes $S$ subject to feasibility: the FOCs of the two problems coincide. With quasilinear utility, utility is transferable one-for-one through the numeraire, so the Pareto optimal allocations are exactly the surplus maximizers (any distribution of the numeraire). This is the partial-equilibrium version of the welfare theorems (MWG 10.D).
-\item \textbf{A per-unit tax $t$} drives a wedge $p_{\text{consumer}}=p_{\text{firm}}+t$. The lost surplus (deadweight loss) is the area between the demand and supply curves over the quantity reduction, approximately $\tfrac12t^2\,|dx/dt|$: second order in $t$, so a small tax costs little and the loss grows with the square of the rate. Question 8.4 computes this exactly for one consumer.
-\end{itemize}
-\subsection{Do: Question 10 --- Comparative statics}
-\covers{MWG 3.D--3.G (Slutsky equation, implicit function theorem); Comparative statics lab (Oct 19); monotone comparative statics (syllabus topic).}
-\mimic{the lab material; the ``prove without differentiability'' style of Midterm 2025 Q1.4.}
-
-\begin{enumerate}[label=\textbf{10.\arabic*}]
-  \item For $L=2$ and an interior solution of the UMP with $u$ twice continuously differentiable, write the first-order conditions and apply the implicit function theorem to obtain the linear system that determines $(\partial x_1/\partial w,\ \partial x_2/\partial w,\ \partial\lambda/\partial w)$. Do you agree that both goods cannot be inferior at the same time? Prove (there is a one-line proof that needs no matrix algebra).
-  \item Do you agree that a Giffen good must be inferior? Do you agree that an inferior good must be Giffen? Prove and explain using the Slutsky equation.
-  \item Let $u(x_1,x_2)=x_1+f(x_2)$ with $f$ strictly increasing and strictly concave, \emph{not necessarily differentiable}, and let the solution be interior with $x_2^*(p)$ unique. Prove that $x_2^*$ is non-increasing in $p_2/p_1$ \emph{without using derivatives}. [Hint: compare the objective at $x_2^*(p)$ and $x_2^*(p')$ under both price ratios and add the two inequalities. This is a monotone comparative statics argument.]
-  \item Generalize 10.3: let $\phi(x,t)$ be a function on $\R\times\R$ with \emph{increasing differences}, i.e.\ $\phi(x',t')-\phi(x,t')\ge\phi(x',t)-\phi(x,t)$ whenever $x'>x$ and $t'>t$. Let $x^*(t)$ be the (assumed unique) maximizer of $\phi(\cdot,t)$ on a fixed set $X\subset\R$. Prove that $x^*(t)$ is non-decreasing in $t$. Which assumptions that you usually make (concavity, differentiability, interiority) were \emph{not} needed?
-\end{enumerate}
-
-
-\subsection{MWG exercises}
-Chapter 10 is optional in the syllabus; do these only after Questions 8.4--8.5 and 10 are solid.
-\begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
-\begin{itemize}
-\item \textbf{10.C.4}\ a central authority allocating a fixed quantity among quasilinear consumers: characterize the optimum.
-\item \textbf{10.C.5}$^\star$\ comparative statics of a tax by applying the implicit function theorem to the equilibrium system.
-\item \textbf{10.C.6}\ specific vs ad valorem taxes: equivalence and incidence.
-\end{itemize}
-\end{todo}
-\subsection{Check}
-Before leaving this unit, write each of these on a blank page in under five minutes.
-\begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-22 & Engel aggregation $\Rightarrow$ not all goods inferior; increasing differences $\Rightarrow$ monotone argmax & 2.E.3; lab & ---\\
-\bottomrule\end{tabular}\end{center}
-
-\clearpage
-\section{Unit 9: The last two weeks}
+\section{Unit 7: The last two weeks}
 \subsection{HW2 (due Sunday October 25)}
 \begin{todo}{Protocol}
 \begin{enumerate}
@@ -1011,7 +820,7 @@ Before leaving this unit, write each of these on a blank page in under five minu
 
 \subsection{October 26--28}
 \begin{itemize}
-\item \textbf{Mon Oct 26.} Midterm 2025 (\texttt{ECON6000 Midterm.pdf}) closed book, 80 minutes. Grade yourself against the proofs in this pack; be harsh on every ``do you agree'' part that has no verdict sentence, no cited assumption, or no counterexample.
+\item \textbf{Mon Oct 26.} Midterm 2025 (\texttt{ECON6000 Midterm.pdf}) closed book, 80 minutes. It is entirely within scope now that Chapter 2 is gone. Grade yourself against the proofs in this pack; be harsh on every ``do you agree'' part that has no verdict sentence, no cited assumption, or no counterexample.
 \item \textbf{Tue Oct 27.} The mock built from HW2, same rules.
 \item \textbf{Wed Oct 28.} The full checklist below from a blank page; HW1 Q4 and the HW2 question closest to Q2 once more. Stop early. Nothing new on this day.
 \end{itemize}
@@ -1029,28 +838,84 @@ Before leaving this unit, write each of these on a blank page in under five minu
 \subsection{Master proof checklist}
 Tick each when you can write it on a blank page in under five minutes.
 \begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
-1 & 2.E.1--2.E.3 (derivative versions of HD0 and Walras' law) & p.~27--28 & HW1 Q1\\
-2 & $Sp=0$ and $p\T S=0$ & 2.F.3, p.~35 & HW1 Q1\\
-3 & WARP $\Rightarrow$ compensated law of demand & 2.F.1, p.~30 & ---\\
-4 & Giffen $\Rightarrow$ inferior; $L=2$ $\Rightarrow$ $S$ symmetric & p.~34; Ex.~2.F.11 & HW1 Q1.1\\
-5 & LNS $\Rightarrow$ Walras' law at the optimum & 3.D.2, p.~51 & HW1 Q3\\
-6 & Lexicographic preferences: no utility representation & p.~46 & ---\\
-7 & Continuous $+$ monotone $\Rightarrow$ utility (diagonal construction) & 3.C.1, p.~47 & ---\\
-8 & Strictly convex $\iff$ strictly quasiconcave; sums of concave functions & p.~49 & Midterm 25 Q1.4; HW1 Q4\\
-9 & Existence (Weierstrass); convexity/uniqueness of $x(p,w)$ & 3.D.1--3.D.2, p.~50--51 & ---\\
-10 & $v$ quasiconvex in $(p,w)$ & 3.D.3, p.~56 & Midterm 25 Q1.3\\
-11 & UMP solution solves EMP, and back & 3.E.1, p.~58 & ---\\
-12 & $e$ concave in $p$ & 3.E.2, p.~59 & Final 25 Q1.5\\
-13 & Compensated law of demand for $h$ & 3.E.4, p.~62 & ---\\
-14 & Shephard's lemma (envelope and supporting-hyperplane proofs) & 3.G.1, p.~68 & Final 25 Q1.3\\
-15 & Slutsky equation; $D_ph=S$ symmetric and NSD & 3.G.2--3.G.3, p.~69--71 & ---\\
-16 & Roy's identity (envelope proof); interpret $\lambda$; $\mu=1/\lambda$ & 3.G.4, p.~73 & Midterm 25 Q2.1\\
-17 & Integrability: PDE system; role of symmetry and NSD & 3.H, p.~75--79 & Oct.~5 lab\\
-18 & $EV$, $CV$ as Hicksian areas; quasilinear $\Rightarrow EV=CV=\Delta CS$; DWL is second order & 3.I, p.~80--91 & ---\\
-19 & Gorman $\Rightarrow$ aggregate demand depends on $w$ only & 4.B.1, p.~107 & ---\\
-20 & Planner's value function is a positive representative consumer & 4.D.1, p.~117 & Midterm 25 Q2.2--2.3\\
-21 & Gorman $+$ symmetric strictly concave $W$ $\Rightarrow$ equal utilities & p.~119 & Midterm 25 Q2.4\\
-22 & Engel aggregation $\Rightarrow$ not all goods inferior; increasing differences $\Rightarrow$ monotone argmax & 2.E.3; lab & ---\\
+1 & LNS $\Rightarrow$ Walras' law at the optimum & 3.D.2, p.~51 & HW1 Q3\\
+2 & Lexicographic preferences: no utility representation & p.~46 & ---\\
+3 & Continuous $+$ monotone $\Rightarrow$ utility (diagonal construction) & 3.C.1, p.~47 & ---\\
+4 & Strictly convex $\iff$ strictly quasiconcave; sums of concave functions & p.~49 & Midterm 25 Q1.4; HW1 Q4\\
+5 & Existence (Weierstrass); convexity/uniqueness of $x(p,w)$ & 3.D.1--3.D.2, p.~50--51 & ---\\
+6 & $v$ quasiconvex in $(p,w)$ & 3.D.3, p.~56 & Midterm 25 Q1.3\\
+7 & UMP solution solves EMP, and back & 3.E.1, p.~58 & ---\\
+8 & $e$ concave in $p$ & 3.E.2, p.~59 & Final 25 Q1.5\\
+9 & Compensated law of demand for $h$; HD1 $u$ $\Rightarrow$ $x$, $v$ linear in $w$; quasilinear $\Rightarrow$ $x_2$ free of $w$ & 3.E.4, p.~62; Ex.~3.D.3--3.D.4 & ---\\
+10 & Shephard's lemma (envelope and supporting-hyperplane proofs) & 3.G.1, p.~68 & Final 25 Q1.3\\
+11 & Slutsky equation; $D_ph=S$ symmetric, NSD, $Sp=0$; Giffen $\Rightarrow$ inferior & 3.G.2--3.G.3, p.~69--71 & ---\\
+12 & Roy's identity (envelope proof); interpret $\lambda$; $\mu=1/\lambda$ & 3.G.4, p.~73 & Midterm 25 Q2.1\\
+13 & Integrability: PDE system; role of symmetry and NSD & 3.H, p.~75--79 & Oct.~5 lab\\
+14 & $EV$, $CV$ as Hicksian areas; quasilinear $\Rightarrow EV=CV=\Delta CS$; DWL is second order & 3.I, p.~80--91 & ---\\
+15 & Gorman $\Rightarrow$ aggregate demand depends on $w$ only & 4.B.1, p.~107 & ---\\
+16 & Planner's value function is a positive representative consumer & 4.D.1, p.~117 & Midterm 25 Q2.2--2.3\\
+17 & Gorman $+$ symmetric strictly concave $W$ $\Rightarrow$ equal utilities & p.~119 & Midterm 25 Q2.4\\
+18 & Engel aggregation $\Rightarrow$ not all goods inferior; increasing differences $\Rightarrow$ monotone argmax & 2.E.3; lab & ---\\
+\bottomrule\end{tabular}\end{center}
+
+
+\clearpage
+\appendix\section{Good to know: comparative statics and partial-equilibrium welfare}
+\begin{unit}{GOOD TO KNOW. Comparative statics lab (Monday October 19) and the welfare lectures of that week (Ch.~4, optional Ch.~10). Syllabus topics: monotone comparative statics and the envelope theorem without differentiability.}
+What he tests: signing derivatives of demand through the FOCs and the Slutsky equation; proofs that need no differentiability; the surplus logic of quasilinear markets.
+\end{unit}
+
+\subsection{Read: comparative statics of the consumer problem}\label{sec:cs}
+\subsubsection{Differentiating the first-order conditions}
+For $L=2$, an interior solution and $u$ twice continuously differentiable, the FOCs are $u_1(x)-\lambda p_1=0$, $u_2(x)-\lambda p_2=0$, $w-p\cdot x=0$. Differentiating with respect to $w$ gives the bordered-Hessian system
+\[
+\begin{pmatrix}u_{11}&u_{12}&-p_1\\ u_{21}&u_{22}&-p_2\\ -p_1&-p_2&0\end{pmatrix}
+\begin{pmatrix}\partial x_1/\partial w\\ \partial x_2/\partial w\\ \partial\lambda/\partial w\end{pmatrix}
+=\begin{pmatrix}0\\0\\-1\end{pmatrix},
+\]
+which the implicit function theorem solves whenever the bordered Hessian is nonsingular (the same condition under which $x(p,w)$ is differentiable, MWG p.~94--95). The last row is Engel aggregation, $p\cdot\partial x/\partial w=1$: \textbf{not all goods can be inferior}. Differentiating with respect to $p_k$ instead and using the Slutsky equation $\partial x_\ell/\partial p_k=s_{\ell k}-x_k\,\partial x_\ell/\partial w$ gives the sign results: $s_{\ell\ell}\le0$ always, so a Giffen good must be inferior; an inferior good need not be Giffen.
+
+\subsubsection{Monotone comparative statics (no derivatives)}
+\begin{prop}{Increasing differences $\Rightarrow$ monotone maximizers}
+Let $\phi:X\times T\to\R$ with $X,T\subset\R$ have \emph{increasing differences}: $\phi(x',t')-\phi(x,t')\ge\phi(x',t)-\phi(x,t)$ whenever $x'>x$ and $t'>t$. If $x^*(t)$ is the unique maximizer of $\phi(\cdot,t)$ on $X$, then $x^*$ is nondecreasing in $t$.
+\end{prop}
+\begin{proof}[Proof (reproduce)]
+Let $t'>t$ and suppose, for a contradiction, $a=x^*(t)>b=x^*(t')$. Uniqueness at $t$ gives $\phi(a,t)>\phi(b,t)$. Increasing differences with $x'=a>x=b$ gives $\phi(a,t')-\phi(b,t')\ge\phi(a,t)-\phi(b,t)>0$, so $a$ beats $b$ at $t'$, contradicting the optimality of $b$ at $t'$.
+Without uniqueness the same argument shows that the largest and the smallest maximizers are nondecreasing.
+\end{proof}
+Application: for $u=x_1+f(x_2)$ with $f$ strictly increasing and strictly concave (not necessarily differentiable), $x_2$ solves $\max_{x_2}\ f(x_2)-(p_2/p_1)x_2$. With $t=-p_2/p_1$ and $\phi(x,t)=f(x)+tx$, $\phi(x',t')-\phi(x,t')-[\phi(x',t)-\phi(x,t)]=(t'-t)(x'-x)\ge0$. Hence $x_2$ is nonincreasing in $p_2/p_1$, with no concavity, differentiability or interiority used. This is the ``prove it without differentiability'' style of Midterm 2025 Q1.4.
+
+\subsubsection{Partial equilibrium with quasilinear utility (Chapter 10, essentials)}
+$I$ consumers with $u_i=m_i+\phi_i(x_i)$ ($m_i$ the numeraire, $\phi_i$ concave), $J$ firms producing the good from the numeraire at cost $c_j(q_j)$ (convex). A competitive equilibrium price $p^*$ satisfies $\phi_i'(x_i)=p^*=c_j'(q_j)$ for all $i,j$ and $\sum_ix_i=\sum_jq_j$.
+\begin{itemize}
+\item \textbf{Marshallian aggregate surplus} $S=\sum_i\phi_i(x_i)-\sum_jc_j(q_j)$. The equilibrium allocation maximizes $S$ subject to feasibility: the FOCs of the two problems coincide. With quasilinear utility, utility is transferable one-for-one through the numeraire, so the Pareto optimal allocations are exactly the surplus maximizers (any distribution of the numeraire). This is the partial-equilibrium version of the welfare theorems (MWG 10.D).
+\item \textbf{A per-unit tax $t$} drives a wedge $p_{\text{consumer}}=p_{\text{firm}}+t$. The lost surplus (deadweight loss) is the area between the demand and supply curves over the quantity reduction, approximately $\tfrac12t^2\,|dx/dt|$: second order in $t$, so a small tax costs little and the loss grows with the square of the rate. Question 6.4 computes this exactly for one consumer.
+\end{itemize}
+\subsection{Do: Question 8 --- Comparative statics}
+\covers{MWG 3.D--3.G (Slutsky equation, implicit function theorem); Comparative statics lab (Oct 19); monotone comparative statics (syllabus topic).}
+\mimic{the lab material; the ``prove without differentiability'' style of Midterm 2025 Q1.4.}
+
+\begin{enumerate}[label=\textbf{8.\arabic*}]
+  \item For $L=2$ and an interior solution of the UMP with $u$ twice continuously differentiable, write the first-order conditions and apply the implicit function theorem to obtain the linear system that determines $(\partial x_1/\partial w,\ \partial x_2/\partial w,\ \partial\lambda/\partial w)$. Do you agree that both goods cannot be inferior at the same time? Prove (there is a one-line proof that needs no matrix algebra).
+  \item Do you agree that a Giffen good must be inferior? Do you agree that an inferior good must be Giffen? Prove and explain using the Slutsky equation.
+  \item Let $u(x_1,x_2)=x_1+f(x_2)$ with $f$ strictly increasing and strictly concave, \emph{not necessarily differentiable}, and let the solution be interior with $x_2^*(p)$ unique. Prove that $x_2^*$ is non-increasing in $p_2/p_1$ \emph{without using derivatives}. [Hint: compare the objective at $x_2^*(p)$ and $x_2^*(p')$ under both price ratios and add the two inequalities. This is a monotone comparative statics argument.]
+  \item Generalize 8.3: let $\phi(x,t)$ be a function on $\R\times\R$ with \emph{increasing differences}, i.e.\ $\phi(x',t')-\phi(x,t')\ge\phi(x',t)-\phi(x,t)$ whenever $x'>x$ and $t'>t$. Let $x^*(t)$ be the (assumed unique) maximizer of $\phi(\cdot,t)$ on a fixed set $X\subset\R$. Prove that $x^*(t)$ is non-decreasing in $t$. Which assumptions that you usually make (concavity, differentiability, interiority) were \emph{not} needed?
+\end{enumerate}
+
+
+\subsection{MWG exercises}
+Chapter 10 is optional in the syllabus; do these only if everything in Units 1--6 is solid.
+\begin{todo}{Verified against your scanned copy; numbers follow the 1995 edition. $\star$ = closest to his style.}
+\begin{itemize}
+\item \textbf{10.C.4}\ a central authority allocating a fixed quantity among quasilinear consumers: characterize the optimum.
+\item \textbf{10.C.5}$^\star$\ comparative statics of a tax by applying the implicit function theorem to the equilibrium system.
+\item \textbf{10.C.6}\ specific vs ad valorem taxes: equivalence and incidence.
+\end{itemize}
+\end{todo}
+\subsection{Check}
+Before leaving this unit, write each of these on a blank page in under five minutes.
+\begin{center}\small\begin{tabular}{rp{7.4cm}p{3.3cm}p{3.1cm}}\toprule & Result & MWG & Seen on\\\midrule
+18 & Engel aggregation $\Rightarrow$ not all goods inferior; increasing differences $\Rightarrow$ monotone argmax & 2.E.3; lab & ---\\
 \bottomrule\end{tabular}\end{center}
 
 \end{document}

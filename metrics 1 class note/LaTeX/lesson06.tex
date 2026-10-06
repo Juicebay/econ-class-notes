@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{6}{The $F$ test as a comparison of residual sums of squares, and restricted least squares}{}
+
+\section{The $F$ statistic (a reminder)}
+
+With $X$ fixed and
+\[ y = X\beta + u, \qquad
+   H_{0} : \underbrace{R}_{q\times K}\,\underbrace{\beta}_{K\times1} = \underbrace{r}_{q\times1}, \]
+Lesson 5 gave the two independent $\chi^{2}$ pieces
+\[ \frac{1}{\sigma^{2}}(Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r) \sim \chi^{2}_{q},
+   \qquad
+   \frac{e'e}{n - K} = s^{2} \;\Longrightarrow\; \frac{e'e}{\sigma^{2}} = \frac{1}{\sigma^{2}}u'Mu \sim \chi^{2}_{n-K}, \]
+and hence
+\[ F(q, n - K) = \frac{(Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r)/q}{e'e/(n - K)}. \]
+
+\section{Example: testing a subset of coefficients}
+
+Partition the regressors,
+\[ y = X_{1}\beta_{1} + X_{2}\beta_{2} + u, \qquad H_{0} : \beta_{1} = 0, \]
+with $K = k_{1} + k_{2}$ and $q = k_{1}$. The restriction matrix picks out the first
+$k_{1}$ coefficients:
+\[ R = \Bigl[\; I_{k_{1}} \;\Big|\; \underbrace{0}_{k_{1}\times k_{2}} \;\Bigr]\Bigr\}\,k_{1}\ \text{rows},
+   \qquad
+   R\beta = \left[\begin{array}{cccc|cccc}
+     1 & 0 & \cdots & 0 & 0 & 0 & \cdots & 0\\
+     0 & 1 & \cdots & 0 & \vdots & & & \vdots\\
+     \vdots & & \ddots & \vdots & & & & \\
+     0 & 0 & \cdots & 1 & 0 & 0 & \cdots & 0
+   \end{array}\right]
+   \begin{bmatrix} \beta_{1}\\ \vdots\\ \beta_{K} \end{bmatrix}. \]
+
+\topic{The statistic through FWL}
+By Frisch--Waugh--Lovell (Lesson 4),
+\[ b_{1} = (X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y, \qquad
+   b_{1} \sim N\bigl(0,\ \sigma^{2}(X_{1}'M_{2}X_{1})^{-1}\bigr) \ \text{under } H_{0}, \]
+so
+\[ F(k_{1}, n - K) = \frac{b_{1}'\bigl[X_{1}'M_{2}X_{1}\bigr]b_{1}/k_{1}}{e'e/(n - K)}. \]
+
+\topic{The numerator as a difference of sums of squares}
+Write the fitted regression with its residual $e = My$,
+\[ y = X_{1}b_{1} + X_{2}b_{2} + My. \]
+Premultiplying by $M_{2}$ (which annihilates $X_{2}$, and $M_{2}M = M$),
+\[ M_{2}y = M_{2}X_{1}b_{1} + \underbrace{M_{2}My}_{My}
+   \;\Longrightarrow\;
+   y'M_{2}y = b_{1}'X_{1}'M_{2}X_{1}b_{1} + y'My, \]
+the cross term vanishing because $X_{1}'M_{2}My = X_{1}'My = 0$. Hence
+\[ b_{1}'X_{1}'M_{2}X_{1}b_{1} = y'M_{2}y - y'My, \]
+and
+\[ F(k_{1}, n - K) = \frac{(y'M_{2}y - y'My)/k_{1}}{y'My/(n - K)}. \]
+Here $M_{2}y$ is the residual vector of the regression with $H_{0} : \beta_{1} = 0$
+imposed (only $X_{2}$), and $My$ that of the full regression. So
+\[ F(k_{1}, n - K) = \frac{(\text{RSSR} - \text{USSR})/k_{1}}{\text{USSR}/(n - K)}, \]
+with RSSR and USSR the restricted and unrestricted residual sums of squares.
+
+\section{Restricted least squares}
+
+\topic{Digression: minimising under a constraint}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \ecaxes{6}{4}
+  \node[ecnode,anchor=south east] at (0,4) {$f(\beta)$};
+  \draw[budget] (1.7,0) -- (1.7,4);
+  \draw[budget] (4.6,0) -- (4.6,4);
+  \draw[line width=0.7pt,domain=0.6:5.4,samples=60] plot (\x,{0.35*(\x-3)^2+1.4});
+  \draw[line width=0.5pt] (1.7,1.4) -- (4.6,1.4);
+  \draw[dotted,line width=0.7pt] (3,1.4) -- (3,0);
+  \draw[-{Stealth[length=4pt]},line width=0.5pt] (0.75,3.1) -- (1.45,2.55);
+  \draw[-{Stealth[length=4pt]},line width=0.5pt] (1.85,2.15) -- (2.45,1.65);
+  \node[ecnode,below] at (1.7,0) {$\bar\beta$};
+  \node[ecnode,below] at (3,0) {$\beta^{*}$};
+  \node[ecnode,below] at (4.6,0) {$\bar\beta$};
+  \node[ecnode,anchor=west,align=left,font=\footnotesize] at (5.0,-0.35) {$\leftarrow$ constraint};
+  \node[ecnode,anchor=north,align=center,font=\footnotesize] at (1.7,-0.6)
+       {$\downarrow$\\ cannot push beyond\\ constraint; otherwise\\ penalization};
+\end{tikzpicture}
+\end{center}
+The minimiser $\beta^{*}$ of $f(\beta)$ is searched for only between the two constraint
+lines ($\beta < \bar\beta$); going past a constraint is not allowed, otherwise it is
+penalised. The Lagrange multiplier below plays the role of that penalty.
+
+\topic{The problem}
+\[ \min_{b_{*},\,\lambda_{*}} e_{*}'e_{*} \quad\text{s.t.}\quad Rb_{*} = r, \]
+with Lagrangian
+\[ \min \ \mathcal{L} = (y - Xb_{*})'(y - Xb_{*}) - 2\,(Rb_{*} - r)'\underbrace{\lambda_{*}}_{q\times1}, \]
+$\lambda_{*}$ being the estimate of the multiplier. Expanding,
+\[ \mathcal{L} = y'y - b_{*}'X'y - y'Xb_{*} + b_{*}'X'Xb_{*} - 2(Rb_{*} - r)'\lambda_{*}. \]
+
+\topic{First-order conditions}
+\[ \frac{\partial\mathcal{L}}{\partial b_{*}} = -2X'y + 2X'Xb_{*} - 2R'\lambda_{*} = 0,
+   \qquad
+   \frac{\partial\mathcal{L}}{\partial \lambda_{*}}:\ Rb_{*} - r = 0. \]
+The first gives
+\[ -X'y + X'Xb_{*} = R'\lambda_{*}. \]
+Premultiply by $R(X'X)^{-1}$:
+\[
+\begin{aligned}
+-R(X'X)^{-1}X'y + R(X'X)^{-1}X'Xb_{*} &= R(X'X)^{-1}R'\lambda_{*}\\
+-Rb + Rb_{*} &= \bigl(R(X'X)^{-1}R'\bigr)\lambda_{*}\\
+-Rb + r &= R(X'X)^{-1}R'\lambda_{*} \qquad (\text{using } Rb_{*} = r)\\
+\lambda_{*} &= \bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb).
+\end{aligned}
+\]
+
+\topic{Substitute back $\lambda_{*}$}
+\[
+\begin{aligned}
+-X'y + X'Xb_{*} &= R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)\\
+-\underbrace{(X'X)^{-1}X'y}_{b} + b_{*} &= (X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)
+\end{aligned}
+\]
+so
+\[
+\begin{aligned}
+b_{*} &= b + (X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)\\
+      &= b - (X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r).
+\end{aligned}
+\]
+
+\topic{The restricted residuals}
+\[
+\begin{aligned}
+e_{*} &= y - Xb_{*} + Xb - Xb\\
+      &= y - Xb - X(b_{*} - b)\\
+      &= e - X(b_{*} - b),
+\end{aligned}
+\]
+and, since $X'e = 0$ kills the cross terms,
+\[ e_{*}'e_{*} = e'e + (b_{*} - b)'X'X(b_{*} - b). \]
+
+\topic{The $F$ statistic again}
+Substituting $b_{*} - b$,
+\[
+\begin{aligned}
+e_{*}'e_{*} - e'e
+ &= (r - Rb)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1}\,X'X\,(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)\\
+ &= (Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r),
+\end{aligned}
+\]
+which is exactly the numerator of
+\[ F(q, n - K) = \frac{\overbrace{(Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r)}^{e_{*}'e_{*} - e'e}/q}{e'e/(n - K)}. \]
+Then
+\[ F(q, n - K) = \frac{(e_{*}'e_{*} - e'e)/q}{e'e/(n - K)}
+   = \frac{(\text{RSSR} - \text{USSR})/q}{\text{USSR}/(n - K)}. \]
+
+\section{Properties of the restricted estimator $b_{*}$}
+
+\topic{Mean}
+Let
+\[ b_{*} = b - \underbrace{(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}}_{A}(Rb - r)
+         = b - ARb + Ar. \]
+With $b = \beta + (X'X)^{-1}X'u$,
+\[
+\begin{aligned}
+b_{*} &= \beta + (X'X)^{-1}X'u - AR\bigl(\beta + (X'X)^{-1}X'u\bigr) + Ar\\
+      &= \beta + (X'X)^{-1}X'u - AR\beta - AR(X'X)^{-1}X'u + Ar,
+\end{aligned}
+\]
+so
+\[
+\begin{aligned}
+\E(b_{*}) &= \beta - AR\beta + Ar\\
+          &= \beta \qquad \text{if } H_{0}\ (R\beta = r) \text{ holds; otherwise biased.}
+\end{aligned}
+\]
+
+\topic{Variance}
+Under $H_{0}$,
+\[
+\begin{aligned}
+\Var(b_{*}) &= \E\bigl[(b_{*} - \beta)(b_{*} - \beta)'\bigr]\\
+ &= \E\Bigl[\bigl((X'X)^{-1}X'u - AR(X'X)^{-1}X'u\bigr)\bigl(u'X(X'X)^{-1} - u'X(X'X)^{-1}R'A'\bigr)\Bigr]\\
+ &= \E\Bigl[(X'X)^{-1}X'uu'X(X'X)^{-1} - (X'X)^{-1}X'uu'X(X'X)^{-1}R'A'\\
+ &\qquad\ - AR(X'X)^{-1}X'uu'X(X'X)^{-1} + AR(X'X)^{-1}X'uu'X(X'X)^{-1}R'A'\Bigr]\\
+ &= \underbrace{\sigma^{2}(X'X)^{-1}}_{\Var(b)}
+    - \underbrace{\sigma^{2}(X'X)^{-1}R'A'}_{\text{\textcircled{\scriptsize 1}}}
+    - \underbrace{\sigma^{2}AR(X'X)^{-1}}_{\text{\textcircled{\scriptsize 2}}}
+    + \underbrace{\sigma^{2}AR(X'X)^{-1}R'A'}_{\text{\textcircled{\scriptsize 3}}}.
+\end{aligned}
+\]
+\textcircled{\scriptsize 1}, \textcircled{\scriptsize 2} and \textcircled{\scriptsize 3} are the same; each equals
+\[ \sigma^{2}(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1} \]
+(for \textcircled{\scriptsize 3}, $R(X'X)^{-1}R'$ cancels against the inverse inside $A$). Hence
+\[ \Var(b_{*}) = \Var(b) - \underbrace{\sigma^{2}(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1}}_{\text{p.s.d. matrix}}, \]
+so $b_{*}$ is even more efficient than $b$.
+
+\topic{Without $H_{0}$}
+In general
+\[ b_{*} = \beta - AR\beta + Ar + (X'X)^{-1}X'u - AR(X'X)^{-1}X'u, \]
+and the variance is taken about the mean,
+\[ \Var(b_{*}) = \E\Bigl[\bigl(b_{*} - \E(b_{*})\bigr)\bigl(b_{*} - \E(b_{*})\bigr)'\Bigr]. \]
+
+\topic{When is $b_{*}$ biased and when unbiased? \normalfont(added discussion)}
+The note at the end of the page asks for this; it is not part of the lecture.
+
+\begin{flatlist}
+  \item \textbf{The bias.} From the mean above,
+        \[ \E(b_{*}) - \beta = -A(R\beta - r)
+           = -(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(R\beta - r). \]
+        $A$ is $K\times q$ of full column rank $q$ (because $R$ has rank $q$), so
+        $A\delta = 0$ only for $\delta = 0$. Hence
+        \[ b_{*} \text{ is unbiased} \iff R\beta = r, \]
+        i.e.\ exactly when the restriction imposed is true. When it is false, the bias
+        is proportional to how badly it fails, $R\beta - r$.
+  \item \textbf{The variance does not depend on $H_{0}$.} Whether or not $R\beta = r$,
+        \[ b_{*} - \E(b_{*}) = (I - AR)(X'X)^{-1}X'u, \]
+        because the terms $\beta - AR\beta + Ar$ are non-random and drop out. So the
+        variance computed under $H_{0}$,
+        $\Var(b_{*}) = \sigma^{2}(X'X)^{-1} - \sigma^{2}(X'X)^{-1}R'[R(X'X)^{-1}R']^{-1}R(X'X)^{-1}$,
+        is the variance of $b_{*}$ in every case. A false restriction moves the
+        centre of $b_{*}$, not its spread.
+  \item \textbf{No conflict with Gauss--Markov.} $b$ is best among linear
+        \emph{unbiased} estimators for every $\beta$. $b_{*}$ beats it only by
+        using extra information, the restriction; if that information is wrong,
+        $b_{*}$ is no longer unbiased and falls outside the Gauss--Markov class.
+  \item \textbf{A bias--variance trade-off.} With a false restriction, compare the
+        two by mean squared error,
+        \[
+        \begin{aligned}
+        \operatorname{MSE}(b_{*}) &= \Var(b_{*}) + \bigl(\E b_{*} - \beta\bigr)\bigl(\E b_{*} - \beta\bigr)'\\
+           &= \Var(b) - \sigma^{2}(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1}
+\\
+           &\qquad + A(R\beta - r)(R\beta - r)'A'.
+        \end{aligned}
+        \]
+        If the restriction is only slightly wrong, the variance gain can outweigh the
+        squared bias and $b_{*}$ may still be preferred; if it is badly wrong, the
+        bias dominates.
+  \item \textbf{The link to the $F$ test.} Whether the restriction is true is
+        exactly what $H_{0} : R\beta = r$ tests. A small
+        $F = \dfrac{(\text{RSSR} - \text{USSR})/q}{\text{USSR}/(n - K)}$ means
+        imposing the restriction barely raises the residual sum of squares, which is
+        evidence that $b_{*}$ is (close to) unbiased; a large $F$ rejects $H_{0}$
+        and warns that $b_{*}$ is biased.
+  \item \textbf{The same for $s^{2}$.} The restricted variance estimator
+        $e_{*}'e_{*}/(n - K + q)$ is unbiased for $\sigma^{2}$ under $H_{0}$; when
+        $R\beta \neq r$, $e_{*}'e_{*}$ contains the extra
+        $(Rb - r)'[R(X'X)^{-1}R']^{-1}(Rb - r)$ term with a non-zero mean, and it
+        overstates $\sigma^{2}$.
+\end{flatlist}
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Lesson 6''; it is not
+        reproduced.
+  \item As in Lessons 3--5 the regressor matrix, written lower case ($x$) on the page,
+        is typeset $X$, and $B$ for $\beta$ is typeset $\beta$. The page writes the
+        restricted estimator both $b_{*}$ and $b^{*}$ and the multiplier both
+        $\lambda_{*}$ and $\lambda^{*}$; typeset $b_{*}$ and $\lambda_{*}$ throughout.
+        $K$ and $k$ are both used for the number of regressors; typeset $K$.
+  \item Page 2: the first $\chi^{2}$ is written ``$\sim \chi_{q}$''; typeset
+        $\chi^{2}_{q}$. The second line reads ``$e'e/(n-k) = s^{2} \Rightarrow
+        e'e/(n-k)\ \ \tfrac{1}{\sigma^{2}}u'Mu \sim \chi^{2}$''; typeset as
+        $e'e/\sigma^{2} = \tfrac{1}{\sigma^{2}}u'Mu \sim \chi^{2}_{n-K}$ (the
+        repeated $e'e/(n-k)$ is read as a slip for $e'e/\sigma^{2}$; the degrees of
+        freedom are \textbf{added}). \textbf{Corrected:} the $F$ numerator on page 2
+        is written $(R(X'X)^{-1}R')$ without the inverse; page 6 has it with the
+        inverse.
+  \item Page 2: $R$ is drawn as $[I_{k_{1}} \mid 0_{k_{1}\times k_{2}}]$ with a brace
+        ``$k_{1}$'' and then as an explicit $1/0$ block matrix; both kept.
+  \item Page 3: ``$\sim N(0, \ldots)$'' for $b_{1}$ holds under $H_{0}$; ``under
+        $H_{0}$'' is \textbf{added}. The numerator of the first $F(k_{1}, n-K)$ in
+        $y$'s is written ``$(y'M_{2}y - y'My)\,k_{1}$''; typeset $/k_{1}$, as in the
+        RSSR line below it. ``$H_{0} : \beta = 0$'' beside $M_{2}y$ and $My$ is
+        typeset $\beta_{1} = 0$. The reasons $M_{2}M = M$ and the vanishing cross
+        term are \textbf{added}.
+  \item Page 4, the figure: a convex $f(\beta)$, two vertical constraint lines both
+        labelled $\bar\beta$ on the page (kept), the minimum $\beta^{*}$ between them
+        marked by a horizontal tangent and a dotted drop line, two small arrows down
+        the left branch of the curve, the label ``constraint'' at the right line and
+        ``cannot push beyond constraint. otherwise penalization'' under the left. The
+        sentence after the figure is \textbf{added} to tie it to the multiplier.
+        ``$\beta < \bar\beta$'' is written beside it and kept in that sentence.
+  \item Page 4: the dimension written under the Lagrangian reads ``$K\times q$'' under
+        $R$ and ``$q\times1$'' under $\lambda_{*}$; only the latter is kept ($R$ is
+        $q\times K$). The expansion of $\mathcal{L}$ on the page stops at
+        ``$-(Rb_{*} - r)'$''; completed as $-2(Rb_{*} - r)'\lambda_{*}$.
+        \textbf{Corrected:} the FOC is written $-2X'y + 2X'Xb_{*} + 2R'\lambda_{*} = 0$;
+        with $-2(Rb_{*}-r)'\lambda_{*}$ in $\mathcal{L}$ the last term is
+        $-2R'\lambda_{*}$, which is what the page's next lines (with $R'\lambda_{*}$
+        on the right-hand side) use. \textbf{Corrected:} the next line is written
+        $-X'y + X'X + 2R'\lambda_{*} = 0$; typeset $-X'y + X'Xb_{*} = R'\lambda_{*}$.
+        An arrow on the page links $Rb_{*} - r = 0$ to the step $-Rb + r$.
+  \item Page 5: \textbf{Corrected:} $b_{*}$ is written with $(X'X)R'$ (no inverse) in
+        all three lines; typeset $(X'X)^{-1}R'$, as on page 7. The arrow from
+        $(X'X)^{-1}X'y$ to $b$ is typeset as an underbrace. ``Subsitute'' spelling
+        fixed. The reason the cross terms in $e_{*}'e_{*}$ vanish ($X'e = 0$) is
+        \textbf{added}.
+  \item Page 6: \textbf{Corrected:} the left-hand side is written $e_{*}'e_{*}$; the
+        quadratic form is $e_{*}'e_{*} - e'e$ (page 5, last line), as the $F$ line
+        below it uses. The first bracket is written $[RX'X)^{-1}R')^{-1}$; typeset
+        $[R(X'X)^{-1}R']^{-1}$. The underline under the $F$ numerator is typeset as an
+        overbrace labelled $e_{*}'e_{*} - e'e$.
+  \item Page 7: \textbf{Corrected:} $b_{*}$ is written $b + A(Rb - r)$; page 5 and the
+        expansion directly below (with $-AR(\cdots) + Ar$) give $b - A(Rb - r)$.
+        ``$H_{0}$ under $Rb = r$'' is typeset $R\beta = r$; ``if $H_{0}$\,\checkmark''
+        as ``if $H_{0}$ holds''. \textbf{Corrected:} the second factor of the variance
+        is written $(u'X(X'X)^{-1} - u'(X'X)^{-1}R'A')$; the $X$ after $u'$ is
+        restored. ``Under $H_{0}$'' before the variance is \textbf{added} (the page
+        centres at $\beta$).
+  \item Page 8: \textcircled{\scriptsize 1}, \textcircled{\scriptsize 2},
+        \textcircled{\scriptsize 3} are the page's own labels; the line explaining
+        why they are equal is \textbf{added}. \textbf{Corrected:} the page writes
+        ``$\Var(b_{*}) = \Var(b) - $ p.d.\ matrix''; the matrix has rank $q \le K$, so it
+        is positive \emph{semi}-definite (p.d.\ only when $q = K$); typeset p.s.d.
+        ``effcient'' spelling fixed.
+  \item Page 9 carries only $\Var(b_{*}) = \E[(b_{*} - \E b_{*})(b_{*} - \E b_{*})']$ and
+        the note ``Claude: Add discussion on when $b_{*}$ biased and unbiased''. The
+        whole subsection ``When is $b_{*}$ biased and when unbiased?'' is
+        \textbf{added} in answer to it and is not on the page.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        model, $H_{0}$, the two $\chi^{2}$ pieces, $F(q, n-K)$, and the subset example
+        with $R$; page 3 $b_{1}$ by FWL, its $F$, the $M_{2}y$ decomposition and the
+        RSSR/USSR form; page 4 the constraint figure, the Lagrangian, the FOC and
+        $\lambda_{*}$; page 5 substituting $\lambda_{*}$ back, $b_{*}$, $e_{*}$ and
+        $e_{*}'e_{*}$; page 6 $F$, $e_{*}'e_{*} - e'e$ and the RSSR/USSR form;
+        page 7 $A$, the expansion of $b_{*}$, $\E(b_{*})$ and the start of
+        $\Var(b_{*})$; page 8 the four variance terms, \textcircled{\scriptsize 1}--\textcircled{\scriptsize 3},
+        $\Var(b_{*}) = \Var(b) - $ p.s.d., and $b_{*}$ without $H_{0}$; page 9 the
+        general variance and the note.
+\end{transcriptnotes}
+
+\end{document}
