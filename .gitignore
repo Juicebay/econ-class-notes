@@ -5,3 +5,7 @@ __pycache__/
 *.aux
 *.log
 *.synctex.gz
+
+# Course exams (keep off GitHub)
+micro 1 class note/ECON6000 Midterm.pdf
+micro 1 class note/ECON6000 Final Exam.pdf
