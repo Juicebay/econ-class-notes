@@ -20,10 +20,11 @@ on $\bar p$, simply because we are using different prices to evaluate the welfar
 impact.
 
 Two benchmarks are particularly natural: $\bar p=p^0$ and $\bar p=p'$, i.e.\
-evaluating based on today's price.
+evaluating the change at the old prices or at the new prices.
 
-Throughout, write $v^0=v(p^0,w)$ and $v'=v(p',w)$. By duality,
-$e(p^0,v^0)=w=e(p',v')$.
+Throughout, write $u^0=v(p^0,w)$ and $u'=v(p',w)$ for the utility levels before
+and after the price change. By duality,
+$e(p^0,u^0)=w=e(p',u')$.
 
 \section{Equivalent and compensating variation}
 
@@ -31,26 +32,26 @@ $e(p^0,v^0)=w=e(p',v')$.
 If $\bar p=p^0$, the equivalent variation is
 \begin{align*}
   EV(p^0,p',w)&=e\bigl(p^0,v(p',w)\bigr)-e\bigl(p^0,v(p^0,w)\bigr)\\
-              &=e(p^0,v')-e(p^0,v^0)\\
-              &=e(p^0,v')-w .
+              &=e(p^0,u')-e(p^0,u^0)\\
+              &=e(p^0,u')-w .
 \end{align*}
-If, under $p^0$, the consumer receives $e(p^0,v')-w$, then he can afford $v'$,
-because his total wealth is $e(p^0,v')$. So this is the amount the consumer would
-have to be paid today to be willing to forgo the price change. Hence it is the amount
+If, under $p^0$, the consumer receives $e(p^0,u')-w$, then he can afford $u'$,
+because his total wealth is $e(p^0,u')$. So this is the amount the consumer would
+have to be paid at the old prices $p^0$ to be willing to forgo the price change. Hence it is the amount
 that is \emph{equivalent} to the price change.
 
 \topic{Compensating variation ($\bar p=p'$)}
 If $\bar p=p'$, the compensating variation is
 \begin{align*}
   CV(p^0,p',w)&=e\bigl(p',v(p',w)\bigr)-e\bigl(p',v(p^0,w)\bigr)\\
-              &=e(p',v')-e(p',v^0)\\
-              &=w-e(p',v^0).
+              &=e(p',u')-e(p',u^0)\\
+              &=w-e(p',u^0).
 \end{align*}
-If, under $p'$ today, you give up $w-e(p',v^0)$, you end up with wealth
-$e(p',v^0)$, which is just enough to get you back to the old level of utility $v^0$.
+If, at the new prices $p'$, you give up $w-e(p',u^0)$, you end up with wealth
+$e(p',u^0)$, which is just enough to get you back to the old level of utility $u^0$.
 It is the amount needed to \emph{compensate} for the change in prices.
 
-\runin{Example.} $p_i'<p_i^0$, all else equal. The agent is better off: $v'>v^0$.
+\runin{Example.} $p_i'<p_i^0$, all else equal. The agent is better off: $u'>u^0$.
 Both $EV$ and $CV$ have to be positive, but they are likely to be different.
 
 
@@ -63,21 +64,21 @@ equation.
 
 Recall
 \begin{align*}
-  EV(p^0,p',w)&=e(p^0,v')-w\\
-              &=e(p^0,v')-e(p',v').
+  EV(p^0,p',w)&=e(p^0,u')-w\\
+              &=e(p^0,u')-e(p',u').
 \end{align*}
 If only $p_i$ changes, then using the fundamental theorem of calculus,
-\[ EV(p^0,p',w)=\int_{p_i'}^{p_i^0}\pd{e(p,v')}{p_i}\,dp_i
-   =\int_{p_i'}^{p_i^0}h_i\bigl(p_1^0,p_2^0,\dots,p_i,\dots,p_L^0,\,v'\bigr)\,dp_i . \]
+\[ EV(p^0,p',w)=\int_{p_i'}^{p_i^0}\pd{e(p,u')}{p_i}\,dp_i
+   =\int_{p_i'}^{p_i^0}h_i\bigl(p_1^0,p_2^0,\dots,p_i,\dots,p_L^0,\,u'\bigr)\,dp_i . \]
 \begin{flatlist}
-  \item[$\Rightarrow$] $EV$ = area under the Hicksian demand curve evaluated at $v'$;
-  \item[] $CV$ = area under the Hicksian demand curve evaluated at $v^0$.
+  \item[$\Rightarrow$] $EV$ = area under the Hicksian demand curve evaluated at $u'$;
+  \item[] $CV$ = area under the Hicksian demand curve evaluated at $u^0$.
 \end{flatlist}
 
 We need to compare Hicksian demand at different utility levels. We take a few steps.
 
 \topic{Step 1. Hicksian vs.\ Marshallian demand for fixed $u$}
-The Slutsky equation:
+The Slutsky equation, evaluated at $u=v(p,w)$ (equivalently $w=e(p,u)$):
 \[ \pd{h_i(p,u)}{p_i}=\pd{x_i(p,w)}{p_i}+\pd{x_i(p,w)}{w}\,x_i(p,w)\le 0 , \]
 because of concavity of the expenditure function: the negative own-price substitution
 effect --- Hicksian demand slopes down.
@@ -85,27 +86,30 @@ effect --- Hicksian demand slopes down.
 At this point, add the assumption that good $i$ is a \emph{normal} good:
 \[ \pd{x_i(p,w)}{w}>0
    \quad\Longrightarrow\quad \pd{x_i(p,w)}{p_i}<0 , \]
-so Marshallian demand slopes down: it is an \emph{ordinary} good. Moreover,
+so Marshallian demand slopes down: it is an \emph{ordinary} good. Moreover, at the same point
+($u=v(p,w)$) and whenever $x_i(p,w)>0$,
 \[ \pd{h_i(p,u)}{p_i}>\pd{x_i(p,w)}{p_i}. \]
 The left-hand side is less negative than the right-hand side.
 \begin{flatlist}
-  \item[$\Rightarrow$] Hicksian demand is flatter;
-  \item[$\Rightarrow$] the inverse Hicksian demand curve (price on the vertical axis)
-        is steeper.
+  \item[$\Rightarrow$] Hicksian demand is less responsive to its own price than
+        Marshallian demand;
+  \item[$\Rightarrow$] in the usual graph, with price on the vertical axis (the inverse
+        demand curve), the Hicksian curve is steeper.
 \end{flatlist}
 
 \topic{Step 2. Where the curves cross}
-An implication is that Hicksian and Marshallian demand can cross only once. What can
+An implication is that Hicksian and Marshallian demand can cross only once (with the other prices fixed at
+$p_{-i}^0$ and $w$ fixed). What can
 we say about the price at which the crossing occurs, and how does it depend on
 utility?
 
-For concreteness, assume $p_i'<p_i^0$, and thus $v'>v^0$. From duality,
+For concreteness, assume $p_i'<p_i^0$, and thus $u'>u^0$. From duality,
 \begin{align*}
-  h_i(p^0,v^0)&=x_i\bigl(p^0,e(p^0,v^0)\bigr)=x_i(p^0,w),\\
-  h_i(p',v') &=x_i\bigl(p',e(p',v')\bigr)=x_i(p',w)>x_i(p^0,w),
+  h_i(p^0,u^0)&=x_i\bigl(p^0,e(p^0,u^0)\bigr)=x_i(p^0,w),\\
+  h_i(p',u') &=x_i\bigl(p',e(p',u')\bigr)=x_i(p',w)>x_i(p^0,w),
 \end{align*}
-since the good is an ordinary good. So $h_i(\cdot,v^0)$ crosses Marshallian demand
-at $p_i^0$, and $h_i(\cdot,v')$ crosses it at $p_i'$.
+since the good is an ordinary good. So $h_i(\cdot,u^0)$ crosses Marshallian demand
+at $p_i^0$, and $h_i(\cdot,u')$ crosses it at $p_i'$.
 
 \begin{center}
 \begin{tikzpicture}[scale=1.05]
@@ -114,28 +118,28 @@ at $p_i^0$, and $h_i(\cdot,v')$ crosses it at $p_i'$.
   \node[ecnode,right] at (6.2,0) {quantity};
   % Marshallian demand p = 4/x
   \draw[budget] plot[domain=0.95:5.6,samples=60] (\x,{4/\x});
-  \node[ecnode,right] at (5.6,0.71) {$x_i(p,w)$};
-  % Hicksian demand at v^0: p = 4.8/x^2
+  \node[ecnode,right] at (5.6,0.71) {$x_i(\cdot,w)$};
+  % Hicksian demand at u^0: p = 4.8/x^2
   \draw[budget,dashed] plot[domain=1.05:2.6,samples=60] (\x,{4.8/(\x*\x)});
-  \node[ecnode,anchor=north east] at (2.44,0.74) {$h_i(p,v^0)$};
-  % Hicksian demand at v': p = 10/x^2
+  \node[ecnode,anchor=north west] at (2.56,0.6) {$h_i(\cdot,u^0)$};
+  % Hicksian demand at u': p = 10/x^2
   \draw[budget,dashed] plot[domain=1.52:4.6,samples=60] (\x,{10/(\x*\x)});
-  \node[ecnode,above] at (1.62,4.6) {$h_i(p,v')$};
+  \node[ecnode,above] at (1.62,4.6) {$h_i(\cdot,u')$};
   % crossings
   \node[bundle] at (1.2,3.333) {};
   \node[bundle] at (2.5,1.6) {};
   \draw[densely dotted] (0,3.333) node[ecnode,left] {$p_i^0$} -- (1.2,3.333) -- (1.2,0);
   \draw[densely dotted] (0,1.6) node[ecnode,left] {$p_i'$} -- (2.5,1.6) -- (2.5,0);
   \node[ecnode,below,align=center,font=\scriptsize] at (1.05,0)
-       {$x_i(p^0,w)$\\$h_i(p^0,v^0)$};
+       {$x_i(p^0,w)$\\$h_i(p^0,u^0)$};
   \node[ecnode,below,align=center,font=\scriptsize] at (2.75,0)
-       {$x_i(p',w)$\\$h_i(p',v')$};
+       {$x_i(p',w)$\\$h_i(p',u')$};
 \end{tikzpicture}
 \end{center}
 
 \topic{Step 3. Put everything together: compare EV and CV}
 Both are areas under Hicksian demand, between $p_i'$ and $p_i^0$: $EV$ under
-$h_i(\cdot,v')$, $CV$ under $h_i(\cdot,v^0)$.
+$h_i(\cdot,u')$, $CV$ under $h_i(\cdot,u^0)$.
 
 \begin{center}
 \begin{tikzpicture}[scale=0.82]
@@ -148,7 +152,7 @@ $h_i(\cdot,v')$, $CV$ under $h_i(\cdot,v^0)$.
     \draw[budget,dashed] plot[domain=1.52:4.6,samples=60] (\x,{10/(\x*\x)});
     \draw[densely dotted] (0,3.333) node[ecnode,left] {$p_i^0$} -- (1.73,3.333);
     \draw[densely dotted] (0,1.6) node[ecnode,left] {$p_i'$} -- (2.5,1.6);
-    \node[ecnode,above] at (1.62,4.6) {$h_i(p,v')$};
+    \node[ecnode,above] at (1.62,4.6) {$h_i(\cdot,u')$};
     \node[ecnode] at (0.8,2.45) {$EV$};
   \end{scope}
   \begin{scope}[xshift=7.4cm]
@@ -160,13 +164,13 @@ $h_i(\cdot,v')$, $CV$ under $h_i(\cdot,v^0)$.
     \draw[budget,dashed] plot[domain=1.52:4.6,samples=60] (\x,{10/(\x*\x)});
     \draw[densely dotted] (0,3.333) node[ecnode,left] {$p_i^0$} -- (1.2,3.333);
     \draw[densely dotted] (0,1.6) node[ecnode,left] {$p_i'$} -- (1.73,1.6);
-    \node[ecnode,below right] at (2.3,0.71) {$h_i(p,v^0)$};
+    \node[ecnode,below right] at (2.3,0.71) {$h_i(\cdot,u^0)$};
     \node[ecnode] at (0.65,2.45) {$CV$};
   \end{scope}
 \end{tikzpicture}
 \end{center}
 
-Since $h_i(\cdot,v')$ lies to the right of $h_i(\cdot,v^0)$,
+Since $h_i(\cdot,u')$ lies to the right of $h_i(\cdot,u^0)$,
 \[ EV>CV . \]
 
 $EV$ and $CV$ both measure the change in indirect utility, but in different ways;
@@ -183,7 +187,7 @@ demand $\neq$ Hicksian demand.
 
 The problem disappears if there are no wealth effects. Quasilinear preferences have
 this property --- no wealth effect:
-\[ u(x_i,x_j)=x_j+\hat v(x_i). \]
+\[ u(x_i,x_j)=x_j+\varphi(x_i). \]
 Indifference curves move in a parallel way, and a change in $p_i$ has no wealth
 effect on the consumption of $x_i$ (at an interior solution).
 
@@ -192,10 +196,22 @@ In this case $EV=CV=CS$, because the three curves coincide.
 
 \begin{transcriptnotes}
   \item Notation follows Lessons 7 and 9: the original's capitals $P$, $E$, $H$,
-        $X$, $V(P,w)$ are typeset as $p$, $e$, $h$, $x$, $v(p,w)$; the original's
-        shorthand $V^0$, $V'$ is $v^0$, $v'$. $EV$, $CV$ and $CS$ keep their
-        capitals. \textbf{Added:} the line defining $v^0$, $v'$ and the duality
-        identities $e(p^0,v^0)=w=e(p',v')$ that the derivations use.
+        $X$, $V(P,w)$ are typeset as $p$, $e$, $h$, $x$, $v(p,w)$. The original's
+        utility levels $V^0$, $V'$ are typeset $u^0$, $u'$, so that $v$ stays the
+        indirect utility \emph{function} (as $\bar u$ in Lesson 9). $EV$, $CV$ and
+        $CS$ keep their capitals. \textbf{Added:} the line defining $u^0$, $u'$ and
+        the duality identities $e(p^0,u^0)=w=e(p',u')$ that the derivations use.
+  \item \textbf{Clarified:} the original says ``today'' both for the old prices
+        (``paid today to forgo the price change'') and for the new ones (``under
+        $p'$ today''), and calls both benchmarks ``today's price''; each is replaced
+        by \emph{at the old prices $p^0$} or \emph{at the new prices $p'$}.
+        \textbf{Added:} the Slutsky equation and the slope comparison hold at
+        $u=v(p,w)$, the comparison strictly only when $x_i>0$. ``Hicksian demand is
+        flatter $\Rightarrow$ the inverse hicksian demand curve is steeper'' is
+        typeset as \emph{less responsive to its own price} / \emph{steeper with
+        price on the vertical axis}. Curves in the figures, written $H_i(p,V')$,
+        $x_i(p,w)$, are labelled $h_i(\cdot,u')$, $x_i(\cdot,w)$: they are drawn
+        against $p_i$ with the other prices held at $p_{-i}^0$.
   \item The title page reads ``Class 10'' only; the subtitle is written to match
         Lesson 9. No date is given.
   \item Page 2: ``Visiting the money metric indirect utility function to derive of
@@ -205,9 +221,9 @@ In this case $EV=CV=CS$, because the three curves coincide.
         ``weafare'' $\to$ \emph{welfare}; ``equiolent varation'' $\to$
         \emph{equivalent variation}.
   \item Page 3: ``the consume receives \dots\ Then he can afford.\ until $v'$''
-        $\to$ \emph{then he can afford $v'$}; ``amout'' $\to$ \emph{amount}.
+        $\to$ \emph{then he can afford $u'$}; ``amout'' $\to$ \emph{amount}.
         In the CV text, ``If under $p'$ today $w-E(p',v^0)$'' has no verb; read as
-        \emph{you give up} $w-E(p',v^0)$ (the amount is positive when $v'>v^0$).
+        \emph{you give up} $w-E(p',v^0)$ (the amount is positive when $u'>u^0$).
         ``tou'' $\to$ \emph{you}. The CV definition is written with
         $\bar p-p'$ for $\bar p=p'$, and its second line ends $E(p',v^0)$, typeset
         as written.
@@ -216,7 +232,7 @@ In this case $EV=CV=CS$, because the three curves coincide.
         The integrand is written $H_i(P_1^0,P_2^0,\dots,P_i,\dots,P_i^0,V')$; the
         last price is read as $p_L^0$ (only $p_i$ varies).
   \item Page 5: ``$EV$ = are under hicksian demand curve evaluation'' $\to$
-        \emph{area \dots\ evaluated at $v'$}; ``$CV$ = \dots\ $v^0$'' is a ditto
+        \emph{area \dots\ evaluated at $u'$}; ``$CV$ = \dots\ $v^0$'' is a ditto
         line. The Slutsky equation's left side is written $\partial H_i(P,u)$;
         typeset $h_i(p,u)$. ``because concavity'' is completed as \emph{concavity
         of the expenditure function} (Lesson 9).
@@ -229,13 +245,13 @@ In this case $EV=CV=CS$, because the three curves coincide.
         parenthetical ``price on the vertical axis'' explaining why ``flatter''
         and ``steeper'' are both right.
   \item Page 7: the second duality line is written $x_i(p',E(p',u'))$; read as
-        $e(p',v')$. ``Since good is an ordinary good'' $\to$ \emph{the good}.
+        $e(p',u')$. ``Since good is an ordinary good'' $\to$ \emph{the good}.
         \textbf{Added:} the sentence stating where each Hicksian curve crosses
         Marshallian demand.
   \item Figures: the original is hand-drawn in red. Page 7 shows Marshallian
         demand $x_i(p,w)$ and two steeper curves, the right one labelled
         $H_i(p,v')$ and the left one unlabelled; the left one is labelled
-        $h_i(p,v^0)$ here, as the axis labels $H_i(p^0,v^0)$ require. Page 8 shows
+        $h_i(\cdot,u^0)$ here, as the axis labels $H_i(p^0,v^0)$ require. Page 8 shows
         two panels with the area left of the Hicksian curve between the two price
         lines hatched in blue, labelled $EV$ (left) and $CV$ (right). They are
         redrawn with illustrative curves ($p=4/x$, $p=4.8/x^2$, $p=10/x^2$), grey
@@ -248,8 +264,8 @@ In this case $EV=CV=CS$, because the three curves coincide.
         is its meaning?}; ``disapears'' $\to$ \emph{disappears}; ``this
         properties'' $\to$ \emph{this property}.
   \item Page 10: the quasilinear utility is written $V(x_i,x_j)=x_j+\hat V(x_i)$;
-        typeset $u(x_i,x_j)=x_j+\hat v(x_i)$ ($\hat v$ is not the indirect utility
-        function). \textbf{Corrected:} ``a $\Delta$ in $p_i$ does not impact
+        typeset $u(x_i,x_j)=x_j+\varphi(x_i)$, renamed so that it does not clash
+        with the indirect utility function $v$. \textbf{Corrected:} ``a $\Delta$ in $p_i$ does not impact
         consumption of $x_i$'' --- with quasilinear utility a change in $p_i$
         \emph{does} change $x_i$ (through the substitution effect); what vanishes
         is the wealth effect, so the line is typeset as ``has no wealth effect on
