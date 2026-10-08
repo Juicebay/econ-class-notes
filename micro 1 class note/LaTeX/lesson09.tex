@@ -1,0 +1,221 @@
+%% shortname: Duality, Hicksian Demand and Welfare
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{9}{Chapter 3 (continued): duality, Hicksian demand, the Slutsky matrix, and welfare evaluation}{}
+
+
+\section{Utility maximization vs.\ expenditure minimization}
+
+The two problems are twins of each other. For $p\gg0$, $w>0$ and $\bar u>u(0)$,
+\[ e\bigl(p,v(p,w)\bigr)=w\qquad\text{and}\qquad v\bigl(p,e(p,\bar u)\bigr)=\bar u . \]
+
+The first relation says that the cheapest way to obtain the highest utility one can
+get with wealth $w$ is going to cost exactly $w$. Otherwise, I have failed to solve
+one of the two problems correctly.
+
+\runin{Important.} Given prices, the two functions are \emph{inverses} of each
+other: $e(p,\cdot)$ and $v(p,\cdot)$ undo each other. If I know one, then I can
+infer the other.
+
+\topic{The two solutions coincide}
+For similar reasons, the solutions to the two problems coincide, in the sense that
+\[ h(p,\bar u)=x\bigl(p,e(p,\bar u)\bigr)\qquad\text{and}\qquad
+   x(p,w)=h\bigl(p,v(p,w)\bigr), \]
+where $h(p,\bar u)$, the solution to the expenditure minimization problem, is the
+\emph{Hicksian demand}.
+
+\section{Hicksian (compensated) demand}
+
+The first equation also describes Hicksian demand, which is sometimes called
+\emph{compensated demand}: when prices change, the consumer is compensated such
+that his wealth is just enough to achieve the same utility as before. This is also
+known as \emph{Hicksian wealth compensation}.
+
+Compare this to the \emph{Slutsky} wealth compensation, which allows the consumer to
+buy the same \emph{bundle} as before.
+
+Assume the solution to the expenditure minimization problem is unique. Then $h$ is a
+demand \emph{function} rather than a demand correspondence.
+
+\topic{The compensated law of demand}
+Hicksian demand also satisfies the compensated law of demand:
+\[ (p'-p)\cdot\bigl(h(p',\bar u)-h(p,\bar u)\bigr)\le 0 . \]
+
+\runin{Proof.} An easy proof, by the definition of Hicksian demand. At prices $p'$
+the bundle $h(p',\bar u)$ is the cheapest way to reach $\bar u$, and $h(p,\bar u)$
+also reaches $\bar u$, so
+\[ p'\cdot h(p',\bar u)\le p'\cdot h(p,\bar u)
+   \quad\iff\quad p'\cdot\bigl(h(p',\bar u)-h(p,\bar u)\bigr)\le 0 . \]
+In the same way, at prices $p$,
+\[ p\cdot h(p,\bar u)\le p\cdot h(p',\bar u)
+   \quad\iff\quad p\cdot\bigl(h(p',\bar u)-h(p,\bar u)\bigr)\ge 0 . \]
+Subtracting the second from the first, the compensated law of demand follows.
+\hfill$\square$
+
+\section{Shephard's lemma and the Slutsky matrix}
+
+To further explore the links between the two versions of the compensated law of
+demand, start with \emph{Shephard's lemma}:
+\[ h_i(p,\bar u)=\pd{e(p,\bar u)}{p_i}. \]
+
+\runin{Proof (by the envelope theorem).} The expenditure minimization problem
+\[ \min_{x\ge0}\ p\cdot x\qquad\text{s.t.}\qquad u(x)\ge\bar u \]
+has the Lagrangian
+\[ \mathcal{L}=p\cdot x-\mu\,\bigl(u(x)-\bar u\bigr). \]
+By the envelope theorem, the derivative of the value function $e(p,\bar u)$ with
+respect to the parameter $p_i$ is the partial derivative of the Lagrangian,
+evaluated at the optimum. Since $p_i$ enters $\mathcal{L}$ only through the term
+$p_i x_i$,
+\[ \pd{e(p,\bar u)}{p_i}
+   =\pd{\mathcal{L}}{p_i}\bigg|_{\substack{x=h(p,\bar u)\\ \mu=\mu^{*}}}
+   =h_i(p,\bar u). \]
+Intuitively: when $p_i$ rises a little, the first-order effect on the minimum cost
+is that the bundle already being bought, $h(p,\bar u)$, costs $h_i(p,\bar u)$ more
+per unit of price increase; re-optimizing the bundle has only a second-order effect.
+\hfill$\square$
+
+\topic{An own-price change}
+Now consider an own-price change. Differentiating Shephard's lemma once more,
+\[ \pd{h_i(p,\bar u)}{p_i}=\frac{\partial^2 e(p,\bar u)}{\partial p_i^2}\le 0 , \]
+since the expenditure function is concave in $p$. Hicksian demand is decreasing in
+its own price.
+
+\topic{A cross-price change: the Slutsky equation}
+Consider next how the demand for good $i$ depends on the price of good $j$. Start
+from $h_i(p,\bar u)=x_i\bigl(p,e(p,\bar u)\bigr)$ and differentiate with respect to
+$p_j$; by the chain rule,
+\begin{align*}
+  \pd{h_i(p,\bar u)}{p_j}
+    &=\frac{\partial x_i\bigl(p,e(p,\bar u)\bigr)}{\partial p_j}\\
+    &=\pd{x_i(p,w)}{p_j}+\pd{x_i(p,w)}{w}\,\pd{e(p,\bar u)}{p_j}\\
+    &=\pd{x_i(p,w)}{p_j}+\pd{x_i(p,w)}{w}\,h_j(p,\bar u),
+\end{align*}
+with $w=e(p,\bar u)$, using Shephard's lemma in the last step. Evaluated at
+$\bar u=v(p,w)$, we have $h_j(p,\bar u)=x_j(p,w)$, so
+\[ \pd{h_i(p,\bar u)}{p_j}=\pd{x_i(p,w)}{p_j}+\pd{x_i(p,w)}{w}\,x_j(p,w). \]
+This is the same expression as the entries of the \emph{Slutsky substitution
+matrix}.
+
+\topic{What we now know about the Slutsky matrix}
+So now we know that the terms in the Slutsky substitution matrix are of the form
+\[ \pd{h_i(p,\bar u)}{p_j}\qquad\text{or}\qquad
+   \frac{\partial^2 e(p,\bar u)}{\partial p_i\,\partial p_j}: \]
+the Slutsky matrix is just the Hessian of $e(p,\bar u)$ in $p$.
+\begin{flatlist}
+  \item Since $e(p,\bar u)$ is concave in $p$, this is a \emph{negative
+        semi-definite} matrix.
+  \item The matrix is also \emph{symmetric} (the cross partials of $e$ do not
+        depend on the order of differentiation). This is new, and not something
+        we got out of WARP. However, SARP can be shown to give symmetry.
+\end{flatlist}
+
+
+\section{Welfare evaluations}
+
+What happens to the consumer's well-being if $p$ or $w$ changes? Focus on $p$.
+
+The \emph{qualitative} question is easy if $\succsim$ is known, since all we need
+to ask is whether utility increases or decreases. The indirect utility function,
+$v(p,w)$, is ideal for this purpose.
+
+But there is no \emph{quantitative} interpretation: given $\succsim$, $u(x)$ is not
+unique, so $v(p,w)$ is not unique either. We therefore develop some measures that
+have a quantitative meaning:
+\begin{flatlist}
+  \item first, a particular kind of indirect utility function;
+  \item later, welfare measures tied to Hicksian demand, in contrast to Marshallian
+        demand.
+\end{flatlist}
+
+\topic{The money-metric indirect utility function}
+Start with $\succsim$. Pick any $u(x)$ that represents $\succsim$, and derive
+$v(p,w)$ and $e(p,\bar u)$. Now we construct another one, the \emph{money-metric
+indirect utility function}. Fix some arbitrary price vector $\bar p\gg0$ and
+calculate
+\[ v_m(p,w\mid\bar p)=e\bigl(\bar p,\,v(p,w)\bigr). \]
+
+\begin{flatlist}
+  \item This is an indirect utility function: it maintains the same order, because
+        the transformation on the right, $e(\bar p,\cdot)$, is monotone
+        (increasing in the utility level).
+  \item Additionally, it is the same regardless of which $u(x)$ representing
+        $\succsim$ we started with.
+\end{flatlist}
+
+\runin{Why.} $v_m(p,w\mid\bar p)$ is just the smallest amount of money needed, at
+prices $\bar p$, to buy a bundle as good as the best bundles under $(p,w)$. But this
+is determined by $\succsim$ and not by $u(x)$.
+
+
+\begin{transcriptnotes}
+  \item Notation follows Lesson 7: the original writes capitals throughout
+        ($P$, $V(P,w)$, $E(P,U)$, $H(P,U)$, $X(P,w)$); these are typeset as
+        $p$, $v(p,w)$, $e(p,\bar u)$, $h(p,\bar u)$, $x(p,w)$, and the utility
+        level $U$ as $\bar u$. The money-metric function, written
+        $V_m(P,w\mid\bar P)$, is $v_m(p,w\mid\bar p)$.
+  \item The title page reads ``Lesson 8: Demand theory part'' with no part number;
+        the subtitle is written to match Lesson 7. The lesson is numbered 9 here, following the course schedule (Lesson 8 is the integration material).
+  \item ``the cheapest to obtain the highest utility to $U$ can Get with wealth $w$
+        is going to cost ex.\ $w$'' is read as \emph{the cheapest way to obtain the
+        highest utility one can get with wealth $w$ is going to cost exactly $w$}.
+        ``solve two prob.'' carries the insertion ``one of'' above it.
+  \item Under $H(P,U)$ the original labels ``Hicksian demand'' and, under the
+        second relation, ``sol.\ exp min prob.''; the label is attached to $h$ in
+        the text. ``also describes with hicksian'' is read as \emph{also describes
+        Hicksian demand}.
+  \item ``a.k.a.\ hicksen compensation'' carries ``wealth'' inserted under a
+        caret: \emph{Hicksian wealth compensation}. ``Slutsky we.\ compen.''
+        $\to$ \emph{Slutsky wealth compensation}; ``to lout same bundle'' $\to$
+        \emph{to buy the same bundle}.
+  \item ``law of compensate law of demand'' $\to$ \emph{compensated law of
+        demand}. In the proof the second inequality is written
+        $P\cdot(H(P,U)-H(P,U))\ge0$; the first $H$ is read as $H(P',U)$, as the
+        line before it requires. \textbf{Added:} the reason each inequality holds
+        and the subtraction step that gives the result.
+  \item Shephard's lemma: the original reads ``Proof by en.\ Therom.\ Try to prove
+        it, claude.'' \textbf{Added:} the envelope-theorem proof, with the
+        Lagrangian of the EMP and a one-line intuition.
+  \item \textbf{Corrected:} the own-price result is written
+        $\partial^2E/\partial P_i^2<0$; concavity gives only $\le 0$, and the text
+        uses $\le$. ``Hicksian demand $\downarrow$ in its own price'' is typeset
+        as \emph{decreasing} (in the weak sense).
+  \item \textbf{Corrected:} in the cross-price derivation the last term of the
+        third line is written $H_i(P,U)$; by Shephard's lemma
+        $\partial E/\partial P_j=H_j(P,U)$. Likewise the final line ends
+        with $x_i(P,w)$; it is $x_j(p,w)$, which is the Slutsky term. The left
+        side of the first line is written $H_i(P,U)/\partial P_j$ without the
+        $\partial$ in the numerator. \textbf{Added:} the condition
+        $\bar u=v(p,w)$ under which $h_j=x_j$.
+  \item ``Hessian'' of $E(P,U)$: written $\partial^2E/\partial P_iP_j$, typeset
+        as $\partial^2 e/\partial p_i\,\partial p_j$. ``not someth.\ got out of
+        WARP'' $\to$ \emph{not something we got out of WARP}; ``SARP can be shown
+        to giving symmetry'' $\to$ \emph{to give symmetry}. \textbf{Added:} the
+        reason the matrix is symmetric.
+  \item ``if $P$ on $w$ changes'' $\to$ \emph{$p$ or $w$}. ``a particular kinda
+        indirect utility func.'' $\to$ \emph{kind of}. ``Later, the welfare to
+        hicksen demand and contrast to marshallian demand'' is read as
+        \emph{welfare measures tied to Hicksian demand, in contrast to Marshallian
+        demand}. ``Pick any $U(x)$ that pre.\ $\succsim$'' $\to$
+        \emph{represents}; ``Perive'' $\to$ \emph{derive}.
+  \item ``it maitains the same order'' $\to$ \emph{maintains}; ``the
+        transformation of the right'' $\to$ \emph{on the right}.
+        \textbf{Added:} that $e(\bar p,\cdot)$ is the transformation and why it is
+        monotone.
+  \item The last sentence on page 8 reads ``$V_m(P,U\mid\bar P)$ is just the
+        smallest amount of money needed to But the best bundles under $(P,w)$'':
+        the $U$ is read as $w$ (as in the definition) and ``But'' as \emph{buy};
+        ``at prices $\bar p$'' and ``a bundle as good as'' are added for precision.
+  \item Pages of the original, for tracing back: page 1 title; page 2 the duality
+        identities and $h=x(p,e)$; page 3 compensated demand, Hicksian vs.\ Slutsky
+        compensation, the compensated law of demand and the start of its proof;
+        page 4 the end of the proof, Shephard's lemma and the own-price effect;
+        page 5 the cross-price derivation (Slutsky equation); page 6 the Hessian,
+        negative semi-definiteness, symmetry and the start of welfare evaluation;
+        page 7 no quantitative meaning and the money-metric definition; page 8 its
+        properties.
+\end{transcriptnotes}
+
+\end{document}

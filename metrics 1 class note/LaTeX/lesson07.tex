@@ -1,0 +1,291 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{7}{The Lagrange multiplier test, the principles of testing, and generalized least squares}{}
+
+\runin{Announcement.} Final exam: December 7th, 2 hours.
+
+\section{Testing $R\beta = r$: the Wald idea and the Lagrange multiplier idea}
+
+The model and the hypothesis are as before:
+\[ y = X\beta + u, \qquad H_{0} : R\beta = r . \]
+
+\topic{The Wald idea: is $Rb - r$ far from zero?}
+Estimate the \emph{unrestricted} model and measure the distance $|Rb - r|$. The
+distance is measured by the quadratic form of Lesson 5,
+\[ |Rb - r| \;\longrightarrow\;
+   \frac{1}{\sigma^{2}}(Rb - r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb - r) \sim \chi^{2}_{q}. \]
+
+\topic{The Lagrange multiplier idea: is $\lambda_{*}$ far from zero?}
+Estimate the \emph{restricted} model instead (Lesson 6) and look at the multiplier.
+If the constraint does not bind, the multiplier is zero, so the hypothesis can be
+written
+\[ H_{0} : \underbrace{\lambda}_{q\times1} = \underbrace{0}_{q\times1}, \]
+and we measure $|\lambda_{*} - 0|$ by the quadratic form
+\[ \lambda_{*}'\bigl[\Var(\lambda_{*})\bigr]^{-1}\lambda_{*}. \]
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \ecaxes{4.6}{3.4}
+  \node[ecnode,anchor=east]  at (-0.1,2.6) {$f(\beta)$};
+  \node[ecnode,anchor=west]  at (4.7,0) {$\beta$};
+  \draw[budget] plot[domain=0.5:4.0,samples=60] (\x,{0.9+0.45*(\x-1.8)^2});
+  \draw[thin] (3.0,0) -- (3.0,3.2);
+  \node[ecnode,anchor=north] at (3.0,-0.05) {$\bar\beta$};
+  \node[bundle] at (3.0,{0.9+0.45*1.2^2}) {};
+  \node[ecnode,anchor=north] at (1.8,-0.05) {$b$};
+  \draw[densely dotted] (1.8,0) -- (1.8,0.9);
+\end{tikzpicture}
+\caption{The objective $f(\beta)$ and a constraint (the vertical line). The
+unconstrained minimum $b$ lies to the left of the line; the constrained solution
+sits on the line, where the slope of $f$ is not zero. The multiplier measures that
+slope, the ``price'' of the constraint: it is zero exactly when the constraint does
+not bind.}
+\end{figure}
+
+\topic{The multiplier and its distribution}
+From Lesson 6,
+\begin{align*}
+  \lambda_{*} &= \bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)\\
+              &= \bigl[R(X'X)^{-1}R'\bigr]^{-1}\Bigl(r - R\bigl(\beta + (X'X)^{-1}X'u\bigr)\Bigr)\\
+              &= \bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - R\beta)
+                 - \bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1}X'u .
+\end{align*}
+Under $H_{0}$ the first term is zero, so $\lambda_{*}$ has mean zero and
+\begin{align*}
+  \Var(\lambda_{*})
+   &= \E\Bigl[\bigl[R(X'X)^{-1}R'\bigr]^{-1}R(X'X)^{-1}X'uu'X(X'X)^{-1}R'
+      \bigl[R(X'X)^{-1}R'\bigr]^{-1}\Bigr]\\
+   &= \sigma^{2}\bigl[R(X'X)^{-1}R'\bigr]^{-1},
+\end{align*}
+using $\E(uu') = \sigma^{2}I_{n}$, after which the middle factors collapse to
+$R(X'X)^{-1}R'$.
+
+\topic{The LM statistic is the Wald statistic}
+Substituting,
+\[ \lambda_{*}'\bigl[\Var(\lambda_{*})\bigr]^{-1}\lambda_{*}
+   = \frac{1}{\sigma^{2}}(r - Rb)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb). \]
+Since $\lambda_{*}$ is $Rb - r$ multiplied by a fixed nonsingular matrix,
+$|\lambda_{*}| = |Rb - r|$ in this sense: testing $\lambda_{*} = 0$ with the
+\emph{restricted} estimation is the same thing as testing $Rb - r = 0$ with the
+\emph{unrestricted} estimation.
+
+\topic{Replacing $\sigma^{2}$}
+As before, $\sigma^{2}$ is estimated from the unrestricted residuals,
+\[ s^{2} = \frac{e'e}{n - K} = \frac{u'Mu}{n - K} = \frac{y'My}{n - K}, \]
+which gives
+\[ F(q, n - K)
+   = \frac{(r - Rb)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r - Rb)/q}{e'e/(n - K)}
+   \ \sim\ F(q, n - K). \]
+
+
+\section{Why not the restricted variance estimate?}
+
+The restricted estimation gives its own estimate of $\sigma^{2}$,
+\[ s_{*}^{2} = \frac{e_{*}'e_{*}}{n} = \frac{\text{RSSR}}{n}. \]
+If we intend to use $e_{*}'e_{*}/(n - K)$ to replace $e'e/(n-K)$ in the
+denominator, then the numerator and denominator of the $F$ statistic are no longer
+independent.
+
+\topic{The subset example}
+Take
+\[ y = X_{1}\beta_{1} + X_{2}\beta_{2} + u, \qquad
+   H_{0} : \underbrace{\beta_{1}}_{k_{1}\times1} = \underbrace{0}_{k_{1}\times1}. \]
+From Lesson 6, under $H_{0}$,
+\[ F(k_{1}, n - K) = \frac{u'(M_{2} - M)u/k_{1}}{u'Mu/(n - K)}
+   \;\longrightarrow\;
+   \frac{(\text{RSSR} - \text{USSR})/k_{1}}{\text{USSR}/(n - K)} . \]
+With the restricted residuals in the denominator instead,
+\[ \frac{u'(M_{2} - M)u/k_{1}}{u'M_{2}u/(n - K)} . \]
+Note that
+\[ M_{2}(M_{2} - M) = M_{2} - M \neq 0, \]
+so the numerator and the denominator are not independent, whereas in the previous
+statistic
+\[ M(M_{2} - M) = M - M = 0 \]
+(because $MM_{2} = M$), which is what makes them independent. The previous one is
+an $F$. The one that is not independent has a \emph{beta} distribution: writing
+$u'M_{2}u = u'(M_{2} - M)u + u'Mu$, the ratio $u'(M_{2}-M)u/u'M_{2}u$ is of the form
+$A/(A + B)$ with $A/\sigma^{2} \sim \chi^{2}_{k_{1}}$ and
+$B/\sigma^{2} \sim \chi^{2}_{n-K}$ independent, which is
+$\text{Beta}\bigl(\tfrac{k_{1}}{2}, \tfrac{n-K}{2}\bigr)$.
+
+
+\section{Principles of testing}
+
+There are three ways to test a restriction:
+\begin{flatnum}
+  \item[\textcircled{\scriptsize 1}] Estimate the \emph{unrestricted} model only:
+        the \textbf{Wald} test.
+  \item[\textcircled{\scriptsize 2}] Estimate the \emph{restricted} model only:
+        the \textbf{Lagrange multiplier} (or \textbf{score}) test.
+  \item[\textcircled{\scriptsize 3}] Estimate \emph{both} the restricted and the
+        unrestricted model: the \textbf{likelihood ratio} test.
+\end{flatnum}
+In the linear model with normal errors and a known $\sigma^{2}$ the three coincide,
+as Section~1 showed for the first two; the RSSR/USSR form of the $F$ statistic uses
+both estimations.
+
+
+\section{Non-spherical disturbances: generalized least squares}
+
+Now we introduce a more general error structure:
+\[ y = X\beta + u, \quad X \text{ fixed}, \qquad
+   u \sim N(0, \sigma^{2}\Omega), \qquad \Omega \neq I_{n}, \qquad
+   \Omega = \begin{bmatrix}
+     w_{11} & \cdots & w_{1n}\\
+     \vdots & \ddots & \vdots\\
+     w_{n1} & \cdots & w_{nn}
+   \end{bmatrix}. \]
+
+\topic{OLS is still unbiased}
+\[ b = (X'X)^{-1}X'y = \beta + (X'X)^{-1}X'u, \qquad \E(b) = \beta, \]
+but its variance changes:
+\[ \Var(b) = \E\bigl[(b - \beta)(b - \beta)'\bigr]
+   = \sigma^{2}(X'X)^{-1}X'\Omega X(X'X)^{-1}. \]
+
+\topic{Transforming the model}
+Look for a matrix $T$ such that
+\[ Tu \overset{?}{\sim} N(0, \sigma^{2}I) : \qquad
+   T\Var(u)T' = \sigma^{2}\,T\Omega T' = \sigma^{2}I_{n}. \]
+Does a $T$ with $T\Omega T' = I_{n}$ exist or not? Refer to the previous lecture (the
+spectral decomposition, Lesson 5): $\Omega$ is symmetric and positive definite, so
+\[ Q'\Omega Q = \Lambda \quad\Longrightarrow\quad
+   \Omega = Q\Lambda Q' = PP', \qquad P = Q\Lambda^{1/2}, \]
+where $\Lambda$ is the diagonal matrix of eigenvalues and $Q$ the matrix of
+eigenvectors. Then we need
+\[ TPP'T' = I, \]
+and $T = P^{-1}$ works: $P^{-1}PP'(P')^{-1} = I_{n}$. With $T = P^{-1}$,
+\[ \Omega = PP' = T^{-1}(T')^{-1}, \qquad \Omega^{-1} = T'T . \]
+
+\topic{The GLS estimator}
+Premultiply the model by $T$:
+\[ Ty = TX\beta + Tu, \qquad Tu \sim N(0, \sigma^{2}I_{n}). \]
+Writing $y_{*} = Ty$, $X_{*} = TX$, $u_{*} = Tu$,
+\[ y_{*} = X_{*}\beta + u_{*} \]
+is the standard OLS framework, so
+\[ b_{*} = (X_{*}'X_{*})^{-1}X_{*}'y_{*} = (X'T'TX)^{-1}X'T'Ty
+   = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}y, \]
+\[ \Var(b_{*}) = \sigma^{2}(X_{*}'X_{*})^{-1} = \sigma^{2}(X'\Omega^{-1}X)^{-1}. \]
+It is unbiased:
+\begin{align*}
+  b_{*} &= (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}(X\beta + u)\\
+        &= (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}X\beta + (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}u,\\
+  \E(b_{*}) &= \beta + 0 .
+\end{align*}
+
+\topic{OLS against GLS}
+\begin{align*}
+  b     &\sim N\bigl(\beta,\ \sigma^{2}(X'X)^{-1}X'\Omega X(X'X)^{-1}\bigr)
+          &&\longrightarrow\ \text{oblique projection on } L(X),\\
+  b_{*} &\sim N\bigl(\beta,\ \sigma^{2}(X'\Omega^{-1}X)^{-1}\bigr)
+          &&\longrightarrow\ \text{orthogonal projection on } L(X_{*}).
+\end{align*}
+GLS is more efficient if $u \sim N(0, \sigma^{2}\Omega)$: in the transformed model
+the Gauss--Markov theorem applies, so $b_{*}$ is the best linear unbiased estimator,
+and $\Var(b) - \Var(b_{*})$ is positive semi-definite.
+
+\section{Two special cases of $\Omega$}
+
+\topic{Heteroskedasticity: $\Omega_{1}$ diagonal}
+\[ \Omega \;\longrightarrow\; \Omega_{1} = \begin{bmatrix}
+     w_{11} & & 0\\
+     & \ddots & \\
+     0 & & w_{nn}
+   \end{bmatrix}:
+   \qquad \Var(u_{i}) = w_{ii}, \qquad \E(u_{i}u_{j}) = 0 \ (i \neq j),
+   \qquad i = 1, \dots, n . \]
+
+\topic{Correlated errors with a common variance: $\Omega_{2}$}
+\[ \text{or}\quad \Omega_{2} = \begin{bmatrix}
+     \bar w & w_{12} & \cdots & w_{1n}\\
+     w_{21} & \bar w & & \vdots\\
+     \vdots & & \ddots & \\
+     w_{n1} & w_{n2} & \cdots & \bar w
+   \end{bmatrix}:
+   \qquad \Var(u_{i}) = \bar w, \qquad \E(u_{i}u_{j}) \neq 0 . \]
+
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Lesson 7''; it is not
+        reproduced. Pages 10 and 11 are blank.
+  \item As in Lessons 3--6 the regressor matrix, written lower case ($x$) on the
+        page, is typeset $X$; $B$ for $\beta$ is typeset $\beta$; $k$ for the number
+        of regressors is typeset $K$; $6^{2}$ is $\sigma^{2}$. The multiplier,
+        written both $\lambda^{*}$ and $\lambda_{*}$, is typeset $\lambda_{*}$ as in
+        Lesson 6. The column space, written $\ell(x)$, is typeset $L(X)$ as in
+        Lessons 2--3.
+  \item The GLS estimator is written both $b^{*}$ and $b_{*}$ (and $x_{*}$,
+        $y^{*}$, $u^{*}$ for the transformed data); typeset $b_{*}$, $X_{*}$,
+        $y_{*}$, $u_{*}$ throughout. Note that Lesson 6 uses $b_{*}$ for the
+        \emph{restricted} least-squares estimator; here it is GLS.
+  \item Page 2: the first line ``$|Rb - r| \to \ldots$'' has a bare $[$ missing
+        before $R(X'X)^{-1}R'$; typeset with brackets. \textbf{Corrected:} the
+        first line for $\lambda^{*}$ is written $[R(X'x)^{-1}R'](r - Rb)$ without
+        the inverse; the next line has it. The third line is written
+        $\ldots - (R(R(X'X)^{-1}R(X'X)^{-1}X'u$ and runs off the page; typeset
+        $[R(X'X)^{-1}R']^{-1}R(X'X)^{-1}X'u$. ``Under $H_{0}$ the first term is
+        zero'' is \textbf{added}.
+  \item Page 2, the figure: axes $f(\beta)$ and $\beta$, a convex curve and one
+        vertical line to the right of the minimum, with no other labels. The labels
+        $b$ and $\bar\beta$ and the caption are \textbf{added} (the constraint
+        figure of Lesson 6 has the same layout).
+  \item Page 3: \textbf{Corrected:} $\Var(\lambda_{*})$ is written without the
+        expectation, $(\ldots)X'uu'X(\ldots)$; typeset with $\E$. \textbf{Corrected:}
+        the quadratic form is written
+        $\tfrac{1}{\sigma^{2}}(r - Rb)'(R(X'X)^{-1}R')(r - Rb)$ without the inverse;
+        it is $[R(X'X)^{-1}R']^{-1}$. The annotation ``$|\lambda_{*}| = |Rb - r|$''
+        with an arrow to ``restricted'' and a bracket to ``same thing as
+        $\lambda_{*} = 0$ $\to$ unrestri.\ estimation'' is written out as the
+        paragraph ``The LM statistic is the Wald statistic''. In the $F$ numerator
+        the last factor is written $(r - rb)$ and the first lacks a transpose;
+        typeset $(r - Rb)'\ldots(r - Rb)$.
+  \item Page 4: ``If we intend to to $e_{*}'e_{*}/n-k$ replace $e'e$ in
+        denumerate'' $\to$ \emph{to use $e_{*}'e_{*}/(n-K)$ to replace $e'e/(n-K)$ in
+        the denominator}. \textbf{Corrected:} both $F$ statistics on this page are
+        labelled $F(K, n-K)$; with $H_{0}:\beta_{1} = 0$ the numerator degrees of
+        freedom are $k_{1}$. The dimension labels under $H_{0}$ read
+        ``$k_{1}\times1$  $k_{1}\times1$''. ``previous one is F. Not independent one
+        is $\beta$ distri.'' is read as a \emph{beta distribution}; the reason
+        ($A/(A+B)$) and $MM_{2} = M$ are \textbf{added}.
+  \item Page 5: the three principles are numbered \textcircled{\scriptsize 1}--\textcircled{\scriptsize 3}
+        with ``Score'' written above ``Lagrange multiplier'' and a large bracket to
+        their right with no label. The sentence on when the three coincide is
+        \textbf{added}. ``Now we intriduce non-linear'' is read as introducing a
+        more general (non-spherical) error covariance, which is what the page goes
+        on to do; ``non-linear'' is not kept.
+  \item Page 6: $\Var(b)$ is written $\E(b - \beta)(b - \beta')$; typeset
+        $\E[(b-\beta)(b-\beta)']$. \textbf{Corrected:} the decomposition is
+        written ``$\Omega = PP' = Q\Lambda^{1/2}$'' with $\Lambda$ labelled ``eigen
+        value of diagonal matrix'' and $Q$ ``eigen vector''; it is
+        $\Omega = Q\Lambda Q' = PP'$ with $P = Q\Lambda^{1/2}$. ``Symmetric and
+        positive definite'' is \textbf{added}. ``Refer to previous lecture'' is
+        taken to be Lesson 5 (spectral decomposition).
+  \item Page 7: \textbf{Corrected:} the transformed model is written
+        $y^{*} = y^{*}\beta + u^{*}$; it is $X_{*}\beta$.
+  \item Page 8: ``$b \to$ oblique project.\ on $\ell(X)$'' and ``$b_{*}$ from
+        orthogonal proj.\ $\ell(X_{*})$'' are kept as written. In the original
+        $y$-space OLS is the orthogonal projection on $L(X)$ and GLS an oblique one;
+        the page's statement holds in the transformed space, where
+        $X_{*}b = TX(X'X)^{-1}X'T^{-1}y_{*}$ projects onto $L(X_{*})$ but is not
+        symmetric. ``GLS it's more efficient if with $u\sim N(0, \sigma^{2}\Omega)$''
+        is kept; the Gauss--Markov reason is \textbf{added}. ``$\Var(u_{i}) =
+        w_{ii} = \E(u_{i}u_{j}) = 0$'' is read as two statements, with $i \neq j$
+        \textbf{added}.
+  \item Page 9: $\Omega_{2}$ has $\bar w$ on the diagonal and $w_{12}, \ldots, w_{1n}$,
+        $w_{21}$, $w_{n1}, w_{n2}$ off it. The names ``heteroskedasticity'' and
+        ``correlated errors with a common variance'' are \textbf{added}; the page
+        gives only the matrices and the moments.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the exam
+        date, $H_{0}$, the Wald quadratic form, $H_{0} : \lambda = 0$, the figure and
+        $\lambda_{*}$; page 3 $\Var(\lambda_{*})$, the LM statistic, $s^{2}$ and
+        $F(q, n-K)$; page 4 $s_{*}^{2}$, the independence remark and the subset
+        example; page 5 the principles of testing, the model with $\sigma^{2}\Omega$,
+        and $b$; page 6 $\Var(b)$ and the construction of $T$; page 7 $\Omega^{-1} =
+        T'T$, the transformed model, $b_{*}$ and $\E(b_{*})$; page 8 OLS against
+        GLS and $\Omega_{1}$; page 9 $\Omega_{2}$; pages 10--11 blank.
+\end{transcriptnotes}
+
+\end{document}
