@@ -19,7 +19,15 @@ for f in lesson[0-9][0-9].tex hw[0-9][0-9].tex hw[0-9][0-9]q[0-9]*.tex; do
   # problem sets go into "../Metrics HW N/" when that folder exists
   hwdir=".."; [ -d "../Metrics HW${n}" ] && hwdir="../Metrics HW${n}"
   case "$f" in
-    lesson*) out="../Lesson ${n} (LaTeX).pdf" ;;
+    # a "%% title: ..." line in the lesson names the file: "Lesson N - <title> (LaTeX).pdf"
+    lesson*) title=$(sed -n 's/^%% title: *//p' "$f" | head -n 1)
+             if [ -n "$title" ]; then
+               out="../Lesson ${n} - ${title} (LaTeX).pdf"
+               old="../Lesson ${n} (LaTeX).pdf"     # drop an untitled copy only if its text matches this build
+               if [ -f "$old" ] && cmp -s <(pdftotext "$old" - 2>/dev/null) <(pdftotext "${f%.tex}.pdf" -); then rm -f "$old"; fi
+             else
+               out="../Lesson ${n} (LaTeX).pdf"
+             fi ;;
     hw*q*)   q=$(printf '%s' "$f" | sed -E 's/^hw[0-9]+q0*([0-9]+)\.tex$/\1/')
              out="${hwdir}/HW ${n} solution for question ${q}.pdf" ;;
     hw*)     out="${hwdir}/HW ${n}.pdf" ;;

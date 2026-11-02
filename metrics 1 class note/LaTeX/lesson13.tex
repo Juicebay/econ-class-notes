@@ -1,0 +1,300 @@
+%% title: Testing with the GNR, AR(1) Errors and Nonlinear GLS
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{13}{Hypothesis testing with the Gauss--Newton regression: examples, a test for AR(1) errors, and the GNR under $\sigma^{2}\Omega$}{November 2, 2026}
+
+\runin{Previously} Asymptotic normality of NLS and the restricted GNR (Lesson 12).
+
+\section{Recap: asymptotics of NLS}
+
+\topic{The nonlinear model}
+\[ y = x(\beta) + u, \qquad u \sim (0,\sigma^{2}I_{n}), \]
+\[ \sqrt{n}\,(\hat\beta-\beta_{0}) \ \xrightarrow{\ d\ }\ N(0,\sigma^{2}\Sigma_{XX}^{-1}),
+   \qquad \Sigma_{XX}=\operatorname*{plim}\frac{X(\beta_{0})'X(\beta_{0})}{n}. \]
+In a finite sample this is used through the estimated covariance matrix
+\[ \widehat{\Var}(\hat\beta)=s^{2}\bigl[X(\hat\beta)'X(\hat\beta)\bigr]^{-1},
+   \qquad s^{2}=\frac{\operatorname{SSR}(\hat\beta)}{n-K}. \]
+
+\topic{The linear special case}
+\[ y=X\beta+u, \qquad
+   \sqrt{n}\,(b_{n}-\beta)\ \xrightarrow{\ d\ }\ N(0,\sigma^{2}\Sigma_{XX}^{-1}),
+   \qquad \Sigma_{XX}=\operatorname*{plim}\frac{X'X}{n}. \]
+The derivative matrix $X(\beta_{0})$ of the nonlinear model plays the role of the
+regressor matrix $X$.
+
+\section{Testing restrictions in a nonlinear model}
+
+\topic{Partitioned model and GNR}
+\[ y=x(\beta_{1},\beta_{2})+u, \qquad
+   \beta_{1}:K_{1}\times 1,\quad \beta_{2}:K_{2}\times 1,\quad K=K_{1}+K_{2}, \]
+\[ X_{1}(\beta)=\Bigl[\frac{\partial x_{t}(\beta)}{\partial\beta_{1i}}\Bigr]
+     _{\substack{t=1,\ldots,n\\ i=1,\ldots,K_{1}}},
+   \qquad
+   X_{2}(\beta)=\Bigl[\frac{\partial x_{t}(\beta)}{\partial\beta_{2i}}\Bigr]
+     _{\substack{t=1,\ldots,n\\ i=1,\ldots,K_{2}}}. \]
+The GNR at a parameter value $\beta=(\beta_{1}',\beta_{2}')'$ is
+\[ y-x(\beta_{1},\beta_{2})=X_{1}(\beta_{1},\beta_{2})\,b_{1}
+   +X_{2}(\beta_{1},\beta_{2})\,b_{2}+\text{errors}. \]
+We test the $K_{2}$ restrictions
+\[ H_{0}:\ \beta_{2}=0. \]
+
+\topic{Wald test (unrestricted estimate)}
+Estimate the unrestricted model by NLS and use the block of the GNR covariance
+matrix that belongs to $\hat\beta_{2}$:
+\[ W=(\hat\beta_{2}-0)'\bigl[\widehat{\Var}(\hat\beta_{2})\bigr]^{-1}(\hat\beta_{2}-0)
+   \ \overset{a}{\sim}\ \chi^{2}_{K_{2}} \quad\text{under }H_{0}. \]
+
+\topic{GNR test (restricted estimate)}
+Instead, estimate only the restricted model and run the GNR there:
+\[ \tilde\beta=(\tilde\beta_{1}',\,0')', \qquad
+   y-x(\tilde\beta_{1},0)=X_{1}(\tilde\beta_{1},0)\,b_{1}
+   +X_{2}(\tilde\beta_{1},0)\,b_{2}+\text{errors}. \]
+If $H_{0}$ is true, $\hat\beta_{2}$ should be close to $\tilde\beta_{2}=0$, so
+moving away from the restriction should not improve the fit: the coefficient
+$b_{2}$ in this regression should be insignificant. The test of $H_{0}$ is
+therefore the ordinary test of $b_{2}=0$ in the restricted GNR (Section~\ref{sec:general}).
+
+\section{Example: a power term}
+
+\topic{The model and its derivatives}
+\[ y_{t}=\underbrace{\beta_{1}x_{1t}+\beta_{2}x_{2t}^{\beta_{3}}}_{x_{t}(\beta_{1},\beta_{2},\beta_{3})}+u_{t},
+   \qquad x_{2t}>0, \qquad H_{0}:\ \beta_{3}=0. \]
+The $t$-th row of the derivative matrix is
+\[ X_{t}(\beta_{1},\beta_{2},\beta_{3})
+   =\Bigl(\ \frac{\partial x_{t}}{\partial\beta_{1}}\ \Big|\
+            \frac{\partial x_{t}}{\partial\beta_{2}}\ \Big|\
+            \frac{\partial x_{t}}{\partial\beta_{3}}\ \Bigr)
+   =\bigl(\,x_{1t}\ \big|\ x_{2t}^{\beta_{3}}\ \big|\ \beta_{2}x_{2t}^{\beta_{3}}\log x_{2t}\,\bigr), \]
+using $\partial x^{\beta_{3}}/\partial\beta_{3}
+=\partial e^{\beta_{3}\log x}/\partial\beta_{3}=x^{\beta_{3}}\log x$.
+
+\topic{Under $H_{0}$}
+At $\beta_{3}=0$ every $x_{2t}^{0}=1$, so the second column becomes a constant
+and the third loses its power:
+\[ X_{t}(\beta_{1},\beta_{2},0)=\bigl(\,x_{1t}\ \big|\ 1\ \big|\ \beta_{2}\log x_{2t}\,\bigr). \]
+The restricted model is linear, $y_{t}=\beta_{1}x_{1t}+\beta_{2}+u_{t}$, so
+$\tilde\beta_{1},\tilde\beta_{2}$ come from OLS of $y_{t}$ on $x_{1t}$ and a constant.
+
+\topic{The GNR}
+\[ y_{t}-\tilde\beta_{1}x_{1t}-\tilde\beta_{2}
+   = b_{1}x_{1t}+b_{2}+b_{3}\,\tilde\beta_{2}\log x_{2t}+\text{errors}. \]
+Test $b_{3}=0$ with the ordinary $t$ statistic (asymptotically $N(0,1)$ under $H_{0}$).
+Since $\tilde\beta_{2}$ is a scalar, the regressor may equally be $\log x_{2t}$:
+rescaling a regressor leaves its $t$ statistic unchanged (provided $\tilde\beta_{2}\neq0$).
+The coefficients $b_{1},b_{2}$ are zero here because $x_{1t}$ and the constant are
+exactly the regressors of the restricted OLS fit, but they must be kept in the GNR.
+
+\section{Example: two power terms}
+
+\[ y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}^{\beta_{3}}+\beta_{4}x_{3t}^{\beta_{5}}+u_{t}. \]
+Each of the following joint nulls ($K_{2}=2$) makes the model linear:
+\begin{flatlist}
+ \item $H_{0}:\ \beta_{3}=1,\ \beta_{5}=1$ \quad gives\quad
+       $y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}+\beta_{4}x_{3t}+u_{t}$;
+ \item $H_{0}:\ \beta_{3}=1,\ \beta_{5}=0$ \quad gives\quad
+       $y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}+\beta_{4}+u_{t}$;
+ \item $H_{0}:\ \beta_{3}=0,\ \beta_{5}=1$ \quad gives\quad
+       $y_{t}=\beta_{1}x_{1t}+\beta_{2}+\beta_{4}x_{3t}+u_{t}$.
+\end{flatlist}
+For instance, under the first null the GNR regresses the restricted OLS
+residuals $\tilde u_{t}$ on
+\[ x_{1t},\quad x_{2t},\quad x_{3t},\quad
+   \tilde\beta_{2}\,x_{2t}\log x_{2t},\quad \tilde\beta_{4}\,x_{3t}\log x_{3t}, \]
+and tests jointly that the last two coefficients are zero.
+
+\Needspace{14\baselineskip}
+\section{The restricted GNR test in general}\label{sec:general}
+
+\topic{Set-up}
+Write $\tilde x=x(\tilde\beta)$, $\tilde X_{1}=X_{1}(\tilde\beta)$,
+$\tilde X_{2}=X_{2}(\tilde\beta)$, $\tilde u=y-\tilde x$. Run
+\[ y-\tilde x=\tilde X_{1}b_{1}+\tilde X_{2}b_{2}+\text{errors},
+   \qquad\text{and test}\quad b_{2}=0 . \]
+In words: $H_{0}:\beta_{2}=0$ is tested by testing $b_{2}=0$ in the GNR evaluated
+at the restricted estimate.
+
+\topic{FWL}
+Let
+\[ \tilde M_{1}=I_{n}-\tilde X_{1}(\tilde X_{1}'\tilde X_{1})^{-1}\tilde X_{1}'. \]
+Then
+\[ \hat b_{2}=(\tilde X_{2}'\tilde M_{1}\tilde X_{2})^{-1}\tilde X_{2}'\tilde M_{1}(y-\tilde x),
+   \qquad
+   \widehat{\Var}(\hat b_{2})=\hat\sigma^{2}(\tilde X_{2}'\tilde M_{1}\tilde X_{2})^{-1}, \]
+and the Wald statistic for $b_{2}=0$ in the GNR is
+\[ (\hat b_{2}-0)'\bigl[\widehat{\Var}(\hat b_{2})\bigr]^{-1}(\hat b_{2}-0)
+   =\frac{1}{\hat\sigma^{2}}\,(y-\tilde x)'\tilde M_{1}\tilde X_{2}
+     (\tilde X_{2}'\tilde M_{1}\tilde X_{2})^{-1}\tilde X_{2}'\tilde M_{1}(y-\tilde x)
+   \ \overset{a}{\sim}\ \chi^{2}_{K_{2}}. \]
+Here $\hat\sigma^{2}$ is a consistent estimate of $\sigma^{2}$ under $H_{0}$, e.g.\
+$\tilde u'\tilde u/n$ or the GNR's $s^{2}$. Because the restricted FOC gives
+$\tilde X_{1}'\tilde u=0$, we have $\tilde M_{1}(y-\tilde x)=\tilde u$, so the
+numerator is the explained sum of squares of the GNR. With
+$\hat\sigma^{2}=\tilde u'\tilde u/n$ the statistic equals $nR^{2}_{u}$, the sample
+size times the uncentred $R^{2}$ of the GNR. Dividing by $K_{2}$ and using the GNR's
+$s^{2}$ gives its usual $F$ statistic.
+
+\section{The linear case: how the two forms relate}
+
+\[ y=X_{1}\beta_{1}+X_{2}\beta_{2}+u, \qquad H_{0}:\ \beta_{2}=0,
+   \qquad b_{2}=(X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}y. \]
+Two statistics:
+\begin{align*}
+ &\text{\textcircled{\scriptsize 1}}\quad
+   W=(b_{2}-0)'\bigl[\Var(b_{2})\bigr]^{-1}(b_{2}-0),
+   \qquad \Var(b_{2})=\sigma^{2}(X_{2}'M_{1}X_{2})^{-1};\\
+ &\text{\textcircled{\scriptsize 2}}\quad
+   \frac{1}{\sigma^{2}}\,y'M_{1}X_{2}(X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}y .
+\end{align*}
+
+\topic{They are the same number}
+Substitute $b_{2}$ into \textcircled{\scriptsize 1}:
+\begin{align*}
+ W &=\frac{1}{\sigma^{2}}\,b_{2}'(X_{2}'M_{1}X_{2})\,b_{2}\\
+   &=\frac{1}{\sigma^{2}}\,y'M_{1}X_{2}(X_{2}'M_{1}X_{2})^{-1}
+      (X_{2}'M_{1}X_{2})(X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}y
+   \;=\;\text{\textcircled{\scriptsize 2}}.
+\end{align*}
+Moreover, $M_{1}y$ is the residual vector of the restricted regression
+(the linear analogue of $\tilde u$), and the GNR at the restricted estimate is
+exactly the regression of $M_{1}y$ on $X_{1}$ and $X_{2}$. So in the linear model the
+restricted-GNR statistic \textcircled{\scriptsize 2} and the Wald statistic
+\textcircled{\scriptsize 1} coincide; they differ only through the estimate of
+$\sigma^{2}$ that is plugged in. Since
+$y'M_{1}X_{2}(X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}y=\operatorname{RSSR}-\operatorname{USSR}$,
+dividing by $K_{2}$ and using $s^{2}=\operatorname{USSR}/(n-K)$ gives the $F$ test of
+Lessons 5--6.
+
+\section{Testing for AR(1) errors with the GNR}
+
+\topic{The model as a nonlinear regression}
+\[ y_{t}=x_{t}'\beta+u_{t}, \qquad u_{t}=\rho u_{t-1}+\varepsilon_{t}, \qquad
+   \varepsilon_{t}\sim(0,\sigma_{\varepsilon}^{2}),\quad
+   \E(\varepsilon_{t}\varepsilon_{s})=0\ (t\neq s). \]
+Lag the equation once and multiply by $\rho$:
+\[ \rho y_{t-1}=\rho x_{t-1}'\beta+\rho u_{t-1}. \]
+Subtracting,
+\[ y_{t}=\underbrace{\rho y_{t-1}+x_{t}'\beta-\rho x_{t-1}'\beta}_{x_{t}(\delta)}
+   +\varepsilon_{t}, \qquad \delta=(\beta',\rho)', \qquad t=2,\ldots,n. \]
+This is a nonlinear regression in $\delta$ with well-behaved errors $\varepsilon_{t}$.
+
+\topic{Derivatives}
+\[ X_{t}(\delta)=\Bigl(\ \frac{\partial x_{t}}{\partial\beta'}\ \Big|\
+                       \frac{\partial x_{t}}{\partial\rho}\ \Bigr)
+   =\bigl(\,x_{t}'-\rho x_{t-1}'\ \big|\ y_{t-1}-x_{t-1}'\beta\,\bigr). \]
+
+\topic{Under $H_{0}:\rho=0$}
+\[ X_{t}(\beta,0)=\bigl(\,x_{t}'\ \big|\ y_{t-1}-x_{t-1}'\beta\,\bigr). \]
+The restricted model is the linear regression itself, so $\tilde\beta$ is OLS with
+residuals $e_{t}=y_{t}-x_{t}'\tilde\beta$; the last column evaluated at $\tilde\beta$
+is $e_{t-1}$. The GNR $y-\tilde x=\tilde X_{1}b_{1}+\tilde X_{2}b_{2}+\text{errors}$ becomes
+\[ e_{t}=x_{t}'b_{1}+b_{2}\,e_{t-1}+\text{errors}: \]
+regress $e_{t}$ on $x_{t}$ and $e_{t-1}$, and test $b_{2}=0$ with the $t$ statistic.
+(The first observation is lost, or $e_{0}$ is set to $0$.)
+
+\Needspace{12\baselineskip}
+\section{The GNR when $u\sim(0,\sigma^{2}\Omega)$}
+
+\topic{GLS transformation}
+\[ y=x(\beta)+u, \qquad u\sim(0,\sigma^{2}\Omega), \qquad \Omega\neq I_{n}\ \text{known}. \]
+As for the linear model $y=X\beta+u$ (Lesson 7), choose $T$ with
+$T'T=\Omega^{-1}$, so that $\Var(Tu)=\sigma^{2}T\Omega T'=\sigma^{2}I_{n}$:
+\[ Ty=TX\beta+Tu \quad\text{(linear)}, \qquad
+   Ty=Tx(\beta)+Tu \quad\text{(nonlinear)}. \]
+
+\topic{Nonlinear GLS and its GNR}
+Apply NLS to the transformed model:
+\[ \min_{\beta}\ (y-x(\beta))'\,\underbrace{T'T}_{\Omega^{-1}}\,(y-x(\beta)). \]
+The derivative of $Tx(\beta)$ is $TX(\beta)$, so the GNR is the ordinary GNR
+premultiplied by $T$:
+\[ T\bigl(y-x(\hat\beta)\bigr)=TX(\hat\beta)\,b+\text{errors}, \]
+compared with $y-x(\hat\beta)=X(\hat\beta)\,b+\text{errors}$ when $\Omega=I_{n}$.
+For a test, evaluate it at the restricted estimate, exactly as before.
+
+\topic{Example: power term with AR(1) errors, $\rho$ known}
+\[ y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}^{\beta_{3}}+u_{t}, \qquad
+   u_{t}=\rho u_{t-1}+\varepsilon_{t}, \qquad H_{0}:\ \beta_{3}=0. \]
+Here $T$ is the quasi-difference (Lesson 8):
+\[ y_{t}-\rho y_{t-1}=\beta_{1}(x_{1t}-\rho x_{1,t-1})
+   +\beta_{2}\bigl(x_{2t}^{\beta_{3}}-\rho x_{2,t-1}^{\beta_{3}}\bigr)+\varepsilon_{t}. \]
+The untransformed derivatives under $H_{0}$ are, as in Section 3,
+\[ X_{t}(\beta_{1},\beta_{2},0)=\bigl(\,x_{1t}\ \big|\ x_{2t}^{0}=1\ \big|\
+   \beta_{2}x_{2t}^{0}\log x_{2t}=\beta_{2}\log x_{2t}\,\bigr). \]
+The untransformed GNR would be
+$y_{t}-\tilde x_{t}=x_{1t}b_{1}+b_{2}+b_{3}\tilde\beta_{2}\log x_{2t}+\text{errors}$;
+quasi-differencing every variable gives the GNR to use:
+\[ \tilde u_{t}-\rho\tilde u_{t-1}
+   =b_{1}(x_{1t}-\rho x_{1,t-1})+b_{2}(1-\rho)
+    +b_{3}\bigl(\tilde\beta_{2}\log x_{2t}-\rho\tilde\beta_{2}\log x_{2,t-1}\bigr)
+    +\text{errors}, \]
+where $\tilde u_{t}=y_{t}-\tilde\beta_{1}x_{1t}-\tilde\beta_{2}$ and
+$\tilde\beta_{1},\tilde\beta_{2}$ are the GLS estimates of the restricted model
+(OLS of $y_{t}-\rho y_{t-1}$ on $x_{1t}-\rho x_{1,t-1}$ and $1-\rho$). Test $b_{3}=0$.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: the seven-page handwritten export \emph{Lesson 13.pdf}. Page 1 is a
+       divider reading ``Lesson 13''. No date is written; November 2, 2026 is
+       inferred from the export date and the Monday/Wednesday pattern of Lessons
+       11--12. Section headings and connecting sentences are \textbf{added}.
+ \item As in earlier lessons, $6^{2}$ is $\sigma^{2}$, $\Sigma_{xx}$ is $\Sigma_{XX}$,
+       transposes are primes, lower-case $x(\beta)$ is the regression function and
+       capital $X(\beta)$ its derivative matrix. The handwritten accent over restricted
+       estimates (a ``$\vee$''-like mark) is typeset as a tilde, $\tilde\beta$, following
+       Lesson 12; hats are kept for unrestricted estimates.
+ \item Page 2: the arrow from the limiting distribution to
+       $\Var(\hat\beta)=s^{2}[X(\hat\beta)'X(\hat\beta)]^{-1}$ is written as
+       ``estimated covariance matrix''. ``$\operatorname{plim}X'X/n\ \Sigma_{xx}$'' is
+       missing ``$=$''. The note ``$\hat\beta_{2}\sim\tilde\beta_{2}$'' is read as
+       ``$\hat\beta_{2}$ close to $\tilde\beta_{2}=0$ under $H_{0}$''. The Wald statistic's
+       asymptotic $\chi^{2}_{K_{2}}$ is marked ``$\overset{a}{\sim}$''.
+ \item Page 3: the margin question ``why this is 1?'' (at $\beta_{3}=0$) is answered
+       in the text: $x_{2t}^{0}=1$. \textbf{Corrected:} the GNR was written
+       $y-\tilde\beta_{1}x_{2t}-\tilde\beta_{2}=b_{1}x_{2t}+b_{2}+\ldots$; the first
+       regressor is $x_{1t}$, not $x_{2t}$. \textbf{Corrected:} ``check if
+       $\tilde\beta_{3}$ is 0'' --- the test is of the GNR coefficient $b_{3}=0$
+       ($\tilde\beta_{3}=0$ by construction). The remarks on rescaling by
+       $\tilde\beta_{2}$ and on $b_{1}=b_{2}=0$ are \textbf{added}.
+ \item Page 4: ``$H_{0}=\beta_{3}=1$'' is typeset $H_{0}:\beta_{3}=1$. The restricted
+       models implied by the three nulls and the GNR regressors for the first null are
+       \textbf{added}. ``$H_{0}:\beta_{2}=0\Leftrightarrow b_{2}=0$'' is rephrased: the
+       hypothesis is \emph{tested} by testing $b_{2}=0$; the parameters are not
+       equivalent. \textbf{Corrected:} the GNR $y-x(\tilde\beta,0)=X_{1}(\tilde\beta,0)+
+       X_{2}(\tilde\beta,0)$ lacks the coefficients $b_{1},b_{2}$.
+       \textbf{Corrected:} $\hat M_{1}=(1-\hat X_{1}(\tilde X_{1}'\tilde X_{1})^{-1}\tilde X_{1}')$
+       has $1$ for $I_{n}$ and mixes hats and tildes; all are evaluated at $\tilde\beta$.
+       The test statistic's $1/\sigma^{2}$ is written with an estimate $\hat\sigma^{2}$;
+       the remarks on $\tilde M_{1}\tilde u=\tilde u$, $nR^{2}_{u}$ and the $F$ form are
+       \textbf{added}.
+ \item Page 5 (top): \textbf{Corrected:} ``$b_{2}=(b_{2}-0)[\Var(b_{2})]^{-1}(b_{2}-0)$''
+       labels the statistic with the estimator's name; it is called $W$ and the first
+       factor is transposed. ``$b_{2}\ (X_{2}'M_{1}X_{2})X_{2}'M_{1}y$'' lacks ``$=$'' and
+       the inverse. The question ``How does \textcircled{\scriptsize 1} \&
+       \textcircled{\scriptsize 2} relate?'' (with ``$M_{1}y$'' noted beside it) is
+       answered in the text: they are identical, and equal $K_{2}$ times the $F$
+       statistic up to the $\sigma^{2}$ estimate --- \textbf{added}.
+ \item Pages 5--6: \textbf{Corrected:} the lagged equation was written
+       $y_{t-1}=x_{t-1}'\beta+u_{t}$; it is $u_{t-1}$ (then multiplied by $\rho$).
+       \textbf{Corrected:} the quasi-differenced equation had $-\rho x_{t}'\beta_{1}$;
+       it is $-\rho x_{t-1}'\beta$. The derivative row is written with the transpose
+       on $x_{t}'$. ``$e_{t}$ on $x_{t}$, $e_{t-1}$ and errors'' is written as the GNR
+       equation; the $t$ test and the lost first observation are \textbf{added}.
+ \item Page 7: ``$n\sim(0,\sigma^{2}\Omega)$'' is $u\sim(0,\sigma^{2}\Omega)$.
+       \textbf{Corrected:} the minimization is over $\beta$ (written $\min_{\hat\beta_{1}}$)
+       and the objective is in $x(\beta)$, not $x(\hat\beta)$. The untransformed GNR
+       $y-x(\hat\beta)=X(\hat\beta)b+\text{errors}$ is labelled as the $\Omega=I_{n}$
+       case. \textbf{Corrected:} the final transformed GNR omits the dependent
+       variable and the column $(1-\rho)$ that the constant becomes after
+       quasi-differencing; both are restored, and the restricted GLS estimates are
+       \textbf{added}.
+ \item Original page map: page 1 divider; page 2 recap, partitioned GNR, Wald test,
+       restricted GNR; page 3 power-term example with $H_{0}:\beta_{3}=0$; page 4
+       two-power-term nulls, general restricted GNR, FWL and test statistic; page 5
+       linear case \textcircled{\scriptsize 1} vs \textcircled{\scriptsize 2}, AR(1)
+       model as NLS; page 6 AR(1) derivatives and GNR test for $\rho=0$; page 7 GNR
+       under $\sigma^{2}\Omega$ and the power-term example with AR(1) errors.
+\end{transcriptnotes}
+
+\end{document}

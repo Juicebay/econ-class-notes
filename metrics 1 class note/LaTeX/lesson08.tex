@@ -1,0 +1,323 @@
+%% title: Heteroskedasticity (WLS) and AR(1) Errors (GLS)
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{8}{Weighted least squares, AR(1) errors, and GLS with a known $\rho$}{}
+
+The setting is the one Lesson 7 ended with:
+\[ y = X\beta + u, \qquad u \sim N(0, \sigma^{2}\Omega), \qquad
+   \Omega = \begin{bmatrix}
+     w_{11} & w_{12} & \cdots & w_{1n}\\
+     w_{21} & w_{22} & \cdots & w_{2n}\\
+     \vdots & \vdots & \ddots & \vdots\\
+     w_{n1} & w_{n2} & \cdots & w_{nn}
+   \end{bmatrix}. \]
+GLS needs a matrix $T$ with $T'T = \Omega^{-1}$ (or a scalar multiple of it); then
+OLS on $y_{*} = Ty$, $X_{*} = TX$ gives $b_{*} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}y$.
+This lesson finds $T$ in two special cases.
+
+
+\section{Case 1: heteroskedasticity and weighted least squares}
+
+\topic{The variance depends on a variable $z_{i}$}
+The errors are uncorrelated, but their variance moves with $z_{i}$:
+\[ \Var(u_{i}) = \sigma^{2}w_{ii}, \qquad w_{ii} = h(z_{i}) > 0, \qquad
+   \Omega = \begin{bmatrix}
+     h(z_{1}) & 0 & \cdots & 0\\
+     0 & h(z_{2}) & \cdots & 0\\
+     \vdots & \vdots & \ddots & \vdots\\
+     0 & 0 & \cdots & h(z_{n})
+   \end{bmatrix}, \]
+\[ y_{i} = \beta_{1} + \beta_{2}X_{2i} + \beta_{3}X_{3i} + \cdots + \beta_{K}X_{Ki} + u_{i},
+   \qquad u_{i} \sim N\bigl(0, \sigma^{2}h(z_{i})\bigr). \]
+
+\topic{Example: $h(z_{i}) = z_{i}^{2}$}
+\[ u_{i} \sim N(0, \sigma^{2}z_{i}^{2})
+   \quad\Longrightarrow\quad
+   u_{*i} = \frac{u_{i}}{z_{i}} \sim N(0, \sigma^{2}). \]
+In general,
+\[ u_{*i} = \frac{u_{i}}{\sqrt{h(z_{i})}} \sim N(0, \sigma^{2}). \]
+
+\topic{Weighted least squares}
+Divide every term of the model by $\sqrt{h(z_{i})}$:
+\[ \underbrace{\frac{y_{i}}{\sqrt{h(z_{i})}}}_{y_{*i}}
+   = \beta_{1}\frac{1}{\sqrt{h(z_{i})}}
+     + \beta_{2}\frac{X_{2i}}{\sqrt{h(z_{i})}}
+     + \cdots
+     + \beta_{K}\frac{X_{Ki}}{\sqrt{h(z_{i})}}
+     + \underbrace{\frac{u_{i}}{\sqrt{h(z_{i})}}}_{u_{*i}}. \]
+The transformed errors are homoskedastic, so OLS on the transformed data is GLS.
+Note that the constant becomes the regressor $1/\sqrt{h(z_{i})}$, so the transformed
+regression has no intercept. In the notation of Lesson 7, each observation is
+weighted by the inverse of its standard deviation:
+\[ T = \begin{bmatrix}
+     1/\sqrt{h(z_{1})} & 0 & \cdots & 0\\
+     0 & 1/\sqrt{h(z_{2})} & \cdots & 0\\
+     \vdots & \vdots & \ddots & \vdots\\
+     0 & 0 & \cdots & 1/\sqrt{h(z_{n})}
+   \end{bmatrix}, \qquad T'T = \Omega^{-1}. \]
+
+
+\section{Case 2: autocorrelation}
+
+The second special case of Lesson 7 has a common variance $\bar w$ on the diagonal and
+non-zero covariances off it:
+\[ \Omega = \begin{bmatrix}
+     \bar w & w_{12} & \cdots & w_{1n}\\
+     w_{21} & \bar w & \cdots & w_{2n}\\
+     \vdots & \vdots & \ddots & \vdots\\
+     w_{n1} & w_{n2} & \cdots & \bar w
+   \end{bmatrix}. \]
+
+\topic{The AR(1) model}
+With time series data, indexed by $t = 1, \dots, n$,
+\[ y_{t} = \underbrace{x_{t}'}_{1\times K}\,\underbrace{\beta}_{K\times 1} + u_{t},
+   \qquad u_{t} = \rho u_{t-1} + \varepsilon_{t}, \qquad |\rho| < 1, \]
+where the innovations $\varepsilon_{t}$ are white noise:
+\[ \E(\varepsilon_{t}) = 0 \ \ \forall t, \qquad
+   \E(\varepsilon_{t}\varepsilon_{s}) = 0 \ \ (t \neq s), \qquad
+   \varepsilon \sim N(0, \sigma_{\varepsilon}^{2}I_{n}). \]
+
+\topic{The lag operator}
+\[ Lx_{t} = x_{t-1}, \qquad L^{2}x_{t} = L(Lx_{t}) = x_{t-2}, \qquad
+   L^{p}x_{t} = x_{t-p}. \]
+The operator acts on what stands to its right, so
+\[ u_{t} = \rho Lu_{t} + \varepsilon_{t}
+   \quad\Longrightarrow\quad (1 - \rho L)\,u_{t} = \varepsilon_{t}
+   \quad\Longrightarrow\quad u_{t} = (1 - \rho L)^{-1}\varepsilon_{t}. \]
+
+\topic{Math recall: the geometric series}
+\begin{align*}
+  S &= 1 + a + a^{2} + \cdots\\
+  aS &= \phantom{1 + {}} a + a^{2} + \cdots\\
+  S - aS &= 1 \quad\Longrightarrow\quad S = \frac{1}{1 - a} \qquad (|a| < 1).
+\end{align*}
+
+\topic{Connect to $u_{t}$: a moving average of infinite order}
+With $a = \rho L$ and $|\rho| < 1$,
+\begin{align*}
+  u_{t} &= \bigl(1 + \rho L + \rho^{2}L^{2} + \cdots\bigr)\varepsilon_{t}\\
+        &= \varepsilon_{t} + \rho\varepsilon_{t-1} + \rho^{2}\varepsilon_{t-2} + \cdots
+         = \sum_{j=0}^{\infty}\rho^{j}\varepsilon_{t-j}
+         \qquad \text{MA}(\infty).
+\end{align*}
+In particular $u_{t-1}$ depends only on $\varepsilon_{t-1}, \varepsilon_{t-2}, \dots$,
+so it is uncorrelated with $\varepsilon_{t}$:
+\[ \E(u_{t-s}\,\varepsilon_{t}) = 0 \qquad \text{for all } s \geq 1. \]
+
+\topic{We need to find $\Omega$: the variance}
+Square $u_{t} = \rho u_{t-1} + \varepsilon_{t}$ and take expectations:
+\begin{align*}
+  u_{t}^{2} &= \rho^{2}u_{t-1}^{2} + \varepsilon_{t}^{2} + 2\rho\,u_{t-1}\varepsilon_{t},\\
+  \E(u_{t}^{2}) &= \rho^{2}\E(u_{t-1}^{2}) + \E(\varepsilon_{t}^{2})
+                   + 2\rho\underbrace{\E(u_{t-1}\varepsilon_{t})}_{=\,0}.
+\end{align*}
+The variance is the same at every $t$, $\E(u_{t}^{2}) = \E(u_{t-1}^{2}) = \sigma_{u}^{2}$,
+so
+\[ \sigma_{u}^{2} = \rho^{2}\sigma_{u}^{2} + \sigma_{\varepsilon}^{2}
+   \quad\Longrightarrow\quad \sigma_{u}^{2}(1 - \rho^{2}) = \sigma_{\varepsilon}^{2}
+   \quad\Longrightarrow\quad \sigma_{u}^{2} = \frac{\sigma_{\varepsilon}^{2}}{1 - \rho^{2}}. \]
+
+\topic{The covariances}
+Multiply $u_{t} = \rho u_{t-1} + \varepsilon_{t}$ by $u_{t-s}$ and take expectations;
+the $\varepsilon_{t}u_{t-s}$ term always drops out.
+\begin{align*}
+  \text{one lag:}\quad
+  \E(u_{t}u_{t-1}) &= \rho\E(u_{t-1}^{2}) + \E(\varepsilon_{t}u_{t-1})
+                    = \rho\sigma_{u}^{2},\\
+  \text{two lags:}\quad
+  \E(u_{t}u_{t-2}) &= \rho\underbrace{\E(u_{t-1}u_{t-2})}_{\rho\sigma_{u}^{2}}
+                      + \E(\varepsilon_{t}u_{t-2})
+                    = \rho^{2}\sigma_{u}^{2},\\
+  \text{three lags:}\quad
+  \E(u_{t}u_{t-3}) &= \rho\underbrace{\E(u_{t-1}u_{t-3})}_{\rho^{2}\sigma_{u}^{2}}
+                      + \E(\varepsilon_{t}u_{t-3})
+                    = \rho^{3}\sigma_{u}^{2}.
+\end{align*}
+In general
+\[ \E(u_{t}u_{t-s}) = \rho^{s}\sigma_{u}^{2}, \qquad s = 0, 1, 2, \dots \]
+
+\topic{The AR(1) covariance matrix}
+Entry $(t,s)$ is $\sigma_{u}^{2}\rho^{|t-s|}$: the correlation dies out geometrically
+away from the diagonal.
+\[ \underbrace{\Var(u)}_{n\times n} = \sigma_{u}^{2}\,\Omega, \qquad
+   \Omega = \begin{bmatrix}
+     1          & \rho       & \rho^{2}   & \cdots & \rho^{n-1}\\
+     \rho       & 1          & \rho       & \cdots & \rho^{n-2}\\
+     \rho^{2}   & \rho       & 1          & \cdots & \rho^{n-3}\\
+     \vdots     & \vdots     & \vdots     & \ddots & \vdots\\
+     \rho^{n-1} & \rho^{n-2} & \rho^{n-3} & \cdots & 1
+   \end{bmatrix}. \]
+So $\sigma^{2} = \sigma_{u}^{2}$ and $\bar w = 1$ in the opening notation, and $\Omega$
+depends on the single unknown $\rho$. GLS needs $T$ with $T'T \propto \Omega^{-1}$;
+the next section builds it.
+
+
+\section{How do we get GLS?}
+
+\topic{(1) $\rho$ is known}
+Write the model at $t$, and the model at $t-1$ multiplied by $\rho$:
+\begin{align*}
+  y_{t}        &= x_{t}'\beta + u_{t}, \tag{1}\\
+  \rho y_{t-1} &= \rho x_{t-1}'\beta + \rho u_{t-1}. \tag{2}
+\end{align*}
+Then (1) $-$ (2):
+\[ y_{t} - \rho y_{t-1} = (x_{t} - \rho x_{t-1})'\beta
+   + \underbrace{u_{t} - \rho u_{t-1}}_{\varepsilon_{t}\ \text{iid}},
+   \qquad t = 2, \dots, n, \]
+that is, with the lag operator,
+\[ (1 - \rho L)\,y_{t} = \bigl[(1 - \rho L)\,x_{t}\bigr]'\beta + \varepsilon_{t}. \]
+Call the quasi-differenced data $y_{*t} = y_{t} - \rho y_{t-1}$ and
+$x_{*t} = x_{t} - \rho x_{t-1}$; then $y_{*t} = x_{*t}'\beta + \varepsilon_{t}$ has
+iid errors, and OLS on it is GLS.
+
+\topic{The quasi-differencing matrix $T_{*}$}
+In matrix form, dropping the first observation (there is no $y_{0}$):
+\[ \underbrace{T_{*}}_{(n-1)\times n} = \begin{bmatrix}
+     -\rho  & 1      & 0      & \cdots & 0      & 0\\
+     0      & -\rho  & 1      & \cdots & 0      & 0\\
+     \vdots & \vdots & \ddots & \ddots & \vdots & \vdots\\
+     0      & 0      & \cdots & -\rho  & 1      & 0\\
+     0      & 0      & \cdots & 0      & -\rho  & 1
+   \end{bmatrix}, \]
+\[ y_{*} = T_{*}y = T_{*}\begin{bmatrix} y_{1}\\ y_{2}\\ \vdots\\ y_{n} \end{bmatrix}
+   = \begin{bmatrix} y_{2} - \rho y_{1}\\ y_{3} - \rho y_{2}\\ \vdots\\ y_{n} - \rho y_{n-1} \end{bmatrix},
+   \qquad X_{*} = T_{*}X. \]
+$T_{*}'T_{*}$ is close to, but not exactly, proportional to $\Omega^{-1}$ (see below).
+
+\topic{The exact $T$: keeping the first observation}
+\[ \underbrace{T}_{n\times n} = \begin{bmatrix}
+     \sqrt{1 - \rho^{2}} & 0      & 0      & \cdots & 0\\
+     -\rho               & 1      & 0      & \cdots & 0\\
+     0                   & -\rho  & 1      & \cdots & 0\\
+     \vdots              & \vdots & \ddots & \ddots & \vdots\\
+     0                   & 0      & \cdots & -\rho  & 1
+   \end{bmatrix}
+   \quad \longleftarrow \text{the 1st row handles the 1st observation,} \]
+\[ Ty = \begin{bmatrix} \sqrt{1 - \rho^{2}}\,y_{1}\\ y_{2} - \rho y_{1}\\ \vdots\\ y_{n} - \rho y_{n-1} \end{bmatrix}. \]
+The first transformed error is $\sqrt{1 - \rho^{2}}\,u_{1}$, with variance
+$(1 - \rho^{2})\sigma_{u}^{2} = \sigma_{\varepsilon}^{2}$, the same as every
+$\varepsilon_{t}$. So $\Var(Tu) = \sigma_{\varepsilon}^{2}I_{n}$, and
+\[ T'T = (1 - \rho^{2})\,\Omega^{-1} = \begin{bmatrix}
+     1      & -\rho      & 0          & \cdots & 0      & 0\\
+     -\rho  & 1+\rho^{2} & -\rho      & \cdots & 0      & 0\\
+     0      & -\rho      & 1+\rho^{2} & \cdots & 0      & 0\\
+     \vdots & \vdots     & \vdots     & \ddots & \vdots & \vdots\\
+     0      & 0          & 0          & \cdots & 1+\rho^{2} & -\rho\\
+     0      & 0          & 0          & \cdots & -\rho  & 1
+   \end{bmatrix}, \]
+which is $\Omega^{-1}$ up to a scalar; the scalar does not change
+$b_{*} = (X'\Omega^{-1}X)^{-1}X'\Omega^{-1}y$. The matrix $T_{*}'T_{*}$ is the same
+except that its $(1,1)$ entry is $\rho^{2}$ instead of $1$: dropping the first
+observation loses exactly that piece.
+
+
+\section{The AR(2) process}
+
+\[ u_{t} = \rho_{1}u_{t-1} + \rho_{2}u_{t-2} + \varepsilon_{t}, \qquad
+   \rho_{1}, \rho_{2} \text{ known}. \]
+With the lag operator,
+\begin{align*}
+  & (1 - \rho_{1}L - \rho_{2}L^{2})\,u_{t} = \varepsilon_{t}\\
+  \Longleftrightarrow\quad & u_{t} - \rho_{1}Lu_{t} - \rho_{2}L^{2}u_{t} = \varepsilon_{t}\\
+  \Longleftrightarrow\quad & u_{t} - \rho_{1}u_{t-1} - \rho_{2}u_{t-2} = \varepsilon_{t}.
+\end{align*}
+
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Lesson 8''; it is not
+        reproduced. The lecture stops after the AR(2) definition on page 7.
+  \item As in Lessons 3--7, $6^{2}$ is $\sigma^{2}$ (and $6_{u}^{2}$,
+        $6_{\varepsilon}^{2}$ are $\sigma_{u}^{2}$, $\sigma_{\varepsilon}^{2}$); $B$
+        for $\beta$ is typeset $\beta$; $k$ for the number of regressors is typeset
+        $K$. The regressor row, written $X_{t}'$, is typeset $x_{t}'$ (a $1\times K$
+        row of $X$). $T^{*}$ is typeset $T_{*}$ to match $b_{*}$, $X_{*}$ of
+        Lesson 7.
+  \item Notation (layout revision): transformed variables are written
+        $y_{*i}$, $u_{*i}$, $y_{*t}$, $x_{*t}$ (the page has $u_{i}^{*}$) to match
+        $y_{*} = Ty$ of Lesson 7. The lag operator is written in front of what it
+        acts on, $(1-\rho L)u_{t}$ and $(1-\rho L)^{-1}\varepsilon_{t}$, where the page
+        has $u_{t}(1-\rho L)$ and $\varepsilon_{t}/(1-\rho L)$. \textbf{Corrected:}
+        the page writes $w_{ii} = \sigma^{2}h(z_{i})$, which counts $\sigma^{2}$ twice
+        given $\Var(u) = \sigma^{2}\Omega$; typeset $w_{ii} = h(z_{i})$. The regressor
+        row $x_{t}$ is lower case so that $Lx_{t} = x_{t-1}$ does not clash with the
+        matrix $X$.
+  \item Layout (this revision): every matrix is written out with its full corner
+        pattern and stands in its own display; the sentence on why GLS needs $T$,
+        the diagonal $\Omega$ and $T$ of Case 1, the remark on the intercept, the
+        explicit $Ty$, the matrix $(1-\rho^{2})\Omega^{-1}$, and the $(1,1)$-entry
+        comparison with $T_{*}'T_{*}$ are \textbf{added}. The covariance derivations
+        at lags 1--3 are merged into one aligned block; the products
+        $u_{t}u_{t-s} = \ldots$ that precede each expectation on the page are folded
+        into the sentence above it.
+  \item Page 2: the opening $\Omega$ and the line $u \sim N(0, \sigma^{2}\Omega)$ are
+        the recap from Lesson 7; the sentence introducing them is \textbf{added}.
+        \textbf{Corrected:} the line after $u_{i} \sim N(0, \sigma^{2}z_{i}^{2})$ reads
+        ``$u_{i} \sim N(0, \sigma^{2})$''; it is the transformed error and is merged
+        with $u_{i}^{*} = u_{i}/z_{i}$. \textbf{Corrected:} the general line is
+        written $u_{i} = u/\sqrt{h(z_{i})}$; typeset $u_{i}^{*} = u_{i}/\sqrt{h(z_{i})}$.
+        The divided model is written with only the first and last terms
+        ($\beta_{1}/\sqrt{h(z_{i})} + \cdots + \beta_{K}X_{Ki}/\sqrt{h(z_{i})}$); the
+        $\beta_{2}$ term is \textbf{added}.
+  \item Page 3: the heading ``weighted least square'' stands at the top of this page
+        but names the procedure that ends page 2, so it heads the last part of
+        Section 1. The remark tying it to Lesson 7's $T$ is \textbf{added}. The
+        $\Omega$ with $\bar w$ on the diagonal is Lesson 7's $\Omega_{2}$; the name
+        ``autocorrelation'' and the section title ``Case 2'' are \textbf{added} (the
+        page says only ``Case 1'' for heteroskedasticity). \textbf{Corrected:}
+        $u_{t} = \rho u_{t-1} + \varepsilon_{i}$ has subscript $i$; typeset
+        $\varepsilon_{t}$. In $u_{t} = \rho Lu_{t} + \varepsilon_{t}$ the page writes
+        $u_{t} = \rho Lu_{b}$; read as $u_{t}$.
+  \item Page 4: ``Math Recall'' is written without the condition $|a|<1$; it is
+        \textbf{added} (the page states $|\rho| < 1$ on the next line).
+        \textbf{Corrected:} the moving average is written
+        $\varepsilon_{t} + \rho\varepsilon_{t-1} + \rho\varepsilon_{t-2} + \cdots$;
+        the third coefficient is $\rho^{2}$. The sentence on $u_{t-1}$ being
+        uncorrelated with $\varepsilon_{t}$ is \textbf{added}. \textbf{Corrected:} in
+        $u_{t}^{2} = \ldots + 2\rho u_{t}\varepsilon_{t}$ the cross term is
+        $2\rho u_{t-1}\varepsilon_{t}$, and the next line has it. The cross term in
+        the $\sigma_{u}^{2}$ line is written without the factor $2\rho$; it is
+        \textbf{added}; ``the last expectation is zero'' is \textbf{added}.
+        \textbf{Corrected:} the following line reads $\sigma_{u}^{2} =
+        \rho\sigma_{u}^{2} + \sigma_{\varepsilon}^{2}$; it is $\rho^{2}\sigma_{u}^{2}$,
+        as the next line $\sigma_{u}^{2}(1-\rho^{2})$ shows.
+  \item Page 5: the top line ``$= \rho\sigma_{u}^{2}$'' finishes $\E(u_{t}u_{t-1})$
+        from page 4. \textbf{Corrected:} $u_{t}u_{t-2} = \ldots + \varepsilon u_{t-2}$
+        is missing the subscript; typeset $\varepsilon_{t}u_{t-2}$.
+        \textbf{Corrected:} the three-lag expectation is written
+        $\ldots + \E(\varepsilon_{t}\varepsilon_{t-3})$; it is
+        $\E(\varepsilon_{t}u_{t-3})$, which matches the line above it (both are zero).
+        The matrix is labelled $\sigma_{u}^{2}\Omega$, $n\times n$, with the note
+        ``$|\rho| < 1$\quad $T'T = \Omega^{-1}$''; the note is typeset
+        $T'T \propto \Omega^{-1}$, see page 6.
+  \item Page 6: the model line is written $u_{t} = \rho u_{t-1}\ \varepsilon_{t}$
+        without the plus. ``$/\rho$'' beside equation (2) is read as ``multiply the
+        model at $t-1$ by $\rho$''. ``$\varepsilon_{t}$ iid'' with a brace over
+        $u_{t} - \rho u_{t-1}$ is kept. The line $y(1-\rho L) = X_{t}'(1-\rho L)\beta
+        + \varepsilon_{t}$ is written with $y$ for $y_{t}$. In the column
+        $T_{*}y$ the first entry $y_{1} - \rho y_{0}$ is crossed out on the page;
+        ``there is no $y_{0}$'' is \textbf{added}. \textbf{Corrected:} the last entry
+        is written $y_{n} - y_{n-1}$; it is $y_{n} - \rho y_{n-1}$. The note
+        ``$T^{*\prime}T = \Omega^{-1}$'' is replaced by the remark that $T_{*}'T_{*}$ is close to but
+        not exactly proportional to $\Omega^{-1}$: dropping the first row changes the
+        $(1,1)$ entry.
+        The exact $T$ is written with only its first two rows and a diagonal of
+        ones; the remaining rows are filled in. The variance check of the first
+        observation and $T'T = (1-\rho^{2})\Omega^{-1}$ are \textbf{added} (this is
+        the Prais--Winsten transformation; $T_{*}$ alone is Cochrane--Orcutt).
+  \item Page 7: \textbf{Corrected:} the lag polynomial is written
+        $1 - \rho_{1}L - \rho^{2}L^{2}$; it is $\rho_{2}L^{2}$. \textbf{Corrected:}
+        the next line reads $u_{t} - \rho u_{t} - \rho_{2}u_{t-2} = \varepsilon_{t}$;
+        it is $\rho_{1}u_{t-1}$. The three lines are kept in the page's order.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the recap
+        of $\Omega$, Case 1 heteroskedasticity, $h(z_{i})$ and the divided model;
+        page 3 ``weighted least square'', $\Omega$ with $\bar w$, the AR(1) model and
+        the lag operator; page 4 the geometric series, MA($\infty$),
+        $\sigma_{u}^{2}$ and the start of $\E(u_{t}u_{t-1})$; page 5 the covariances
+        at lags 2 and 3, $\E(u_{t}u_{t-s})$ and $\sigma_{u}^{2}\Omega$; page 6 GLS
+        with known $\rho$, $T_{*}$ and the exact $T$; page 7 the AR(2) process.
+\end{transcriptnotes}
+
+\end{document}

@@ -1,0 +1,166 @@
+%% title: NLS Asymptotics - Derivative of the FOC and the Scaled Step
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{12}{Derivation supplement: the derivative of the first-order condition and the $\sqrt{n}$-scaled step}{}
+
+\runin{Scope} These notes expand Section 3 of Lesson 12: how the derivative of the
+NLS first-order condition is computed, and how the $\sqrt{n}$-scaled expansion
+delivers asymptotic normality. Notation follows Lessons 10--12.
+
+\section{Setup and notation}
+
+\[ y = x(\beta) + u, \qquad u \sim (0,\sigma^{2}I_{n}),
+   \qquad x(\beta) \ \text{an } n\times 1 \text{ vector}. \]
+Write
+\[ X(\beta) = \frac{\partial x(\beta)}{\partial\beta'} \ \ (n\times K), \qquad
+   X_{t} = \frac{\partial x_{t}(\beta_{0})}{\partial\beta'} \ \ (1\times K), \qquad
+   H_{t} = \frac{\partial^{2}x_{t}(\beta_{0})}{\partial\beta\,\partial\beta'}
+           \ \ (K\times K). \]
+Then $X_{0}=X(\beta_{0})$ stacks the rows $X_{t}$, and $u=y-x_{0}$.
+
+\section{Where $\partial[X(\beta)'(y-x(\beta))]/\partial\beta$ comes from}
+
+\topic{The function being differentiated}
+Let $f(\beta)=X(\beta)'u(\beta)$ with $u(\beta)=y-x(\beta)$. Its $j$-th entry is
+$f_{j}(\beta)=\sum_{t}X_{tj}(\beta)\,u_{t}(\beta)$. Differentiating in
+$\beta_{l}$ with the product rule,
+\[ \frac{\partial f_{j}}{\partial\beta_{l}}
+   = \underbrace{\sum_{t}\frac{\partial X_{tj}}{\partial\beta_{l}}\,u_{t}}_{(A)}
+   + \underbrace{\sum_{t}X_{tj}\,\frac{\partial u_{t}}{\partial\beta_{l}}}_{(B)}. \]
+
+\topic{Term (B): $u$ moves, $X$ fixed}
+Since $y$ does not depend on $\beta$, $\partial u_{t}/\partial\beta_{l}=-X_{tl}$,
+so
+\[ (B) = -\sum_{t}X_{tj}X_{tl} = -(X'X)_{jl}. \]
+
+\topic{Term (A): $X$ moves, $u$ fixed}
+Since $X_{tj}=\partial x_{t}/\partial\beta_{j}$,
+\[ (A) = \sum_{t}u_{t}\,\frac{\partial^{2}x_{t}}{\partial\beta_{j}\,\partial\beta_{l}}
+       = \sum_{t}u_{t}\,(H_{t})_{jl}. \]
+This is what the lecture writes as
+$\frac{\partial X(\beta)'}{\partial\beta}\big|_{\beta_{0}}(y-x_{0})$: the
+residual-weighted Hessian of $x(\beta)$.
+
+\topic{Evaluating at $\beta_{0}$}
+At $\beta_{0}$ we have $u=y-x_{0}$, so
+\[ \frac{\partial}{\partial\beta}
+   \Bigl[X(\beta)'\bigl(y-x(\beta)\bigr)\Bigr]_{\beta_{0}}
+   = \sum_{t=1}^{n}u_{t}H_{t} - X_{0}'X_{0}. \]
+In the linear model $x(\beta)=X\beta$, so $H_{t}=0$ and only $-X'X$ remains.
+
+\section{The $\sqrt{n}$-scaled equation, written out}
+
+Taylor-expanding the first-order condition $X(\hat\beta)'(y-x(\hat\beta))=0$
+around $\beta_{0}$ and multiplying by $1/\sqrt{n}$ gives
+\[ 0 = a_{n} + (A_{n}-S_{n})\,z_{n} + o_{p}(1), \]
+with the four objects
+\begin{align*}
+ a_{n} &= \frac{X_{0}'u}{\sqrt{n}}
+        = \frac{1}{\sqrt{n}}\sum_{t=1}^{n}X_{t}'u_{t}
+ && (K\times1), \qquad (a_{n})_{j}
+    = \frac{1}{\sqrt{n}}\sum_{t}\frac{\partial x_{t}}{\partial\beta_{j}}\,u_{t},\\[3pt]
+ S_{n} &= \frac{X_{0}'X_{0}}{n}
+        = \frac{1}{n}\sum_{t=1}^{n}X_{t}'X_{t}
+ && (K\times K), \qquad (S_{n})_{jl}
+    = \frac{1}{n}\sum_{t}\frac{\partial x_{t}}{\partial\beta_{j}}
+      \frac{\partial x_{t}}{\partial\beta_{l}},\\[3pt]
+ A_{n} &= \frac{1}{n}\sum_{t=1}^{n}u_{t}H_{t}
+ && (K\times K), \qquad (A_{n})_{jl}
+    = \frac{1}{n}\sum_{t}u_{t}\,
+      \frac{\partial^{2}x_{t}}{\partial\beta_{j}\,\partial\beta_{l}},\\[3pt]
+ z_{n} &= \sqrt{n}\,(\hat\beta-\beta_{0})
+ && (K\times1).
+\end{align*}
+
+\section{Limits of each object}
+
+\topic{$S_{n}\xrightarrow{\ p\ }\Sigma_{XX}$}
+This is the identification assumption.
+
+\topic{$A_{n}\xrightarrow{\ p\ }0$}
+The lecture says ``its expectation is zero'', which is not sufficient by itself.
+Treat $H_{t}$ as nonrandom (or condition on it). Then
+\[ \E\bigl[(A_{n})_{jl}\bigr]
+   = \frac{1}{n}\sum_{t}\E(u_{t})\,(H_{t})_{jl} = 0, \]
+\[ \Var\bigl[(A_{n})_{jl}\bigr]
+   = \frac{\sigma^{2}}{n^{2}}\sum_{t}(H_{t})_{jl}^{2}
+   = \frac{\sigma^{2}}{n}\cdot
+     \underbrace{\frac{1}{n}\sum_{t}(H_{t})_{jl}^{2}}_{=\,O(1)}
+   = O(1/n). \]
+Mean zero and variance tending to zero give $(A_{n})_{jl}\xrightarrow{p}0$ by
+Chebyshev, for every $(j,l)$. The $O(1)$ bound on
+$\frac{1}{n}\sum_{t}(H_{t})_{jl}^{2}$ is a regularity condition that must be
+assumed.
+
+\topic{$a_{n}=O_{p}(1)$}
+\[ \E(a_{n}) = 0, \qquad
+   \Var(a_{n}) = \frac{1}{n}\sum_{t}X_{t}'\sigma^{2}X_{t}
+   = \sigma^{2}S_{n} \longrightarrow \sigma^{2}\Sigma_{XX} < \infty. \]
+A bounded variance gives $a_{n}=O_{p}(1)$ by Chebyshev.
+
+\topic{$z_{n}=O_{p}(1)$}
+Consistency of $\hat\beta$ alone does not give this: $\hat\beta-\beta_{0}
+\xrightarrow{p}0$ says nothing about the $\sqrt{n}$ rate. Rearrange the scaled
+equation:
+\[ z_{n} = (S_{n}-A_{n})^{-1}\bigl(a_{n}+o_{p}(1)\bigr). \]
+Since $S_{n}-A_{n}\xrightarrow{p}\Sigma_{XX}$ is invertible, the continuous
+mapping theorem gives $(S_{n}-A_{n})^{-1}\xrightarrow{p}\Sigma_{XX}^{-1}=O(1)$.
+Multiplying by $a_{n}=O_{p}(1)$ gives $z_{n}=O_{p}(1)$.
+
+\section{Why $\dfrac{X_{0}'u}{\sqrt{n}}-\Sigma_{XX}\sqrt{n}(\hat\beta-\beta_{0})
+\xrightarrow{p}0$}
+
+From the scaled equation, isolate $a_{n}-S_{n}z_{n}$:
+\[ a_{n}-S_{n}z_{n} = -A_{n}z_{n} - o_{p}(1). \]
+Add and subtract $\Sigma_{XX}z_{n}$, so that the left side becomes
+$a_{n}-\Sigma_{XX}z_{n}$ plus the gap $(\Sigma_{XX}-S_{n})z_{n}$:
+\[ a_{n}-\Sigma_{XX}z_{n}
+   = -\underbrace{A_{n}}_{\xrightarrow{\ p\ }0}z_{n}
+   + \underbrace{(S_{n}-\Sigma_{XX})}_{\xrightarrow{\ p\ }0}z_{n}
+   - o_{p}(1). \]
+
+\topic{Entry by entry}
+Row $j$ of this equation is
+\[ (a_{n})_{j}-\sum_{l=1}^{K}(\Sigma_{XX})_{jl}\,z_{n,l}
+   = -\sum_{l=1}^{K}(A_{n})_{jl}\,z_{n,l}
+   + \sum_{l=1}^{K}\bigl[(S_{n})_{jl}-(\Sigma_{XX})_{jl}\bigr]z_{n,l}
+   - o_{p}(1). \]
+Every summand on the right is
+\[ \underbrace{(\text{scalar}\xrightarrow{p}0)}_{o_{p}(1)}
+   \times \underbrace{z_{n,l}}_{O_{p}(1)} = o_{p}(1), \]
+and a finite sum ($K$ terms) of $o_{p}(1)$ terms is $o_{p}(1)$. This holds for
+every $j=1,\dots,K$, so the whole vector converges:
+\[ \boxed{\ \frac{X_{0}'u}{\sqrt{n}}
+   - \Sigma_{XX}\sqrt{n}(\hat\beta-\beta_{0})
+   \xrightarrow{\ p\ } 0\ } \]
+
+\section{Where this leads}
+
+Since $X_{0}'u/\sqrt{n}\xrightarrow{d}N(0,\sigma^{2}\Sigma_{XX})$ by the CLT,
+Slutsky gives $\Sigma_{XX}\sqrt{n}(\hat\beta-\beta_{0})
+\xrightarrow{d}N(0,\sigma^{2}\Sigma_{XX})$, hence
+\[ \sqrt{n}(\hat\beta-\beta_{0})
+   \xrightarrow{\ d\ } N\bigl(0,\ \sigma^{2}\Sigma_{XX}^{-1}
+   \Sigma_{XX}\Sigma_{XX}^{-1}\bigr)
+   = N\bigl(0,\ \sigma^{2}\Sigma_{XX}^{-1}\bigr). \]
+
+\begin{transcriptnotes}
+ \item This is a derivation supplement to Lesson 12, not a transcription of the
+       lecture. The notation, title block, numbered sections and topic headings
+       follow Lessons 10--12 and the shared \texttt{metricsstyle} package.
+ \item The lecture's derivative of the first-order condition,
+       $\partial X'/\partial\beta\,u$, is ambiguous as written; it is computed
+       here as $\sum_{t}u_{t}H_{t}(\beta_{0})$. The mean-zero condition and the
+       Chebyshev argument for $A_{n}\xrightarrow{p}0$ are made explicit, since
+       $\E(u_{t}H_{t})=0$ alone does not give the limit.
+ \item The $\sqrt{n}$-scaled equation, the $O_{p}(1)$ arguments and the
+       Slutsky step expand Section 3 of Lesson 12; the boxed result is the
+       ingredient used there to obtain
+       $\sqrt{n}(\hat\beta-\beta_{0})\xrightarrow{d}N(0,\sigma^{2}
+       \Sigma_{XX}^{-1})$.
+\end{transcriptnotes}
+
+\end{document}

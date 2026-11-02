@@ -1,0 +1,154 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+\usepackage{array,booktabs}
+\usepackage[most]{tcolorbox}
+\definecolor{qnavy}{RGB}{31,58,96}
+\definecolor{whygreen}{RGB}{233,244,236}
+\definecolor{whyline}{RGB}{60,130,80}
+\newtcolorbox{why}{enhanced, breakable, colback=whygreen, colframe=whygreen,
+  borderline west={2pt}{0pt}{whyline}, boxrule=0pt, arc=0pt,
+  left=6pt, right=4pt, top=3pt, bottom=3pt, before skip=4pt, after skip=6pt}
+\newcommand{\Aa}{R(X'X)^{-1}R'}
+\tikzset{fb/.style={draw=qnavy!70,fill=qnavy!5,rounded corners=2pt,align=center,
+  inner sep=4pt,text width=4.6cm,font=\small},
+  fbw/.style={draw=qnavy!70,fill=qnavy!5,rounded corners=2pt,align=center,
+  inner sep=4pt,text width=11cm,font=\small},
+  fbg/.style={draw=whyline,fill=whygreen,rounded corners=2pt,align=center,
+  inner sep=4pt,text width=11cm,font=\small},
+  ar/.style={-{Stealth[length=4pt]},line width=0.6pt}}
+
+\begin{document}
+\begin{center}
+  {\large\scshape Econometrics I --- Midterm Review}\\[3pt]
+  {\LARGE\bfseries The $F$ Statistic: One Picture}\\[4pt]
+  {\itshape How $R\beta=r$ leads to every form of $F$ in Lessons 5--7}
+\end{center}
+\vspace{0.2em}\hrule\vspace{0.8em}
+
+\section{The picture}
+All the $F$ formulas are \emph{one} statistic. It measures a single quantity, the gap
+$Rb-r$ between what the data say and what $H_0$ claims. There are three ways to
+compute the same numerator, depending on which model you have estimated.
+
+\begin{center}
+\begin{tikzpicture}
+  \node[fbw] (A) at (0,0) {\textbf{$H_0:\ R\beta=r$}\quad ($R$ is $q\times K$: $q$ restrictions)};
+  \node[fbw] (B) at (0,-1.5) {\textbf{The gap:} $Rb-r=R(X'X)^{-1}X'u$ under $H_0$\\[2pt]
+     $\Var(Rb-r)=\sigma^{2}A,\qquad A=R(X'X)^{-1}R'$ \hfill (L5)};
+  \node[fb] (W) at (-5.2,-3.9) {\textbf{Wald} (fit unrestricted only)\\[2pt]
+     $(Rb-r)'A^{-1}(Rb-r)$\\ \footnotesize Lesson 5};
+  \node[fb] (S) at (0,-3.9) {\textbf{Lagrange multiplier} (fit restricted only)\\[2pt]
+     $\lambda_*'A\,\lambda_*$\\ \footnotesize Lesson 7};
+  \node[fb] (R) at (5.2,-3.9) {\textbf{SSR comparison} (fit both)\\[2pt]
+     $e_*'e_*-e'e=RSSR-USSR$\\ \footnotesize Lesson 6};
+  \node at (-2.6,-3.9) {$=$}; \node at (2.6,-3.9) {$=$};
+  \node[fb] (C1) at (-2.9,-6.2) {numerator$/\sigma^{2}\ \sim\ \chi^{2}_{q}$};
+  \node[fb] (C2) at (2.9,-6.2) {$e'e/\sigma^{2}=u'Mu/\sigma^{2}\ \sim\ \chi^{2}_{n-K}$};
+  \node[fbg] (F) at (0,-7.9) {$\displaystyle F=\frac{\text{numerator}/q}{e'e/(n-K)}\ \sim\ F(q,\,n-K)$\\[3pt]
+     \footnotesize $\sigma^{2}$ cancels; the two $\chi^{2}$ are independent because $MN=0$ (L5)};
+  \draw[ar] (A) -- (B);
+  \draw[ar] (B.south) -- ++(0,-0.35) -| (W.north);
+  \draw[ar] (B.south) -- ++(0,-0.35) -| (R.north);
+  \draw[ar] (B.south) -- (S.north);
+  \draw[ar] (W.south) -- ++(0,-0.4) -| (C1.north);
+  \draw[ar] (S.south) -- (C1.north east);
+  \draw[ar] (R.south) -- ++(0,-0.4) -| (C1.north);
+  \draw[ar] (C1.south) |- ++(0,-0.45) -| (F.north);
+  \draw[ar] (C2.south) -- ++(0,-0.45) -| (F.north);
+\end{tikzpicture}
+\end{center}
+
+\begin{why}
+\textbf{Why it works:} a large gap means $H_0$ forces $b$ far from where the data put it.
+Forcing it costs fit (RSSR $\gg$ USSR), makes the multiplier large, and makes the Wald
+distance large. These are three descriptions of the same event.
+\end{why}
+
+\section{Step by step, as in the notes}
+
+\topic{Step 1 (Lesson 5): the gap and its distribution}
+Under $H_0$,
+\[ Rb-r=R\beta+R(X'X)^{-1}X'u-r=R(X'X)^{-1}X'u,\qquad
+   \Var(Rb-r)=\sigma^{2}R(X'X)^{-1}R'. \]
+Measure the distance by the quadratic form weighted by the inverse covariance:
+\[ \frac{1}{\sigma^{2}}(Rb-r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb-r)=\frac{1}{\sigma^{2}}u'Nu\sim\chi^{2}_{q},\]
+with $N=X(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}X'$ symmetric and idempotent,
+$\operatorname{rank}N=\operatorname{tr}N=q$.
+
+\topic{Step 2 (Lesson 5): the other $\chi^{2}$ and independence}
+\[ \frac{e'e}{\sigma^{2}}=\frac{u'Mu}{\sigma^{2}}\sim\chi^{2}_{n-K},\qquad MN=0\ \text{(since }MX=0)\ \Rightarrow\ \text{independent.}\]
+
+\topic{Step 3 (Lesson 5): form the ratio}
+\[ F=\frac{\frac{1}{\sigma^{2}}u'Nu/q}{\frac{1}{\sigma^{2}}u'Mu/(n-K)}
+    =\frac{(Rb-r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb-r)/q}{s^{2}}\sim F(q,n-K). \]
+This is the \textbf{master formula}. All later forms are rewrites of its numerator.
+For $q=1$ it is $t^{2}_{n-K}$ ($F(1,q)=t_q^{2}$ in the notes).
+
+\topic{Step 4 (Lesson 6): the numerator as a difference in SSR}
+Minimise $e_*'e_*$ subject to $Rb_*=r$ (Lagrangian). The first-order conditions give
+\[ \lambda_*=\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r-Rb),\qquad
+   b_*=b-(X'X)^{-1}R'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb-r). \]
+The restricted residual is $e_*=e-X(b_*-b)$, and $X'e=0$ kills the cross term:
+\[ e_*'e_*=e'e+(b_*-b)'X'X(b_*-b). \]
+Substituting $b_*-b$, the $X'X$ cancels against the two $(X'X)^{-1}$:
+\[ \boxed{\,e_*'e_*-e'e=(Rb-r)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(Rb-r)\,} \]
+Hence
+\[ F=\frac{(e_*'e_*-e'e)/q}{e'e/(n-K)}=\frac{(RSSR-USSR)/q}{USSR/(n-K)}. \]
+
+\topic{Step 5 (Lesson 6): subset $H_0:\beta_1=0$ via FWL}
+With $R=[I_{k_1}\ \ 0]$, $q=k_1$ and FWL, $b_1\sim N(0,\sigma^{2}(X_1'M_2X_1)^{-1})$, so
+\[ F=\frac{b_1'X_1'M_2X_1b_1/k_1}{e'e/(n-K)}. \]
+Premultiply $y=X_1b_1+X_2b_2+My$ by $M_2$ (kills $X_2$, $M_2M=M$):
+$M_2y=M_2X_1b_1+My$, so $y'M_2y=b_1'X_1'M_2X_1b_1+y'My$, and
+\[ b_1'X_1'M_2X_1b_1=y'M_2y-y'My=RSSR-USSR. \]
+Here $M_2y$ is the residual of the regression with $H_0$ imposed (only $X_2$).
+
+\topic{Step 6 (Lesson 7): the LM view}
+Under $H_0$, $\lambda_*$ has mean $0$ and $\Var(\lambda_*)=\sigma^{2}\bigl[R(X'X)^{-1}R'\bigr]^{-1}$, so
+\[ \lambda_*'\bigl[\Var(\lambda_*)\bigr]^{-1}\lambda_*=\frac{1}{\sigma^{2}}(r-Rb)'\bigl[R(X'X)^{-1}R'\bigr]^{-1}(r-Rb). \]
+This is identical to the Wald quantity, since $\lambda_*$ is $Rb-r$ times a fixed nonsingular matrix.
+Testing the multiplier (restricted fit) is the same test as testing the gap (unrestricted fit).
+
+\section{The family of formulas}
+\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{7.6cm}>{\raggedright\arraybackslash}p{4.6cm}@{}}
+\toprule
+\textbf{Name} & \textbf{Formula} & \textbf{Use when} \\
+\midrule
+Master (L5) & $\dfrac{(Rb-r)'[R(X'X)^{-1}R']^{-1}(Rb-r)/q}{s^{2}}$ & the question gives $b$, $(X'X)^{-1}$, $R$, $r$ \\
+SSR form (L6) & $\dfrac{(RSSR-USSR)/q}{USSR/(n-K)}$ & you have (or can run) both regressions \\
+Subset, FWL (L6) & $\dfrac{b_1'X_1'M_2X_1b_1/k_1}{e'e/(n-K)}=\dfrac{(y'M_2y-y'My)/k_1}{y'My/(n-K)}$ & $H_0:\beta_1=0$, proofs \\
+LM (L7) & $\dfrac{\lambda_*'[\Var(\lambda_*)]^{-1}\lambda_*/q}{s^{2}}$ with $\sigma^{2}$ replaced & restricted fit only is available \\
+$t^{2}$ (L5) & $F(1,n-K)=t_{n-K}^{2}$ & $q=1$ \\
+Wald, $\sigma^{2}$ known & $\dfrac{RSSR-USSR}{\sigma^{2}}\sim\chi^{2}_q$ & $\sigma^{2}$ given; no denominator \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Special cases (derived from the SSR form; not separate theorems)}}\\
+Overall significance & $\dfrac{ESS/(k-1)}{RSS/(n-k)}=\dfrac{R^{2}/(k-1)}{(1-R^{2})/(n-k)}$ & all slopes $=0$: restricted model is constant only, $RSSR=TSS$ \\
+$R^{2}$ form & $\dfrac{(R_U^{2}-R_R^{2})/q}{(1-R_U^{2})/(n-K)}$ & same $y$ in both models (same $TSS$) \\
+Chow & $\dfrac{(SSR_p-SSR_1-SSR_2)/k}{(SSR_1+SSR_2)/(n_1+n_2-2k)}$ & stability; $R=[I\ \ {-I}]$, restricted $=$ pooled \\
+\bottomrule
+\end{tabular}
+\normalsize
+
+\begin{why}
+\textbf{ESS here:} for overall significance, ESS means $y'(P_X-P_\iota)y=TSS-RSS$ (centred, with a
+constant). The notes' uncentred $y'P_Xy$ would be the wrong numerator. ESS appears only in that
+one special case; for a general restriction use $RSSR-USSR$.
+\end{why}
+
+\section{Why the denominator is the \emph{unrestricted} $s^{2}$ (Lesson 7)}
+Using $RSSR/(n-K)$ in the denominator breaks independence. For the subset case,
+\[ M(M_2-M)=M-M=0\ \Rightarrow\ \text{independent (an $F$)},\qquad
+   M_2(M_2-M)=M_2-M\ne0\ \Rightarrow\ \text{dependent}, \]
+and $u'(M_2-M)u/u'M_2u$ has the form $A/(A+B)$, i.e.\ a $\mathrm{Beta}\bigl(\tfrac{k_1}{2},\tfrac{n-K}{2}\bigr)$,
+not an $F$.
+
+\section{Exam recipe}
+\begin{enumerate}[label=\arabic*.]
+  \item Write $H_0$ as $R\beta=r$ and count $q$ (rows of $R$).
+  \item Given $b$, $(X'X)^{-1}$: use the \textbf{master} form. Given sums of squares: use \textbf{RSSR/USSR}.
+  \item USSR is from the model \emph{without} $H_0$; RSSR is from the model with $H_0$ \emph{substituted in}.
+  \item $df_2=n-K$ of the unrestricted model. Compare to $F_{\alpha}(q,n-K)$ and state reject / fail to reject.
+\end{enumerate}
+\end{document}

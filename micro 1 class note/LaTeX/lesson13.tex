@@ -1,0 +1,211 @@
+%% shortname: Uncompensated Law of Demand and the Representative Consumer
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{13}{Chapter 4: aggregation across consumers --- the uncompensated law of demand, aggregate WARP and representative consumers}{}
+
+
+\section{Question 2: when does aggregate demand satisfy WARP?}
+
+\runin{Graphical example.} By example (Lesson 11): not always, even when every
+individual demand satisfies WARP. But we know that WARP is the same as the
+compensated law of demand (CLD).
+
+$\Rightarrow$ Let us look for an alternative to the CLD.
+
+\topic{The uncompensated law of demand (ULD)}
+A law of demand for \emph{uncompensated} price changes: we hold income $w$ fixed.
+The demand function $x_i(p,w_i)$ satisfies the ULD if
+\[ (p'-p)\cdot\bigl(x_i(p',w_i)-x_i(p,w_i)\bigr)\le 0
+   \qquad\text{for any } p,\ p' \text{ and } w_i, \]
+with strict inequality whenever $x_i(p',w_i)\ne x_i(p,w_i)$.
+
+The ULD rules out some preferences: it rules out Giffen goods (where consumption
+$\uparrow$ when price $\uparrow$).
+
+However, homothetic preferences satisfy the ULD.
+
+\topic{The ULD aggregates}
+Consider the wealth distribution rule
+\[ w_i(p,w)=\alpha_i w,\qquad \alpha_i>0,\quad \sum_{i=1}^{I}\alpha_i=1. \]
+Then the ULD aggregates: if it holds for all agents, then it holds in the
+aggregate. (Simply sum the individual ULDs: with $w_i=\alpha_i w$ fixed,
+$\sum_i (p'-p)\cdot\bigl(x_i(p',\alpha_i w)-x_i(p,\alpha_i w)\bigr)\le 0$.)
+
+
+\section{The aggregate ULD implies aggregate WARP}
+
+In fact, the aggregate ULD implies that aggregate demand satisfies WARP.
+
+\runin{Proof.} The proof relies in part on individual homogeneity of degree 0 ---
+it is useful in proofs.
+
+Take $(p,w)$ and $(p',w')$ with $x(p,w)\ne x(p',w')$ and
+\[ p\cdot x(p',w')\le w. \]
+That is, $x(p,w)$ is revealed preferred to $x(p',w')$. We must show
+$p'\cdot x(p,w)>w'$.
+
+Aggregate demand is homogeneous of degree zero because individual demands are:
+\[ x(p',w')=x\Bigl(\frac{w}{w'}p',\ \frac{w}{w'}w'\Bigr)=x\Bigl(\frac{w}{w'}p',\ w\Bigr), \]
+implying, by the revealed-preference assumption and Walras' law,
+\[ p\cdot x\Bigl(\frac{w}{w'}p',w\Bigr)=p\cdot x(p',w')\le w=p\cdot x(p,w). \]
+Hence
+\[ p\cdot\Bigl(x\Bigl(\frac{w}{w'}p',w\Bigr)-x(p,w)\Bigr)\le 0. \]
+From the ULD (same wealth $w$, prices $\tfrac{w}{w'}p'$ and $p$; strict because
+$x(\tfrac{w}{w'}p',w)=x(p',w')\ne x(p,w)$):
+\[ \Bigl(\frac{w}{w'}p'-p\Bigr)\cdot\Bigl(x\Bigl(\frac{w}{w'}p',w\Bigr)-x(p,w)\Bigr)<0, \]
+\[ \frac{w}{w'}p'\cdot\Bigl(x\Bigl(\frac{w}{w'}p',w\Bigr)-x(p,w)\Bigr)
+   < \underbrace{p\cdot\Bigl(x\Bigl(\frac{w}{w'}p',w\Bigr)-x(p,w)\Bigr)}_{\le 0}. \]
+We collect (dropping the positive factor $w/w'$):
+\[ p'\cdot\Bigl(x\Bigl(\frac{w}{w'}p',w\Bigr)-x(p,w)\Bigr)<0, \qquad
+   p'\cdot x\Bigl(\frac{w}{w'}p',w\Bigr)<p'\cdot x(p,w), \]
+\[ p'\cdot x(p',w')<p'\cdot x(p,w)\quad\Longleftrightarrow\quad w'<p'\cdot x(p,w), \]
+using Walras' law $p'\cdot x(p',w')=w'$. And this is WARP. \hfill$\square$
+
+\topic{Where this leaves us}
+We have seen
+\[ \text{ULD}\ \Longrightarrow\ \text{WARP}\ \Longleftrightarrow\ \text{CLD}. \]
+As already remarked, the ULD is stronger than the CLD.
+
+\runin{Note.} It is enough that the ULD holds in the aggregate, even if it is
+violated for some subset of agents, as long as the behavior of the remaining
+agents offsets the behavior of the former.
+
+However, whether this applies may depend on the wealth distribution rule. In our
+example (Lesson 11), $\alpha_1=\alpha_2=\tfrac12$: this wealth distribution rule
+was not enough for WARP, so the aggregate ULD must be violated. Change the rule to
+$\alpha_1=1$, $\alpha_2=0$ $\Rightarrow$ aggregate demand $=$ agent 1's demand,
+which satisfies WARP.
+
+\topic{So far}
+\begin{flatnum}
+  \item Aggregate demand $\sum_i x_i(p,w_i)$ can be written as
+        $x\bigl(p,\sum_i w_i\bigr)$ only in special cases. One: there is a
+        deterministic wealth distribution rule, $w_i=w_i(p,w)$.
+  \item If $w_i=\alpha_i w$, then aggregate demand can be written $x(p,w)$, and it
+        satisfies WARP if individual demand satisfies the ULD.
+\end{flatnum}
+
+
+\section{Question 3: representative agents}
+
+When does aggregate demand behave as if there were one agent with a preference
+relation $\succsim$ that gave rise to the aggregate demand?
+
+Such an agent is a \emph{positive} representative agent, because it describes
+behavior.
+
+However, even if there is a positive representative agent, it does not follow that
+we can make welfare comparisons based on his preferences. Ideally, we would want a
+\emph{normative} representative agent that we can use for welfare evaluation.
+
+\topic{A social welfare function}
+We define a social welfare function
+\[ W(v_1,v_2,\dots,v_I) \]
+that aggregates the utilities of all agents in the economy and gives a welfare
+evaluation. It captures how trade-offs between agents are made as a society.
+
+For now, take $W(v_1,\dots,v_I)$ as given, assuming it is increasing and concave.
+
+\topic{Maximizing welfare}
+We would like to maximize welfare. Given $(p,w)$, we can redistribute wealth across
+agents $\Rightarrow$ in other words, the wealth distribution rule should be tailored
+to maximize welfare: the distribution is its own choice variable. More formally,
+solve
+\[ \max_{w_1,w_2,\dots,w_I}\ W\bigl(v_1(p,w_1),v_2(p,w_2),\dots,v_I(p,w_I)\bigr)
+   \qquad\text{s.t.}\quad \sum_{i=1}^{I}w_i\le w. \]
+We can solve each agent's utility maximization problem to get $v_i(p,w_i)$, but
+also the individual demand $x_i(p,w_i)$ $\Rightarrow$ we can calculate aggregate
+demand.
+
+\topic{The value function as an indirect utility}
+Construct the maximum value function of this problem, i.e.\ welfare at the solution.
+It depends only on the parameters $(p,w)$. Denote it $v(p,w)$. It can be shown that
+$v(p,w)$ has all the usual properties of an indirect utility function, and that the
+demand stemming from this indirect utility function is exactly the aggregate demand
+we obtained before, $x(p,w)=\sum_i x_i\bigl(p,w_i(p,w)\bigr)$ with $w_i(p,w)$ the
+optimal rule.
+
+$\Rightarrow$ It is as if we have a normative representative agent with indirect
+utility function $v(p,w)$. We can use it to derive aggregate demand and to evaluate
+welfare.
+
+This only requires an optimal wealth distribution rule.
+
+
+\begin{transcriptnotes}
+  \item Page 1 is a cover page reading ``Lesson 13'' only; the subtitle is written to
+        match Lesson 11. No date is given. Lesson 12 (comparative statics) has slides
+        and handouts only, no handwritten export, so it has no LaTeX lesson.
+  \item Notation follows Lessons 7--11: $P$, $W$, $X$, $V$ are typeset $p$, $w$, $x$,
+        $v$; the welfare function is $W$.
+  \item Page 2: \textbf{Corrected:} the heading reads ``The compensated law of demand
+        (CLD)'', but the definition that follows (income held fixed, $x_i(p',w_i)$
+        vs $x_i(p,w_i)$) and every later page call it the \emph{uncompensated} law
+        of demand (ULD); the heading is typeset ULD. \textbf{Added:} ``for any $p$,
+        $p'$, $w_i$'' and the strict inequality when the bundles differ --- it is
+        needed for the strict WARP conclusion (see page 4). ``satiiesfies'',
+        ``satisfies CLD if'' $\to$ \emph{satisfies}; ``rules out some preferences it
+        receives out Giffen goods'' $\to$ \emph{it rules out Giffen goods}.
+        ``graphical example'' refers to the $\alpha_1=\alpha_2=\tfrac12$
+        counterexample in Lesson 11; the pointer is \textbf{added}.
+  \item Page 3: ``homothetic preferences satisfies'' $\to$ \emph{satisfy};
+        ``aggegation ULD'' $\to$ \emph{the aggregate ULD}; ``in part to individual
+        how homogeneity'' $\to$ \emph{in part on individual homogeneity}. The summed
+        inequality in the parenthesis is \textbf{added}. ``We must show
+        $p'\cdot x(p,w)>w'$'' is \textbf{added}.
+  \item Page 4: ``homogenores'' $\to$ \emph{homogeneous}; ``individual demand are''
+        $\to$ \emph{demands are}. The page writes, next to $p\cdot x(p',w')\le w$,
+        ``correction this should be strict, correct it!''. The inequality it points
+        at is the WARP hypothesis and stays weak; what must be strict is the ULD for
+        different bundles, and with it every later step. \textbf{Corrected:} the
+        ULD line and the next three inequalities are made strict ($<$), and the
+        under-brace $\le 0$ is kept. ``By R.P.'' is typeset as ``by the
+        revealed-preference assumption and Walras' law'' ($w=p\cdot x(p,w)$ is
+        Walras' law). \textbf{Corrected:} ``we collect
+        $p'(x(\tfrac{w}{w'}p',w)-x(p',w))\le 0$'' has $x(p',w)$ for $x(p,w)$.
+  \item Page 5: \textbf{Corrected:} $p'\cdot x(p',w')\le p'x(p,w)\Leftrightarrow
+        w'\le p'x(p,w)$ is made strict --- WARP requires $p'\cdot x(p,w)>w'$.
+        ``aggretate'' $\to$ \emph{aggregate}; ``even if it violate'' $\to$
+        \emph{is violated}; ``remaining'' kept; ``Distri. rule'' $\to$
+        \emph{distribution rule}. ``so ULD must be violated'' is read as the
+        \emph{aggregate} ULD (each agent may satisfy it). ``$\alpha_1=\alpha_2$
+        $=\tfrac12$'' is written as a small stacked note; read as
+        $\alpha_1=\alpha_2=\tfrac12$.
+  \item Page 6: ``can be written as $x(p,\sum w_i)$ once in special case. one:''
+        $\to$ \emph{only in special cases. One:}. ``satisfes'' $\to$
+        \emph{satisfies}; ``Aggregate demand be written'' $\to$ \emph{can be
+        written}; the two clauses of item 2 are reordered. ``with a preferences
+        relation'' $\to$ \emph{a preference relation}; ``aggreagato'' $\to$
+        \emph{aggregate}.
+  \item Page 7: ``welfare companions'' $\to$ \emph{welfare comparisons}; ``nomative''
+        $\to$ \emph{normative}; ``gives it a welfare evaluation'' $\to$ \emph{gives
+        a welfare evaluation}; $W(v_1,v_2,v_I)$ $\to$ $W(v_1,v_2,\dots,v_I)$.
+  \item Page 8: ``assuming $\uparrow$ and concave'' $\to$ \emph{increasing and
+        concave}; ``It's own choice variable'' read as \emph{the distribution is its
+        own choice variable}. \textbf{Corrected:} the objective is written
+        $W(v_1(p,w),v_2(p,w),\dots,v_I(p,w_I))$; each agent's utility depends on
+        her own wealth, $v_i(p,w_i)$. ``$\max$'' is \textbf{added} in front of the
+        choice variables $w_1,\dots,w_I$. ``ability max problem'' $\to$
+        \emph{utility maximization problem}.
+  \item Page 9: ``maxmum'' $\to$ \emph{maximum}; ``weffare'' $\to$ \emph{welfare};
+        ``reprsent'' $\to$ \emph{representative}; ``predit/derive'' (one word
+        overwritten on the other) typeset \emph{derive}; ``and to welfare'' $\to$
+        \emph{and to evaluate welfare}. The page ends the sentence ``\ldots is exactly
+        the aggregate demand we obtained before?'' with a question mark; the answer
+        is yes (MWG Proposition 4.D.1), so it is typeset as a statement, with the
+        formula for aggregate demand under the optimal rule \textbf{added}.
+  \item Page 10 holds the single line ``This only requires an optimal wealth distri.
+        rule.''
+  \item Pages of the original, for tracing back: page 1 the cover; page 2
+        Question 2 and the ULD; page 3 homothetic preferences, $w_i=\alpha_i w$, the
+        ULD aggregates, start of the proof; page 4 the proof; page 5 the end of the
+        proof, ULD $\Rightarrow$ WARP $\Leftrightarrow$ CLD, the note on offsetting
+        agents; page 6 ``so far'' and Question 3; page 7 positive vs normative
+        agents and the social welfare function; page 8 the welfare-maximization
+        problem; page 9 the value function $v(p,w)$; page 10 the last line.
+\end{transcriptnotes}
+
+\end{document}

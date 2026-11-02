@@ -23,7 +23,7 @@
 \begin{center}
   {\large\bfseries ECON 6000 -- Microeconomics I}\\[4pt]
   {\large\bfseries Assignment 1}\\[10pt]
-  Name: xingming\\
+  Name: Xingming Li\\
   Student ID: 1432037
 \end{center}
 
@@ -38,7 +38,7 @@ We have $L=2$, $x(p,w)$ is single-valued, and $x(p,w)$ satisfies Walras' law and
 
 Yes, the Slutsky matrix, $S$, is symmetric when $L=2$. Since there are only 2 commodities, we end up with a $2\times 2$ Slutsky matrix, so to prove symmetry of $S$ we essentially need to prove $S_{12}= S_{21}$.
 
-Firstly, since $x(p,w)$ is single-valued and we assume it is differentiable, all the derivatives below exist, so the Slutsky matrix is well defined. Also, $x(p,w)$ is homogeneous of degree 0 by Walras' law and the Weak Axiom of Revealed Preference. If the function is homogeneous of degree 0, we can later apply the results from Prop.~2.E.1. Let's write down the $(l,k)$th entry of $S$:
+Since $x(p,w)$ is single-valued and differentiable, the Slutsky matrix is well defined. By Walras' law and WARP, $x(p,w)$ is homogeneous of degree 0, so we can apply Prop.~2.E.1. The $(l,k)$th entry of $S$ is
 \[
 S_{lk}(p,w)
 = \frac{\partial x_l(p,w)}{\partial p_k}
@@ -116,7 +116,7 @@ Since $p_2, p_3 > 0$, we may have the case that
 \[
 S_{12}-S_{21} = p_3 \qquad\text{and}\qquad S_{13}-S_{31} = -p_2,
 \]
-so that $p_3p_2 - p_2p_3 = 0$. In this case $S_{12}\neq S_{21}$ and $S_{13}\neq S_{31}$. In $L=2$ there is only one term left, so the equation forces $S_{12}=S_{21}$; with two terms it no longer does. Therefore, the conditions from 1.1 no longer force symmetry, and the proof does not extend to $L=3$.
+so that $p_3p_2 - p_2p_3 = 0$. The remaining rows of (1) and (2) are then also satisfied by setting $S_{23}-S_{32} = p_1$, since the second rows give $(S_{21}-S_{12})p_1 + (S_{23}-S_{32})p_3 = -p_3p_1 + p_1p_3 = 0$ and the third rows give $(S_{31}-S_{13})p_1 + (S_{32}-S_{23})p_2 = p_2p_1 - p_1p_2 = 0$. In this case $S_{12}\neq S_{21}$ and $S_{13}\neq S_{31}$. In $L=2$ there is only one term left, so the equation forces $S_{12}=S_{21}$; with two terms it no longer does. Therefore, the conditions from 1.1 no longer force symmetry, and the proof does not extend to $L=3$.
 
 \subsection*{1.3}
 
@@ -181,7 +181,15 @@ x^3 \succ x^4 \succ x^2 .
 \]
 So $x^4$ is worse than $x^3$ but better than $x^2$.
 
-\textit{With convexity only.} We may still conclude $x^3 \succsim x^4$ since $x^3$ is revealed preferred to $x^4$ (as $p^3\cdot x^4 < w^3$), and we may still say $\alpha x^3 + (1-\alpha)x^4 \succsim x^4$, but no further conclusion can be made without the monotonicity assumption. For $x^4$ and $x^2$, we may still say $\bar{x} = (3.8,\,9.2) \succsim x^2$. Even though $x^4 \gg \bar{x}$, without monotonicity we cannot conclude $x^4 \succ \bar{x} \succsim x^2$, so $x^4$ and $x^2$ cannot be compared. The comparison collapses.
+\textit{With convexity only.} We may still conclude $x^3 \succsim x^4$ since $x^3$ is revealed preferred to $x^4$ (as $p^3\cdot x^4 < w^3$). For $x^4$ and $x^2$, we still have $\bar{x} = 0.6\,x^3 + 0.4\,x^2 = (3.8,\,9.2) \succsim x^2$ by convexity. Now also use $x^1$: since $x^3 \succsim x^2$ and $x^1 \succsim x^2$, by convexity
+\[
+z = \tfrac{13}{15}\,x^3 + \tfrac{2}{15}\,x^1 = (4.2,\,10.8) \succsim x^2 .
+\]
+Then $x^4$ is a convex combination of $\bar{x}$ and $z$,
+\[
+x^4 = \tfrac12\,\bar{x} + \tfrac12\,z = (4,\,10),
+\]
+and since both $\bar{x}\succsim x^2$ and $z\succsim x^2$, by convexity $x^4 \succsim x^2$. So even with convexity only, $x^3 \succsim x^4 \succsim x^2$. In general, $x^4$ lies in the triangle formed by $x^1$, $x^2$ and $x^3$, so it is at least as good as the worst of them, $x^2$.
 
 \subsection*{2.3}
 
@@ -235,7 +243,11 @@ u(x_1,x_2) = (x_1-1)(x_2-1).
 \[
 (x_1-1)(x_2-1)=1 \;\Longrightarrow\; x_2-1=\frac{1}{x_1-1} \;\Longrightarrow\; x_2 = \frac{1}{x_1-1}+1 = \frac{x_1}{x_1-1}.
 \]
-As $x_1\to\infty$, $x_2\to 1$, and as $x_1\to 1^+$, $x_2\to\infty$, so the curve has asymptotes $x_1=1$ and $x_2=1$ and passes through $(2,2)$. In addition, $u(0,0)=(-1)(-1)=1$, so the origin is also on this indifference set. It is the only such point in $[0,1]^2$, since there $(1-x_1)(1-x_2)<1$ unless $x_1=x_2=0$.
+As $x_1\to\infty$, $x_2\to 1$, and as $x_1\to 1^+$, $x_2\to\infty$, so the curve has asymptotes $x_1=1$ and $x_2=1$ and passes through $(2,2)$. For $x_1>1$, the slope and curvature are
+\[
+\frac{dx_2}{dx_1} = -\frac{1}{(x_1-1)^2} < 0, \qquad \frac{d^2x_2}{dx_1^2} = \frac{2}{(x_1-1)^3} > 0,
+\]
+so this part of the indifference curve is downward sloping and convex. In addition, $u(0,0)=(-1)(-1)=1$, so the origin is also on this indifference set. It is the only such point in $[0,1]^2$, since there $(1-x_1)(1-x_2)<1$ unless $x_1=x_2=0$.
 
 \begin{center}
 \includegraphics[width=0.45\textwidth]{figures/q3_1_u1.png}
@@ -295,52 +307,11 @@ the region on and above the upper hyperbola branch. The boundary $g(x_1)=1+\frac
 
 \subsection*{3.5}
 
-We assume $p_1+p_2<w$, so $(1,1)$ is affordable, and ask whether the same bundle $x^*$ is optimal for both $v(x_1,x_2)$ and $u(x_1,x_2)$.
+We assume $p_1+p_2<w$, so $(1,1)$ is affordable with money left over, and ask whether the same bundle is optimal for both $v(x_1,x_2)$ and $u(x_1,x_2)$.
 
-\textit{Starting with $v$.} At $(1,1)$ we only obtain $v(1,1)=0$. Since $p_1+p_2<w$, we may still increase both goods by a small amount so that $x_1,x_2>1$, which gives a strictly positive utility while remaining affordable. So the optimum lies in the region $x\gg 1$. There $v$ is strictly increasing in both arguments, so the budget constraint binds, and we solve
-\[
-\max_{x}\; v(x) = (x_1-1)(x_2-1) \qquad \text{s.t. } x\gg 1 \text{ and } p_1x_1+p_2x_2 = w .
-\]
-The Lagrangian is
-\[
-\mathcal{L}(x,\lambda) = (x_1-1)(x_2-1) + \lambda\,(w - p_1x_1 - p_2x_2),
-\]
-with first-order conditions
-\[
-\mathcal{L}_{x_1} = x_2-1-\lambda p_1 = 0, \qquad \mathcal{L}_{x_2} = x_1-1-\lambda p_2 = 0
-\;\;\Longrightarrow\;\; \frac{x_2-1}{x_1-1} = \frac{p_1}{p_2}.
-\]
-So $(x_2-1)p_2 = (x_1-1)p_1$, i.e.\ $x_1 = \frac{(x_2-1)p_2}{p_1}+1$. From the budget constraint, $x_1 = \frac{w-p_2x_2}{p_1}$. Setting these equal,
-\[
-w - p_2x_2 = (x_2-1)p_2 + p_1 \;\Longrightarrow\; 2p_2x_2 = w+p_2-p_1 \;\Longrightarrow\; x_2^* = \frac{w+p_2-p_1}{2p_2},
-\]
-and similarly
-\[
-x_1^* = \frac{w+p_1-p_2}{2p_1}.
-\]
-Both exceed 1 because $w>p_1+p_2$. The maximized utility is
-\begin{align*}
-v(x^*) = (x_1^*-1)(x_2^*-1)
-&= \left(\frac{w+p_1-p_2}{2p_1}-1\right)\left(\frac{w+p_2-p_1}{2p_2}-1\right)\\
-&= \left(\frac{w-p_1-p_2}{2p_1}\right)\left(\frac{w-p_1-p_2}{2p_2}\right)
-= \frac{(w-p_1-p_2)^2}{4p_1p_2} > 0 .
-\end{align*}
+\textit{Starting with $v$.} At $(1,1)$ we only obtain $v(1,1)=0$. Since $p_1+p_2<w$, we may still increase both goods by a small amount so that $x\gg 1$, which gives a strictly positive utility while remaining affordable. So the optimum lies in the region $x\gg 1$, where it is characterized by the usual tangency condition, and the optimal bundle $x^*$ gives some utility $v(x^*)>0$.
 
-\textit{For $u$, it is different.} There are two candidates:
-\begin{itemize}
-  \item On $[0,1]^2$, $u(x)=(1-x_1)(1-x_2)$ reaches its maximum at $(0,0)$, with $u=1$, and this bundle costs nothing.
-  \item On $x\gg 1$, $u$ coincides with $v$, so the best choice there is the same $x^*$, with $u(x^*)=\frac{(w-p_1-p_2)^2}{4p_1p_2}$.
-\end{itemize}
-In the remaining regions (exactly one good below 1) we have $u\le 0$, so they are never optimal.
-
-\textit{When they do not share the same bundle.} If
-\begin{align*}
-\frac{(w-p_1-p_2)^2}{4p_1p_2} < 1
-&\;\Longleftrightarrow\; (w-p_1-p_2)^2 < 4p_1p_2
-\;\Longleftrightarrow\; w-p_1-p_2 < 2\sqrt{p_1p_2}\\
-&\;\Longleftrightarrow\; p_1+p_2 < w < p_1+p_2+2\sqrt{p_1p_2},
-\end{align*}
-then the consumer with $u$ chooses $(0,0)$, while the consumer with $v$ chooses $x^*$. Otherwise, if $w > p_1+p_2+2\sqrt{p_1p_2}$, the $u$ consumer also chooses $x\gg 1$, so both solve the same optimization problem and have the same optimal bundle $x^*$ (at equality, $u$ is indifferent between $(0,0)$ and $x^*$). Therefore we do not agree in general: the same bundle is optimal for both only when wealth is high enough.
+\textit{For $u$, it is different.} On $x\gg 1$, $u$ coincides with $v$, so the best choice there is the same $x^*$, and depending on how large $w$ is, $u(x^*)$ can be anywhere between $0$ and infinity. However, the free bundle $(0,0)$ gives $u(0,0)=1$. If $w$ is not large enough for $u(x^*)$ to exceed $1$, the consumer with $u$ chooses $(0,0)$, while the consumer with $v$ chooses $x^*$ (for him $(0,0)$ gives zero utility). Therefore we do not agree in general: the optimal bundle is the same for both only when wealth is high enough.
 
 % ==========================================================
 \section*{Question 4}

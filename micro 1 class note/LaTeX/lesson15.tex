@@ -1,0 +1,259 @@
+%% shortname: Choice under Uncertainty, Lotteries and the Independence Axiom
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{15}{Chapter 6: choice under uncertainty --- lotteries, the simplex, continuity and the independence axiom}{October 26, 2026 (lab)}
+
+
+\section{Midterm information}
+
+\runin{Format.} 2 questions, 4 parts each:
+\begin{flatnum}
+  \item For a specific utility function, derive the Marshallian or Hicksian demand.
+  \item A follow-up question regarding the solution.
+  \item[3--4.] More follow-up, in more abstract settings.
+\end{flatnum}
+
+\runin{Advice.}
+\begin{flatlist}
+  \item Do not get stuck in part 3/4 --- part 4 can be answered without part 3.
+  \item Explain answers in words.
+  \item Review the assignments.
+  \item Reading comprehension of technical words.
+\end{flatlist}
+
+\runin{Office hours.} Tuesday, 2:30--3:30.
+
+\runin{Reading.} Chapter 6, Sections 6.A--6.D inclusive.
+
+
+\section{Choice under uncertainty: lotteries}
+
+First task: formulate a model that allows us to examine how an agent thinks about
+and responds to uncertainty.
+
+\topic{Outcomes}
+Let $C$ denote a set of possible outcomes --- what happens once uncertainty has been
+resolved. These could be consumption bundles, wealth, health, etc. Assume for now
+that this set is finite, and let $N$ denote the number of outcomes,
+$C=\{1,\dots,N\}$.
+
+\topic{Simple lotteries}
+A simple lottery is a list
+\[ L=(p_1,p_2,\dots,p_N),\qquad p_n\ge 0,\qquad \sum_{n=1}^{N}p_n=1, \]
+where $p_n$ denotes the probability that outcome $n$ occurs; they must sum to $1$ as
+something must happen. The agent will have to choose between different lotteries,
+each unique in the probabilities within it; using these choices we can recover her
+preferences.
+
+\topic{The simplex}
+The feasible set of lotteries is
+\[ \Delta=\Bigl\{p\in\R^{N}_{+}\ \Big|\ \sum_{n=1}^{N}p_n=1\Bigr\}. \]
+Each lottery is a point in this $(N-1)$-dimensional simplex. The dimension is $N-1$
+because the probabilities sum to $1$: if we know $N-1$ of them, we can calculate the
+last one. The simplex is the feasible set of all lotteries over the possible
+outcomes.
+
+\topic{Degenerate lotteries}
+A special lottery: a degenerate lottery has one of the probabilities equal to $1$,
+meaning this outcome will happen for sure. It sits at a vertex (corner) of the
+simplex.
+
+\topic{Compound lotteries}
+A compound lottery is a lottery whose outcomes are themselves lotteries. There could
+be many lotteries in a row (a sequence), but there must be a finite end, eventually
+in the set $C$. Compound lotteries can be reduced to simple lotteries.
+
+\runin{Example.} $C=\{1,2,3\}$. With probability $\tfrac12$ the agent faces
+$L_1=(\tfrac12,\tfrac12,0)$, with probability $\tfrac12$ she faces
+$L_2=(\tfrac12,0,\tfrac12)$:
+\[ p_1=\tfrac12\cdot\tfrac12+\tfrac12\cdot\tfrac12=\tfrac12,\qquad
+   p_2=\tfrac12\cdot\tfrac12+\tfrac12\cdot 0=\tfrac14,\qquad
+   p_3=\tfrac12\cdot 0+\tfrac12\cdot\tfrac12=\tfrac14, \]
+\[ L=\bigl(\tfrac12,\tfrac14,\tfrac14\bigr). \]
+
+\begin{center}
+\begin{tikzpicture}
+  % compound lottery tree
+  \node[ecnode] at (-0.25,0) {$L$};
+  \draw (0,0) -- node[ecnode,above left] {$\tfrac12$} (1.8,1.5);
+  \draw (0,0) -- node[ecnode,below left] {$\tfrac12$} (1.8,-1.5);
+  \foreach \y/\a/\b/\c in {1.5/\tfrac12/\tfrac12/0, -1.5/\tfrac12/0/\tfrac12} {
+    \draw (1.8,\y) -- node[ecnode,above left,pos=0.7] {$\a$} (3.4,\y+0.9) node[ecnode,right] {$1$};
+    \draw (1.8,\y) -- node[ecnode,above,pos=0.7] {$\b$} (3.4,\y) node[ecnode,right] {$2$};
+    \draw (1.8,\y) -- node[ecnode,below left,pos=0.7] {$\c$} (3.4,\y-0.9) node[ecnode,right] {$3$};
+  }
+  % simplex, side 4.6: vertices 1, 2, 3; the distance to the side opposite vertex n is p_n (height = 1)
+  \begin{scope}[xshift=5.4cm,yshift=-2cm,scale=1.15]
+    \draw[budget] (0,0) node[ecnode,below left] {$1$} -- (4,0) node[ecnode,below right] {$2$}
+                  -- (2,3.4641) node[ecnode,above] {$3$} -- cycle;
+    \draw[dashed] (1.5,0.8660) -- node[ecnode,right] {$\tfrac14$} (1.5,0);
+    \draw[dashed] (1.5,0.8660) -- node[ecnode,below left] {$\tfrac14$} (0.75,1.2990);
+    \draw[dashed] (1.5,0.8660) -- node[ecnode,above left] {$\tfrac12$} (3,1.7321);
+    \node[bundle] at (1.5,0.8660) {};
+    \node[ecnode,above] at (1.5,0.9) {$L$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+In the simplex (draw it with all sides equal, height $1$), the probability $p_n$ is
+the perpendicular distance from $L$ to the side opposite vertex $n$.
+
+
+\section{Preferences over lotteries}
+
+Another axiomatic approach. Assume the agent evaluates compound lotteries as simple
+lotteries in reduced form, as above: only the reduced lottery matters. Then we only
+have to figure out how the consumer ranks simple lotteries.
+
+Let $\mathcal{L}$ denote the set of (simple) lotteries and $\succsim$ the preference
+relation on $\mathcal{L}$. Assume the agent is rational: preferences are complete and
+transitive.
+
+\topic{Continuity}
+$\succsim$ is continuous if for any three lotteries $L,L',L''\in\mathcal{L}$ the sets
+\[ \bigl\{\alpha\in[0,1]\ \big|\ \alpha L+(1-\alpha)L'\succsim L''\bigr\}
+   \quad\text{and}\quad
+   \bigl\{\alpha\in[0,1]\ \big|\ L''\succsim\alpha L+(1-\alpha)L'\bigr\} \]
+are closed. Equivalently, consider the complement of the second set:
+\[ \bigl\{\alpha\in[0,1]\ \big|\ \alpha L+(1-\alpha)L'\succ L''\bigr\}
+   \ \text{is open}. \]
+This means there is room for a small change in $\alpha$ and the (strict) preference
+still holds: the ranking stays the same.
+
+With these axioms (rational and continuous), $\succsim$ can be represented by a utility
+function $U:\mathcal{L}\to\R$.
+
+\topic{The independence axiom}
+The next axiom leads to much more structure; it is a strong assumption and
+controversial. Compare two lotteries $L$ and $L'$, and compare the compound lotteries
+that mix each of them with the same third lottery $L''$. If $L\succsim L'$, then the
+compound lotteries should follow suit.
+
+$\succsim$ satisfies the independence axiom if for any $L,L',L''\in\mathcal{L}$ and
+any $\alpha\in(0,1)$,
+\[ L\succsim L' \quad\Longleftrightarrow\quad
+   \alpha L+(1-\alpha)L''\ \succsim\ \alpha L'+(1-\alpha)L''. \]
+That is, if $L\succsim L'$, then the mixture of $L$ and $L''$ is preferred to the
+mixture of $L'$ and $L''$.
+
+\begin{center}
+\begin{tikzpicture}
+  \draw (0,0) -- node[ecnode,above left] {$\alpha$} (1.4,0.8) node[ecnode,right] {$L$};
+  \draw (0,0) -- node[ecnode,below left] {$1-\alpha$} (1.4,-0.8) node[ecnode,right] {$L''$};
+  \node[ecnode] at (2.4,0) {$\succsim$};
+  \draw (3.2,0) -- node[ecnode,above left] {$\alpha$} (4.6,0.8) node[ecnode,right] {$L'$};
+  \draw (3.2,0) -- node[ecnode,below left] {$1-\alpha$} (4.6,-0.8) node[ecnode,right] {$L''$};
+\end{tikzpicture}
+\end{center}
+The two branches are mutually exclusive: only one of them is realized. If the
+$L''$ branch is realized, the agent gets $L''$ either way; so the comparison should
+depend only on $L$ versus $L'$.
+
+
+\section{Implications for the indifference curves}
+
+\topic{1. Indifference curves are straight lines}
+Assume $L\sim L'$ (i.e.\ $L\succsim L'$ and $L'\succsim L$). By independence this also
+holds for the mixtures:
+\[ \alpha L+(1-\alpha)L''\ \sim\ \alpha L'+(1-\alpha)L'', \]
+and this should hold regardless of what $L''$ is.
+
+Special case $L''=L$: then we conclude
+\[ L\ \sim\ \alpha L'+(1-\alpha)L. \]
+If $L\sim L'$, we should be indifferent about any mixture of the two (the betweenness
+property). This means the indifference curve through $L$ and $L'$ contains the whole
+segment between them: indifference curves are straight lines when $N=3$, and
+(hyper)planes when $N\ge 4$.
+
+\topic{2. Indifference curves are parallel}
+Assume $L\sim L'$, fix $\alpha\in[0,1]$ and a third lottery $L''$, and let
+\[ A=\alpha L+(1-\alpha)L'',\qquad B=\alpha L'+(1-\alpha)L''. \]
+$A$ and $B$ lie at the same relative distance along the two sides $L''L$ and
+$L''L'$, and $A\sim B$ by independence. The line connecting $A$ and $B$ must be
+parallel to the line connecting $L$ and $L'$. So indifference curves shift in a
+parallel way.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % left: simplex with parallel indifference lines
+  \draw[budget] (0,0) -- (4,0) -- (2,3.4641) -- cycle;
+  \begin{scope}
+    \clip (0,0) -- (4,0) -- (2,3.4641) -- cycle;
+    \foreach \c in {0.6,1.4,2.2,3.0,3.8} {
+      \draw[thin] (\c-1,-0.6) -- (\c+3,3.4);
+    }
+  \end{scope}
+  \node[ecnode] at (2,-0.45) {indifference lines in the simplex};
+  % right: the triangle L, L', L'' with A, B
+  \begin{scope}[xshift=5.8cm]
+    \draw[budget] (0,0) node[ecnode,below left] {$L$} -- (3,0) node[ecnode,below right] {$L'$}
+                  -- (2,3) node[ecnode,above] {$L''$} -- cycle;
+    \draw[thick] (0,0) -- (3,0);
+    \node[bundle] at (0.8,1.2) {}; \node[ecnode,left] at (0.75,1.2) {$A$};
+    \node[bundle] at (2.6,1.2) {}; \node[ecnode,right] at (2.65,1.2) {$B$};
+    \draw[dashed] (0.8,1.2) -- (2.6,1.2);
+    \node[ecnode] at (1.5,-0.45) {$AB\parallel LL'$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+
+\begin{transcriptnotes}
+  \item The export is a single long page titled ``October 26 Lab'' (dated October 26,
+        2026, 2:31 PM); it is filed as Lesson 15. Lesson 14 (normative representative
+        agent, aggregation) has slides only, no handwritten export.
+  \item Top of the page (midterm block): ``2:3:30 office hours -- Tuesday'' is read as
+        Tuesday 2:30--3:30 (\textbf{unclear}: the start time). ``marshallian or
+        hicksian demand'' kept; ``Explain answers means words'' $\to$ \emph{explain
+        answers in words}; ``can answer part 4 without part 3'' merged with ``do not
+        get stuck in part 3/4''. ``chapter 6, 6.A--6.D inclusive'' (MWG) set as the
+        reading.
+  \item ``ect.'' $\to$ \emph{etc.}; ``probabilty'' $\to$ \emph{probability};
+        ``symplex'' $\to$ \emph{simplex}; ``compliment'' $\to$ \emph{complement};
+        ``contraversal'' $\to$ \emph{controversial}; ``prefered'' $\to$
+        \emph{preferred}; ``independent axiom'' $\to$ \emph{independence axiom};
+        ``lotterys'' $\to$ \emph{lotteries}. ``his preferences'' typeset
+        \emph{her preferences}, as in earlier lessons. The lottery is written
+        $L(P_1,\dots,P_n)$ with $\sum P_i$; typeset $L=(p_1,\dots,p_N)$, $\sum_n p_n$,
+        with $N$ the number of outcomes as defined on the page. $C=\{1,\dots,N\}$ is
+        \textbf{added}.
+  \item The simplex is written $A=\{p\in\R^N_+\mid\sum P_i=1\}$; typeset $\Delta$.
+        \textbf{Corrected:} ``simplex = feasible set of possible outcomes'' --- the
+        simplex is the set of \emph{lotteries} over the outcomes (the outcomes are its
+        vertices). ``there must be a finite end'' read from ``must be a finite end
+        eventually in the set of $C$''.
+  \item Compound-lottery example: the hand-drawn tree has branch probabilities
+        $\tfrac12,\tfrac12,0$ (top) and $\tfrac12,0,\tfrac12$ (bottom); the names
+        $L_1$, $L_2$ and the computation of $p_3$ are \textbf{added} (the page gives
+        $p_2=p_3$). The simplex sketch (``imagine all sides are equal'') is redrawn to
+        scale; the red ``Bottom''/``Top'' labels on it are not reproduced. The
+        explanation that $p_n$ is the distance to the side opposite vertex $n$ is
+        \textbf{added}; checked: distances $\tfrac12,\tfrac14,\tfrac14$ for height 1.
+  \item Continuity: the second set is written with $\precsim$; typeset with $L''$ on
+        the left and $\succsim$, which is the same set. The pink margin note ``check
+        continuity of the consumer on open \& closed sets'' is folded into the text.
+        ``rank is same'' read as \emph{the ranking stays the same}. ``(rational and
+        continuous)'' and $U:\mathcal{L}\to\R$ are \textbf{added}.
+  \item Independence: the page states ``for any $L,L',L''$ and any $\alpha\in[0,1]$,
+        if $L\succsim L'$ then \ldots''. \textbf{Corrected} to MWG Definition 6.B.5:
+        $\alpha\in(0,1)$ and ``if and only if'' (at $\alpha=0$ both mixtures equal
+        $L''$, so the ``only if'' direction would fail there). The page's statement is
+        the ``if'' direction. The circled $L$, $L'$ and their ``$\vee$'' marks are the
+        comparison of $L$ with $L'$; the sentence after the tree is expanded from
+        ``two branches are mutually exclusive''.
+  \item Implications: the page writes ``assume $L\sim L'$, $L\succsim L'$, $L'\succsim
+        L$''; typeset ``$L\sim L'$ (i.e.\ \ldots)''. ``Between axiom'' $\to$
+        \emph{betweenness property}. ``line when $n=3$, hyperplane when $n=4$'' is
+        typeset with $N$ and ``$N\ge 4$''. \textbf{Corrected:} $B=\alpha L'+(1-\alpha)L'$
+        has $L'$ twice; it is $\alpha L'+(1-\alpha)L''$. ``$(-\alpha)$'' $\to$
+        $(1-\alpha)$. ``same distance to the two sides'' typeset as the same
+        \emph{relative} distance along the two sides.
+  \item Figures: the left sketch (a simplex with $L$, $L'$, $L''$ and two angle marks
+        for similar triangles) is redrawn as a simplex with parallel indifference
+        lines; the right sketch ($L$, $L'$, $L''$ with $A$, $B$) is redrawn to scale
+        with $\alpha=0.6$.
+\end{transcriptnotes}
+
+\end{document}

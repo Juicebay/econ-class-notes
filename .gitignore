@@ -9,3 +9,13 @@ __pycache__/
 # Course exams (keep off GitHub)
 micro 1 class note/ECON6000 Midterm.pdf
 micro 1 class note/ECON6000 Final Exam.pdf
+micro 1 class note/exams/
+macro 1 class note/mid term sample/
+metrics 1 class note/LaTeX/mock_exams*
+
+# Published textbooks (copyrighted; keep local)
+metrics 1 class note/ETM-davidson-mackinnon-2021.pdf
+micro 1 class note/Supplemental Materials/Felix Munoz-Garcia*
+
+# Stray build copy (Metrics HW2 folder name has a trailing space)
+metrics 1 class note/HW 2.pdf

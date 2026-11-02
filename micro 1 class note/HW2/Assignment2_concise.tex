@@ -1,0 +1,219 @@
+\documentclass[12pt,letterpaper]{article}
+
+% ---------- Standard setup ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=2pt,topsep=2pt}
+\setlist[enumerate]{itemsep=2pt,topsep=2pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------- Header ----------
+\begin{document}
+
+\begin{center}
+  {\large\bfseries ECON 6000 -- Microeconomics I}\\[4pt]
+  {\large\bfseries Assignment 2}\\[10pt]
+  Name: Xingming Li\\
+  Student ID: 1432037
+\end{center}
+
+\vspace{6pt}
+
+% ==========================================================
+\section*{Question 1}
+
+\[
+u^A(x_1,x_2) = 108\,(x_1+x_2) - (x_1-1)^4, \qquad u^B(x_1,x_2) = 108\,(x_1+x_2), \qquad X=[0,4]^2 .
+\]
+
+\subsection*{1.1}
+
+\textit{Monotone: yes for both.} For A,
+\[
+\frac{\partial u^A}{\partial x_1} = 108 - 4(x_1-1)^3 \;\ge\; 108 - 4\cdot 3^3 = 0, \qquad \frac{\partial u^A}{\partial x_2} = 108>0,
+\]
+with $\partial u^A/\partial x_1=0$ only at the single point $x_1=4$. So $u^A$ is strictly increasing in each good on $X$, and $y\gg x$ implies $u^A(y)>u^A(x)$. The constant $108$ is exactly large enough to keep the marginal utility of good 1 non-negative up to $x_1=4$. For B, $\partial u^B/\partial x_\ell=108>0$.
+
+\textit{Strictly convex: yes for A, no for B.} $u^A$ is additively separable,
+\[
+u^A = \underbrace{108x_1-(x_1-1)^4}_{f_1(x_1)} + \underbrace{108x_2}_{f_2(x_2)},
+\]
+where $f_1''=-12(x_1-1)^2\le 0$ with equality only at $x_1=1$, so $f_1$ is strictly concave, and $f_2$ is linear. By Assignment 1, 4.2 (one linear term, the other strictly concave), A's preferences are strictly convex on the convex set $X$.
+
+$u^B$ is linear, so its preferences are convex but not strictly convex: $y=(1,0)$ and $z=(0,1)$ give $u^B=108$, and so does $\tfrac12y+\tfrac12z=(\tfrac12,\tfrac12)$, so $\tfrac12y+\tfrac12z\sim y$ rather than $\succ y$.
+
+\subsection*{1.2}
+
+Here $u^A(0,0)=-1$, $u^A(2,2)=431$, $u^B(0,0)=0$, $u^B(2,2)=432$.
+
+\textit{Consumer A} ($u\in(-1,431)$). Solving $u^A=u$ for $x_2$,
+\[
+x_2 = \frac{u}{108} + \frac{(x_1-1)^4}{108} - x_1, \qquad
+x_2' = \frac{(x_1-1)^3}{27} - 1, \qquad
+x_2'' = \frac{(x_1-1)^2}{9}.
+\]
+At $x_1=1$: $x_2'(1)=-1$ and $x_2''(1)=0$.
+
+\textit{Consumer B} ($u\in(0,432)$). $x_2 = \dfrac{u}{108} - x_1$, so $x_2'=-1$ and $x_2''=0$ everywhere, including $x_1=1$.
+
+\textit{Comparison.} At $x_1=1$ both curves have slope $-1$ and curvature $0$. B's curve is a straight line everywhere; A's is strictly convex elsewhere ($x_2''>0$) but is locally almost a straight line around $x_1=1$.
+
+\subsection*{1.3}
+
+Since $w<\min\{4p_1,4p_2\}$, the bound $x_\ell\le 4$ never binds; only $x_\ell\ge0$ matters. Both preferences are monotone, so the budget binds.
+
+\textit{Consumer B} (perfect substitutes, $MRS^B_{12}=1$). B buys only the cheaper good:
+\[
+x^B(p,w)=\begin{cases}
+\left(\dfrac{w}{p_1},\,0\right) & \text{if } p_1<p_2,\\[8pt]
+\{x\in\mathbb{R}^2_+ : p_1x_1+p_2x_2=w\} & \text{if } p_1=p_2,\\[8pt]
+\left(0,\,\dfrac{w}{p_2}\right) & \text{if } p_1>p_2 .
+\end{cases}
+\]
+
+\textit{Consumer A.} Substituting $x_2=(w-p_1x_1)/p_2$,
+\[
+U(x_1) = 108\Big(1-\frac{p_1}{p_2}\Big)x_1 + \frac{108w}{p_2} - (x_1-1)^4, \qquad x_1\in[0,w/p_1].
+\]
+$U''=-12(x_1-1)^2\le0$, so $U$ is concave and $U'$ is strictly decreasing. The first-order condition $U'(x_1)=0$ gives
+\[
+(x_1-1)^3 = 27\Big(1-\frac{p_1}{p_2}\Big) \;\Longrightarrow\; \hat x_1 = 1+3\sqrt[3]{1-\frac{p_1}{p_2}},
+\]
+and $U'(x_1)=4\big[(\hat x_1-1)^3-(x_1-1)^3\big]$, so $U$ rises up to $\hat x_1$ and falls after. Hence A picks the affordable $x_1$ closest to $\hat x_1$: $x_1=0$ if $\hat x_1\le0$ (equivalently $p_1/p_2\ge 28/27$), $x_1=w/p_1$ if $\hat x_1\ge w/p_1$, and $x_1=\hat x_1$ otherwise:
+\[
+x^A(p,w)=\begin{cases}
+\left(0,\;\dfrac{w}{p_2}\right) & \text{if } \dfrac{p_1}{p_2}\ge\dfrac{28}{27},\\[12pt]
+\left(\hat x_1,\;\dfrac{w-p_1\hat x_1}{p_2}\right) & \text{if } 0<\hat x_1<\dfrac{w}{p_1},\\[12pt]
+\left(\dfrac{w}{p_1},\;0\right) & \text{if } \hat x_1\ge\dfrac{w}{p_1}.
+\end{cases}
+\]
+Because A's preferences are strictly convex, this is a single-valued demand function.
+
+\subsection*{1.4}
+
+\textit{Consumer A: continuous.} Near $p_1=p_2$, $x_1^A=\min\{\hat x_1,\,w/p_1\}$ with $\hat x_1=1+3\sqrt[3]{1-p_1/p_2}$. The cube root is continuous on both sides of $0$, so as $p_1$ crosses $p_2$, $\hat x_1$ slides smoothly through $1$. The pieces of the demand formula also agree where the cases switch, so there is no jump.
+
+\textit{Consumer B: not continuous.} For $p_1$ slightly below $p_2$, B spends everything on good 1, so $x_1^B=w/p_1\approx w/p_2$. For $p_1$ slightly above $p_2$, he buys none, so $x_1^B=0$. An arbitrarily small price change makes demand jump from about $w/p_2$ to $0$, and at $p_1=p_2$ demand is the whole budget line. So B's demand is not continuous.
+
+\subsection*{1.5}
+
+\textit{Demand at $p_1=p_2$.} With both goods bought, A is interior: $x_1^A=\hat x_1=1+3\sqrt[3]{0}=1$, and $x_2^A=(w-p_1)/p_2$.
+
+\textit{Not differentiable.} For $p_1\ne p_2$,
+\[
+\frac{\partial x_1^A}{\partial p_1} = -\frac{1}{p_2}\Big(1-\frac{p_1}{p_2}\Big)^{-2/3} \;\longrightarrow\; -\infty \quad\text{as } p_1\to p_2 .
+\]
+The cube root has a vertical tangent at $0$, so $x_1^A$ has no derivative at $p_1=p_2$.
+
+\textit{Intuition.} By 1.2, at $x_1=1$ A's indifference curve has the same slope ($-1$) and zero curvature as B's straight line, so near $x_1=1$ A treats the goods almost as perfect substitutes. By 1.4, B's demand jumps when $p_1$ crosses $p_2$. A's strict convexity prevents a jump, but his nearly flat indifference curve means a tiny change in $p_1/p_2$ moves his tangency point a lot. Demand stays continuous but responds infinitely fast at $p_1=p_2$.
+
+\subsection*{1.6}
+
+\textit{Statement 1: disagree.} Consumer B has monotone and convex preferences, yet by 1.4 his demand jumps at $p_1=p_2$ and is not even single-valued there. Convexity allows flat segments in indifference curves, which cause jumps. A continuous demand function requires strict convexity (with continuous preferences); then the Maximum Theorem gives continuity.
+
+\textit{Statement 2: disagree.} Consumer A has monotone, strictly convex preferences and a polynomial (infinitely differentiable) utility, yet by 1.5 his demand is not differentiable at $p_1=p_2$. Smoothness of $u$ does not rule out an indifference curve with zero curvature at a point, as at $x_1=1$ (1.2). Differentiable demand needs strictly positive curvature of indifference curves, not just strict convexity and smoothness.
+
+% ==========================================================
+\section*{Question 2}
+
+\[
+u(x_1,x_2) = x_1x_2 + x_1^2, \qquad (x_1,x_2)\in\mathbb{R}^2_+ .
+\]
+
+\subsection*{2.1}
+
+\textit{Convex: yes.} We show every upper contour set $U(\bar u)=\{x\in\mathbb{R}^2_+ : u(x)\ge\bar u\}$ is convex. If $\bar u\le0$, then $U(\bar u)=\mathbb{R}^2_+$ since $u\ge0$. If $\bar u>0$, then $x_1>0$ is needed and
+\[
+u(x)\ge\bar u \;\Longleftrightarrow\; x_2\ge g(x_1)\equiv\frac{\bar u}{x_1}-x_1, \qquad g''(x_1)=\frac{2\bar u}{x_1^3}>0 .
+\]
+So $U(\bar u)=\{x_1>0,\ x_2\ge\max\{0,g(x_1)\}\}$ is the region above a convex function, which is convex.
+
+\textit{Strictly convex: no.} Every bundle with $x_1=0$ gives utility $0$. Take $y=(0,2)$, $z=(0,3)$ and $x=y$: then $y,z\succsim x$, $y\ne z$, but $u(\tfrac12y+\tfrac12z)=u(0,2.5)=0=u(x)$, so the mixture is only indifferent to $x$, not strictly preferred.
+
+\subsection*{2.2}
+
+Since $\partial u/\partial x_1=x_2+2x_1>0$ for $x\ne0$, preferences are locally non-satiated and the budget binds. Buying $x_1=0$ gives $u=0$, worse than $(w/p_1,0)$, so $x_1>0$ and the only possible corner is $x_2=0$. Note that
+\[
+MRS_{12}=\frac{x_2+2x_1}{x_1}=2+\frac{x_2}{x_1}\ge 2,
+\]
+so the consumer buys good 2 only if good 1 costs more than twice as much.
+
+\textit{Interior ($x_2>0$).} Setting $MRS_{12}=p_1/p_2$ gives $x_2=\dfrac{p_1-2p_2}{p_2}\,x_1$. Substituting into the budget,
+\[
+x_1=\frac{w}{2(p_1-p_2)}, \qquad x_2=\frac{(p_1-2p_2)\,w}{2p_2(p_1-p_2)},
+\]
+which is positive only if $p_1>2p_2$.
+
+\textit{Corner ($x_2=0$).} The Kuhn--Tucker condition $x_1-\lambda p_2\le0$ with $\lambda=2x_1/p_1$ (from the $x_1$ condition) reduces to $p_1\le2p_2$.
+\[
+x(p,w) = \begin{cases}
+\left(\dfrac{w}{2(p_1-p_2)},\; \dfrac{(p_1-2p_2)\,w}{2p_2(p_1-p_2)}\right) & \text{if } p_1>2p_2,\\[14pt]
+\left(\dfrac{w}{p_1},\; 0\right) & \text{if } p_1\le 2p_2 .
+\end{cases}
+\]
+
+\subsection*{2.3}
+
+\textit{Indirect utility.} Plugging demand into $u$:
+\[
+v(p,w) = \begin{cases}
+\dfrac{w^2}{4p_2(p_1-p_2)} & \text{if } p_1>2p_2,\\[12pt]
+\dfrac{w^2}{p_1^2} & \text{if } p_1\le 2p_2 .
+\end{cases}
+\]
+(In the interior case, $x_1x_2+x_1^2=x_1(x_2+x_1)=\frac{w}{2(p_1-p_2)}\cdot\frac{w}{2p_2}$.)
+
+\textit{Expenditure function.} Solving $v(p,e)=\bar u$ for $e$:
+\[
+e(p,\bar u) = \begin{cases}
+2\sqrt{\bar u\,p_2(p_1-p_2)} & \text{if } p_1>2p_2,\\[6pt]
+p_1\sqrt{\bar u} & \text{if } p_1\le 2p_2 .
+\end{cases}
+\]
+
+\textit{Hicksian demand.} By Shephard's Lemma, $h_\ell=\partial e/\partial p_\ell$. For $p_1>2p_2$,
+\[
+h_1(p,\bar u)=\sqrt{\frac{\bar u\,p_2}{p_1-p_2}}, \qquad
+h_2(p,\bar u)=\sqrt{\frac{\bar u\,(p_1-p_2)}{p_2}}-\sqrt{\frac{\bar u\,p_2}{p_1-p_2}} ,
+\]
+and for $p_1\le2p_2$, $h_1=\sqrt{\bar u}$, $h_2=0$.
+
+\subsection*{2.4}
+
+\textit{Prices with $x_1=x_2$.} This needs $x_2>0$, so the interior case applies:
+\[
+\frac{w}{2(p_1-p_2)}=\frac{(p_1-2p_2)\,w}{2p_2(p_1-p_2)} \;\Longleftrightarrow\; p_1=3p_2 ,
+\]
+for any $w>0$.
+
+\textit{Effect of the price change.} Let $\bar u=v(p,w)$, so $e(3p_2,p_2,\bar u)=2\sqrt{\bar u\cdot 2p_2^2}=w$. At new prices $(3p_2+t,\,p_2-t)$ we still have $p_1'>2p_2'$, so
+\[
+e(p',\bar u)=2\sqrt{\bar u\,(2p_2+2t)(p_2-t)}=2\sqrt{2\bar u\,(p_2^2-t^2)},
+\]
+so
+\[
+\frac{e(p',\bar u)}{w}=\sqrt{1-\frac{t^2}{p_2^2}}<1 \quad\text{for } t>0 .
+\]
+The agent spends \emph{less} to reach the same utility.
+
+\subsection*{2.5}
+
+\textit{Yes, I agree} (in the weak sense: never more, and strictly less whenever the consumer adjusts his bundle).
+
+\textit{Proof.} Let $x_1(p,w)=x_2(p,w)$ and $\bar u=v(p,w)$. With continuous, locally non-satiated preferences, duality gives $h(p,\bar u)=x(p,w)$ and $e(p,\bar u)=w$, so $h_1=h_2$ at $p$. Strict convexity makes $h$ single-valued, so by Shephard's Lemma (the Envelope Theorem applied to the EMP) $\partial e/\partial p_\ell=h_\ell$. Define $\phi(t)=e(p_1+t,\,p_2-t,\,\bar u)$. Then
+\[
+\phi'(0)=h_1(p,\bar u)-h_2(p,\bar u)=0 .
+\]
+Since $e$ is concave in $p$, $\phi$ is concave in $t$ and lies below its tangent at $0$:
+\[
+\phi(t)\le\phi(0)+\phi'(0)\,t = w .
+\]
+So $e(p_1+t,\,p_2-t,\,\bar u)\le w$ for every $t\ge0$ keeping prices positive.
+
+\textit{Intuition.} The old bundle still costs exactly $w$ at the new prices, because $(p_1+t)h_1+(p_2-t)h_2=w+t(h_1-h_2)=w$. So reaching $\bar u$ never costs more. But good 2 is now relatively cheaper, so the consumer can substitute toward it and reach $\bar u$ for less, as in 2.4.
+
+\end{document}

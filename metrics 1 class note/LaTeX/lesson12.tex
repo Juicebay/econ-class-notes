@@ -1,0 +1,261 @@
+%% title: Asymptotics of NLS and Hypothesis Testing with the GNR
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{12}{Nonlinear least squares: consistency, asymptotic normality and hypothesis testing with the GNR}{October 28, 2026}
+
+\runin{Previously} The Gauss--Newton regression (GNR) and Taylor series (Lesson 11).
+\runin{Announcements} November 9: exam assignment. November 23: Assignment 2.
+
+\section{Recap: linear and nonlinear regression}
+
+\topic{The linear model}
+\[ y = X\beta + u, \qquad u \sim (0,\sigma^{2}I_{n}), \qquad
+   \E(x_{t}u_{t}) = 0, \]
+\[ \operatorname*{plim}\frac{X'X}{n} = \Sigma_{XX}, \qquad
+   \rank(\Sigma_{XX}) = K. \]
+Under the law of large numbers and central limit theorem conditions used in Lesson 10,
+\[ b_{n} = (X'X)^{-1}X'y, \qquad
+   \sqrt{n}\,(b_{n}-\beta) \ \xrightarrow{\ d\ }\ N(0,\sigma^{2}\Sigma_{XX}^{-1}). \]
+
+\topic{The nonlinear model}
+\[ y = x(\beta_{0}) + u, \qquad u \sim (0,\sigma^{2}I_{n}), \]
+where $\beta_{0}$ is the true parameter vector and $x(\beta)$ is the $n\times 1$
+vector of regression functions. Define the $n\times K$ derivative matrix
+\[ X(\beta) = \Bigl[\frac{\partial x_{t}(\beta)}{\partial\beta_{i}}\Bigr]_{t,i},
+   \qquad t=1,\ldots,n,\quad i=1,\ldots,K. \]
+As in Lesson 11, lower-case $x(\beta)$ is the regression function; capital
+$X(\beta)$ is its derivative matrix. If $X_{t}(\beta)$ is its $t$-th row, the
+orthogonality condition is
+\[ \E\bigl(X_{t}(\beta_{0})'u_{t}\bigr)=0
+   \quad\Longrightarrow\quad \E\bigl(X(\beta_{0})'u\bigr)=0. \]
+The NLS estimator minimizes the sum of squared residuals:
+\[ \hat\beta = \operatorname*{arg\,min}_{\beta}\operatorname{SSR}(\beta),
+   \qquad \operatorname{SSR}(\beta)=(y-x(\beta))'(y-x(\beta)). \]
+
+\Needspace{14\baselineskip}
+\topic{Notation and the rank condition}
+\[ \hat x=x(\hat\beta), \qquad x_{0}=x(\beta_{0}), \qquad
+   \hat X=X(\hat\beta), \qquad X_{0}=X(\beta_{0}), \]
+\[ \operatorname*{plim}\frac{X_{0}'X_{0}}{n}=\Sigma_{XX},
+   \qquad \Sigma_{XX}\text{ finite and positive definite}. \]
+This is the local rank condition. Consistency also requires identification of
+$\beta_{0}$ as the unique minimizer of the population objective and suitable
+uniform convergence. The derivations below assume these regularity conditions,
+smoothness, and the required LLN and CLT. Conditional mean zero,
+$\E(u_{t}\mid\text{regressors})=0$, together with conditional homoskedasticity
+and suitable sampling conditions, is a sufficient setting for the moment
+conditions used below.
+
+\section{Consistency of the residual variance estimate}
+
+\topic{Expand the sum of squared residuals}
+Since $y=x_{0}+u$,
+\begin{align*}
+ \operatorname{SSR}(\hat\beta)
+ &= (y-\hat x)'(y-\hat x)\\
+ &= y'y-2y'\hat x+\hat x'\hat x\\
+ &= (x_{0}+u)'(x_{0}+u)-2(x_{0}+u)'\hat x+\hat x'\hat x\\
+ &= x_{0}'x_{0}+2u'x_{0}+u'u-2x_{0}'\hat x-2u'\hat x+\hat x'\hat x\\
+ &= u'u+2u'(x_{0}-\hat x)+(x_{0}-\hat x)'(x_{0}-\hat x).
+\end{align*}
+
+\topic{Taylor approximation around $\beta_{0}$}
+Write $\delta=\hat\beta-\beta_{0}$. A first-order expansion gives
+\[ \hat x-x_{0}=X_{0}\delta+r_{n}, \]
+where $r_{n}$ collects the higher-order terms. Under consistency and the
+regularity conditions, their contribution to $\operatorname{SSR}/n$ is $o_{p}(1)$.
+Substituting into the expansion,
+\[ \frac{\operatorname{SSR}(\hat\beta)}{n}
+   =\frac{u'u}{n}-2\frac{u'X_{0}}{n}\delta
+     +\delta'\frac{X_{0}'X_{0}}{n}\delta+o_{p}(1). \]
+Now use
+\[ \frac{u'u}{n}\xrightarrow{\ p\ }\sigma^{2}, \qquad
+   \frac{X_{0}'u}{n}\xrightarrow{\ p\ }0, \qquad
+   \frac{X_{0}'X_{0}}{n}\xrightarrow{\ p\ }\Sigma_{XX}, \qquad
+   \delta\xrightarrow{\ p\ }0. \]
+Both the cross term and the quadratic term vanish. At the true parameter,
+\[ \operatorname{SSR}(\beta_{0})=(y-x_{0})'(y-x_{0})=u'u. \]
+Hence
+\[ \boxed{\frac{\operatorname{SSR}(\hat\beta)}{n}\xrightarrow{\ p\ }\sigma^{2}},
+   \qquad \frac{\operatorname{SSR}(\beta_{0})}{n}\xrightarrow{\ p\ }\sigma^{2}. \]
+This establishes consistency of the residual variance estimate, given
+consistency of $\hat\beta$; it does not itself prove consistency of $\hat\beta$.
+For fixed $K$, the degrees-of-freedom adjustment has the same limit:
+\[ s^{2}=\frac{\operatorname{SSR}(\hat\beta)}{n-K}\xrightarrow{\ p\ }\sigma^{2}. \]
+
+\Needspace{12\baselineskip}
+\section{Asymptotic normality of NLS}
+
+\topic{First-order conditions and the derivative}
+The NLS first-order conditions are
+\[ g_{n}(\hat\beta)=\hat X'(y-\hat x)=0, \qquad
+   g_{n}(\beta)=X(\beta)'(y-x(\beta)). \]
+Let $H_{t}(\beta)=\partial^{2}x_{t}(\beta)/\partial\beta\,\partial\beta'$,
+a $K\times K$ matrix. At $\beta_{0}$,
+\[ g_{n}(\beta_{0})=X_{0}'u, \qquad
+   \frac{\partial g_{n}(\beta_{0})}{\partial\beta'}
+      =\sum_{t=1}^{n}u_{t}H_{t}(\beta_{0})-X_{0}'X_{0}. \]
+Assume the second-derivative moment and LLN conditions
+\[ \E\bigl(u_{t}H_{t}(\beta_{0})\bigr)=0, \qquad
+   \frac{1}{n}\sum_{t=1}^{n}u_{t}H_{t}(\beta_{0})\xrightarrow{\ p\ }0. \]
+
+
+\topic{Taylor expansion and scaling by $\sqrt{n}$}
+Under the usual local remainder conditions, expand the normalized FOCs:
+\[ 0=\frac{X_{0}'u}{\sqrt{n}}
+   +\left[\frac{1}{n}\sum_{t=1}^{n}u_{t}H_{t}(\beta_{0})
+          -\frac{X_{0}'X_{0}}{n}\right]\sqrt{n}(\hat\beta-\beta_{0})+o_{p}(1). \]
+The bracket converges to $-\Sigma_{XX}$, giving
+\[ \sqrt{n}(\hat\beta-\beta_{0})
+   =\Sigma_{XX}^{-1}\frac{X_{0}'u}{\sqrt{n}}+o_{p}(1). \]
+
+\topic{Distribution of $X_{0}'u/\sqrt{n}$}
+For fixed regressors, under $\Var(u)=\sigma^{2}I_{n}$,
+\[ \E\Bigl(\frac{X_{0}'u}{\sqrt{n}}\Bigr)=0, \qquad
+   \Var\Bigl(\frac{X_{0}'u}{\sqrt{n}}\Bigr)
+      =\frac{X_{0}'(\sigma^{2}I_{n})X_{0}}{n}
+      =\sigma^{2}\frac{X_{0}'X_{0}}{n}\longrightarrow\sigma^{2}\Sigma_{XX}. \]
+For stochastic regressors use the corresponding conditional assumptions. By the CLT,
+\[ \frac{X_{0}'u}{\sqrt{n}}\xrightarrow{\ d\ }N(0,\sigma^{2}\Sigma_{XX}). \]
+
+\topic{Putting the two pieces together}
+\begin{align*}
+ \sqrt{n}(\hat\beta-\beta_{0})
+ &\xrightarrow{\ d\ }\Sigma_{XX}^{-1}N(0,\sigma^{2}\Sigma_{XX})\\
+ &=N\bigl(0,\sigma^{2}\Sigma_{XX}^{-1}\Sigma_{XX}\Sigma_{XX}^{-1}\bigr)
+ =N(0,\sigma^{2}\Sigma_{XX}^{-1}).
+\end{align*}
+Thus
+\[ \boxed{\sqrt{n}(\hat\beta-\beta_{0})\xrightarrow{\ d\ }
+   N(0,\sigma^{2}\Sigma_{XX}^{-1})}, \qquad
+   \Sigma_{XX}=\operatorname*{plim}\frac{X_{0}'X_{0}}{n}. \]
+This has the same form as the OLS result: the derivative matrix $X(\beta_{0})$
+replaces the regressor matrix $X$.
+
+\section{The GNR and the estimated covariance matrix}
+
+At the unrestricted NLS estimate, the GNR is
+\[ y-\hat x=\hat Xb+\text{errors}. \]
+Its OLS coefficient vector is zero:
+\[ \hat b=(\hat X'\hat X)^{-1}
+   \underbrace{\hat X'(y-\hat x)}_{=\,0\text{ by the FOC}}=0. \]
+Although its coefficients are zero, its usual OLS covariance formula provides
+the estimated covariance matrix for the NLS estimator:
+\[ \widehat{\Var}(\hat\beta)=s^{2}(\hat X'\hat X)^{-1},
+   \qquad s^{2}=\frac{(y-\hat x)'(y-\hat x)}{n-K}. \]
+Consistency and continuity imply $\hat X'\hat X/n\xrightarrow{p}\Sigma_{XX}$, so
+\[ n\,\widehat{\Var}(\hat\beta)
+   =s^{2}\Bigl(\frac{\hat X'\hat X}{n}\Bigr)^{-1}
+      \xrightarrow{\ p\ }\sigma^{2}\Sigma_{XX}^{-1}. \]
+The factor $n$ distinguishes the covariance estimate for $\hat\beta$ from the
+limiting covariance matrix of $\sqrt{n}(\hat\beta-\beta_{0})$.
+
+\section{Hypothesis testing with the restricted GNR}
+
+\topic{Partition the parameters}
+\[ y=x(\beta_{1},\beta_{2})+u, \qquad
+   \beta_{1}:K_{1}\times1,\quad \beta_{2}:K_{2}\times1,\quad K=K_{1}+K_{2}. \]
+We want to test the $K_{2}$ restrictions
+\[ H_{0}:\beta_{2}=0. \]
+Here $\beta_{1}$ and $\beta_{2}$ denote parameter \emph{blocks}; the subscripts
+in the example below denote individual coefficients.
+
+\Needspace{16\baselineskip}
+\topic{Example: restrictions that make the model linear}
+\[ y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}^{\beta_{3}}+u_{t},
+   \qquad x_{2t}>0. \]
+\begin{flatlist}
+ \item $H_{0}:\beta_{3}=0$ gives $y_{t}=\beta_{1}x_{1t}+\beta_{2}+u_{t}$:
+       the power term becomes a constant.
+ \item $H_{0}:\beta_{3}=1$ gives $y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}+u_{t}$.
+ \item $H_{0}:\beta_{2}=0$ removes the power term, but then $\beta_{3}$ is
+       unidentified. The regular full-rank testing argument below does not
+       apply directly to that null.
+\end{flatlist}
+A restriction such as $\beta_{3}=1$ can be written as a zero restriction after
+reparameterizing with $\gamma=\beta_{3}-1$.
+
+\topic{Partition the derivative matrix}
+\[ X(\beta)=\begin{bmatrix}X_{1}(\beta)&X_{2}(\beta)\end{bmatrix}, \qquad
+   X_{j}(\beta)=\frac{\partial x(\beta)}{\partial\beta_{j}'},\quad j=1,2. \]
+The artificial regression is
+\[ y-x(\beta)=X_{1}(\beta)b_{1}+X_{2}(\beta)b_{2}+\text{errors}. \]
+At $\hat\beta$, both coefficient blocks are zero by the unrestricted FOCs.
+For a score (LM) test, evaluate the GNR at the \emph{restricted} estimate instead.
+
+\topic{Evaluate at the restricted estimate}
+Let $\tilde\beta=(\tilde\beta_{1}',0')'$ minimize SSR under $H_{0}$, and write
+\[ \tilde u=y-x(\tilde\beta), \qquad
+   \tilde X_{1}=X_{1}(\tilde\beta), \qquad \tilde X_{2}=X_{2}(\tilde\beta). \]
+The restricted FOCs give $\tilde X_{1}'\tilde u=0$, while
+$\tilde X_{2}'\tilde u$ need not be zero. Run
+\[ \tilde u=\tilde X_{1}b_{1}+\tilde X_{2}b_{2}+\text{errors}. \]
+The coefficient on $\tilde X_{1}$ is zero if that block is used alone. In the
+\emph{joint} regression, however, its coefficient need not be zero, because
+$\tilde X_{1}$ and $\tilde X_{2}$ need not be orthogonal. With
+\[ M_{1}=I_{n}-\tilde X_{1}(\tilde X_{1}'\tilde X_{1})^{-1}\tilde X_{1}', \]
+FWL gives
+\[ \hat b_{2}=(\tilde X_{2}'M_{1}\tilde X_{2})^{-1}\tilde X_{2}'M_{1}\tilde u,
+   \qquad M_{1}\tilde u=\tilde u. \]
+Test the block $b_{2}=0$ in this restricted GNR. Under the regularity and
+homoskedasticity assumptions, the usual auxiliary-regression $F$ statistic
+satisfies $K_{2}F\xrightarrow{d}\chi^{2}_{K_{2}}$ under $H_{0}$; this is an
+asymptotic test, rather than an exact finite-sample $F$ result.
+
+\topic{Intuition}
+If $H_{0}$ is true, $\tilde\beta$ and $\hat\beta$ approach the same true value,
+and the restricted GNR coefficients should be small. A large, significant
+$\hat b_{2}$ indicates that moving away from the restriction can improve the fit.
+The unrestricted GNR still supplies covariance estimates for Wald tests; its
+zero coefficients only prevent this particular score test from being based there.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: the five-page typed export \emph{Lesson 12.pdf}, dated October 28,
+       2026. The title block, numbered sections, bold topic headings, prime
+       transposes, $K$ notation and displayed derivations follow Lessons 10--11
+       and the shared \texttt{metricsstyle} package. The contents list and coloured
+       boxes are omitted; announcements are retained as recorded in the source.
+ \item Pages 1--2: $X_{t}(\beta_{0})$ is defined as a row, so its transpose is
+       included in the per-observation orthogonality condition. The model is
+       evaluated at $\beta_{0}$. The NLS objective and the distinction between
+       local rank and global identification are made explicit. Regularity,
+       conditional moment and sampling conditions are stated to qualify the
+       source's asymptotic calculations.
+ \item Pages 2--3: the section headed ``Consistency'' assumes
+       $\hat\beta\xrightarrow{p}\beta_{0}$; it establishes consistency of
+       $\operatorname{SSR}(\hat\beta)/n$, not consistency of $\hat\beta$ itself.
+       The heading is clarified. The Taylor remainder is retained as $r_{n}$,
+       with its normalized contribution written $o_{p}(1)$; the source's
+       approximate substitution is not treated as an exact equality.
+       The definition and consistency of $s^{2}$ are added.
+ \item Pages 3--4: the ambiguous derivative $\partial X'/\partial\beta\,u$
+       is written $\sum_{t}u_{t}H_{t}(\beta_{0})$. Its mean-zero condition and an
+       LLN are required explicitly; $\E(X_{0}'u)=0$ alone does not imply either.
+       Taylor remainders are stated for the normalized FOCs as $o_{p}(1)$.
+       The variance calculation is qualified for fixed or conditionally
+       exogenous regressors, and the CLT is kept as a separate requirement.
+ \item Page 4: the ordinary GNR covariance formula is distinguished from its
+       $n$-scaled limit, the asymptotic covariance of $\sqrt{n}(\hat\beta-\beta_{0})$.
+       It estimates the NLS covariance asymptotically, rather than being an
+       exact finite-sample variance identity.
+ \item Page 5: \textbf{Corrected:} $\beta_{3}=0$ makes
+       $\beta_{2}x_{2t}^{\beta_{3}}=\beta_{2}$; it does not remove the term and
+       is not equivalent to $\beta_{2}=0$. The latter null leaves $\beta_{3}$
+       unidentified. \textbf{Corrected:} the restricted FOC makes
+       $\tilde X_{1}'\tilde u=0$, but does not force the coefficient on
+       $\tilde X_{1}$ to zero in the joint GNR. The FWL formula explains this.
+       The block derivative notation, reparameterization, asymptotic $F$/LM
+       calibration and distinction from unrestricted Wald inference are added
+       to clarify how the proposed test works.
+ \item Original page map: page 1 title, announcements, contents and linear
+       recap; page 2 nonlinear model, derivative notation, rank condition and
+       SSR expansion; page 3 residual-variance limit, FOCs, Taylor expansion
+       and scaling; page 4 CLT, NLS limiting distribution and GNR covariance;
+       page 5 parameter restrictions, power-model example and restricted GNR.
+\end{transcriptnotes}
+
+\end{document}

@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+% Transcribed from /Users/xingming/Desktop/Econometrics assignment 2.pdf.
+% Original question wording and mathematical specifications are retained,
+% including the reference to “(a) and (b)” in Question 1(ii).
+\begin{document}
+
+\begin{center}
+  {\footnotesize\scshape Department of Economics and Finance\\
+  G. Lang College of Business and Economics}\\[5pt]
+  {\large\scshape ECON*6140: Econometrics I}\\[3pt]
+  {\small Instructor: T. Stengos}\\[5pt]
+  {\LARGE\bfseries Assignment \#2}\\[4pt]
+  {\itshape Fall 2026.}\\[3pt]
+  {\small Due: Monday, November 23, 2026.}
+\end{center}
+\vspace{0.4em}\hrule\vspace{0.9em}
+
+\question{(1)}
+This question requires you to generate random samples from the model
+\begin{equation}\tag{1}
+  y_t = \alpha\bigl(X_{1t}^{\beta} + X_{2t}^{(1-\beta)}\bigr) + u_t,
+  \qquad u_t \sim N(0,1).
+\end{equation}
+Use a random number generator to generate 200 observations on $X_1$ and
+$X_2$ as uniform $(1,2)$ variables. Then use $\alpha=1$, $\beta=0.5$ to
+generate 200 observations on $y_t$ having first generated 200 observations
+on $u_t$ as standard normal variables. Then,
+\begin{enumerate}[label=(\roman*),leftmargin=2em,itemsep=4pt,topsep=3pt]
+\item Run successive Gauss--Newton Regressions (GNR) to obtain a minimum
+of the sum of squared residuals for (1).
+\item Repeat (a) and (b) above using
+\begin{enumerate}[label=(\alph*),leftmargin=2em,itemsep=2pt,topsep=3pt]
+\item $\alpha=1$, $\beta=0.1$.
+\item $\alpha=1$, $\beta=0.001$.
+\end{enumerate}
+\end{enumerate}
+Do you notice any difference in your results coming from the different
+choices of $\beta$?
+
+\question{(2)}
+Consider the following non-linear regression model
+\begin{equation}\tag{2}
+  y_t = \beta_1 X_{1t} + \beta_2 X_{2t} + \beta_3 X_{3t}^{\gamma} + u_t,
+  \qquad u_t \sim N(0,1),
+\end{equation}
+where the $X$'s are uniform $(1,2)$ and
+$\beta_1=\beta_2=\beta_3=1$ and $\gamma=2$.
+\begin{enumerate}[label=(\alph*),leftmargin=2em,itemsep=5pt,topsep=3pt]
+\item Generate samples of 50, 100 and 200 observations on the $X$'s and
+the $u$ and then for all the three samples using a succession of GNR's
+obtain the NLS estimates of all the parameters and their standard errors.
+\item Test the hypothesis that $\gamma=1$ using the above DGP for all
+samples by using
+\begin{enumerate}[label=(\roman*),leftmargin=2em,itemsep=2pt,topsep=3pt]
+\item the unrestricted NLS estimates
+\item using only restricted estimates
+\end{enumerate}
+Do you find any differences in the inferences that you draw?
+\end{enumerate}
+
+\newpage
+\question{(3)}
+For each of the following cases suppose that you have a sample of size
+$n$ drawn from the specified density or distribution. In each case derive
+the maximum likelihood estimator of the unknown parameter.
+\begin{enumerate}[label=(\alph*),leftmargin=2em,itemsep=8pt,topsep=6pt]
+\item $f(x,\theta)=\theta x^{\theta-1}$, $0<x<1$, $\theta>0$.
+\item $f(x,\theta)=\left(\dfrac{1}{\theta}\right)e^{-x/\theta}$,
+$x>0$, $\theta>0$.
+\item $x=\theta+u^2$, $u\sim N(0,\sigma^2)$.
+(Work out the density of $x$).
+\end{enumerate}
+
+\question{(4)}
+Derive the mean and the variance of the ML estimator of $\sigma^2$, given by
+\[
+  \hat{\sigma}^2=\frac{e^{T}e}{n}
+\]
+in the context of the regression model $y=X\beta+u$ with
+$u\sim N(0,\sigma^2 I)$.
+
+\emph{Hint}: Use the fact that if $w\sim\chi_r^2$ then $E(w)=r$ and
+$\operatorname{var}(w)=2r$.
+
+\question{(5)}
+Suppose that we have $n$ independent observations $y_1,y_2,\ldots,y_n$, say
+incomes drawn from a Pareto distribution which has the following density
+function
+\[
+  p(y\mid\alpha)=\frac{\alpha\,10000^{\alpha}}{y^{\alpha+1}},
+  \qquad y\geq 10000,\quad \alpha>0.
+\]
+Solve for the ML estimator of $\alpha$.
+
+\question{(6)}
+Consider the model
+\[
+  (y_t-X_t\beta)^{\lambda}=u_t,
+  \qquad u_t\sim N(0,\sigma^2).
+\]
+\begin{enumerate}[label=(\roman*),leftmargin=2em,itemsep=6pt,topsep=4pt]
+\item How would you estimate the model if you knew $\lambda$? If you did
+not know $\lambda$?
+\item Suppose that you estimated this model conditional on $\lambda=1$.
+Devise an LM test which you could use to test this restriction without
+estimating the unrestricted model.
+\end{enumerate}
+
+\end{document}

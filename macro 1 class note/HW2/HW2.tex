@@ -1,0 +1,206 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries Homework 2}\\[0.35em]
+{\small Xingming Li \quad ID: 1432037}\\[0.2em]
+{\small ECON*6020 Macroeconomic Theory I}
+\end{center}
+
+\hrule
+\medskip
+
+\textbf{Model.}
+\begin{gather*}
+\dot k = s\,(w + rk) - \delta k, \\
+Y_i = (AL_i)^{1-\alpha}K_i^{\alpha}, \qquad
+A = a\Big(\frac{1}{N}\sum_{i=1}^{N} K_i\Big)^{b}.
+\end{gather*}
+$L$ identical consumers each supply one unit of labour and rent capital to $N$ firms. Each firm has
+constant returns in its own $K_i, L_i$, but technology $A$ rises with the \emph{average} capital
+stock. Firms take $A$ as given, so capital accumulation creates an externality
+(Arrow's learning-by-investing).
+
+% ------------------------------------------------------------------
+\section*{(a) Market clearing in the factor markets}
+
+In each factor market, the total quantity demanded by firms equals the total quantity supplied by all consumers:
+\[
+L = \sum_{i=1}^{N} L_i, \qquad K = k\cdot L = \sum_{i=1}^{N} K_i .
+\]
+Labour: every consumer supplies one unit, so the firms together hire all $L$ workers.
+Capital: the capital consumers own, $kL$, is all rented out to the firms.
+
+% ------------------------------------------------------------------
+\section*{(b) Real wage and rental rate}
+
+Derive $r$ and $w$ as functions of the model parameters and the average capital--labour ratio.
+
+Competitive firms pay each factor its marginal product, taking $A$ as given. Because all firms face
+the same $w$, $r$ and $A$ and have constant returns, they all choose the same ratio
+$K_i/L_i = K/L = k$. We then substitute $A = a(K/N)^b$ and $K = Lk$.
+
+\textbf{Wage.}
+\begin{align*}
+w = \frac{\partial (AL_i)^{1-\alpha}K_i^{\alpha}}{\partial L_i}
+  &= (1-\alpha)A^{1-\alpha}L_i^{-\alpha}K_i^{\alpha} \\
+  &= (1-\alpha)\Big[a\Big(\frac{K}{N}\Big)^{b}\Big]^{1-\alpha}\Big(\frac{K_i}{L_i}\Big)^{\alpha}
+   = (1-\alpha)a^{1-\alpha}\Big(\frac{K}{N}\Big)^{(1-\alpha)b}k^{\alpha} \\
+  &= (1-\alpha)a^{1-\alpha}\Big(\frac{L\cdot k}{N}\Big)^{(1-\alpha)b}k^{\alpha} \\
+  &= (1-\alpha)a^{1-\alpha}\Big(\frac{L}{N}\Big)^{(1-\alpha)b}k^{(1-\alpha)b+\alpha}.
+\end{align*}
+
+\textbf{Rental rate.} With $Y_i = (AL_i)^{1-\alpha}K_i^{\alpha}$ and $K = L\cdot k$:
+\begin{align*}
+r = \frac{\partial Y_i}{\partial K_i}
+  &= \alpha A^{1-\alpha}L_i^{1-\alpha}K_i^{\alpha-1}
+   = \alpha\Big\{a\Big[\Big(\frac{L\cdot k}{N}\Big)\Big]^{b}\Big\}^{1-\alpha}k^{\alpha-1} \\
+  &= \alpha a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{b(1-\alpha)+(\alpha-1)}
+   = \alpha a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{(1-\alpha)(b-1)}.
+\end{align*}
+
+% ------------------------------------------------------------------
+\section*{(c) Increasing returns to scale for $b>0$}
+
+Idea: add up output across firms to get aggregate output $Y$ as a function of $K$ and $L$, then
+scale both inputs by $z$ and compare the result with $zY$.
+
+\begin{align*}
+Y_i &= (AL_i)^{1-\alpha}K_i^{\alpha}, \\
+Y = \sum_{i=1}^{N}(AL_i)^{1-\alpha}K_i^{\alpha}
+  &= \sum_{i=1}^{N}A^{1-\alpha}L_i\cdot L_i^{-\alpha}K_i^{\alpha}
+   = \sum_{i=1}^{N}A^{1-\alpha}L_i\Big(\frac{K_i}{L_i}\Big)^{\alpha} \\
+  &= \sum_{i=1}^{N}A^{1-\alpha}k^{\alpha}L_i
+   = A^{1-\alpha}k^{\alpha}\sum_{i=1}^{N}L_i
+   = A^{1-\alpha}k^{\alpha}L \\
+  &= a^{1-\alpha}\bigg(\frac{\sum_{i=1}^{N}K_i}{N}\bigg)^{b(1-\alpha)}k^{\alpha}L
+   = a^{1-\alpha}\Big(\frac{K}{N}\Big)^{b(1-\alpha)}k^{\alpha}L \\
+  &= a^{1-\alpha}\Big(\frac{K}{N}\Big)^{b(1-\alpha)}L\Big(\frac{K}{L}\Big)^{\alpha}.
+\end{align*}
+
+If we multiply both inputs $K$ and $L$ by $z$, we get
+\begin{align*}
+&\phantom{=}\; a^{1-\alpha}\Big(\frac{zK}{N}\Big)^{b(1-\alpha)}zL\Big(\frac{zK}{zL}\Big)^{\alpha} \\
+&= z^{\,b-b\alpha+1}\,a^{1-\alpha}\Big(\frac{K}{N}\Big)^{b(1-\alpha)}L\Big(\frac{K}{L}\Big)^{\alpha}
+ = z^{\,1+b(1-\alpha)}\,Y.
+\end{align*}
+Since $0<\alpha<1$ (and $b>0$),
+\[
+0 < b\alpha < b \;\Longrightarrow\; b - b\alpha > 0 \;\Longrightarrow\; b - b\alpha + 1 > 1 .
+\]
+Therefore, for $z>1$, output rises by more than the factor $z$ by which $K$ and $L$ are increased:
+the economy as a whole has increasing returns to scale in capital and labour.
+
+Intuition: each firm alone has constant returns, but when all firms raise capital together the
+average capital stock rises, which raises $A$ for everyone. That spillover gives the extra
+$z^{b(1-\alpha)}$. If $b=0$ there is no spillover and we are back to constant returns.
+
+% ------------------------------------------------------------------
+\section*{(d) Transition dynamics to the steady state}
+
+Plug $w$ and $r$ from (b) into the budget constraint $\dot k = s(w+rk)-\delta k$:
+\begin{align*}
+w + rk &= (1-\alpha)a^{1-\alpha}\Big(\frac{L}{N}\Big)^{(1-\alpha)b}k^{(1-\alpha)b+\alpha}
+        + \alpha a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{(1-\alpha)(b-1)+1} \\
+       &= a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}
+          \Big[(1-\alpha)k^{(1-\alpha)b+\alpha} + \alpha k^{(1-\alpha)b+\alpha}\Big] \\
+       &= a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{(1-\alpha)b+\alpha} = y .
+\end{align*}
+This matches output per worker from (c):
+$y = Y/L = a^{1-\alpha}\big(\frac{kL}{N}\big)^{b(1-\alpha)}k^{\alpha}
+     = a^{1-\alpha}\big(\frac{L}{N}\big)^{b(1-\alpha)}k^{b(1-\alpha)+\alpha}$.
+So income per worker is all spent or saved, and
+\[
+\dot k = s y - \delta k = s a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{b(1-\alpha)+\alpha} - \delta k .
+\]
+Dividing by $k$ gives the growth rate of capital per worker:
+\[
+\gamma_k \equiv \frac{\dot k}{k}
+ = s a^{1-\alpha}\Big(\frac{L}{N}\Big)^{b(1-\alpha)}k^{(1-\alpha)(b-1)} - \delta .
+\]
+Everything depends on the sign of the exponent $(1-\alpha)(b-1)$. Since $y \propto k^{b(1-\alpha)+\alpha}$,
+income per worker grows at $\gamma_y = [b(1-\alpha)+\alpha]\,\gamma_k$, so it follows the same pattern.
+
+\textbf{(i) $b<1$: stable steady state.} The exponent is negative, so the growth rate falls as $k$
+rises. Setting $\gamma_k=0$,
+\[
+k^* = \bigg[\frac{s a^{1-\alpha}(L/N)^{b(1-\alpha)}}{\delta}\bigg]^{\frac{1}{(1-\alpha)(1-b)}} .
+\]
+If $k<k^*$ then $\gamma_k>0$, and growth slows as $k$ approaches $k^*$; if $k>k^*$ then $k$ shrinks.
+The economy converges to $k^*$ just as in the Solow model, and long-run growth is zero.
+
+\textbf{(ii) $b>1$: unstable steady state.} The exponent is positive, so the growth rate
+\emph{rises} with $k$. The same $k^*$ exists but is unstable. If $k>k^*$, growth is positive and keeps
+speeding up (explosive growth). If $k<k^*$, $k$ shrinks faster and faster toward zero.
+There is no convergence.
+
+\textbf{(iii) $b=1$: no transition dynamics.} The exponent is zero, so $\gamma_k$ does not depend on
+$k$. The economy grows at one constant rate from the start (an AK model); see (e).
+
+% ------------------------------------------------------------------
+\section*{(e) Steady-state growth rate for $b=1$}
+
+With $b=1$, output per worker is linear in $k$:
+$y = a^{1-\alpha}(L/N)^{1-\alpha}k$. So
+\[
+\gamma = \frac{\dot k}{k} = \frac{\dot y}{y} = s a^{1-\alpha}\Big(\frac{L}{N}\Big)^{1-\alpha} - \delta .
+\]
+This is the steady-state growth rate of capital and income per worker. With no population growth
+it is also the growth rate of total output $Y$. Growth is positive if
+$s a^{1-\alpha}(L/N)^{1-\alpha} > \delta$, and it rises with the savings rate $s$.
+It also rises with $L/N$, the number of workers per firm (a scale effect).
+
+% ------------------------------------------------------------------
+\section*{(f) Simulation}
+
+With $b=0$, $A=a=1$ and the model is the standard Solow model, $y=k^{\alpha}$. Setting $sy=\delta k$,
+\[
+k^* = \Big(\frac{s}{\delta}\Big)^{\frac{1}{1-\alpha}} = 2.5^{3/2} \approx 3.95,
+\qquad k_0 = \tfrac14 k^* \approx 0.99 .
+\]
+For $b=\tfrac12$, $y=k^{2/3}$ and $k^* = 2.5^{3} = 15.625$, so the same $k_0$ is now only $1/16$ of the
+steady state. Log-linearizing $\gamma_k$ from (d) around $k^*$ gives
+$d\ln k/dt \approx -\beta(\ln k - \ln k^*)$ with $\beta = (1-\alpha)(1-b)\delta$, so
+\[
+\ln k_t = \ln k^* - (\ln k^* - \ln k_0)\,e^{-\beta t}.
+\]
+The simulation in \texttt{HW2.m} uses this solution (Method C in \texttt{solow.m}), computes
+$y_t = k_t^{\,b(1-\alpha)+\alpha}$, and measures growth as $\ln y_t - \ln y_{t-1}$.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{hw2_f_growth.png}
+\end{figure}
+
+Both paths start high and fall toward zero, since $b<1$ in both cases. With $b=\tfrac12$, growth starts
+at about 6.0\% (versus 3.0\%) and declines much more slowly: with $b=0$ growth is below 0.5\% after
+about 30 years, while with $b=\tfrac12$ it is still about 1.2\% at year 50. The externality raises the
+effective capital share from $1/3$ to $b(1-\alpha)+\alpha = 2/3$, so diminishing returns set in more
+slowly, and the convergence rate $\beta$ falls from about 6.7\% to 3.3\% per year.
+
+I think $b=\tfrac12$ fits the data better. Empirical estimates put the convergence rate at around 2\%
+per year, and growth in actual economies is much more persistent than the $b=0$ model predicts.
+
+% ------------------------------------------------------------------
+\section*{(g) Golden Rule for $b=0$}
+
+Steady-state consumption is $c^* = (k^*)^{\alpha} - \delta k^*$. Maximizing over $k^*$:
+\[
+\alpha (k^*)^{\alpha-1} = \delta
+\;\Longrightarrow\;
+k_{gold} = \Big(\frac{\alpha}{\delta}\Big)^{\frac{1}{1-\alpha}} = \Big(\frac{10}{3}\Big)^{3/2} \approx 6.09 .
+\]
+From $s\,k^{\alpha} = \delta k$ at $k_{gold}$, the Golden Rule savings rate is $s_{gold} = \delta k_{gold}^{1-\alpha} = \alpha = 1/3$.
+
+Since $s = 0.25 < 1/3$, we have $k^* \approx 3.95 < k_{gold}$, so the economy is dynamically efficient.
+Equivalently, $r^* = \alpha\delta/s \approx 0.133 > \delta$. Reaching the Golden Rule would require
+saving more and giving up consumption today, so the economy is not over-saving.
+
+\end{document}

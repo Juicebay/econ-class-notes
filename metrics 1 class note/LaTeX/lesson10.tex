@@ -1,0 +1,213 @@
+%% title: Orders of Magnitude, Asymptotics of OLS and Nonlinear Least Squares
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{10}{Orders of magnitude, the asymptotic distribution of OLS, and nonlinear least squares}{}
+
+\section{Recap: the sample mean}
+
+Let $y_{1}, y_{2}, \dots, y_{n}$ be iid $(\mu, \sigma^{2})$. Then
+\[ \bar y_{n} = \frac{1}{n}\sum_{i=1}^{n} y_{i}
+   \ \longrightarrow\ \operatorname*{plim}_{n\to\infty} \bar y_{n} = \mu
+   \qquad \text{(law of large numbers)}, \]
+\[ \bar y_{n} \sim \Bigl(\mu, \frac{\sigma^{2}}{n}\Bigr), \qquad
+   (\bar y_{n} - \mu) \sim \Bigl(0, \frac{\sigma^{2}}{n}\Bigr)
+   \ \longrightarrow\ \frac{\sqrt{n}\,(\bar y_{n} - \mu)}{\sigma} \ \xrightarrow{\ d\ }\ N(0, 1). \]
+
+
+\section{The regression model and $X'X$}
+
+\[ y = X\beta + u, \qquad u \sim (0, \sigma^{2}I_{n}), \qquad b_{n} = (X'X)^{-1}X'y. \]
+Write $x_{t}'$ for the $t$-th row of $X$, so that $y_{t} = x_{t}'\beta + u_{t}$ and
+\[ \underset{K\times n\ \ n\times K}{X'X}
+   = \sum_{t=1}^{n} \underbrace{\underset{K\times 1}{x_{t}}\ \underset{1\times K}{x_{t}'}}_{K\times K}. \]
+
+\topic{For example}
+$y_{t} = \beta_{1} + \beta_{2}z_{t} + u_{t}$:
+\[ \underset{n\times 2}{X} = \begin{bmatrix} 1 & z_{1}\\ 1 & z_{2}\\ \vdots & \vdots\\ 1 & z_{n} \end{bmatrix},
+   \qquad
+   X'X = \sum_{t=1}^{n} \begin{bmatrix} 1\\ z_{t} \end{bmatrix}\begin{bmatrix} 1 & z_{t} \end{bmatrix}
+   = \sum_{t=1}^{n} \begin{bmatrix} 1 & z_{t}\\ z_{t} & z_{t}^{2} \end{bmatrix}, \]
+\[ X'X = \begin{bmatrix} 1 & 1 & \cdots & 1\\ z_{1} & z_{2} & \cdots & z_{n} \end{bmatrix}
+         \begin{bmatrix} 1 & z_{1}\\ 1 & z_{2}\\ \vdots & \vdots\\ 1 & z_{n} \end{bmatrix}
+       = \begin{bmatrix} n & \sum_{t=1}^{n} z_{t}\\[2pt] \sum_{t=1}^{n} z_{t} & \sum_{t=1}^{n} z_{t}^{2} \end{bmatrix}
+       = O(n). \]
+Every entry grows like $n$: that is what we divide by, so that $X'X/n$ settles down.
+
+
+\section{Orders of magnitude}
+
+\topic{Big $O$: order}
+The sequence $\{n\}$ is $O(n)$. A sequence $S_{n}$ is $O(n)$ if, after division by $n$,
+it is bounded:
+\[ \frac{S_{n}}{n} \ \longrightarrow\ B < \infty \qquad (B \text{ a fixed bound}). \]
+Likewise $\{n^{2}\}$ is $O(n^{2})$, and $\sum_{t=1}^{n} z_{t}^{2}$ is $O(n)$.
+
+\topic{Little $o$: going to zero}
+\[ O(n) \text{ is } o(n^{2}), \qquad \frac{n}{n^{2}} \to 0: \]
+divided by $n^{2}$, it goes to zero. In particular
+\[ O\Bigl(\frac{1}{n}\Bigr) \text{ is } o(1) \ \longrightarrow\ \text{negligible}. \]
+
+\topic{Rules}
+\begin{align*}
+  O(n^{\alpha})\,O(n^{\beta}) &= O(n^{\alpha+\beta}),\\
+  O(n^{\alpha}) \pm O(n^{\beta}) &= O\bigl(n^{\max(\alpha,\beta)}\bigr),\\
+  \bigl[O(n^{\alpha})\bigr]^{\beta} &= O(n^{\alpha\beta}).
+\end{align*}
+
+\topic{Example: a time trend}
+\[ y_{t} = \beta_{1} + \beta_{2}t + u_{t}, \qquad
+   X'X = \begin{bmatrix} n & \sum_{t=1}^{n} t\\[2pt] \sum_{t=1}^{n} t & \sum_{t=1}^{n} t^{2} \end{bmatrix}. \]
+Here $t$ itself is $O(n)$. Counting $\sum t$ as a staircase of ones, column $t$
+holding $t$ of them ($n = 6$):
+\[ \begin{array}{c|cccccc}
+     t & 1 & 2 & 3 & 4 & 5 & 6\\ \hline
+       & 1 & 1 & 1 & 1 & 1 & 1\\
+       & 0 & 1 & 1 & 1 & 1 & 1\\
+       & 0 & 0 & 1 & 1 & 1 & 1\\
+       & 0 & 0 & 0 & 1 & 1 & 1\\
+       & 0 & 0 & 0 & 0 & 1 & 1\\
+       & 0 & 0 & 0 & 0 & 0 & 1
+   \end{array}
+   \qquad
+   \sum_{t=1}^{n} t = \frac{n(n+1)}{2}: \ \ n \text{ terms, each } O(n), \ \
+   O(n)\,O(n) = O(n^{2}). \]
+In the same way
+\[ \sum_{t=1}^{n} t^{2} = \frac{n(n+1)(2n+1)}{6} \ \longrightarrow\ O(n^{3}), \]
+so with a trend $X'X$ is $O(n^{3})$ in its largest entry (its entries are $O(n)$,
+$O(n^{2})$ and $O(n^{3})$), and $X'X/n$ does not converge.
+
+
+\section{Asymptotics of OLS}
+
+\topic{Assumptions}
+\[ y = X\beta + u, \qquad X'X \text{ is } O(n), \qquad
+   \operatorname*{plim}\frac{X'X}{n} = \Sigma_{XX}, \qquad \rank(\Sigma_{XX}) = K, \]
+\[ \E(x_{t}u_{t}) = 0, \qquad \operatorname*{plim}\frac{X'u}{n} = \E(x_{t}u_{t}) = 0. \]
+(The finite-sample condition is $\rank(X'X) = K$; its limit $\Sigma_{XX}$ must have
+full rank $K$ too, so that it can be inverted.)
+
+\topic{Consistency}
+\[ b_{n} = (X'X)^{-1}X'y = \beta + (X'X)^{-1}X'u, \]
+\[ b_{n} = \beta + \underbrace{\Bigl(\frac{X'X}{n}\Bigr)^{-1}}_{\xrightarrow{\ p\ }\ \Sigma_{XX}^{-1}}
+               \underbrace{\Bigl(\frac{X'u}{n}\Bigr)}_{\xrightarrow{\ p\ }\ 0}
+   \qquad\Longrightarrow\qquad b_{n} \ \xrightarrow{\ p\ }\ \beta. \]
+
+\topic{Asymptotic normality}
+Multiply by $\sqrt{n}$ instead:
+\[ \sqrt{n}\,(b_{n} - \beta) = \Bigl(\frac{X'X}{n}\Bigr)^{-1}\frac{X'u}{\sqrt{n}}. \]
+The second factor has
+\[ \E\Bigl(\frac{X'u}{\sqrt{n}}\Bigr) = 0, \qquad
+   \Var\Bigl(\frac{X'u}{\sqrt{n}}\Bigr) = \frac{1}{n}X'(\sigma^{2}I)X
+   = \frac{\sigma^{2}X'X}{n} \ \longrightarrow\ \sigma^{2}\Sigma_{XX}, \]
+\[ \frac{X'u}{\sqrt{n}} \ \xrightarrow{\ d\ }\ N(0, \sigma^{2}\Sigma_{XX}). \]
+Hence
+\[ \sqrt{n}\,(b_{n} - \beta) = \Bigl(\frac{X'X}{n}\Bigr)^{-1}\frac{X'u}{\sqrt{n}}
+   \ \xrightarrow{\ d\ }\ \Sigma_{XX}^{-1}\,N(0, \sigma^{2}\Sigma_{XX})
+   = N(0, \sigma^{2}\Sigma_{XX}^{-1}), \]
+since $\Sigma_{XX}^{-1}(\sigma^{2}\Sigma_{XX})\Sigma_{XX}^{-1} = \sigma^{2}\Sigma_{XX}^{-1}$:
+\[ \sqrt{n}\,(b_{n} - \beta) \ \overset{a}{\sim}\ N(0, \sigma^{2}\Sigma_{XX}^{-1}). \]
+
+\topic{Compare with the finite-sample variance}
+\[ \Var(b) = \sigma^{2}(X'X)^{-1}, \qquad
+   \Var(\sqrt{n}\,b) = \sigma^{2}n(X'X)^{-1}
+   = \sigma^{2}\Bigl(\frac{X'X}{n}\Bigr)^{-1} \ \longrightarrow\ \sigma^{2}\Sigma_{XX}^{-1}. \]
+
+
+\section{Nonlinear estimation}
+
+\topic{Linear versus nonlinear regression functions}
+\begin{align*}
+  y_{t} &= x_{t}'\beta + u_{t}, && \beta \in \R^{K}, \ \text{number of regressors} = K,\\
+  y_{t} &= x_{t}(\beta) + u_{t}, && \beta \in \R^{K}, \ \text{number of regressors} = l, \quad K \neq l \text{ in general}.
+\end{align*}
+For example
+\[ y_{t} = \beta_{1}x_{1t} + \beta_{2}x_{2t}^{\beta_{3}} + u_{t}: \]
+two regressors but three parameters.
+
+\topic{Nonlinear least squares}
+\[ \min_{\beta}\ \sum_{t=1}^{n}\bigl(y_{t} - x_{t}(\beta)\bigr)^{2}
+   = \min_{\beta}\ \bigl(y - x(\beta)\bigr)'\bigl(y - x(\beta)\bigr), \]
+the analogue of $(y - X\beta)'(y - X\beta)$ in the linear model. Expanding,
+\[ \min_{\beta}\ y'y - y'x(\beta) - x(\beta)'y + x(\beta)'x(\beta)
+   = \min_{\beta}\ y'y - 2x(\beta)'y + x(\beta)'x(\beta). \]
+The role of $X$ is now played by the $n\times K$ matrix of derivatives
+\[ X(\beta) = \Bigl(\frac{\partial x_{t}(\beta)}{\partial \beta_{i}}\Bigr)_{\substack{t = 1,\dots,n\\ i = 1,\dots,K}}
+   = \begin{bmatrix}
+       \frac{\partial x_{1}}{\partial \beta_{1}} & \cdots & \frac{\partial x_{1}}{\partial \beta_{K}}\\
+       \vdots & & \vdots\\
+       \frac{\partial x_{n}}{\partial \beta_{1}} & \cdots & \frac{\partial x_{n}}{\partial \beta_{K}}
+     \end{bmatrix}. \]
+
+\topic{Check: the linear model}
+\[ x(\beta) = X\beta \ \text{ for the linear model}, \qquad X(\beta) \equiv X. \]
+
+
+\begin{transcriptnotes}
+  \item The set opens with a divider page carrying only ``Note 10''; it is not
+        reproduced. No date is given.
+  \item As in Lessons 3--9, $6^{2}$ is $\sigma^{2}$, $B$ for $\beta$ is typeset
+        $\beta$, $k$ is typeset $K$, and the population mean written $u$ is
+        typeset $\mu$. $\Sigma_{xx}$ is typeset $\Sigma_{XX}$.
+  \item Page 2: ``iid'' is \textbf{added} to $y_{1}, \ldots, y_{n} \sim (\mu,
+        \sigma^{2})$. The CLT is written $\sim N(0,1)$; typeset
+        $\xrightarrow{d}$, as in Lesson 9. The row $x_{t}'$ of $X$ is named
+        (\textbf{added}). The example $X'X$ for $y_{t} = \beta_{1} + \beta_{2}z_{t}
+        + u_{t}$ is kept, ``For example'' made its heading.
+  \item Page 3: \textbf{Corrected:} the explicit $X'X$ with entries $n$,
+        $\sum z_{t}$, $\sum z_{t}^{2}$ is written ``$= O(n^{2})$ $\to$ what we
+        divide by --- negligible!''. Each entry is a sum of $n$ terms, so $X'X$ is
+        $O(n)$ (the page itself says $\sum z_{t}^{2} \to O(n)$ a few lines down),
+        and $n$ is what we divide by; the comment is typeset as the sentence under
+        the display. ``Oiusion by $n$'' read as ``division by $n$''; ``$S_{n}/n \to
+        B < \infty$, fixed bound'' kept (the $B$ here is a bound, not $\beta$).
+        ``$O(n) \sim o(n^{2})$ going to zero, $n/n^{2} \to 0$'' is typeset as
+        ``$O(n)$ is $o(n^{2})$''. ``negalible''/``neglible'' $\to$
+        \emph{negligible}.
+  \item Page 4: \textbf{Corrected:} $O(n^{\alpha}) \pm O(n^{\beta}) =
+        \max(\alpha, \beta)$ is completed to $O(n^{\max(\alpha,\beta)})$. The
+        hand-drawn grid of 1s and 0s under $t = 1, \ldots, 6$ (a staircase, column
+        $t$ holding $t$ ones) is redrawn as the array; the exact sums
+        $n(n+1)/2$ and $n(n+1)(2n+1)/6$ are \textbf{added} (checked: $21$ and $91$
+        for $n = 6$).
+  \item Page 5: ``$X'X$ is $O(n^{3})$'' (trend model) is kept, with the
+        \textbf{added} remark that the entries have different orders and $X'X/n$
+        does not converge. \textbf{Corrected:} ``$\rank(X'X)$ is $O(n)$'' --- a
+        rank cannot grow with $n$ (it is $K$, page 6); the assumption is that
+        $X'X$ is $O(n)$. \textbf{Corrected:} $\E(X'u) = 0$ and $\operatorname*{plim}
+        X'u/n = \E(X'u)$ are written per observation, $\E(x_{t}u_{t})$, since
+        $X'u$ itself is a sum that grows with $n$. \textbf{Corrected:} the plim of
+        $(X'X/n)^{-1}$ is written $\E(X'X)^{-1}$; by the assumption it is
+        $\Sigma_{XX}^{-1}$.
+  \item Page 6: ``$\operatorname*{plim}X'X/n = \Sigma_{XX}$ rank$(K)$'' is typeset
+        $\rank(\Sigma_{XX}) = K$. The line ``$\E(X'u/\sqrt{n}) = 0$, $\tfrac1n
+        X'(\sigma^{2}I)X$'' gives the mean and then the variance; ``$\Var$'' is
+        \textbf{added}. The sandwich step
+        $\Sigma_{XX}^{-1}(\sigma^{2}\Sigma_{XX})\Sigma_{XX}^{-1}$ is \textbf{added}.
+  \item Page 7: ``$\sim$'' in $\sqrt{n}(b_{n} - \beta) \sim N(\cdot)$ is typeset
+        $\overset{a}{\sim}$ (asymptotically). \textbf{Unclear:} ``dim $f(x) = K$'' and
+        ``dim $f(x) = l$, $K \neq l$'' are read as the number of regressors (the
+        example has two regressors and three parameters). The page writes the
+        objective with $\hat\beta$ under $\min_{\beta}$; typeset with $\beta$.
+        ``$=(y - X\hat\beta)'(y - X\hat\beta)$'' is the linear-model analogue,
+        typeset as such. \textbf{Corrected:} in the expansion
+        $-x(\hat\beta)y$ lacks its transpose, $-x(\beta)'y$; the combined form
+        $-2x(\beta)'y$ is \textbf{added}. \textbf{Corrected:} the bottom-left entry
+        of the derivative matrix is written $\partial y/\partial\beta_{1}$; it is
+        $\partial x_{n}/\partial\beta_{1}$.
+  \item Page 8: \textbf{Corrected:} ``$X(\beta) = X\beta$ for linear model,
+        $x(\beta) \equiv X$'' has the cases swapped; the regression function is
+        $x(\beta) = X\beta$ and its derivative matrix is $X(\beta) \equiv X$.
+        ``liner'' $\to$ \emph{linear}.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        sample mean, $X'X = \sum x_{t}x_{t}'$ and the $z_{t}$ example; page 3 $X'X$
+        written out, $O(\cdot)$ and $o(\cdot)$; page 4 the rules and the trend
+        model with its staircase figure; page 5 $\sum t^{2}$, the assumptions and
+        consistency of $b_{n}$; page 6 asymptotic normality; page 7
+        $\Var(\sqrt{n}\,b)$ and nonlinear least squares; page 8 the linear-model
+        check.
+\end{transcriptnotes}
+
+\end{document}

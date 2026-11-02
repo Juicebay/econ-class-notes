@@ -1,0 +1,296 @@
+%% shortname: Aggregate Demand, Wealth Distribution and WARP
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{11}{Chapter 4: aggregation across consumers --- aggregate demand, aggregate wealth and WARP}{}
+
+
+\section{A small detour: aggregation across consumers}
+
+A small detour to study aggregation across consumers. It matters for general
+equilibrium, macroeconomics, and empirical work.
+
+\runin{Main objective.} Be cautious about reading too much into aggregate
+behavior, especially in the context of welfare.
+
+We consider three explicit questions.
+\begin{flatlist}
+  \item The first and second questions are about whether aggregate demand
+        ``looks like'', or has the same properties as, individual demand.
+  \item The third question asks whether aggregate demand is useful for welfare
+        evaluation.
+\end{flatlist}
+In all three cases, strong restrictions are needed to arrive at the answers we
+hope for.
+
+\section{Aggregate demand and aggregate wealth}
+
+When does aggregate demand look like individual demand, in the sense that it
+depends only on prices and aggregate wealth? In other words, does the
+distribution of wealth matter too?
+
+The answer to this first question is generally \emph{no}, unless more
+restrictions are imposed.
+
+\runin{MWG notation.} Let $x_i(p,w_i)$ denote agent $i$'s Marshallian (Walrasian)
+demand, and $w_i$ her wealth. So $x_i(p,w_i)\in\R^L_+$ is a vector, i.e.\ a
+bundle. Agent $i$'s demand for good $k$ is $x_{ki}(p,w_i)$.
+
+With $I$ agents, aggregate demand is
+\[ x(p,w_1,\dots,w_I)=\sum_{i=1}^{I}x_i(p,w_i). \]
+
+When does
+\[ x(p,w_1,\dots,w_I)=x\Bigl(p,\sum_{i=1}^{I}w_i\Bigr)\,? \]
+This is not easy, because there is a loss of information from ignoring the
+distribution.
+
+\topic{What does it take for an affirmative answer?}
+If it holds, then $x\bigl(p,\sum_i w_i\bigr)$ should be the same even after a
+redistribution of wealth that leaves $\sum_i w_i$ unchanged. So examine wealth
+changes $(dw_1,\dots,dw_I)$ with $\sum_{i=1}^{I}dw_i=0$. Taking the total
+derivative, for every good $k$,
+\[ \sum_{i=1}^{I}\pd{x_{ki}(p,w_i)}{w_i}\,dw_i=0. \]
+This holds for all $(w_1,\dots,w_I)$ and all such wealth changes if and only if,
+when comparing any two agents $i$ and $j$,
+\[ \pd{x_{ki}(p,w_i)}{w_i}=\pd{x_{kj}(p,w_j)}{w_j}
+   \qquad\text{for every good }k. \tag{$*$} \]
+(For ``only if'', take $dw_i=1$, $dw_j=-1$ and all other changes zero.)
+
+\begin{flatlist}
+  \item That is, wealth effects are the same for all agents.
+  \item Moreover, wealth effects must be constant across wealth levels,
+        i.e.\ independent of $w_i$ (($*$) must hold whatever $w_i$ and $w_j$ are).
+  \item In fact, individual demand must be linear (affine) in $w_i$: the wealth
+        expansion paths are parallel straight lines.
+\end{flatlist}
+Sounds restrictive.
+
+\topic{Two cases where ($*$) holds}
+Condition ($*$) is satisfied in two cases.
+\begin{flatnum}
+  \item All agents have preferences that are quasilinear with respect to the same
+        good. With $L=2$ and good 2 as the num\'eraire,
+        $u_i(x)=x_2+\phi_i(x_1)$: the demand for good 1 does not depend on
+        wealth, and all extra wealth is spent on good 2 (wealth effects $0$ and
+        $1/p_2$, the same for everyone).
+  \item All agents have identical preferences that are homothetic: there is a
+        common utility function that is homogeneous of degree 1,
+        \[ u(\alpha x)=\alpha\,u(x),\qquad \alpha>0. \]
+        The trade-off between two goods depends only on the ratio $x_1/x_2$, so
+        demand is $x_i(p,w_i)=w_i\,x(p,1)$ and wealth effects are constant.
+\end{flatnum}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.15]
+  % homothetic: u = sqrt(x1 x2), p = (1,1), w = 2 and w = 3
+  \ecaxes{3.4}{3.4}
+  \draw[budget] (0,2) -- (2,0);
+  \draw[budget] (0,3) -- (3,0);
+  \draw[domain=0.36:2.8,smooth,samples=60] plot (\x,{1/\x});
+  \draw[domain=0.78:3.2,smooth,samples=60] plot (\x,{2.25/\x});
+  \draw[dashed] (0,0) -- (3.0,3.0) node[ecnode,above right]{$x_1/x_2$ constant};
+  \node[bundle] at (1,1) {};
+  \node[bundle] at (1.5,1.5) {};
+  \node[ecnode] at (1.7,3.75) {Homothetic};
+  \node[ecnode,below] at (3.4,0) {$x_1$};
+  \node[ecnode,left]  at (0,3.4) {$x_2$};
+  \node[ecnode,align=left,anchor=west] at (3.0,1.3) {wealth effects\\ are constant};
+\end{tikzpicture}
+\hspace{1.2cm}
+\begin{tikzpicture}[scale=0.85]
+  % quasilinear: u = x2 + 2 ln x1, p = (1,1), w = 3 and w = 4
+  \ecaxes{4.6}{4.6}
+  \draw[budget] (0,3) -- (3,0);
+  \draw[budget] (0,4) -- (4,0);
+  \draw[domain=0.75:3.4,smooth,samples=60] plot (\x,{2.386-2*ln(\x)});
+  \draw[domain=0.75:4.3,smooth,samples=60] plot (\x,{3.386-2*ln(\x)});
+  \draw[dashed] (2,0) -- (2,4.2);
+  \node[bundle] at (2,1) {};
+  \node[bundle] at (2,2) {};
+  \node[ecnode] at (2.3,5.0) {Quasilinear: $u=x_2+\phi(x_1)$};
+  \node[ecnode,below] at (4.6,0) {$x_1$};
+  \node[ecnode,left]  at (0,4.6) {$x_2$};
+\end{tikzpicture}
+\end{center}
+
+\topic{The Gorman form}
+In both cases, the indirect utility has the \emph{Gorman form}
+\[ v_i(p,w_i)=a_i(p)+b_i(p)\,w_i. \]
+In fact, ($*$) holds if and only if every agent has an indirect utility of the
+Gorman form with
+\[ b_i(p)=b(p),\qquad\text{the same for all agents.} \]
+(Homothetic case: $v(p,w_i)=w_i\,v(p,1)$, so $a_i=0$ and $b(p)=v(p,1)$.
+Quasilinear case: $b(p)=1/p_2$.)
+
+\topic{Conclusion so far}
+It might work, but we need strong assumptions on how alike agents are.
+
+But we asked a hard question: we wanted it to work for \emph{every} wealth
+distribution. This ignores what we might know about the wealth distribution.
+Maybe we should be glad if it works for a nice subset of wealth distributions.
+
+\topic{A deterministic wealth distribution rule}
+Let $w$ denote aggregate wealth, and imagine that there is a deterministic wealth
+distribution, i.e.\ rules in place (e.g.\ through government redistribution, or
+the agents' ownership of assets in this economy). Agent $i$'s wealth is
+$w_i(p,w)$. Then aggregate demand is a function of prices and aggregate wealth:
+\[ \sum_{i=1}^{I}x_i\bigl(p,w_i(p,w)\bigr)=x(p,w). \]
+
+\section{Aggregate demand and WARP}
+
+When does aggregate demand $\sum_i x_i(p,w_i)$ satisfy WARP?
+
+Remember that WARP is a minimal consistency assumption on demand at the
+individual level. Aggregate demand satisfies continuity, homogeneity of degree
+zero and Walras' law, because individual demands have all these properties.
+What about WARP?
+
+For the best chance, assume there is a deterministic wealth distribution rule,
+and that it takes the form
+\[ w_i(p,w)=\alpha_i w,\qquad \alpha_i>0,\quad \sum_{i=1}^{I}\alpha_i=1. \]
+Aggregate demand $x(p,w)$ satisfies WARP if, for any two price--wealth
+situations $(p,w)$ and $(p',w')$,
+\[ p\cdot x(p',w')\le w\ \text{ and }\ x(p',w')\ne x(p,w)
+   \;\Longrightarrow\; p'\cdot x(p,w)>w'. \]
+
+\topic{A counterexample}
+Even in this scenario, there are counterexamples: WARP may fail in the
+aggregate. Take $I=2$, $\alpha_1=\alpha_2=\tfrac12$, so both agents have the same
+budget set, and $L=2$.
+
+\begin{center}
+\begin{tikzpicture}[scale=2.0]
+  \ecaxes{3.9}{3.3}
+  % B_{p,w/2}: x2 = 3 - (5/3) x1 ;  B_{p',w'/2}: x2 = 1.8 - 0.5 x1
+  \draw[budget] (0,3) -- (1.8,0);
+  \draw[budget] (0,1.8) -- (3.6,0);
+  \node[ecnode,right] at (0.15,2.85) {$B_{p,\,w/2}$};
+  \node[ecnode,above right] at (2.6,0.6) {$B_{p',\,w'/2}$};
+  % agent 1 and agent 2 demands
+  \node[bundle] at (0.6,2.0) {};   \node[ecnode,right] at (0.6,2.05) {$x_1$};
+  \node[bundle] at (1.7,1/6) {};   \node[ecnode,right] at (1.7,0.2) {$x_2$};
+  \node[bundle] at (0.1,1.75) {};  \node[ecnode,above right] at (0.08,1.75) {$x_1'$};
+  \node[bundle] at (1.2,1.2) {};   \node[ecnode,above right] at (1.2,1.2) {$x_2'$};
+  % averages (each lies on its own budget line)
+  \node[bundle,fill=red!75!black] at (1.15,13/12) {};
+  \node[ecnode,below left,text=red!75!black] at (1.15,1.08) {$A$};
+  \node[bundle,fill=red!75!black] at (0.65,1.475) {};
+  \node[ecnode,below left,text=red!75!black] at (0.67,1.49) {$B$};
+\end{tikzpicture}
+\end{center}
+
+Here $x_i$ is agent $i$'s demand at $(p,w/2)$ and $x_i'$ her demand at
+$(p',w'/2)$.
+\begin{flatlist}
+  \item Agent 1 prefers $(p,w)$: $x_1'$ was affordable at $(p,w/2)$, but $x_1$ is
+        not affordable at $(p',w'/2)$.
+  \item Agent 2 prefers $(p',w')$: $x_2$ was affordable at $(p',w'/2)$, but
+        $x_2'$ is not affordable at $(p,w/2)$.
+  \item Each agent's choices satisfy WARP.
+  \item $A=\tfrac12(x_1+x_2)$ is average demand given $(p,w)$;
+        $B=\tfrac12(x_1'+x_2')$ is average demand given $(p',w')$.
+\end{flatlist}
+$B$ is affordable at $(p,w)$ when $A$ is chosen, and $A$ is affordable at
+$(p',w')$ when $B$ is chosen. It looks as if $A$ is revealed preferred to $B$,
+but $B$ is also revealed preferred to $A$ $\Rightarrow$ aggregate demand violates
+WARP.
+
+\topic{Conclusion}
+Disappointing: the answer to our question is no. Aggregate demand is not
+guaranteed to satisfy WARP. The next best thing: under what conditions is the
+answer affirmative instead?
+
+On the other hand, even if aggregate demand violates WARP, individual agents can
+still be rational.
+
+\begin{transcriptnotes}
+  \item This replaces the earlier one-page transcription; the full original is
+        9 pages. Page 1 is a cover page reading ``Chapter 4'' only; the subtitle
+        is written to match the earlier lessons. No date is given.
+  \item Notation follows Lessons 7--10: the original's capitals $X$, $P$, $W_i$,
+        $V$, $A_i$, $B_i$ are typeset as $x$, $p$, $w_i$, $v$, $a_i$, $b_i$.
+        Agent $i$'s demand for good $k$ keeps the original's index $k$ (MWG
+        writes $x_{\ell i}$). The label ($*$) for the condition is the
+        original's; the original refers to ``Condition ($*$)'' without marking
+        the equation, so it is attached to the equal-wealth-effects condition.
+  \item \textbf{Corrected:} the Gorman form is written $V_i(P,u_i)$ in the
+        original; indirect utility is a function of prices and wealth, so it is
+        $v_i(p,w_i)$.
+  \item \textbf{Corrected:} ``There's a common wealth function that are
+        homogeneous degree 1, $V(\alpha x)=\alpha V(x)$'' --- it is a common
+        \emph{utility} function of bundles $x$; written $u(\alpha x)=\alpha
+        u(x)$.
+  \item \textbf{Corrected:} the quasilinear utility is written ``$x_2+F(x_2)$'';
+        the function must be of the other good, $x_2+\phi(x_1)$. The figure (a
+        vertical dashed line through the tangencies) shows demand for good 1
+        fixed, so good 2 is the num\'eraire.
+  \item \textbf{Added:} the reason for ``only if'' in ($*$); the line ``wealth
+        expansion paths are parallel straight lines''; the demand
+        $x_i=w_i\,x(p,1)$ in the homothetic case; the wealth effects $0$, $1/p_2$
+        in the quasilinear case; the Gorman-form parameters for both cases; the
+        statement of WARP for aggregate demand (MWG Definition 4.C.1); and the
+        explanation of why each agent satisfies WARP and why $A$, $B$ violate it.
+        In the quasilinear case the wealth effects are $0$ and $1/p_2$ only for
+        interior solutions (wealth large enough), as in MWG.
+  \item Figures are redrawn with specific numbers so the geometry is exact:
+        homothetic $u=\sqrt{x_1x_2}$; quasilinear $u=x_2+2\ln x_1$; in the WARP
+        figure, $B_{p,w/2}\colon x_2=3-\tfrac53x_1$ and
+        $B_{p',w'/2}\colon x_2=1.8-0.5x_1$. In the WARP figure the agent labels
+        $x_1,x_2,x_1',x_2'$ are the original's (subscripts are agents, not
+        goods). The original's ``1 prefers $(p,w)$, 2 prefers $(p',w')$'' and the
+        red notes are set as the bullet list below the figure.
+  \item Page 2: ``aggregation cross consumers'' $\to$ \emph{across consumers};
+        ``be cautious of reading to much into'' $\to$ \emph{be cautious about
+        reading too much into}; ``on has the same properties'' $\to$ \emph{or has
+        the same properties}; ``In all three case'' $\to$ \emph{cases}; ``anwers''
+        $\to$ \emph{answers}. The line ``general equilibrium, macro econ, and
+        empirical issues'' has no verb; read as the areas where aggregation
+        matters.
+  \item Page 3: ``The answers to the first question is'' $\to$ \emph{The answer
+        \dots\ is}; ``marshallian'' $\to$ \emph{Marshallian} (MWG's name,
+        \emph{Walrasian}, added); ``a vector on bundles'' $\to$ \emph{a vector,
+        i.e.\ a bundle}; ``With $I$ agent'' $\to$ \emph{agents};
+        ``infomation'' $\to$ \emph{information}. Summation limits $i=1,\dots,I$
+        added where the original omits them.
+  \item Page 4: ``affirmative an SWEn'' $\to$ \emph{an affirmative answer};
+        ``resdistribution'' $\to$ \emph{redistribution}; ``wealth effects and the
+        same'' $\to$ \emph{are the same}; ``constant across wealth levels''
+        kept. The total derivative is written for each good $k$ (the original
+        uses the vector $x_i$).
+  \item Page 5: ``Sound restrictive'' $\to$ \emph{Sounds restrictive}; ``All
+        agent have'' $\to$ \emph{All agents have}; ``quasilinear in the same
+        good'' $\to$ \emph{with respect to the same good}; ``two good'' $\to$
+        \emph{two goods}; ``radio'' $\to$ \emph{ratio}; ``Homothetic''
+        figure label and ``wealth effects are constant'' kept.
+  \item Page 6: ``gormen'' $\to$ \emph{Gorman}; ``event agent'' $\to$
+        \emph{every agent}; ``how alike agent are'' $\to$ \emph{agents};
+        ``we ask an a hand question, we vantel it to work for wealth distri.''
+        $\to$ \emph{we asked a hard question: we wanted it to work for every
+        wealth distribution}; ``what we must known'' $\to$ \emph{might know};
+        ``if it knows for a nice subset'' $\to$ \emph{works for};
+        ``Distrinction'' $\to$ \emph{distribution}.
+  \item Page 7, first line: ``E though govenment redistrisbate on ownership. of
+        agents in this agent'' is partly illegible; read as \emph{e.g.\ through
+        government redistribution, or the agents' ownership of assets in this
+        economy}. ``satisfies WARP'' $\to$ \emph{satisfy}; ``a minimal
+        alsumption on sonsistency property'' $\to$ \emph{a minimal consistency
+        assumption}; ``homogenity'' $\to$ \emph{homogeneity}; ``walra's law''
+        $\to$ \emph{Walras' law}; ``individual demands all these properties''
+        $\to$ \emph{have all these properties}. Homogeneity of degree zero of
+        aggregate demand uses that the rule $w_i(p,w)=\alpha_i w$ is homogeneous
+        of degree one in $(p,w)$.
+  \item Page 8: ``scearios'' $\to$ \emph{scenario}; ``counter examples WARP
+        MAY fail'' $\to$ \emph{counterexamples: WARP may fail};
+        ``$\alpha_1=\alpha_2=\bar{2}$'' read as $\tfrac12$ (the budget sets are
+        labelled $w/2$); ``agent have the same budget set'' $\to$ \emph{both
+        agents have}; ``AVR Demand'', ``AVG Demand'' $\to$ \emph{average
+        demand}; ``r.p.'' $\to$ \emph{revealed preferred}; ``garenteed'' $\to$
+        \emph{guaranteed}; ``the answe affirmative'' $\to$ \emph{the answer
+        affirmative}. The red ``WARP is satisfied'' is read as referring to each
+        agent individually.
+  \item Page 9: ``On the often hand'' $\to$ \emph{On the other hand}.
+\end{transcriptnotes}
+
+\end{document}

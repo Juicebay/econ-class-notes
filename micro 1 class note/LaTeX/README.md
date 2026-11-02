@@ -4,7 +4,7 @@ Typeset versions of the handwritten lesson exports, in one fixed format.
 
 ```
 micro 1 class note*/
-├── Lesson 1.pdf  Lesson 3.pdf  lesson 4.pdf  Lesson 6.pdf  Lesson 7.pdf  Lesson 9.pdf  Lesson 10.pdf   original exports
+├── Lesson 1.pdf  Lesson 3.pdf  lesson 4.pdf  Lesson 6.pdf  Lesson 7.pdf  Lesson 9.pdf  Lesson 10.pdf  Lesson 11.pdf  Lesson 13.pdf  Lesson 15.pdf  Lesson 16.pdf   original exports
 ├── Lesson 01 - Consumer Choice and the Budget Set (LaTeX).pdf
 ├── Lesson 03 - Demand, Walras Law and WARP (LaTeX).pdf
 ├── Lesson 04 - Compensated Law of Demand and the Slutsky Matrix (LaTeX).pdf
@@ -12,9 +12,13 @@ micro 1 class note*/
 ├── Lesson 07 - Utility Maximization and Expenditure Minimization (LaTeX).pdf
 ├── Lesson 09 - Duality, Hicksian Demand and Welfare (LaTeX).pdf
 ├── Lesson 10 - Equivalent and Compensating Variation (LaTeX).pdf
+├── Lesson 11 - Aggregate Demand, Wealth Distribution and WARP (LaTeX).pdf
+├── Lesson 13 - Uncompensated Law of Demand and the Representative Consumer (LaTeX).pdf
+├── Lesson 15 - Choice under Uncertainty, Lotteries and the Independence Axiom (LaTeX).pdf
+├── Lesson 16 - Expected Utility, Money Lotteries and Risk Aversion (LaTeX).pdf
 └── LaTeX/
     ├── microstyle.sty          THE FORMAT — edit here, not in the lessons
-    ├── lesson01.tex  lesson03.tex  lesson04.tex  lesson06.tex  lesson07.tex  lesson09.tex  lesson10.tex
+    ├── lesson01.tex  lesson03.tex  lesson04.tex  lesson06.tex  lesson07.tex  lesson09.tex  lesson10.tex  lesson11.tex  lesson13.tex  lesson15.tex  lesson16.tex
     ├── lessonXX_template.tex   copy this to start a new lesson
     ├── extract_pages.py        render a handwritten export to PNGs to read from
     └── build.sh                builds every lesson and copies the PDFs up

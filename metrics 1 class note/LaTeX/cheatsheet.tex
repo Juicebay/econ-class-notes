@@ -1,0 +1,133 @@
+\documentclass[7.5pt,landscape]{extarticle}
+\usepackage[margin=0.9cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,multicol,enumitem,xcolor}
+\setlength{\parindent}{0pt}\setlength{\parskip}{1.5pt}
+\setlength{\columnsep}{9pt}\setlength{\columnseprule}{0.3pt}
+\setlist{nosep,leftmargin=8pt,itemsep=0.5pt}
+\definecolor{navy}{RGB}{31,58,96}\definecolor{grn}{RGB}{40,110,60}\definecolor{red}{RGB}{170,40,40}
+\newcommand{\hd}[1]{\par\vspace{3pt}\noindent\colorbox{navy}{\parbox{\dimexpr\linewidth-2\fboxsep}{\color{white}\bfseries #1}}\par\vspace{1pt}}
+\newcommand{\think}[1]{\par\noindent{\color{grn}\textbf{Think:}} {\color{grn}#1}\par}
+\newcommand{\warn}[1]{\par\noindent{\color{red}\textbf{Slip:}} {\color{red}#1}\par}
+\newcommand{\xp}{^{\prime}}
+\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\E}{\mathbb E}
+\pagestyle{empty}
+\begin{document}
+{\large\bfseries ECON*6140 Midterm Cheat Sheet (Lessons 1--8)}\hfill{\scriptsize Fall 2026 --- \textcolor{grn}{green = how to get there},\ \textcolor{red}{red = common slip}}
+\begin{multicols}{3}
+
+\hd{0. Which tool? (read the question, then pick)}
+\begin{itemize}
+\item ``Show $\hat\beta_2$ equals / is unbiased / what if we deseasonalize'' $\Rightarrow$ \textbf{FWL}
+\item ``Test $R\beta=r$ / joint significance / stability / seasonals'' $\Rightarrow$ \textbf{F test} (write restricted model first)
+\item ``$u\sim N(Z\gamma,\sigma^2I)$, mean/bias of $b$, $e$, $s^2$'' $\Rightarrow$ $b=\beta+(X'X)^{-1}X'u$, $e=Mu$
+\item ``$u_t=\rho u_{t-1}+\varepsilon_t$, find Var, $T$, GLS'' $\Rightarrow$ \textbf{AR(1)/GLS}
+\item ``$X$ correlated with $u$, instruments $W$'' $\Rightarrow$ \textbf{IV / 2SLS}
+\end{itemize}
+\think{Every proof here starts from one of three lines: $b=\beta+(X'X)^{-1}X'u$; $e=Mu$; $Var(Tu)=cI$. Write the line first, then take $E$ or $Var$.}
+
+\hd{1. Projections}
+$P=X(X'X)^{-1}X'$, $M=I-P$. Both symmetric \& idempotent. $PX=X$, $MX=0$, $PM=0$. $\hat y=Py$, $e=My$.\\
+$\operatorname{tr}P=k$, $\operatorname{tr}M=n-k$ (rank = trace for idempotent).
+\think{To show a matrix is a projection: check $A'=A$ and $A^2=A$. Nested spaces: $P_1P_X=P_1$ if $X_1\subset X$.}
+\warn{$\operatorname{tr}(M)=\operatorname{tr}(I_n)-\operatorname{tr}((X'X)^{-1}X'X)=n-k$. That is where the $n-k$ comes from.}
+
+\hd{2. OLS properties}
+$b=\beta+(X'X)^{-1}X'u$. $E(b)=\beta$, $\Var(b)=\sigma^2(X'X)^{-1}$.\\
+$e=Mu\Rightarrow E(e'e)=\sigma^2\operatorname{tr}M=\sigma^2(n-k)$, so $s^2=e'e/(n-k)$.\\
+\textbf{Normal $u$:} $b\sim N$; $e'e/\sigma^2=u'Mu/\sigma^2\sim\chi^2_{n-k}$; $\Cov(b,e)=(X'X)^{-1}X'\sigma^2M=0\Rightarrow b\perp e$; so $t=\frac{b_j-\beta_j}{s\sqrt{[(X'X)^{-1}]_{jj}}}\sim t_{n-k}$.
+\textbf{Gauss--Markov:} any linear unbiased $\tilde\beta=Cy$ has $CX=I$. Write $C=(X'X)^{-1}X'+D$, $DX=0$; $\Var=\sigma^2(X'X)^{-1}+\sigma^2DD'$. $DD'\succeq0\Rightarrow$ OLS best.
+\think{t = N(0,1)/$\sqrt{\chi^2/df}$ with numerator and denominator independent. That is the whole reason $b\perp e$ matters.}
+
+\hd{3. TSS / ESS / RSS}
+$TSS=y'M_\iota y=\sum(y_i-\bar y)^2$,\; $ESS=y'(P_X-P_\iota)y$,\; $RSS=y'M_Xy=e'e$.\\
+$TSS=ESS+RSS$ needs a constant ($P_\iota P_X=P_\iota$). $R^2=1-RSS/TSS$.
+\warn{Here RSS = \emph{residual} SS = ETM's SSR. Constant-only model has RSS $=TSS$.}
+
+\hd{4. F test of $R\beta=r$}
+$$F=\frac{(RSSR-USSR)/q}{USSR/(n-k)}\sim F(q,n-k)$$
+\textbf{Recipe:} (1) write unrestricted model $\to$ USSR. (2) Impose $H_0$ \emph{into the model}, rewrite $\to$ restricted model $\to$ RSSR. (3) $q$ = number of restrictions (rows of $R$). (4) $df_2=n-k$ of the \emph{unrestricted} model.
+\think{Restricted RSS $\ge$ unrestricted always. F large $\Leftrightarrow$ restriction costs a lot of fit $\Rightarrow$ reject.}
+\textbf{Restricted LS:} with $A=R(X'X)^{-1}R'$,
+$$b^*=b-(X'X)^{-1}R'A^{-1}(Rb-r),\quad RSSR-USSR=(Rb-r)'A^{-1}(Rb-r).$$
+With $\sigma^2$ known, this$/\sigma^2\sim\chi^2_q$ (Wald).
+\textbf{Overall significance:} $H_0$: all slopes $=0$; restricted model $=$ constant only, so $RSSR=TSS$, $q=k-1$.\\
+\textbf{Seasonals:} $H_0$: all dummy coefs $=0$ (or equal), $q$ = number tested; restricted model drops them.
+\textbf{A1 numbers:} $n=88,k=4$: $F=13.63$ vs $F_{.05}(3,81)=2.72$ $\Rightarrow$ reject.
+
+\hd{5. Chow test}
+$y_1=X_1\alpha+u_1$, $y_2=X_2\gamma+u_2$. Stack: $\begin{pmatrix}y_1\\y_2\end{pmatrix}=\begin{pmatrix}X_1&0\\0&X_2\end{pmatrix}\begin{pmatrix}\alpha\\\gamma\end{pmatrix}+u$.\\
+$H_0:\alpha=\gamma$, i.e.\ $R\theta=r$ with $R=[I_k\ \ {-I_k}]$, $r=0$, $q=k$.
+\textbf{Unrestricted} = two separate regressions: $USSR=SSR_1+SSR_2$. \textbf{Restricted} = one $\beta$ for all = \emph{pooled} regression: $RSSR=SSR_p$.
+$$F=\frac{(SSR_p-SSR_1-SSR_2)/k}{(SSR_1+SSR_2)/(n_1+n_2-2k)}$$
+\textbf{If $n_2\le k$:} regression 2 fits perfectly, $SSR_2=0$, $q=n_2$, $df_2=n_1-k$:
+$F=\frac{(SSR_p-SSR_1)/n_2}{SSR_1/(n_1-k)}$. A1(c): $\frac{(18.48-16.12)/4}{16.12/80}=2.93>2.49$ $\Rightarrow$ reject at 5\% (not at 1\%: $F_{.01}=3.56>2.93$).
+\think{``Why is the pooled model the restricted one?'' Because $H_0$ forces both subsamples to share the same coefficients, which is exactly the pooled model.}
+
+\hd{6. Omitted variable / $u\sim N(Z\gamma,\sigma^2I)$}
+$b=\beta+(X'X)^{-1}X'u\Rightarrow E(b)=\beta+(X'X)^{-1}X'Z\gamma$, $\Var(b)=\sigma^2(X'X)^{-1}$ (shifting the mean does not change variance).\\
+Unbiased iff $X'Z\gamma=0$ (e.g.\ $Z\perp X$, or $\gamma=0$).\\
+$e=Mu$: $E(e)=MZ\gamma$; $E(e'e)=\sigma^2(n-k)+\gamma'Z'MZ\gamma$, so $s^2$ biased upward unless $MZ\gamma=0$ (e.g.\ $Z\subset$ col($X$)).
+\think{Plug $u=Z\gamma+v$ with $v\sim(0,\sigma^2I)$; every term with $v$ behaves as usual, every term with $Z\gamma$ is a fixed shift.}
+
+\hd{7. FWL \& deseasonalizing}
+$y=X_1\beta_1+X_2\beta_2+u$. Multiply by $M_1$ (kills $X_1$): $M_1y=M_1X_2\beta_2+M_1u$.\\
+$b_2=(X_2'M_1X_2)^{-1}X_2'M_1y$,\; $\Var(b_2)=\sigma^2(X_2'M_1X_2)^{-1}$, same residuals as full regression.\\
+(Uses $M_1'M_1=M_1$, so $(M_1X_2)'(M_1X_2)=X_2'M_1X_2$ and $(M_1X_2)'M_1y=X_2'M_1y$.)
+\textbf{Seasonal dummies $D$} ($X_1=D$, $M_1=M_D$): demean within season.
+\begin{itemize}
+\item $M_Dy$ on $M_DX_2$: = full $b_2$, unbiased
+\item raw $y$ on $M_DX_2$: same $b_2$, unbiased
+\item $M_Dy$ on raw $X_2$: $E=(X_2'X_2)^{-1}X_2'M_DX_2\beta_2\ne\beta_2$, \textbf{biased}
+\item omit dummies: bias $(X_2'X_2)^{-1}X_2'D\alpha$ (omitted variable)
+\end{itemize}
+\think{Rule: the regressor must be cleaned of $D$; cleaning only $y$ is not enough. Cleaning $X_2$ alone is.}
+
+\hd{8. GLS and AR(1)}
+$\Var(u)=\sigma^2\Omega$: $\hat\beta_{GLS}=(X'\Omega^{-1}X)^{-1}X'\Omega^{-1}y$, $\Var=\sigma^2(X'\Omega^{-1}X)^{-1}$.\\
+Find $T$ with $T'T=k\,\Omega^{-1}$, then OLS of $Ty$ on $TX$ (any $k>0$ gives same $\hat\beta$).
+\textbf{Check a candidate $T$:} compute $\Var(Tu)$; need $cI$ (equal diagonal, zero off-diagonal).\\
+OLS under $\Omega\ne I$: still unbiased, not efficient, $\Var(b)=(X'X)^{-1}X'\Omega X(X'X)^{-1}$, usual SEs wrong.
+\textbf{AR(1):} $u_t=\rho u_{t-1}+\varepsilon_t$, $|\rho|<1$, $\varepsilon_t$ white noise $(0,\sigma_\varepsilon^2)$ (an \emph{assumption}).\\
+Recursion: $u_t=\sum_{j\ge0}\rho^j\varepsilon_{t-j}\Rightarrow E(u_t)=0$.\\
+$\Var(u_t)=\rho^2\Var(u_{t-1})+\sigma_\varepsilon^2$; stationary $\Rightarrow\sigma_u^2=\dfrac{\sigma_\varepsilon^2}{1-\rho^2}$.\\
+$u_t=\rho^su_{t-s}+(\text{terms in }\varepsilon_{t-s+1..t}\perp u_{t-s})\Rightarrow\Cov(u_t,u_{t-s})=\rho^s\sigma_u^2$.\\
+So $\Var(u)=\sigma_u^2\Omega$, $\Omega_{ts}=\rho^{|t-s|}$.
+\textbf{Prais--Winsten $T$:} row 1: $(\sqrt{1-\rho^2},0,\dots)$; row $t\ge2$: $-\rho$ in col $t-1$, $1$ in col $t$.\\
+$Ty$: $\sqrt{1-\rho^2}\,y_1,\ y_2-\rho y_1,\dots$ \quad $Tu$: $\sqrt{1-\rho^2}\,u_1=\varepsilon_1$-scale, $u_t-\rho u_{t-1}=\varepsilon_t$.\\
+$\Var(Tu)=\sigma_\varepsilon^2I$ (first: $(1-\rho^2)\sigma_u^2=\sigma_\varepsilon^2$). Hence $T'T=(1-\rho^2)\Omega^{-1}$; $T^*=T/\sqrt{1-\rho^2}$ gives $T^{*\prime}T^*=\Omega^{-1}$, $\Var(T^*u)=\sigma_u^2I$.\\
+$n=3$: $T'T=\begin{pmatrix}1&-\rho&0\\-\rho&1+\rho^2&-\rho\\0&-\rho&1\end{pmatrix}=(1-\rho^2)\Omega^{-1}$.
+\think{Why $\sqrt{1-\rho^2}$ on row 1? $u_1$ has variance $\sigma_u^2$, but the other rows have $\sigma_\varepsilon^2=(1-\rho^2)\sigma_u^2$. Scale $u_1$ by $\sqrt{1-\rho^2}$ so every row has the same variance.}
+\warn{$T'T=\Omega^{-1}$ only for $T^*$. $\sigma_u^2$ vs $\sigma_\varepsilon^2$ is just the scalar $c$; GLS does not care. $L$ is an operator, not a number, so do not pull it out of $E$ or $\Var$; use the recursion.}
+
+\hd{9. Cochrane--Orcutt (unknown $\rho$)}
+Known $\rho$: drop row 1 ($(n-1)\times n$ transform); OLS of $y_t-\rho y_{t-1}$ on $x_t-\rho x_{t-1}$.\\
+\textbf{Iterate:}
+\begin{enumerate}[label=\arabic*.]
+\item OLS $y$ on $X\to e=y-Xb$
+\item $\hat\rho=\sum e_te_{t-1}\big/\sum e_{t-1}^2$ (regress $e_t$ on $e_{t-1}$, no constant)
+\item OLS of $y_t-\hat\rho y_{t-1}$ on $x_t-\hat\rho x_{t-1}\to b$
+\item recompute $e=y-Xb$ with \textbf{original} data; back to 2 until $\hat\rho$ stops moving
+\end{enumerate}
+\textbf{AR(2)} (Fall 2023 Q1): $y_t-\rho_1y_{t-1}-\rho_2y_{t-2}$, lose 2 obs; $\hat\rho_1,\hat\rho_2$ from regressing $e_t$ on $e_{t-1},e_{t-2}$.
+\think{Two equations to keep apart: (A) transformed model gives $\beta$ given $\rho$; (B) $u_t=\rho u_{t-1}+\varepsilon_t$ on residuals gives $\rho$ given $\beta$. Alternate until fixed point.}
+
+\hd{10. IV / 2SLS}
+$y=X\beta+u$ with $E(X'u)\ne0\Rightarrow$ OLS inconsistent (plim $X'u/n\ne0$).\\
+Instruments $W$ ($n\times l$, $l\ge k$): \emph{relevant} ($W'X$ rank $k$), \emph{exogenous} ($E\,W'u=0$).\\
+$l=k$: $b_{IV}=(W'X)^{-1}W'y=\beta+(W'X)^{-1}W'u$.\\
+$l>k$: $b_{2SLS}=(X'P_WX)^{-1}X'P_Wy$ (stage 1: $\hat X=P_WX$; stage 2: $y$ on $\hat X$).\\
+Check $l=k$: $(X'W(W'W)^{-1}W'X)^{-1}X'W(W'W)^{-1}W'y=(W'X)^{-1}W'y$ since $W'X$ is square invertible.\\
+Consistent, \emph{not} unbiased; $\operatorname{avar}=\sigma^2(X'P_WX)^{-1}$.
+\think{Take the line $b-\beta=(\cdot)^{-1}W'u$ and divide by $n$: numerator $\to0$ by exogeneity, denominator $\to$ nonsingular by relevance.}
+
+\hd{11. Exam-day checklist}
+\begin{itemize}
+\item Start each proof from $b-\beta=(X'X)^{-1}X'u$ or $e=Mu$.
+\item F test: restricted model written out \emph{before} any numbers; state $q$ and $df_2$.
+\item Always compare to the critical value and say reject / fail to reject.
+\item AR(1): name $\sigma_u^2$ vs $\sigma_\varepsilon^2$ explicitly; verify $T$ by $\Var(Tu)$.
+\item Weights: 2023 Q1 AR(2) 30, Q2 numerical F 30, Q3 $Z\gamma$ 40; 2024 Q1 numerical 30, Q3 FWL 70.
+\end{itemize}
+\end{multicols}
+\end{document}

@@ -1,0 +1,194 @@
+%% title: Nonlinear Least Squares and the Gauss-Newton Regression
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{11}{Nonlinear models: nonlinear least squares, the Gauss--Newton regression and its iteration}{}
+
+\section{Recap: the linear model}
+
+\[ y = X\beta + u, \qquad u \sim (0, \sigma^{2}I_{n}), \qquad
+   \E(x_{t}u_{t}) = 0, \qquad
+   \operatorname*{plim}\frac{X'u}{n} = \E(x_{t}u_{t}) = 0, \qquad
+   \operatorname*{plim}\frac{X'X}{n} = \Sigma_{XX}, \]
+\[ \sqrt{n}\,(b_{n} - \beta) \ \overset{a}{\sim}\ N(0, \sigma^{2}\Sigma_{XX}^{-1}). \]
+
+
+\section{The nonlinear regression model}
+
+\[ y = x(\beta) + u, \qquad \text{with } x(\beta) = X\beta \text{ in the linear case.} \]
+For example
+\[ y_{t} = \beta_{1}x_{1t} + \beta_{2}x_{2t}^{\beta_{3}} + u_{t}, \qquad t = 1, \dots, n, \qquad
+   \underbrace{\beta_{1}x_{1t} + \beta_{2}x_{2t}^{\beta_{3}}}_{x_{t}(\beta)}. \]
+
+\topic{Nonlinear least squares}
+\[ \min_{\beta}\ \operatorname{SSR}(\beta) = \sum_{t=1}^{n}\bigl(y_{t} - x_{t}(\beta)\bigr)^{2}
+   = \bigl(y - x(\beta)\bigr)'\bigl(y - x(\beta)\bigr). \]
+
+\topic{The matrix of derivatives $X(\beta)$}
+\[ \underset{n\times K}{X(\beta)} = \Bigl[\frac{\partial x_{t}(\beta)}{\partial \beta_{i}}\Bigr]_{t,i},
+   \quad t = 1, \dots, n, \ \ i = 1, \dots, K, \qquad
+   X(\beta) = \begin{bmatrix}
+       \frac{\partial x_{1}}{\partial \beta_{1}} & \frac{\partial x_{1}}{\partial \beta_{2}} & \cdots & \frac{\partial x_{1}}{\partial \beta_{K}}\\[4pt]
+       \frac{\partial x_{2}}{\partial \beta_{1}} & \cdots & \cdots & \frac{\partial x_{2}}{\partial \beta_{K}}\\
+       \vdots & & & \vdots\\
+       \frac{\partial x_{n}}{\partial \beta_{1}} & \cdots & \cdots & \frac{\partial x_{n}}{\partial \beta_{K}}
+     \end{bmatrix}. \]
+In the example ($K = 3$):
+\[ \underset{n\times 3}{X(\beta)}
+   = \begin{bmatrix} x_{1t} & x_{2t}^{\beta_{3}} & \beta_{2}x_{2t}^{\beta_{3}}\log x_{2t} \end{bmatrix}
+   = \begin{bmatrix}
+       x_{11} & x_{21}^{\beta_{3}} & \beta_{2}x_{21}^{\beta_{3}}\log x_{21}\\
+       \vdots & \vdots & \vdots\\
+       x_{1n} & x_{2n}^{\beta_{3}} & \beta_{2}x_{2n}^{\beta_{3}}\log x_{2n}
+     \end{bmatrix}, \]
+since $\partial(\beta_{2}x^{\beta_{3}})/\partial\beta_{3} = \beta_{2}x^{\beta_{3}}\log x$.
+
+\topic{Check: the linear model}
+\[ y_{t} = \beta_{1}x_{1t} + \beta_{2}x_{2t} + \dots + \beta_{K}x_{Kt} + u_{t}, \qquad
+   x_{t}(\beta) = x_{t}'\beta, \qquad X(\beta) = X. \]
+
+
+\section{The first-order conditions}
+
+Expand the objective at the estimate $\hat\beta$:
+\begin{align*}
+  \bigl(y - x(\hat\beta)\bigr)'\bigl(y - x(\hat\beta)\bigr)
+  &= y'y - x(\hat\beta)'y - y'x(\hat\beta) + x(\hat\beta)'x(\hat\beta)\\
+  &= y'y - 2y'x(\hat\beta) + x(\hat\beta)'x(\hat\beta).
+\end{align*}
+Differentiate with respect to $\beta$ (the derivative of $x(\beta)$ is the big $X(\beta)$):
+\[ \text{FOC:}\qquad -2y'X(\hat\beta) + 2x(\hat\beta)'X(\hat\beta) = 0
+   \quad\Longrightarrow\quad y'X(\hat\beta) = x(\hat\beta)'X(\hat\beta), \]
+\[ \underset{1\times K}{\bigl(y - x(\hat\beta)\bigr)'X(\hat\beta)} = 0
+   \qquad\Longleftrightarrow\qquad
+   \underset{K\times 1}{X(\hat\beta)'\bigl(y - x(\hat\beta)\bigr)} = 0. \]
+The residuals are orthogonal to the columns of $X(\hat\beta)$, just as $X'(y - Xb) = 0$ in OLS.
+
+
+\section{The Gauss--Newton regression (GNR)}
+
+Regress the residuals $y - x(\hat\beta)$ on $X(\hat\beta)$:
+\[ y - x(\hat\beta) = X(\hat\beta)\,b + \text{errors}, \qquad
+   \hat b = \bigl[X(\hat\beta)'X(\hat\beta)\bigr]^{-1}
+            \underbrace{X(\hat\beta)'\bigl(y - x(\hat\beta)\bigr)}_{=\,0 \text{ by the FOC}} = 0. \]
+At the NLS estimate the GNR has zero coefficients. Its OLS covariance matrix gives
+the (estimated) covariance matrix of $\hat\beta$:
+\[ \Var(\hat\beta) = \sigma^{2}\bigl(X(\hat\beta)'X(\hat\beta)\bigr)^{-1}. \]
+
+
+\section{How to get $\hat\beta$: the NLS estimator by iteration}
+
+The model is $y = x(\beta_{0}) + u$. Start from a guess $\beta^{(1)}$ and write
+\[ y = x(\beta^{(1)}) + \bigl(y - x(\beta^{(1)})\bigr). \]
+We want to move $\beta^{(1)} \to \beta^{(2)}$ (and so $x(\beta^{(1)}) \to x(\beta^{(2)})$).
+
+\topic{Step 1}
+A first-order Taylor expansion around $\beta^{(1)}$:
+\[ x(\beta^{(2)}) \approx x(\beta^{(1)}) + X(\beta^{(1)})\bigl(\beta^{(2)} - \beta^{(1)}\bigr)
+   + \text{(higher-order terms)}, \]
+so
+\[ y - x(\beta^{(1)}) \approx X(\beta^{(1)})\bigl(\beta^{(2)} - \beta^{(1)}\bigr) + \bigl(y - x(\beta^{(2)})\bigr). \]
+This is a GNR: regress $y - x(\beta^{(1)})$ on $X(\beta^{(1)})$,
+\[ \hat b = \bigl(X(\beta^{(1)})'X(\beta^{(1)})\bigr)^{-1}X(\beta^{(1)})'\bigl(y - x(\beta^{(1)})\bigr)
+   \quad\longrightarrow\quad \text{estimates } \beta^{(2)} - \beta^{(1)}. \]
+\begin{flatlist}
+  \item If $\hat b = 0$: $\beta^{(2)} - \beta^{(1)} = 0$, i.e.\ $\beta^{(2)} = \beta^{(1)}$ --- we are done.
+  \item If $\hat b \neq 0$: $\hat b = \beta^{(2)} - \beta^{(1)}$ $\Longrightarrow$
+        $\beta^{(2)} = \beta^{(1)} + \hat b$.
+\end{flatlist}
+
+\topic{Step 2 and on}
+$\beta^{(1)} \to \beta^{(2)}\ \bigl(x(\beta^{(2)})\bigr) \to x(\beta^{(3)})$:
+\[ x(\beta^{(3)}) \approx x(\beta^{(2)}) + X(\beta^{(2)})\bigl(\beta^{(3)} - \beta^{(2)}\bigr) + \text{(higher-order terms)}, \]
+\[ y - x(\beta^{(2)}) \approx X(\beta^{(2)})\bigl(\beta^{(3)} - \beta^{(2)}\bigr) + \bigl(y - x(\beta^{(3)})\bigr), \]
+\[ \hat b = \beta^{(3)} - \beta^{(2)} \quad\Longrightarrow\quad \boxed{\beta^{(3)} = \beta^{(2)} + \hat b}. \]
+Repeat: at step $j$, regress $y - x(\beta^{(j-1)})$ on $X(\beta^{(j-1)})$ and set
+$\beta^{(j)} = \beta^{(j-1)} + \hat b$, until
+\[ \hat b = \beta^{(j)} - \beta^{(j-1)} \approx 0. \]
+\[ \hat b \approx 0 \quad\Longrightarrow\quad \beta^{(j)} \approx \hat\beta_{\text{NLS}}, \]
+because $\hat b = 0$ exactly when $X(\beta^{(j)})'\bigl(y - x(\beta^{(j)})\bigr) = 0$, the
+first-order condition of Section 3.
+
+
+\section{Asymptotics of NLS}
+
+\topic{The question}
+\[ \sqrt{n}\,(\hat\beta_{n} - \beta_{0}) \ \overset{a}{\sim}\ N(\,?\,, \,?\,). \]
+Compare OLS: $b_{n} \overset{a}{\sim} N\bigl(\beta, \tfrac{1}{n}\sigma^{2}\Sigma_{XX}^{-1}\bigr)$, i.e.
+\[ \sqrt{n}\,(b_{n} - \beta) \ \overset{a}{\sim}\ N(0, \sigma^{2}\Sigma_{XX}^{-1}). \]
+
+\topic{Assumptions}
+With $\beta_{0}$ the true parameter vector and $X_{t}(\beta)$ the $t$-th row of $X(\beta)$:
+\[ y_{t} = x_{t}(\beta_{0}) + u_{t}, \qquad
+   \E\bigl(X_{t}(\beta_{0})'u_{t}\bigr) = 0, \quad\text{so}\quad
+   \E\bigl(X(\beta_{0})'u\bigr) = 0, \]
+\[ \operatorname*{plim}_{n\to\infty}\frac{X(\beta_{0})'X(\beta_{0})}{n} = \Sigma_{XX},
+   \qquad \rank(\Sigma_{XX}) = K
+   \quad\longrightarrow\quad \text{the identifiability condition.} \]
+
+\topic{The answer (as for OLS, with $X(\beta_{0})$ in place of $X$)}
+\[ \sqrt{n}\,(\hat\beta_{n} - \beta_{0}) \ \overset{a}{\sim}\ N(0, \sigma^{2}\Sigma_{XX}^{-1}),
+   \qquad \Sigma_{XX} = \operatorname*{plim}\frac{X(\beta_{0})'X(\beta_{0})}{n}. \]
+
+
+\begin{transcriptnotes}
+  \item Page 1 is a divider reading ``Lesson 11 -- non-linear models''; it is not
+        reproduced. No date is given. The lower half of page 4 is blank.
+  \item As in Lessons 3--10, $6^{2}$ is $\sigma^{2}$, $\Sigma_{xx}$ is typeset
+        $\Sigma_{XX}$, and $k$ is typeset $K$. Lower-case $x(\beta)$ is the regression
+        function ($n\times 1$), capital $X(\beta)$ its $n\times K$ derivative matrix;
+        the page's handwriting does not always keep the two apart, and they are typeset
+        by meaning. The iterates written $\beta^{1}, \beta^{2}, \beta^{3}, \beta^{j}$
+        are typeset $\beta^{(1)}, \beta^{(2)}, \ldots$ so they are not read as powers.
+  \item Page 2: \textbf{Corrected:} $\sqrt{n}(b_{n} - \beta) \sim N(0, \sigma^{2}\Sigma_{xx})$
+        lacks the inverse; it is $\sigma^{2}\Sigma_{XX}^{-1}$ (Lesson 10). $\E(X'u) = 0$ is
+        written per observation, $\E(x_{t}u_{t}) = 0$, as corrected in Lesson 10. The
+        SSR is written $\operatorname{SSR}(\hat\beta)$ under $\min_{\hat\beta}$; typeset
+        with $\beta$. \textbf{Corrected:} the last entry of the second row of the
+        derivative matrix is $\partial x_{2}/\partial\beta_{2}$; it is
+        $\partial x_{2}/\partial\beta_{K}$. The example's second column is written
+        $x_{21}^{\beta}$ in the first row; typeset $x_{21}^{\beta_{3}}$. The derivative
+        $\partial(\beta_{2}x^{\beta_{3}})/\partial\beta_{3}$ under the matrix is
+        \textbf{added}.
+  \item Page 2 (bottom): the label ``FOC'' stands next to the expanded objective
+        $y'y - 2y'x(\hat\beta) + x(\hat\beta)'x(\hat\beta)$; the first-order condition is
+        its derivative, the next line, and the label is moved there. ``$=0$'' is
+        \textbf{added} to $-2y'X(\hat\beta) + 2x(\hat\beta)'X(\hat\beta)$.
+        \textbf{Corrected:} $y'X(\hat\beta) = X(\hat\beta)'X(\hat\beta)$ has a capital
+        $X$ on the right where the regression function $x(\hat\beta)'$ belongs. The
+        orthogonality remark comparing with OLS is \textbf{added}.
+  \item Page 3: the arrow from $X(\hat\beta)'(y - x(\hat\beta)) = 0$ to the GNR
+        estimate, and the arrow from $X(\hat\beta)'(y - x(\hat\beta))$ down to ``$=0$'',
+        are written as the under-brace ``$=0$ by the FOC''. $\Var(\hat\beta) =
+        \sigma^{2}(X(\hat\beta)'X(\hat\beta))^{-1}$ is kept; in practice $\sigma^{2}$ is
+        replaced by its estimate, hence ``(estimated)''. ``FOC Taylor series'' is read
+        as \emph{first-order} Taylor series. \textbf{Corrected:} the remainder is
+        written $+\,o(1)$; it is of smaller order than $\beta^{(2)} - \beta^{(1)}$, not
+        $o(1)$, and is typeset ``higher-order terms''. The stray ``$y -$'' in front of
+        $x(\beta^{2})$ on the second line is read as $+\,(y - x(\beta^{(2)}))$, which is
+        what makes the identity hold.
+  \item Page 3 (bottom): $\hat b = \beta^{2} - \beta^{1} \Rightarrow \beta^{2} = \hat b_{1} +
+        \beta^{1}$ --- the subscript 1 marks the first iteration and is dropped. The two
+        cases $\hat b = 0$ / $\hat b \neq 0$ are set as a list. ``How do we get
+        $\hat\beta$'' heads the second step; ``repeat'' is expanded into the general
+        step $j$ (\textbf{added}). ``$\hat b \approx 0 \Rightarrow \beta^{j} \sim
+        \mathrm{NLS}(\hat\beta)$'' is typeset $\beta^{(j)} \approx \hat\beta_{\text{NLS}}$,
+        with the link to the first-order condition \textbf{added}.
+  \item Page 4: the page writes $\sqrt{n}(\hat\beta_{n} -
+        \beta_{0}) \sim N(?,?)$ and leaves it open. \textbf{Corrected:} ``$b_{n} \to$
+        OLS $N(\beta, \sigma^{2}\Sigma_{xx}^{-1})$'' lacks the factor $1/n$.
+        $\E(X_{t}(\beta)u_{t}) = 0$ is typeset at the true value, $\E(X_{t}(\beta_{0})'u_{t})
+        = 0$. ``rank $\Sigma_{xx} = K$ $\to$ identifiability condition'' kept.
+        \textbf{Added:} the answer $\sqrt{n}(\hat\beta_{n} - \beta_{0}) \overset{a}{\sim}
+        N(0, \sigma^{2}\Sigma_{XX}^{-1})$ (Davidson--MacKinnon, ch.~6), which the lecture
+        sets up but does not write; check it against Lesson 12.
+  \item Pages of the original, for tracing back: page 1 the divider; page 2 the
+        recap, the nonlinear model, $X(\beta)$, the three-parameter example, the
+        linear check and the FOC; page 3 the GNR, $\Var(\hat\beta)$ and the first
+        Gauss--Newton step, the second step and the iteration; page 4 the asymptotic
+        question with its assumptions (lower half blank).
+\end{transcriptnotes}
+
+\end{document}

@@ -1,0 +1,931 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+%% Extra packages for this problem set only (layout of question / solution boxes).
+\usepackage[most]{tcolorbox}
+\usepackage{array,booktabs}
+
+%% Midterm preparation problem set with full solutions, ECON*6140 Econometrics I
+%% (T. Stengos), Fall 2026. Questions: Fall 2023 + Fall 2024 midterms, HW1, ETM
+%% exercises, new questions within Lessons 1--8. Solutions at the end.
+
+\definecolor{qnavy}{RGB}{31,58,96}
+\definecolor{qlight}{RGB}{241,244,249}
+\definecolor{examred}{RGB}{170,40,40}
+\definecolor{hwblue}{RGB}{30,100,160}
+\definecolor{whygreen}{RGB}{233,244,236}
+\definecolor{whyline}{RGB}{60,130,80}
+
+\newtcolorbox{qbox}[2]{enhanced, breakable, colback=white, colframe=qnavy!70,
+  colbacktitle=qlight, coltitle=qnavy, boxrule=0.6pt, arc=2pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt,
+  fonttitle=\bfseries, title={#1}, after title={\hfill #2},
+  before skip=10pt, after skip=8pt}
+\newtcolorbox{solbox}[1]{enhanced, breakable, colback=white, colframe=qnavy!45,
+  colbacktitle=qnavy!85, coltitle=white, boxrule=0.5pt, arc=2pt,
+  left=6pt, right=6pt, top=4pt, bottom=6pt,
+  fonttitle=\bfseries, title={#1}, before skip=12pt, after skip=8pt}
+\newtcolorbox{why}{enhanced, breakable, colback=whygreen, colframe=whygreen,
+  borderline west={2pt}{0pt}{whyline}, boxrule=0pt, arc=0pt,
+  left=6pt, right=4pt, top=3pt, bottom=3pt, before skip=4pt, after skip=6pt}
+
+\newcommand{\examtag}[1]{\tcbox[on line, colback=examred, colframe=examred, coltext=white,
+  boxsep=1pt, left=3pt, right=3pt, top=0pt, bottom=0pt, arc=1.5pt]{\scriptsize\sffamily\bfseries EXAM #1}}
+\newcommand{\hwtag}[1]{\tcbox[on line, colback=hwblue, colframe=hwblue, coltext=white,
+  boxsep=1pt, left=3pt, right=3pt, top=0pt, bottom=0pt, arc=1.5pt]{\scriptsize\sffamily\bfseries HW1 #1}}
+\newcommand{\etmtag}[1]{\tcbox[on line, colback=gray!60, colframe=gray!60, coltext=white,
+  boxsep=1pt, left=3pt, right=3pt, top=0pt, bottom=0pt, arc=1.5pt]{\scriptsize\sffamily\bfseries ETM #1}}
+\newcommand{\newtag}{\tcbox[on line, colback=qnavy!60, colframe=qnavy!60, coltext=white,
+  boxsep=1pt, left=3pt, right=3pt, top=0pt, bottom=0pt, arc=1.5pt]{\scriptsize\sffamily\bfseries NEW}}
+\newcommand{\step}[1]{\par\smallskip\noindent\textbf{\textcolor{qnavy}{#1}}\quad\ignorespaces}
+\newcommand{\Why}{\textbf{\textcolor{whyline}{Why:}}\ }
+\newcommand{\Ans}[1]{\par\smallskip\noindent\colorbox{qlight}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.} #1}}\par}
+
+\begin{document}
+
+%% ===================================================================== cover
+\begin{center}
+  {\footnotesize\scshape Department of Economics and Finance\\
+   Lang School of Business and Economics}\\[5pt]
+  {\large\scshape ECON*6140 Econometrics I}\\[3pt]
+  {\LARGE\bfseries\color{qnavy} Midterm Preparation Problem Set}\\[4pt]
+  {\itshape Past midterms, HW1, ETM exercises and new questions --- Lessons 1--8,
+  with full solutions}
+\end{center}
+\vspace{0.3em}{\color{qnavy}\hrule height 0.8pt}\vspace{0.9em}
+
+\topic{What is in here}
+\begin{flatlist}
+  \item \textbf{Part A} --- every question from the two actual past midterms
+        (Fall 2023: Q1--Q3; Fall 2024: Q1, Q3; the 2024 paper has no Q2, weights $30+70$).
+        The numerical testing question \textbf{A1 was set word for word in both years}.
+  \item \textbf{Part B} --- HW1 derivations. \textbf{Part C} --- six ETM exercises that are
+        the building blocks of Part A. \textbf{Part D} --- ten new questions on Lessons 1--8.
+  \item \textbf{Solutions} for every question start on page~\pageref{sec:solutions}.
+        Each step comes with a green \emph{Why} line giving the intuition.
+  \item Tags: \examtag{} past midterm \quad \hwtag{} this term's assignment
+        \quad \etmtag{} textbook \quad \newtag{} new.
+        Nothing requires running a regression.
+\end{flatlist}
+
+\topic{Four-day plan}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\bfseries}l p{0.48\linewidth} p{0.3\linewidth}}
+  \toprule
+  Day & Questions & Theme \\
+  \midrule
+  1 & A2, B5, B1, C1, C2 & FWL, projections (the 70\% question) \\
+  2 & A1, D1, D2, C6, C5, D5 & $t$, $F$, Chow, restricted LS \\
+  3 & D3, D4, C3, C4, D6, A3 & BLUE, $s^{2}$, $\chi^{2}$, misspecification \\
+  4 & D7, D8, D9 (incl.\ (e)), A4, D10 & GLS, WLS, AR errors, Cochrane--Orcutt, IV; then A1 + A2 timed \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\topic{Notation}
+$P_{A} = A(A\xT A)^{-1}A\xT$ projects on to the columns of $A$, $M_{A} = I - P_{A}$;
+$P_{1}, M_{1}$ are for $X_{1}$, and $P_{X}, M_{X}$ for $X = [X_{1}\ X_{2}]$. All are
+symmetric and idempotent; $M_{A}A = O$.
+
+%% ===================================================================== A
+\clearpage
+\section{Part A --- Past midterm questions}
+
+\begin{qbox}{A1.\ Numerical testing \quad(weight 30)}{\examtag{F2024 Q1} \examtag{F2023 Q2}}
+The following estimated equation was obtained by OLS regression using quarterly
+data from 1968 to 1989 inclusive:
+\[
+  \hat y_{t} = 3.2 - 0.104X_{1t} - 3.480X_{2t} + 0.340X_{3t}.
+\]
+The standard errors are $SE(b_{0}) = 2.4$, $SE(b_{1}) = 0.05$, $SE(b_{2}) = 1.2$,
+$SE(b_{3}) = 0.15$. The explained sum of squares is $109.6$ and the residual sum
+of squares $18.48$.
+\begin{flatlist}
+  \item[(a)] Test the significance of each of the slope coefficients.
+  \item[(b)] When three seasonal dummies were added and the equation was
+        re-estimated, the explained sum of squares rose to $115.8$. Test for the
+        presence of seasonal effects.
+  \item[(c)] Two further regressions based on the original specification were
+        computed for the subperiods 1968Q1--1988Q4 and 1989Q1--1989Q4, yielding
+        a residual sum of squares of $16.12$ for the first subperiod. Test that the
+        coefficients in the two periods are the same.
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{A2.\ Deseasonalizing and FWL \quad(weight 70)}{\examtag{F2024 Q3}}
+Suppose we have the linear model $y = X\beta + u$, where $X$ is a fixed matrix of
+dimension $n \times k$, $\beta$ is $k \times 1$ and $y$, $u$ are $n \times 1$,
+with $u \sim N(0,\sigma^{2}I)$. Partition $X = [X_{1}|X_{2}]$ and
+$\beta = (\beta_{1}\ \beta_{2})\xT$, where $X_{1}$ is $n \times k_{1}$ and
+consists of seasonal dummies, and $X_{2}$ is $n \times k_{2}$ and consists of
+the variables of main interest; $k = k_{1} + k_{2}$. Hence
+$y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$. To estimate $\beta_{2}$:
+\begin{flatlist}
+  \item[(i)] regress the residuals of the regression of $y$ on $X_{1}$ on the
+        $X_{2}$ variables, to obtain $\hat\beta_{2}$;
+  \item[(ii)] regress $y$ on the residuals of the regression of $X_{2}$ on
+        $X_{1}$, to obtain $\tilde\beta_{2}$;
+  \item[(iii)] regress the residuals of $y$ on $X_{1}$ on the residuals of $X_{2}$
+        on $X_{1}$, to obtain $\bar\beta_{2}$;
+  \item[(iv)] omit the seasonal dummies altogether and estimate
+        $y = X_{2}\beta_{2} + u$ to obtain $b_{2}$.
+\end{flatlist}
+Derive the distributions of $\hat\beta_{2}$, $\tilde\beta_{2}$, $\bar\beta_{2}$
+and $b_{2}$. How do they differ, if at all? What do you observe about the
+process of deseasonalizing data in a regression? (Hint: express each regression
+in terms of projection matrices.)
+\end{qbox}
+
+\begin{qbox}{A3.\ OLS when the error has non-zero mean \quad(weight 40)}{\examtag{F2023 Q3}}
+Suppose that we have the regression model $y = X\beta + u$, where $y$ is $n \times 1$,
+$X$ is $n \times k$ and $\beta$ is $k \times 1$. Let $u \sim N(Z\gamma, \sigma^{2}I)$,
+where $Z$ is $n \times p$ and $\gamma$ is $p \times 1$. Derive the distribution of $b$,
+the OLS estimator of $\beta$, i.e.\ derive the mean and variance of the OLS estimator.
+How does this estimator differ from applying OLS to the model if
+$u \sim N(0,\sigma^{2}I)$? Compare the OLS estimators obtained under the two different
+cases regarding the distribution of $u$.
+\end{qbox}
+
+\begin{qbox}{A4.\ AR(2) errors with unknown coefficients \quad(weight 30)}{\examtag{F2023 Q1}}
+Let the model be given by $y_{t} = x_{t}\beta + u_{t}$, where
+$u_{t} = \rho_{1}u_{t-1} + \rho_{2}u_{t-2} + \varepsilon_{t}$ and
+$\varepsilon_{t} \sim N(0,\sigma_{\varepsilon}^{2})$, and $\sigma_{\varepsilon}^{2}$ and
+$\beta$ are unknown scalars, and $\rho_{1}$ and $\rho_{2}$ are also unknown. In other
+words $u_{t}$ follows an AR(2) process with unknown coefficients. Describe a way of
+estimating the unknown parameters $\beta$, $\rho_{1}$ and $\rho_{2}$. How does the
+proposed estimation method differ from the usual OLS?
+\par\smallskip
+{\small\emph{Lesson~8 covers the known-$\rho$ case; do D9 first.}}
+\end{qbox}
+
+%% ===================================================================== B
+\section{Part B --- HW1}
+
+\begin{qbox}{B1.\ Partitioned OLS by the partitioned inverse}{\hwtag{Q1}}
+For $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, use $b = (X\xT X)^{-1}X\xT y$ and
+the partitioned-inverse formula to show
+$b_{1} = (X_{1}\xT M_{2}X_{1})^{-1}X_{1}\xT M_{2}y$ and
+$b_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+\end{qbox}
+
+\begin{qbox}{B5.\ Ten regressions: which give the same $\hat\beta_{2}$ and residuals?}{\hwtag{Q5} \etmtag{2.16}}
+For $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, consider
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{ll@{\qquad}ll}
+(a) & $y = X_{2}\beta_{2} + u$ & (f) & $M_{1}y = X_{2}\beta_{2} + u$ \\
+(b) & $P_{1}y = X_{2}\beta_{2} + u$ & (g) & $M_{1}y = M_{1}X_{2}\beta_{2} + u$ \\
+(c) & $P_{1}y = P_{1}X_{2}\beta_{2} + u$ & (h) & $M_{1}y = X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$ \\
+(d) & $P_{X}y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$ & (i) & $M_{1}y = M_{1}X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$ \\
+(e) & $P_{X}y = X_{2}\beta_{2} + u$ & (j) & $P_{X}y = M_{1}X_{2}\beta_{2} + u$
+\end{tabular}
+\end{center}
+For which are the estimates of $\beta_{2}$ the same as in the original regression,
+and why? For which are the residuals the same, and why?
+\end{qbox}
+
+%% ===================================================================== C
+\section{Part C --- Textbook building blocks}
+
+\begin{qbox}{C1.\ $M_{X}M_{1} = M_{X}$}{\etmtag{2.15}}
+Show $M_{X}M_{1} = M_{1}M_{X} = M_{X}$ when $X = [X_{1}\ X_{2}]$.
+\end{qbox}
+
+\begin{qbox}{C2.\ $P_{X} - P_{1} = P_{M_{1}X_{2}}$}{\etmtag{2.19}}
+Show $P_{X} - P_{1} = P_{M_{1}X_{2}}$. Use it to show
+$y\xT(P_{X} - P_{1})y = y\xT M_{1}X_{2}(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+\end{qbox}
+
+\begin{qbox}{C3.\ Expected residual sum of squares}{\etmtag{3.14}}
+Prove $\E(\hat u\xT\hat u) = (n-k)\sigma^{2}$ using the trace.
+\end{qbox}
+
+\begin{qbox}{C4.\ Orthogonal regressors}{\etmtag{3.15}}
+For $y = X\beta + u$ and $y = X\beta + Z\gamma + u$ with $X\xT Z = O$, show the OLS
+estimates of $\beta$ from the two regressions coincide.
+\end{qbox}
+
+\begin{qbox}{C5.\ Restricted vs unrestricted estimates}{\etmtag{4.10}}
+Show that the estimate from the regression of $y$ on $X_{1}$ alone satisfies
+$\tilde\beta_{1} = \hat\beta_{1} + (X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}\hat\beta_{2}$,
+where $\hat\beta_{1}$, $\hat\beta_{2}$ are from the long regression.
+\end{qbox}
+
+\begin{qbox}{C6.\ Chow test when a subsample is short}{\etmtag{4.12} \examtag{=A1(c)}}
+When one subsample has $n_{2} \le k$ observations, show the Chow statistic becomes
+\[
+  F = \frac{(RSSR - SSR_{1})/n_{2}}{SSR_{1}/(n_{1} - k)}
+\]
+and that numerator and denominator really have these degrees of freedom.
+\end{qbox}
+
+%% ===================================================================== D
+\section{Part D --- New questions on Lessons 1--8}
+
+\begin{qbox}{D1.\ Numerical: $t$, overall $F$, joint $F$}{\newtag}
+A regression of $y$ on a constant and $x_{2}, x_{3}, x_{4}$ with $n = 50$ gives
+$b_{2} = 0.5\ (0.2)$, $b_{3} = -1.2\ (0.8)$, $b_{4} = 0.9\ (0.3)$ (standard errors in
+parentheses), $ESS = 80$, $RSS = 40$.
+\begin{flatlist}
+  \item[(a)] Test each slope at 5\%. Compute $R^{2}$ and $\bar R^{2}$.
+  \item[(b)] Test $H_{0}: \beta_{2} = \beta_{3} = \beta_{4} = 0$.
+  \item[(c)] Two more regressors are added and $RSS$ falls to $36$. Test their joint significance.
+  \item[(d)] Explain how you would test $\beta_{2} + \beta_{4} = 1$ with (i) a $t$ test and
+        (ii) a restricted regression. What is missing from the output for (i)?
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D2.\ Chow test with enough observations}{\newtag}
+A model with $k = 3$ is estimated on $n = 50$ observations, $RSS = 60$. On the
+first $n_{1} = 30$ observations $SSR_{1} = 20$; on the last $n_{2} = 20$,
+$SSR_{2} = 25$. Test parameter stability. State the assumption on the error
+variances the Chow test needs. How does the test change if $n_{2} = 2$?
+\end{qbox}
+
+\begin{qbox}{D3.\ Gauss--Markov}{\newtag}
+In $y = X\beta + u$, $\E(u) = 0$, $\Var(u) = \sigma^{2}I$, $X$ fixed with full rank,
+let $b^{*} = Cy$ be any linear unbiased estimator. Write $C = (X\xT X)^{-1}X\xT + A$.
+Show unbiasedness requires $AX = O$ and that $\Var(b^{*}) = \Var(b) + \sigma^{2}AA\xT$.
+Conclude that $w\xT b$ is BLUE for $w\xT\beta$ for any $w$.
+\end{qbox}
+
+\begin{qbox}{D4.\ Quadratic forms, $s^{2}$ and independence}{\newtag}
+\begin{flatlist}
+  \item[(a)] Using the spectral decomposition, show that if $z \sim N(0,I_{n})$ and $A$ is
+        symmetric idempotent of rank $r$, then $z\xT Az \sim \chi^{2}(r)$.
+  \item[(b)] Show $(n-k)s^{2}/\sigma^{2} = u\xT M_{X}u/\sigma^{2} \sim \chi^{2}(n-k)$.
+  \item[(c)] Show $b$ and $\hat u$ are independent, hence $b$ and $s^{2}$ are independent.
+  \item[(d)] Conclude $(b_{j} - \beta_{j})/SE(b_{j}) \sim t(n-k)$.
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D5.\ The $F$ test and restricted least squares}{\newtag}
+For $H_{0}: R\beta = r$ ($q$ restrictions):
+\begin{flatlist}
+  \item[(a)] Show $(Rb - r)\xT[\sigma^{2}R(X\xT X)^{-1}R\xT]^{-1}(Rb - r) \sim \chi^{2}(q)$ under $H_{0}$.
+  \item[(b)] Minimize $(y - X\beta)\xT(y - X\beta)$ subject to $R\beta = r$. Show
+        $b_{*} = b - (X\xT X)^{-1}R\xT[R(X\xT X)^{-1}R\xT]^{-1}(Rb - r)$ and find $\lambda_{*}$.
+  \item[(c)] Show $e_{*}\xT e_{*} - e\xT e = (Rb - r)\xT[R(X\xT X)^{-1}R\xT]^{-1}(Rb - r)$,
+        so $F = \dfrac{(RSSR - USSR)/q}{USSR/(n-k)} \sim F(q, n-k)$.
+  \item[(d)] Find $\E(b_{*})$ and $\Var(b_{*})$ when $H_{0}$ is true and when it is false.
+        Show $\Var(b) - \Var(b_{*})$ is p.s.d.
+  \item[(e)] Show that with $\sigma^{2}$ known the Wald statistic (based on $Rb - r$) and the
+        LM statistic (based on $\lambda_{*}$) are identical.
+  \item[(f)] For $R = [O\ \ I_{k_{2}}]$, $r = 0$, show the numerator is
+        $y\xT M_{1}X_{2}(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D6.\ Omitted and irrelevant variables}{\newtag}
+True model $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, $u \sim N(0,\sigma^{2}I)$.
+\begin{flatlist}
+  \item[(a)] Estimate $y = X_{1}\beta_{1} + u$. Derive the distribution of $\tilde\beta_{1}$.
+        When is it unbiased?
+  \item[(b)] Show $\Var(\hat\beta_{1}) - \Var(\tilde\beta_{1})$ is p.s.d.
+  \item[(c)] Compare $MSE(\tilde\beta_{1})$ with $MSE(\hat\beta_{1})$. When does omitting $X_{2}$ win?
+  \item[(d)] Now the truth is $y = X_{1}\beta_{1} + u$ but you include $X_{2}$.
+        Show the estimator is unbiased with larger variance, and $s^{2}$ is still unbiased.
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D7.\ GLS}{\newtag}
+$y = X\beta + u$, $\E(u) = 0$, $\Var(u) = \sigma^{2}\Omega$, $\Omega$ known p.d.
+\begin{flatlist}
+  \item[(a)] Show OLS is still unbiased; find its true variance. Why are the usual OLS
+        standard errors wrong?
+  \item[(b)] Let $\Omega^{-1} = T\xT T$. Transform the model by $T$, show the transformed
+        errors are spherical, and derive $\hat\beta_{GLS}$ and its variance.
+  \item[(c)] Show $\Var(b_{OLS}) - \Var(\hat\beta_{GLS})$ is p.s.d.
+  \item[(d)] When does OLS equal GLS?
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D8.\ Heteroskedasticity and WLS}{\newtag}
+$y_{i} = x_{i}\xT\beta + u_{i}$, $\Var(u_{i}) = \sigma^{2}z_{i}^{2}$, $z_{i}$ observed.
+\begin{flatlist}
+  \item[(a)] Write $\Omega$ and $T$. Show WLS = OLS of $y_{i}/z_{i}$ on $x_{i}/z_{i}$.
+  \item[(b)] If $x_{i} = (1, z_{i})\xT$, write the transformed regression. What happens to the intercept?
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D9.\ AR(1) errors}{\newtag}
+$y_{t} = x_{t}\xT\beta + u_{t}$, $u_{t} = \rho u_{t-1} + \varepsilon_{t}$,
+$\varepsilon_{t} \sim IID(0,\sigma_{\varepsilon}^{2})$, $|\rho| < 1$.
+\begin{flatlist}
+  \item[(a)] Using the lag operator, write $u_{t}$ as an MA($\infty$). Derive $\Var(u_{t})$,
+        $\Cov(u_{t},u_{t-s})$ and $\Omega$.
+  \item[(b)] With $\rho$ known: give the quasi-differenced model for $t = 2,\dots,n$ and the
+        treatment of the first observation.
+  \item[(c)] Write $T$ (Prais--Winsten) for $n = 3$ and verify $T\xT T = (1-\rho^{2})\Omega^{-1}$.
+        What does dropping the first row lose?
+  \item[(d)] Repeat (b) for AR(2) with $\rho_{1}$, $\rho_{2}$ known.
+  \item[(e)] Now $\rho$ is \emph{unknown}. Write the model in two ways, one linear in $\beta$
+        given $\rho$ and one linear in $\rho$ given $\beta$, and describe the Cochrane--Orcutt
+        iterative procedure, including the starting value and the stopping rule. Why is OLS a
+        legitimate starting point?
+\end{flatlist}
+\end{qbox}
+
+\begin{qbox}{D10.\ Instrumental variables and 2SLS}{\newtag}
+$y = X\beta + u$, $X$ is $n \times k$, $\E(u) = 0$, $\Var(u) = \sigma^{2}I$, but $\E(X\xT u) \neq 0$.
+Instruments $W$ ($n \times l$, $l \ge k$) satisfy $\E(W\xT u) = 0$.
+\begin{flatlist}
+  \item[(a)] Write $b - \beta$ for OLS and explain why OLS is biased here.
+  \item[(b)] For $l = k$, derive $b_{IV}$ from the sample moment condition $W\xT(y - X\beta) = 0$.
+  \item[(c)] For $l > k$, derive the 2SLS estimator (i) in two OLS stages and (ii) by minimizing
+        $(y - X\beta)\xT P_{W}(y - X\beta)$. Show the two coincide.
+  \item[(d)] Show that 2SLS reduces to $b_{IV}$ when $l = k$.
+\end{flatlist}
+\end{qbox}
+
+\topic{Removed as beyond Lessons 1--8 (revisit before the final)}
+{\small Box--Cox model by maximum likelihood; GNR and LM tests for AR errors; ETM 3.16,
+3.17, 4.23, 7.2, 7.5--7.7, 8.1. A longer version of this set is
+\texttt{midterm\_prep\_full.tex}.}
+
+%% ===================================================================== SOLUTIONS
+\clearpage
+\section{Solutions}\label{sec:solutions}
+
+\begin{solbox}{Solution A1 --- Numerical testing}
+\step{Set-up.} Quarterly 1968--1989 is $22 \times 4$, so $n = 88$. The regression has a
+constant and three slopes, so $k = 4$ and $n - k = 84$. Also
+$TSS = ESS + RSS = 109.6 + 18.48 = 128.08$.
+\step{Matrix form.} Let $\iota$ be the column of ones and
+$M_{\iota} = I - \iota(\iota\xT\iota)^{-1}\iota\xT$ (deviations from the mean). Then
+\[
+  TSS = y\xT M_{\iota}y, \qquad ESS = y\xT(P_{X} - P_{\iota})y, \qquad RSS = y\xT M_{X}y,
+\]
+and $y\xT M_{\iota}y = y\xT(P_{X} - P_{\iota})y + y\xT M_{X}y$, because
+$M_{\iota} = (P_{X} - P_{\iota}) + M_{X}$ when $\iota \in S(X)$ (C1/C2 with $X_{1} = \iota$:
+$P_{X}P_{\iota} = P_{\iota}$, and the two pieces are orthogonal projections).
+\begin{why}\Why this is Lesson 3's $y\xT y = y\xT P_{X}y + y\xT M_{X}y$ after taking out the
+mean. $TSS = y\xT M_{\iota}y$ involves no $X$ at all, so it is the same for every regression
+on the same $y$ \emph{that includes a constant} (both of A1's do). That turns the ``new ESS''
+of part (b) into a new RSS.\end{why}
+
+\step{(a)} $t_{j} = b_{j}/SE(b_{j})$, critical value $t_{0.025}(84) \approx 1.99$:
+\[
+  t_{1} = \frac{-0.104}{0.05} = -2.08, \qquad
+  t_{2} = \frac{-3.480}{1.2} = -2.90, \qquad
+  t_{3} = \frac{0.340}{0.15} = 2.27 .
+\]
+All three exceed $1.99$ in absolute value: each slope is significant at 5\%.
+
+\step{(b) This is Lesson 6, ``testing a subset of coefficients''.} Write the model with
+dummies as $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, $X_{1}$ = the three seasonal dummies,
+$X_{2}$ = constant and $X_{1t}, X_{2t}, X_{3t}$. ``No seasonal effects'' is $H_{0}: \beta_{1} = 0$,
+$q = k_{1} = 3$, and Lesson 6 gives $F = \frac{(RSSR - USSR)/k_{1}}{USSR/(n-K)}$.
+\par\noindent Unrestricted model = with the three dummies:
+$USSR = 128.08 - 115.8 = 12.28$, with $n - k = 88 - 7 = 81$ degrees of freedom.
+Restricted model = without dummies: $RSSR = 18.48$. $q = 3$ restrictions.
+\[
+  F = \frac{(RSSR - USSR)/q}{USSR/(n-k)} = \frac{(18.48 - 12.28)/3}{12.28/81}
+    = \frac{2.067}{0.1516} = 13.63 > F_{0.05}(3,81) \approx 2.72 .
+\]
+Reject: seasonal effects are present.
+\begin{why}\Why the numerator is the drop in RSS bought by the three dummies, per
+dummy; the denominator is the noise variance per degree of freedom. A drop of $2.07$
+per dummy against noise of $0.15$ is far too big to be chance.\end{why}
+
+\step{(c) Chow test.} Subperiod 1 (1968Q1--1988Q4) has $n_{1} = 84$; subperiod 2
+(1989) has $n_{2} = 4 = k$. With four observations and four parameters the second
+regression fits exactly, so $SSR_{2} = 0$ and $USSR = SSR_{1} + SSR_{2} = 16.12$. By C6
+the statistic has $n_{2} = 4$ and $n_{1} - k = 80$ degrees of freedom:
+\[
+  F = \frac{(18.48 - 16.12)/4}{16.12/80} = \frac{0.590}{0.2015} = 2.93,
+  \qquad F_{0.05}(4,80) \approx 2.49,\quad F_{0.01}(4,80) \approx 3.56 .
+\]
+\Ans{Reject equal coefficients at 5\%; do not reject at 1\%.}
+\begin{why}\Why with $n_{2} \le k$ the second period cannot estimate its own $\beta$;
+the test really asks ``do the four 1989 observations fit the line estimated on
+1968--1988?'' Each of those four observations is one restriction, hence $q = n_{2}$.
+\emph{Note:} the handwritten solution writes $TSS = 126.08$ and compares $2.93$ with
+$3$; both are slips.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution A2 --- Deseasonalizing and FWL}
+\step{Tools.} $M_{1}$ is symmetric, idempotent and $M_{1}X_{1} = O$. Hence
+\[
+  M_{1}y = M_{1}X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + M_{1}u = M_{1}X_{2}\beta_{2} + M_{1}u .
+\]
+\begin{why}\Why ``the residuals from regressing $v$ on $X_{1}$'' is $M_{1}v$:
+deseasonalizing a variable means applying $M_{1}$. Applying it to $y$ wipes out the
+seasonal part $X_{1}\beta_{1}$ exactly.\end{why}
+
+\step{(i) $M_{1}y$ on raw $X_{2}$.}
+\begin{align*}
+  \hat\beta_{2} &= (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}y
+   = (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}\,\beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}u,\\
+  \hat\beta_{2} &\sim N\!\Big((X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}\,\beta_{2},\;
+   \sigma^{2}(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}(X_{2}\xT X_{2})^{-1}\Big).
+\end{align*}
+(Variance: $\Var(Bu) = \sigma^{2}BB\xT$ with $B = (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}$, and $M_{1}M_{1}\xT = M_{1}$.)
+Since $X_{2}\xT M_{1}X_{2} = X_{2}\xT X_{2} - X_{2}\xT P_{1}X_{2}$, the mean is
+$\beta_{2} - (X_{2}\xT X_{2})^{-1}X_{2}\xT P_{1}X_{2}\,\beta_{2}$: \textbf{biased} unless $X_{1}\xT X_{2} = O$.
+\begin{why}\Why $y$ has lost its seasonal swings but $X_{2}$ still has them. The seasonal
+part of $X_{2}$, $P_{1}X_{2}$, no longer moves with $y$, so it acts like noise in the
+regressor and pulls the estimate towards zero. The bias is exactly the share
+$X_{2}\xT P_{1}X_{2}$ of $X_{2}$'s variation that is seasonal.\end{why}
+
+\step{(ii) raw $y$ on $M_{1}X_{2}$.} Using $(M_{1}X_{2})\xT M_{1}X_{2} = X_{2}\xT M_{1}X_{2}$
+and $(M_{1}X_{2})\xT y = X_{2}\xT M_{1}y$:
+\[
+  \tilde\beta_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y
+  = \beta_{2} + (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}u
+  \sim N\big(\beta_{2},\ \sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}\big).
+\]
+\begin{why}\Why once the regressor is deseasonalized it is orthogonal to the seasonal
+part of $y$, so $X_{1}\beta_{1}$ in $y$ drops out of $X_{2}\xT M_{1}y$ automatically. Only
+the regressor needs cleaning. (But the residuals $y - M_{1}X_{2}\tilde\beta_{2}$ still
+contain $P_{1}y$, so the reported $s^{2}$ and standard errors are wrong.)\end{why}
+
+\step{(iii) $M_{1}y$ on $M_{1}X_{2}$.} $M_{1}$ is idempotent, so
+\[
+  \bar\beta_{2} = (X_{2}\xT M_{1}M_{1}X_{2})^{-1}X_{2}\xT M_{1}M_{1}y
+  = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y = \tilde\beta_{2}
+  \sim N\big(\beta_{2},\ \sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}\big).
+\]
+This is the FWL estimator, i.e.\ the same as the $\beta_{2}$-block of OLS with the
+dummies included (B1); its residuals are $M_{X}y$, the full-regression residuals.
+
+\step{(iv) omit the dummies.}
+\begin{align*}
+  b_{2} &= (X_{2}\xT X_{2})^{-1}X_{2}\xT y
+   = \beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT X_{1}\beta_{1} + (X_{2}\xT X_{2})^{-1}X_{2}\xT u,\\
+  b_{2} &\sim N\big(\beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT X_{1}\beta_{1},\
+   \sigma^{2}(X_{2}\xT X_{2})^{-1}\big).
+\end{align*}
+Omitted-variable bias: unbiased only if $X_{2}\xT X_{1}\beta_{1} = 0$.
+
+\step{Comparison.}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lll}
+\toprule
+Estimator & Mean & Variance \\
+\midrule
+(i) $\hat\beta_{2}$ & biased (towards 0) & $\sigma^{2}(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}(X_{2}\xT X_{2})^{-1}$ \\
+(ii) $\tilde\beta_{2}$ & $\beta_{2}$ & $\sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}$ \\
+(iii) $\bar\beta_{2}$ & $\beta_{2}$ & $\sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}$ \\
+(iv) $b_{2}$ & biased (omitted $X_{1}\beta_{1}$) & $\sigma^{2}(X_{2}\xT X_{2})^{-1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+(ii) and (iii) have the same distribution as OLS with the dummies included. (i) and
+(iv) have \emph{smaller} variance (since $X_{2}\xT X_{2} \ge X_{2}\xT M_{1}X_{2}$) but are
+biased. All four coincide when $X_{1}\xT X_{2} = O$ (regressors with no seasonal pattern).
+\Ans{Deseasonalizing is harmless only if it is done to the regressors $X_{2}$
+(with or without $y$), which is equivalent to including the seasonal dummies.
+Deseasonalizing only $y$, or ignoring seasonality, gives biased estimates of $\beta_{2}$.}
+\end{solbox}
+
+\begin{solbox}{Solution A3 --- OLS with $u \sim N(Z\gamma,\sigma^{2}I)$}
+\step{Write the error as mean + noise.} $u = Z\gamma + v$ with $v \sim N(0,\sigma^{2}I)$.
+Then $y = X\beta + Z\gamma + v$: the model has an omitted regressor $Z$.
+
+\step{Mean.} $b = (X\xT X)^{-1}X\xT y = \beta + (X\xT X)^{-1}X\xT u$, so
+\[
+  \E(b) = \beta + (X\xT X)^{-1}X\xT\E(u) = \beta + (X\xT X)^{-1}X\xT Z\gamma .
+\]
+\step{Variance.} $b - \E(b) = (X\xT X)^{-1}X\xT(u - Z\gamma) = (X\xT X)^{-1}X\xT v$, so
+\[
+  \Var(b) = (X\xT X)^{-1}X\xT\,\sigma^{2}I\,X(X\xT X)^{-1} = \sigma^{2}(X\xT X)^{-1}.
+\]
+\Ans{$b \sim N\big(\beta + (X\xT X)^{-1}X\xT Z\gamma,\ \sigma^{2}(X\xT X)^{-1}\big)$. With
+$u \sim N(0,\sigma^{2}I)$: $b \sim N(\beta, \sigma^{2}(X\xT X)^{-1})$. Same variance, the
+mean is shifted by the bias $(X\xT X)^{-1}X\xT Z\gamma$.}
+\begin{why}\Why the bias is the coefficient vector from regressing $Z\gamma$ on $X$:
+OLS credits to $X$ whatever part of the error's mean looks like $X$. The variance does
+not change because the shift is a constant. $b$ is unbiased iff $X\xT Z\gamma = 0$ (e.g.\
+$\gamma = 0$ or $Z$ orthogonal to $X$). If $Z = \iota$ (error with constant mean) and
+$X$ has a constant, only the intercept is biased.\end{why}
+\step{Further differences.} $MSE(b) = \sigma^{2}(X\xT X)^{-1} + \delta\delta\xT$ with
+$\delta = (X\xT X)^{-1}X\xT Z\gamma$, larger than in the zero-mean case. $s^{2}$ is biased
+upwards: $\E(e\xT e) = \E(u\xT M_{X}u) = \sigma^{2}(n-k) + \gamma\xT Z\xT M_{X}Z\gamma$, so
+the usual $t$ and $F$ tests are invalid.
+\end{solbox}
+
+\begin{solbox}{Solution A4 --- AR(2) errors, unknown $\rho_{1}, \rho_{2}$}
+\step{1. If the $\rho$'s were known (Lesson 8).} Apply $1 - \rho_{1}L - \rho_{2}L^{2}$:
+\[
+  \underbrace{y_{t} - \rho_{1}y_{t-1} - \rho_{2}y_{t-2}}_{y_{*t}}
+  = \underbrace{(x_{t} - \rho_{1}x_{t-1} - \rho_{2}x_{t-2})}_{x_{*t}}\beta + \varepsilon_{t},
+  \qquad t = 3,\dots,n .
+\]
+The new error $\varepsilon_{t}$ is iid $N(0,\sigma_{\varepsilon}^{2})$, so OLS of $y_{*t}$ on $x_{*t}$
+is (approximately, dropping two observations) GLS: BLUE with correct standard errors.
+
+\step{2. Estimate the $\rho$'s (feasible GLS, Cochrane--Orcutt type).}
+\begin{flatnum}
+  \item OLS of $y_{t}$ on $x_{t}$: $b$ is unbiased (since $\E(u) = 0$), so the residuals
+        $\hat u_{t} = y_{t} - x_{t}b$ estimate $u_{t}$.
+  \item OLS of $\hat u_{t}$ on $\hat u_{t-1}$, $\hat u_{t-2}$ (no constant) gives $\hat\rho_{1}$, $\hat\rho_{2}$.
+  \item Quasi-difference with $\hat\rho_{1}, \hat\rho_{2}$ and run OLS of $y_{*t}$ on $x_{*t}$: new $\hat\beta$.
+  \item New residuals $\hat u_{t} = y_{t} - x_{t}\hat\beta$; repeat 2--4 until $\hat\beta, \hat\rho_{1}, \hat\rho_{2}$
+        stop changing. Then $\hat\sigma_{\varepsilon}^{2} = \sum_{t}\hat\varepsilon_{t}^{2}/(n - 5)$.
+\end{flatnum}
+Equivalently, minimize $\sum_{t=3}^{n}\big[y_{t} - \rho_{1}y_{t-1} - \rho_{2}y_{t-2}
+ - (x_{t} - \rho_{1}x_{t-1} - \rho_{2}x_{t-2})\beta\big]^{2}$ jointly over $(\beta,\rho_{1},\rho_{2})$.
+\begin{why}\Why the transformation needs the $\rho$'s and the $\rho$'s need the errors,
+which need $\beta$. OLS breaks the circle: it is unbiased, so its residuals are good
+enough to estimate the $\rho$'s; each pass improves the other.\end{why}
+\step{3. Difference from OLS.}
+\begin{flatlist}
+  \item OLS ignores the correlation: still unbiased, but not efficient, and its variance is
+        $\sigma^{2}(X\xT X)^{-1}X\xT\Omega X(X\xT X)^{-1}$, not $\sigma^{2}(X\xT X)^{-1}$: reported
+        standard errors and tests are wrong.
+  \item The proposed method uses $\Omega$ (through $\hat\rho$): it is GLS with estimated $\Omega$,
+        efficient in large samples with valid standard errors.
+  \item The criterion is nonlinear in the parameters (products $\rho_{j}\beta$), so it needs
+        iteration rather than one closed-form formula; two observations are lost.
+\end{flatlist}
+\end{solbox}
+
+\begin{solbox}{Solution B1 --- Partitioned inverse}
+\step{Blocks.} $X\xT X = \begin{bmatrix} A & B \\ B\xT & D\end{bmatrix}$ with
+$A = X_{1}\xT X_{1}$, $B = X_{1}\xT X_{2}$, $D = X_{2}\xT X_{2}$; $X\xT y = \begin{bmatrix} X_{1}\xT y \\ X_{2}\xT y\end{bmatrix}$.
+
+\step{Partitioned inverse.} With $E = D - B\xT A^{-1}B$,
+\[
+  (X\xT X)^{-1} = \begin{bmatrix} A^{-1} + A^{-1}BE^{-1}B\xT A^{-1} & -A^{-1}BE^{-1} \\
+  -E^{-1}B\xT A^{-1} & E^{-1}\end{bmatrix},
+  \qquad E = X_{2}\xT X_{2} - X_{2}\xT P_{1}X_{2} = X_{2}\xT M_{1}X_{2}.
+\]
+\step{Second block row.}
+\[
+  b_{2} = -E^{-1}B\xT A^{-1}X_{1}\xT y + E^{-1}X_{2}\xT y
+  = E^{-1}X_{2}\xT\big(I - X_{1}(X_{1}\xT X_{1})^{-1}X_{1}\xT\big)y
+  = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y .
+\]
+By symmetry (swap the roles of the blocks), $b_{1} = (X_{1}\xT M_{2}X_{1})^{-1}X_{1}\xT M_{2}y$.
+\begin{why}\Why the Schur complement $E$ is ``the variation of $X_{2}$ left over after
+$X_{1}$ has explained what it can''. The coefficient on $X_{2}$ is identified only from
+that leftover variation --- the FWL theorem in matrix-inverse form.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution B5 --- Ten regressions}
+Original: $\hat\beta_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$, residuals $M_{X}y$.
+Useful facts: $P_{X}X_{j} = X_{j}$, $P_{X}M_{1}X_{2} = M_{1}X_{2}$ (it lies in $S(X)$), $M_{1}X_{1} = O$,
+$X_{1}\xT M_{1}X_{2} = O$.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\small
+\begin{tabular}{l p{0.47\linewidth} c c}
+\toprule
+ & $\beta_{2}$-estimate & same $\hat\beta_{2}$? & same residuals? \\
+\midrule
+(a) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT y$ & no & no \\
+(b) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT P_{1}y$ & no & no \\
+(c) & $(X_{2}\xT P_{1}X_{2})^{-1}X_{2}\xT P_{1}y$ (not identified if $k_{2} > k_{1}$) & no & no \\
+(d) & $(X\xT X)^{-1}X\xT P_{X}y = (X\xT X)^{-1}X\xT y$ & \textbf{yes} & no (residuals $= 0$) \\
+(e) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT P_{X}y = (X_{2}\xT X_{2})^{-1}X_{2}\xT y$ & no & no \\
+(f) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}y$ & no & no \\
+(g) & $(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$ (FWL) & \textbf{yes} & \textbf{yes} \\
+(h) & regressors $X_{1} \perp M_{1}X_{2}$: coefficient on $X_{1}$ is $0$, on $M_{1}X_{2}$ is FWL & \textbf{yes} & \textbf{yes} \\
+(i) & $M_{1}X_{1} = O$: $\beta_{1}$ not identified; $\beta_{2}$-block is FWL & \textbf{yes} & \textbf{yes} \\
+(j) & $(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}P_{X}y = $ FWL & \textbf{yes} & no (residuals $P_{1}y$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\step{Residuals.} In (g)--(i): $M_{1}y - M_{1}X_{2}\hat\beta_{2} = M_{1}y - P_{M_{1}X_{2}}y
+= (M_{1} - P_{X} + P_{1})y = M_{X}y$ by C2. In (j): $P_{X}y - (P_{X} - P_{1})y = P_{1}y$.
+\begin{why}\Why to recover $\hat\beta_{2}$ you must use the part of $X_{2}$ orthogonal to
+$X_{1}$ (that is $M_{1}X_{2}$) as the regressor; whether $y$ is cleaned or projected on $S(X)$
+does not matter, because $M_{1}X_{2}$ is orthogonal to everything you removed. To recover
+the residuals, the regressand must also be $M_{1}y$.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C1 --- $M_{X}M_{1} = M_{X}$}
+\step{Key fact.} $X_{1}$ is part of $X$, so $P_{X}X_{1} = X_{1}$ and therefore
+$P_{X}P_{1} = P_{X}X_{1}(X_{1}\xT X_{1})^{-1}X_{1}\xT = P_{1}$.
+\step{Expand.} $M_{X}M_{1} = (I - P_{X})(I - P_{1}) = I - P_{1} - P_{X} + P_{X}P_{1} = I - P_{X} = M_{X}$.
+Transpose: $M_{1}M_{X} = (M_{X}M_{1})\xT = M_{X}$.
+\begin{why}\Why removing the $X_{1}$-part first and then everything in $X$ is the same as
+removing everything in $X$: $S(X_{1}) \subset S(X)$.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C2 --- $P_{X} - P_{1} = P_{M_{1}X_{2}}$}
+\step{Split $S(X)$ into two orthogonal pieces.} Any $Xc = X_{1}c_{1} + X_{2}c_{2}
+= X_{1}\big(c_{1} + (X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}c_{2}\big) + M_{1}X_{2}c_{2}$, and
+$X_{1}\xT M_{1}X_{2} = O$. So $S(X) = S(X_{1}) \oplus S(M_{1}X_{2})$ with the two pieces orthogonal.
+\step{Projection on an orthogonal sum is the sum of projections.} $P_{1}P_{M_{1}X_{2}} = O$
+(because $X_{1}\xT M_{1}X_{2} = O$), so $P_{1} + P_{M_{1}X_{2}}$ is symmetric and idempotent,
+leaves every vector of $S(X)$ unchanged and kills $S(X)^{\perp}$: it equals $P_{X}$.
+\step{Quadratic form.}
+$y\xT(P_{X} - P_{1})y = y\xT P_{M_{1}X_{2}}y = y\xT M_{1}X_{2}(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+\begin{why}\Why what $X$ can explain beyond $X_{1}$ is exactly what the ``new'' part of
+$X_{2}$, $M_{1}X_{2}$, can explain. And since $y\xT M_{1}y - y\xT M_{X}y = y\xT(P_{X} - P_{1})y$,
+this is $RSSR - USSR$ for $H_{0}: \beta_{2} = 0$ --- the $F$ numerator.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C3 --- $\E(\hat u\xT\hat u) = (n-k)\sigma^{2}$}
+\step{Residuals in terms of errors.} $\hat u = M_{X}y = M_{X}(X\beta + u) = M_{X}u$, so
+$\hat u\xT\hat u = u\xT M_{X}u$.
+\step{Trace trick.} A scalar equals its trace and $\mathrm{tr}(AB) = \mathrm{tr}(BA)$:
+\[
+  \E(u\xT M_{X}u) = \E\,\mathrm{tr}(M_{X}uu\xT) = \mathrm{tr}\big(M_{X}\E(uu\xT)\big)
+  = \sigma^{2}\mathrm{tr}(M_{X}).
+\]
+\step{Trace of $M_{X}$.} $\mathrm{tr}(P_{X}) = \mathrm{tr}\big((X\xT X)^{-1}X\xT X\big) = \mathrm{tr}(I_{k}) = k$,
+so $\mathrm{tr}(M_{X}) = n - k$.
+\begin{why}\Why the $n$-dimensional error loses $k$ dimensions to the fit: $P_{X}$ soaks
+up the part of $u$ lying in $S(X)$, leaving $n-k$ dimensions of noise. Hence divide by
+$n-k$ to get an unbiased $s^{2}$.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C4 --- Orthogonal regressors}
+By FWL, the long-regression estimate is $\hat\beta = (X\xT M_{Z}X)^{-1}X\xT M_{Z}y$. If
+$X\xT Z = O$ then $M_{Z}X = X - Z(Z\xT Z)^{-1}Z\xT X = X$, so $\hat\beta = (X\xT X)^{-1}X\xT y$,
+the short-regression estimate.
+\begin{why}\Why residualizing $X$ on $Z$ changes nothing when $X$ has nothing in common
+with $Z$. Omitting an orthogonal variable causes no bias (compare A2(iv) when the
+regressors have no seasonal pattern).\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C5 --- $\tilde\beta_{1} = \hat\beta_{1} + (X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}\hat\beta_{2}$}
+\step{First block of the normal equations of the long regression.}
+$X_{1}\xT X_{1}\hat\beta_{1} + X_{1}\xT X_{2}\hat\beta_{2} = X_{1}\xT y$.
+\step{Multiply by $(X_{1}\xT X_{1})^{-1}$.}
+$\hat\beta_{1} + (X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}\hat\beta_{2} = (X_{1}\xT X_{1})^{-1}X_{1}\xT y = \tilde\beta_{1}$.
+\begin{why}\Why when $X_{2}$ is dropped, its effect $X_{2}\hat\beta_{2}$ is handed to $X_{1}$
+in proportion to how $X_{2}$ projects on $X_{1}$ (the auxiliary coefficients
+$(X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}$). Take expectations and you get the omitted-variable bias.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution C6 --- Chow test with $n_{2} \le k$}
+\step{Rewrite the unrestricted model with dummies.} Add one dummy for each observation of
+subsample~2: $y = X\beta + D\delta + u$ with $D = \begin{bmatrix} O \\ I_{n_{2}}\end{bmatrix}$. Each
+dummy fits its observation exactly, so this regression's RSS equals the RSS of subsample 1
+alone, $SSR_{1}$.
+\step{Count.} Restricted model: $\delta = 0$ (one common line), RSS $= RSSR$. Number of
+restrictions $q = n_{2}$. Unrestricted parameters $k + n_{2}$, so denominator df
+$= n - k - n_{2} = n_{1} - k$:
+\[
+  F = \frac{(RSSR - SSR_{1})/n_{2}}{SSR_{1}/(n_{1} - k)} \sim F(n_{2},\, n_{1} - k).
+\]
+\begin{why}\Why with $n_{2} \le k$ observations a separate regression for subsample~2 fits
+perfectly ($SSR_{2} = 0$) but cannot identify all $k$ coefficients; only $n_{2}$ pieces of
+information are available, so only $n_{2}$ restrictions are being tested. This is the
+``predictive failure'' form of the Chow test.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D1 --- Numerical $t$ and $F$}
+\step{(a)} $n - k = 46$, $t_{0.025}(46) \approx 2.01$: $t_{2} = 2.5$ (significant), $t_{3} = -1.5$ (not),
+$t_{4} = 3.0$ (significant). $TSS = 120$, $R^{2} = 80/120 = 0.667$,
+$\bar R^{2} = 1 - \dfrac{RSS/(n-k)}{TSS/(n-1)} = 1 - \dfrac{40/46}{120/49} = 0.645$.
+\step{(b)} $F = \dfrac{ESS/3}{RSS/46} = \dfrac{26.67}{0.870} = 30.7 > F_{0.05}(3,46) \approx 2.81$: reject.
+\step{(c)} $F = \dfrac{(40 - 36)/2}{36/44} = 2.44 < F_{0.05}(2,44) \approx 3.21$: do not reject.
+\step{(d)} (i) $t = \dfrac{b_{2} + b_{4} - 1}{\sqrt{\Var(b_{2}) + \Var(b_{4}) + 2\Cov(b_{2},b_{4})}}
+= \dfrac{0.4}{\sqrt{0.04 + 0.09 + 2\Cov(b_{2},b_{4})}}$; $\Cov(b_{2},b_{4})$ is not reported.
+(ii) Substitute $\beta_{4} = 1 - \beta_{2}$: regress $y - x_{4}$ on a constant, $x_{2} - x_{4}$
+and $x_{3}$; then $F = \dfrac{(RSSR - 40)/1}{40/46} \sim F(1,46)$, which equals $t^{2}$ from (i).
+\begin{why}\Why a linear combination has variance $w\xT\Var(b)w$, which needs the
+off-diagonal term. Reparametrizing turns the restriction into an ordinary exclusion,
+so the RSS comparison does the work instead.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D2 --- Chow test}
+$USSR = 20 + 25 = 45$ with $n - 2k = 44$ df; $q = k = 3$:
+\[
+  F = \frac{(60 - 45)/3}{45/44} = \frac{5}{1.023} = 4.89 > F_{0.05}(3,44) \approx 2.82 .
+\]
+\Ans{Reject stability. The test assumes the same error variance $\sigma^{2}$ in both subsamples
+(and normal, independent errors). If $n_{2} = 2 < k$: $F = \dfrac{(RSSR - SSR_{1})/2}{SSR_{1}/(n_{1}-3)}$
+with $n_{1} = 48$, i.e.\ $F(2, 45)$ (C6).}
+\end{solbox}
+
+\begin{solbox}{Solution D3 --- Gauss--Markov}
+\step{Unbiasedness.} $\E(b^{*}) = CX\beta = \beta + AX\beta$ for all $\beta$ $\iff$ $AX = O$.
+\step{Variance.} $b^{*} - \beta = Cu$, so $\Var(b^{*}) = \sigma^{2}CC\xT$ and
+\[
+  CC\xT = \big[(X\xT X)^{-1}X\xT + A\big]\big[X(X\xT X)^{-1} + A\xT\big]
+  = (X\xT X)^{-1} + \underbrace{(X\xT X)^{-1}(AX)\xT + AX(X\xT X)^{-1}}_{=O} + AA\xT .
+\]
+So $\Var(b^{*}) = \sigma^{2}(X\xT X)^{-1} + \sigma^{2}AA\xT = \Var(b) + \sigma^{2}AA\xT$.
+\step{Any linear combination.} $\Var(w\xT b^{*}) - \Var(w\xT b) = \sigma^{2}w\xT AA\xT w
+= \sigma^{2}\|A\xT w\|^{2} \ge 0$.
+\begin{why}\Why any other linear unbiased estimator is OLS plus a piece $Au$ that is
+uncorrelated with OLS (the cross terms vanish because $AX = O$). Adding uncorrelated
+noise can only add variance.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D4 --- $\chi^{2}$, $s^{2}$, independence, $t$}
+\step{(a)} $A = Q\Lambda Q\xT$ with $Q$ orthogonal. Idempotency gives $\lambda^{2} = \lambda$, so each
+eigenvalue is $0$ or $1$; there are $r = \mathrm{tr}(A) = \rank(A)$ ones. Let $v = Q\xT z \sim N(0, Q\xT Q) = N(0,I)$:
+$z\xT Az = v\xT\Lambda v = \sum_{i=1}^{r}v_{i}^{2} \sim \chi^{2}(r)$.
+\step{(b)} $(n-k)s^{2} = \hat u\xT\hat u = u\xT M_{X}u$, and $u/\sigma \sim N(0,I)$; $M_{X}$ is
+idempotent with rank $n-k$ (C3), so $u\xT M_{X}u/\sigma^{2} \sim \chi^{2}(n-k)$.
+\step{(c)} $b - \beta = (X\xT X)^{-1}X\xT u$ and $\hat u = M_{X}u$ are both linear in the same normal
+$u$, hence jointly normal, and
+$\Cov(b, \hat u) = (X\xT X)^{-1}X\xT\,\sigma^{2}I\,M_{X} = \sigma^{2}(X\xT X)^{-1}(M_{X}X)\xT = O$.
+Jointly normal + uncorrelated $\Rightarrow$ independent; $s^{2}$ is a function of $\hat u$ only.
+\step{(d)} With $c_{jj} = [(X\xT X)^{-1}]_{jj}$:
+\[
+  \frac{b_{j} - \beta_{j}}{s\sqrt{c_{jj}}}
+  = \frac{(b_{j} - \beta_{j})/(\sigma\sqrt{c_{jj}})}{\sqrt{\dfrac{(n-k)s^{2}/\sigma^{2}}{n-k}}}
+  = \frac{N(0,1)}{\sqrt{\chi^{2}(n-k)/(n-k)}} \sim t(n-k),
+\]
+using independence from (c). The unknown $\sigma$ cancels.
+\begin{why}\Why $b$ uses the part of $u$ in $S(X)$ and $\hat u$ uses the part in
+$S(X)^{\perp}$; orthogonal pieces of a spherical normal vector are independent.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D5 --- $F$ test and restricted LS}
+Write $W \equiv R(X\xT X)^{-1}R\xT$ ($q \times q$, invertible).
+\step{(a)} Under $H_{0}$, $Rb - r = R(X\xT X)^{-1}X\xT u \sim N(0, \sigma^{2}W)$. For
+$w \sim N(0,V)$, $V^{-1/2}w \sim N(0,I_{q})$, so $w\xT V^{-1}w \sim \chi^{2}(q)$.
+\step{(b)} $\mathcal{L} = (y - X\beta)\xT(y - X\beta) + 2\lambda\xT(R\beta - r)$. FOC:
+$-2X\xT y + 2X\xT X\beta + 2R\xT\lambda = 0 \Rightarrow b_{*} = b - (X\xT X)^{-1}R\xT\lambda$.
+Impose $Rb_{*} = r$: $Rb - W\lambda = r$, so
+\[
+  \lambda_{*} = W^{-1}(Rb - r), \qquad b_{*} = b - (X\xT X)^{-1}R\xT W^{-1}(Rb - r).
+\]
+\step{(c)} $e_{*} = y - Xb_{*} = e + X(b - b_{*})$ and $X\xT e = 0$, so
+\[
+  e_{*}\xT e_{*} = e\xT e + (b - b_{*})\xT X\xT X(b - b_{*})
+  = e\xT e + (Rb - r)\xT W^{-1}(Rb - r).
+\]
+Divide by $\sigma^{2}$: the gap $RSSR - USSR$ is $\chi^{2}(q)$ by (a), it depends on $b$ only,
+$USSR/\sigma^{2} \sim \chi^{2}(n-k)$ depends on $e$ only, and they are independent (D4c). Hence
+$F = \frac{(RSSR-USSR)/q}{USSR/(n-k)} \sim F(q, n-k)$ and $\sigma^{2}$ cancels.
+\begin{why}\Why imposing the restriction can only raise the RSS; the gap is exactly
+how far $Rb$ is from $r$, measured in units of its own variance.\end{why}
+\step{(d)} Let $G = (X\xT X)^{-1}R\xT W^{-1}R(X\xT X)^{-1}$. Then
+\[
+  \E(b_{*}) = \beta - (X\xT X)^{-1}R\xT W^{-1}(R\beta - r), \qquad
+  \Var(b_{*}) = \sigma^{2}\big[(X\xT X)^{-1} - G\big]
+\]
+(the variance is the same whether $H_{0}$ holds or not, because $r$ is fixed).
+Under $H_{0}$ the bias term is zero; otherwise $b_{*}$ is biased. $\Var(b) - \Var(b_{*}) = \sigma^{2}G$,
+and $G = H\xT W^{-1}H$ with $H = R(X\xT X)^{-1}$ is p.s.d.
+\begin{why}\Why a correct restriction is free information: lower variance, no bias. A
+false one still lowers variance but adds bias --- the MSE trade-off.\end{why}
+\step{(e)} Wald: $(Rb - r)\xT(\sigma^{2}W)^{-1}(Rb - r)$. LM: $\lambda_{*} = W^{-1}(Rb - r)$ has
+$\Var(\lambda_{*}) = W^{-1}(\sigma^{2}W)W^{-1} = \sigma^{2}W^{-1}$, so
+$LM = \lambda_{*}\xT(\sigma^{2}W^{-1})^{-1}\lambda_{*} = (Rb - r)\xT W^{-1}WW^{-1}(Rb - r)/\sigma^{2}$ = Wald.
+\step{(f)} $Rb = b_{2}$ and $W$ is the $(2,2)$ block of $(X\xT X)^{-1}$, i.e.\ $(X_{2}\xT M_{1}X_{2})^{-1}$ (B1). So
+$b_{2}\xT(X_{2}\xT M_{1}X_{2})b_{2} = y\xT M_{1}X_{2}(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$ using the FWL $b_{2}$; by C2 this is $RSSR - USSR$.
+\end{solbox}
+
+\begin{solbox}{Solution D6 --- Omitted and irrelevant variables}
+Let $a = (X_{1}\xT X_{1})^{-1}X_{1}\xT X_{2}$ (the auxiliary regression of $X_{2}$ on $X_{1}$).
+\step{(a)} $\tilde\beta_{1} = (X_{1}\xT X_{1})^{-1}X_{1}\xT y = \beta_{1} + a\beta_{2} + (X_{1}\xT X_{1})^{-1}X_{1}\xT u$:
+\[
+  \tilde\beta_{1} \sim N\big(\beta_{1} + a\beta_{2},\ \sigma^{2}(X_{1}\xT X_{1})^{-1}\big),
+\]
+unbiased iff $a\beta_{2} = 0$ (e.g.\ $\beta_{2} = 0$ or $X_{1}\xT X_{2} = O$).
+\step{(b)} $\Var(\hat\beta_{1}) = \sigma^{2}(X_{1}\xT M_{2}X_{1})^{-1}$, and
+$X_{1}\xT X_{1} - X_{1}\xT M_{2}X_{1} = X_{1}\xT P_{2}X_{1} \ge 0$. For p.d.\ matrices, $A \ge B$ implies
+$B^{-1} \ge A^{-1}$, so $(X_{1}\xT M_{2}X_{1})^{-1} \ge (X_{1}\xT X_{1})^{-1}$.
+\step{(c) The neat decomposition.} By C5, $\tilde\beta_{1} = \hat\beta_{1} + a\hat\beta_{2}$, and $\tilde\beta_{1}$ is
+uncorrelated with $\hat\beta_{2}$ ($\Cov = \sigma^{2}(X_{1}\xT X_{1})^{-1}X_{1}\xT M_{1}X_{2}(\cdot) = O$). So
+$\Var(\hat\beta_{1}) = \Var(\tilde\beta_{1}) + a\Var(\hat\beta_{2})a\xT$. Then
+\[
+  MSE(\hat\beta_{1}) - MSE(\tilde\beta_{1})
+  = a\Var(\hat\beta_{2})a\xT - a\beta_{2}\beta_{2}\xT a\xT
+  = a\big[\underbrace{\Var(\hat\beta_{2}) - \beta_{2}\beta_{2}\xT}_{\text{gap}}\big]a\xT .
+\]
+\Ans{Omitting $X_{2}$ wins (in MSE) when the gap is p.s.d.: the true $\beta_{2}$ is small
+relative to how precisely it can be estimated. With one omitted variable:
+$|\beta_{2}| < SD(\hat\beta_{2})$, i.e.\ the ``true $t$-ratio'' is below 1.}
+\begin{why}\Why omitting $X_{2}$ saves the variance of estimating $\beta_{2}$ but pays the
+squared bias $\beta_{2}^{2}$; both are passed to $\beta_{1}$ through the same channel $a$, so
+only their difference matters.\end{why}
+\step{(d)} Truth $y = X_{1}\beta_{1} + u$, estimate with $X_{2}$:
+$\hat\beta_{1} = (X_{1}\xT M_{2}X_{1})^{-1}X_{1}\xT M_{2}y = \beta_{1} + (X_{1}\xT M_{2}X_{1})^{-1}X_{1}\xT M_{2}u$:
+unbiased, variance $\sigma^{2}(X_{1}\xT M_{2}X_{1})^{-1} \ge \sigma^{2}(X_{1}\xT X_{1})^{-1}$. And
+$e = M_{X}y = M_{X}u$ (since $M_{X}X_{1} = O$), so $\E(e\xT e) = \sigma^{2}(n-k)$: $s^{2}$ unbiased.
+\Ans{Irrelevant variables: no bias, lost efficiency. Omitted relevant variables: bias, smaller variance.}
+\end{solbox}
+
+\begin{solbox}{Solution D7 --- GLS}
+\step{(a)} $b = \beta + (X\xT X)^{-1}X\xT u$, $\E(b) = \beta$ (uses only $\E(u) = 0$).
+$\Var(b) = \sigma^{2}(X\xT X)^{-1}X\xT\Omega X(X\xT X)^{-1}$, not $\sigma^{2}(X\xT X)^{-1}$; also $s^{2}$ is biased.
+So the reported standard errors and tests are wrong.
+\step{(b)} $\Omega^{-1} = T\xT T \Rightarrow \Omega = T^{-1}(T\xT)^{-1} \Rightarrow T\Omega T\xT = I$. With
+$y_{*} = Ty$, $X_{*} = TX$, $u_{*} = Tu$: $\Var(u_{*}) = \sigma^{2}T\Omega T\xT = \sigma^{2}I$. OLS on the
+transformed model:
+\[
+  \hat\beta_{GLS} = (X\xT T\xT TX)^{-1}X\xT T\xT Ty = (X\xT\Omega^{-1}X)^{-1}X\xT\Omega^{-1}y,
+  \qquad \Var(\hat\beta_{GLS}) = \sigma^{2}(X\xT\Omega^{-1}X)^{-1}.
+\]
+\step{(c)} In the transformed model the classical assumptions hold, and
+$b_{OLS} = (X\xT X)^{-1}X\xT T^{-1}y_{*}$ is linear in $y_{*}$ and unbiased. By Gauss--Markov (D3)
+applied to the transformed model, $\Var(b_{OLS}) - \Var(\hat\beta_{GLS})$ is p.s.d.
+\step{(d)} OLS = GLS if $\Omega = I$, or more generally if $\Omega X = XK$ for a nonsingular $K$
+($S(\Omega X) = S(X)$): then $\Omega^{-1}X = XK^{-1}$ and
+$\hat\beta_{GLS} = (K^{-1\prime}X\xT X)^{-1}K^{-1\prime}X\xT y = (X\xT X)^{-1}X\xT y$.
+\begin{why}\Why GLS reweights observations so that noisy or correlated ones count less;
+it is just OLS on data rescaled to have spherical errors.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D8 --- WLS}
+\step{(a)} $\Omega = \mathrm{diag}(z_{1}^{2},\dots,z_{n}^{2})$, $T = \mathrm{diag}(1/z_{1},\dots,1/z_{n})$, so
+$T\xT T = \Omega^{-1}$. The transformed model is
+$\dfrac{y_{i}}{z_{i}} = \dfrac{x_{i}\xT}{z_{i}}\beta + \dfrac{u_{i}}{z_{i}}$ with
+$\Var(u_{i}/z_{i}) = \sigma^{2}z_{i}^{2}/z_{i}^{2} = \sigma^{2}$: OLS on it is GLS.
+\step{(b)} $y_{i} = \beta_{1} + \beta_{2}z_{i} + u_{i}$ becomes
+$\dfrac{y_{i}}{z_{i}} = \beta_{1}\dfrac{1}{z_{i}} + \beta_{2} + \dfrac{u_{i}}{z_{i}}$.
+\Ans{The original slope $\beta_{2}$ becomes the intercept of the transformed regression, and
+the original intercept $\beta_{1}$ becomes the coefficient on $1/z_{i}$. Do not add another constant.}
+\begin{why}\Why dividing by $z_{i}$ gives each observation weight $1/z_{i}$: the noisier the
+observation, the less it counts.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D9 --- AR(1) errors}
+\step{(a)} $(1 - \rho L)u_{t} = \varepsilon_{t} \Rightarrow u_{t} = (1-\rho L)^{-1}\varepsilon_{t}
+= \sum_{j\ge0}\rho^{j}\varepsilon_{t-j}$ (geometric series, $|\rho| < 1$). The $\varepsilon$'s are uncorrelated:
+\[
+  \Var(u_{t}) = \sigma_{\varepsilon}^{2}\sum_{j\ge0}\rho^{2j} = \frac{\sigma_{\varepsilon}^{2}}{1-\rho^{2}} \equiv \sigma_{u}^{2},
+  \qquad \Cov(u_{t},u_{t-s}) = \rho^{s}\sigma_{u}^{2},
+\]
+so $\Var(u) = \sigma_{u}^{2}\Omega$ with $\Omega_{ts} = \rho^{|t-s|}$.
+\begin{why}\Why $u_{t}$ and $u_{t-s}$ share the shocks $\varepsilon_{t-s}, \varepsilon_{t-s-1},\dots$; in $u_{t}$
+these carry the extra weight $\rho^{s}$.\end{why}
+\step{(b)} For $t \ge 2$: $y_{t} - \rho y_{t-1} = (x_{t} - \rho x_{t-1})\xT\beta + \varepsilon_{t}$.
+For $t = 1$: $\sqrt{1-\rho^{2}}\,y_{1} = \sqrt{1-\rho^{2}}\,x_{1}\xT\beta + \sqrt{1-\rho^{2}}\,u_{1}$, whose error
+has variance $(1-\rho^{2})\sigma_{u}^{2} = \sigma_{\varepsilon}^{2}$, the same as the others. OLS on all $n$
+transformed rows is exact GLS; in small samples one observation is a noticeable share of the data.
+\step{(c)}
+\[
+  T = \begin{bmatrix} \sqrt{1-\rho^{2}} & 0 & 0 \\ -\rho & 1 & 0 \\ 0 & -\rho & 1\end{bmatrix},\quad
+  T\xT T = \begin{bmatrix} 1 & -\rho & 0 \\ -\rho & 1+\rho^{2} & -\rho \\ 0 & -\rho & 1\end{bmatrix},\quad
+  \Omega^{-1} = \frac{1}{1-\rho^{2}}\begin{bmatrix} 1 & -\rho & 0 \\ -\rho & 1+\rho^{2} & -\rho \\ 0 & -\rho & 1\end{bmatrix}.
+\]
+So $T\xT T = (1-\rho^{2})\Omega^{-1}$. Dropping row 1 ($T_{*}$, Cochrane--Orcutt) makes the
+$(1,1)$ entry $\rho^{2}$ instead of $1$: no longer proportional to $\Omega^{-1}$, so not exact GLS (small efficiency loss).
+\step{(d)} $y_{t} - \rho_{1}y_{t-1} - \rho_{2}y_{t-2} = (x_{t} - \rho_{1}x_{t-1} - \rho_{2}x_{t-2})\xT\beta + \varepsilon_{t}$,
+$t = 3,\dots,n$; OLS on it is GLS apart from the first two observations. This is step~1 of A4.
+\step{(e) Two ways to write the same model.} From $y_{t} = x_{t}\xT\beta + u_{t}$ and $u_{t} = \rho u_{t-1} + \varepsilon_{t}$:
+\[
+  \text{(A)}\quad y_{t} - \rho y_{t-1} = (x_{t} - \rho x_{t-1})\xT\beta + \varepsilon_{t}
+  \qquad\text{(linear in $\beta$ if $\rho$ is fixed)}
+\]
+\[
+  \text{(B)}\quad y_{t} - x_{t}\xT\beta = \rho\,(y_{t-1} - x_{t-1}\xT\beta) + \varepsilon_{t}
+  \qquad\text{(linear in $\rho$ if $\beta$ is fixed: } u_{t} = \rho u_{t-1} + \varepsilon_{t})
+\]
+\step{Cochrane--Orcutt.}
+\begin{flatnum}
+  \item Start: OLS of $y_{t}$ on $x_{t}$ gives $\hat\beta^{(0)}$ and residuals $\hat u_{t} = y_{t} - x_{t}\xT\hat\beta^{(0)}$.
+  \item Use (B): OLS of $\hat u_{t}$ on $\hat u_{t-1}$ (no constant) gives
+        $\hat\rho^{(1)} = \sum_{t}\hat u_{t}\hat u_{t-1}\big/\sum_{t}\hat u_{t-1}^{2}$.
+  \item Use (A): quasi-difference with $\hat\rho^{(1)}$ and run OLS, giving $\hat\beta^{(1)}$; new residuals
+        $\hat u_{t} = y_{t} - x_{t}\xT\hat\beta^{(1)}$.
+  \item Repeat 2--3. Stop at step $j$ when $|\hat\rho^{(j)} - \hat\rho^{(j-1)}| < \delta$,
+        $|\hat\beta^{(j)} - \hat\beta^{(j-1)}| < \delta$ and $|SSR^{(j)} - SSR^{(j-1)}| < \delta$.
+\end{flatnum}
+\begin{why}\Why each regression needs the other's parameter: (A) needs $\rho$ to build the
+transformed data, (B) needs $\beta$ to build the errors. Alternating solves both. OLS is a
+legitimate start because it is still unbiased under AR errors (it only needs $\E(u) = 0$), so
+its residuals are a sensible first estimate of $u_{t}$. The result is feasible GLS: GLS with
+$\Omega(\rho)$ replaced by $\Omega(\hat\rho)$. For AR(2), (B) becomes a regression of $\hat u_{t}$ on
+$\hat u_{t-1}$ and $\hat u_{t-2}$ --- exactly A4.\end{why}
+\end{solbox}
+
+\begin{solbox}{Solution D10 --- IV and 2SLS}
+\step{(a)} $b = (X\xT X)^{-1}X\xT y = \beta + (X\xT X)^{-1}X\xT u$. Since $\E(X\xT u) \neq 0$, the second
+term does not have mean zero: OLS is biased.
+\begin{why}\Why OLS chooses $b$ so that the residuals are orthogonal to $X$ ($X\xT e = 0$). If
+the true errors are \emph{not} orthogonal to $X$, forcing that orthogonality in the sample
+pushes $b$ away from $\beta$.\end{why}
+\step{(b) $l = k$.} Replace the population condition $\E(W\xT u) = 0$ by its sample version:
+\[
+  W\xT(y - Xb_{IV}) = 0 \;\Rightarrow\; W\xT X\,b_{IV} = W\xT y \;\Rightarrow\; b_{IV} = (W\xT X)^{-1}W\xT y,
+\]
+with $W\xT X$ square ($k \times k$) and invertible. Then $b_{IV} = \beta + (W\xT X)^{-1}W\xT u$, and the
+error term now involves $W\xT u$, which has mean zero.
+\step{(c)(i) Two stages.} Stage 1: regress each column of $X$ on $W$: $\hat X = P_{W}X$.
+Stage 2: regress $y$ on $\hat X$:
+\[
+  b_{2SLS} = (\hat X\xT\hat X)^{-1}\hat X\xT y = (X\xT P_{W}P_{W}X)^{-1}X\xT P_{W}y = (X\xT P_{W}X)^{-1}X\xT P_{W}y .
+\]
+\step{(c)(ii) Minimizing the criterion.}
+$Q(\beta) = y\xT P_{W}y - 2\beta\xT X\xT P_{W}y + \beta\xT X\xT P_{W}X\beta$. FOC:
+$-2X\xT P_{W}y + 2X\xT P_{W}X\beta = 0 \Rightarrow \beta = (X\xT P_{W}X)^{-1}X\xT P_{W}y$, the same as (i).
+\begin{why}\Why with $l > k$ there are more moment conditions than parameters, so
+$W\xT(y - X\beta) = 0$ cannot hold exactly. 2SLS makes the part of the residual that lies in
+the instrument space, $P_{W}(y - X\beta)$, as small as possible. Equivalently, it keeps only
+the part of $X$ that the instruments explain ($P_{W}X$), which is uncorrelated with $u$.\end{why}
+\step{(d) $l = k$.} Now $W\xT X$ is square and invertible, so
+\[
+  X\xT P_{W}X = X\xT W(W\xT W)^{-1}W\xT X \;\Rightarrow\;
+  (X\xT P_{W}X)^{-1} = (W\xT X)^{-1}(W\xT W)(X\xT W)^{-1},
+\]
+\[
+  b_{2SLS} = (W\xT X)^{-1}(W\xT W)(X\xT W)^{-1}\,X\xT W(W\xT W)^{-1}W\xT y = (W\xT X)^{-1}W\xT y = b_{IV}.
+\]
+\end{solbox}
+
+\begin{transcriptnotes}
+  \item A1, A2: \texttt{614midf24.pdf} (Fall 2024; Q1 weight 30, Q3 weight 70; there is no Q2).
+        A3, A4: photographs of the Fall 2023 midterm (Q3 weight 40, Q1 weight 30); its Q2
+        (weight 30) is identical to A1.
+  \item B: \texttt{hw01.tex}. C: Davidson--MacKinnon, ETM, exercises 2.15, 2.19, 3.14, 3.15, 4.10, 4.12
+        (renumbered C1--C6). D: new questions on lessons 01--08 (the earlier Wald/LM question is now D5(e)).
+  \item Critical values computed with \texttt{scipy.stats}. Solutions written for this set;
+        A1 corrects two slips in the handwritten solution collection.
+\end{transcriptnotes}
+
+\end{document}

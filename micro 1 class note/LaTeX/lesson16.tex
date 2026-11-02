@@ -1,0 +1,258 @@
+%% shortname: Expected Utility, Money Lotteries and Risk Aversion
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{16}{Chapter 6 (continued): the expected utility theorem, money lotteries and risk aversion}{}
+
+
+\section{Recap: preferences over lotteries}
+
+We introduced preferences $\succsim$ over lotteries.
+\begin{flatlist}
+  \item Complete $+$ transitive $+$ continuity $\Rightarrow$ preferences can be
+        represented with a utility function $U:\mathcal{L}\to\R$.
+  \item The independence axiom adds structure: it implies that indifference curves
+        are straight lines (or hyperplanes) and that they shift in a parallel
+        fashion.
+\end{flatlist}
+
+
+\section{The expected utility theorem}
+
+The central result is expected utility.
+
+\topic{Theorem (expected utility)}
+If the axioms are satisfied (rational, continuous, independence), then $\succsim$ can
+be represented by a utility function with the expected utility property:
+\[ U(L)=\sum_{n=1}^{N}p_n u_n, \qquad L=(p_1,\dots,p_N), \]
+where $p_1,\dots,p_N$ are the probabilities of the lottery and $u_n$ is the utility if
+outcome $n$ occurs.
+
+\runin{Sanity check.} Indifference curves are straight lines because $U(L)$ is
+linear in the probabilities, and they also shift in a parallel way. An indifference
+curve is
+\[ U(L)=c \quad\Longleftrightarrow\quad p\cdot u=c, \qquad
+   (p_1,\dots,p_N)\cdot(u_1,\dots,u_N)=c, \]
+a hyperplane in $p$ with normal vector $u=(u_1,\dots,u_N)$. Given $u_1,\dots,u_N$, the
+hyperplane shifts in parallel when $c$ changes.
+
+\runin{Note.} It is not claimed that the $u_n$'s are unique. The same preferences are
+represented after a positive affine transformation: change $u_n$ to
+\[ \alpha+\beta u_n, \qquad \beta>0, \qquad \forall\, n=1,\dots,N. \]
+Then $\sum_n p_n(\alpha+\beta u_n)=\alpha+\beta\sum_n p_n u_n$ (the $p_n$ sum to $1$),
+so the ranking of lotteries is unchanged.
+
+
+\section{Money lotteries}
+
+Consider now lotteries where the outcome is money.
+
+It is convenient to think of money as continuous, but we then need to make some
+assumptions, because we can no longer express the lottery as a list of
+probabilities. How do we represent a lottery over a continuous variable?
+
+\topic{Cumulative distribution functions}
+We use cumulative distribution functions (CDF),
+\[ F:\R\to[0,1], \qquad F(x)=\Pr(\tilde x\le x), \]
+the probability that the outcome is $x$ or less.
+\begin{flatlist}
+  \item Clearly, $F(x)$ is non-decreasing.
+  \item Not necessarily continuous, but always right-continuous.
+  \item Any real random variable has a CDF.
+\end{flatlist}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05]
+  \ecaxes{4.6}{3.0}
+  \node[ecnode,right] at (4.6,0) {$x$};
+  \node[ecnode,above] at (0,3.0) {Prob.};
+  \draw[dashed] (0,2.4) -- (4.3,2.4);
+  \node[ecnode,left] at (0,2.4) {$1$};
+  \draw[budget] (0,0.2) .. controls (1.2,0.5) and (2.6,1.4) .. (4,2.4) -- (4.3,2.4);
+  \node[ecnode,below right] at (3.3,1.85) {$F(x)$};
+  % x' = 1.2, x'' = 2.7
+  \draw[dashed] (1.2,0) node[ecnode,below] {$x'$} -- (1.2,0.52) -- (0,0.52)
+                node[ecnode,left] {$F(x')$};
+  \draw[dashed] (2.7,0) node[ecnode,below] {$x''$} -- (2.7,1.45) -- (0,1.45)
+                node[ecnode,left] {$F(x'')$};
+  \node[ecnode,below] at (4,0) {$\bar x$};
+  \draw[dashed] (4,0) -- (4,2.4);
+\end{tikzpicture}
+\end{center}
+\begin{align*}
+  F(x'') &= \Pr(\tilde x\le x''),\\
+  F(x')  &= \Pr(\tilde x\le x'),\\
+  F(x'')-F(x') &= \Pr\bigl(\tilde x\in(x',x'']\bigr).
+\end{align*}
+As $x'\to x''$ (from below), $F(x'')-F(x')\to\Pr(\tilde x=x'')$; so the difference goes
+to $0$ if there is zero probability that $\tilde x=x''$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05]
+  \ecaxes{4.6}{3.0}
+  \node[ecnode,right] at (4.6,0) {$x$};
+  \node[ecnode,below left] at (0,0) {$0$};
+  \draw[dashed] (0,2.6) -- (4.3,2.6);
+  \node[ecnode,left] at (0,2.6) {$1$};
+  % continuous part up to x' = 1.3, jump at x', rise to x'' = 2.0, flat to x''' = 3.2, rise to 1
+  \draw[budget] (0,0) .. controls (0.3,0.7) and (1.0,0.7) .. (1.3,1.0);
+  \draw[budget] (1.3,1.55) .. controls (1.6,1.7) and (1.8,1.95) .. (2.0,2.0) -- (3.2,2.0)
+                .. controls (3.6,2.1) and (3.9,2.5) .. (4.1,2.6) -- (4.3,2.6);
+  \draw[fill=white] (1.3,1.0) circle (1.6pt);
+  \node[bundle] at (1.3,1.55) {};
+  \draw[dashed] (1.3,0) node[ecnode,below] {$x'$} -- (1.3,1.0);
+  \draw[dashed] (0,1.0) node[ecnode,left] {$\Pr(\tilde x<x')$} -- (1.3,1.0);
+  \draw[dashed] (0,1.55) node[ecnode,left] {$F(x')$} -- (1.3,1.55);
+  \draw[dashed] (0,2.0) node[ecnode,left] {$F(x'')=F(x''')$} -- (2.0,2.0);
+  \draw[dashed] (2.0,0) node[ecnode,below] {$x''$} -- (2.0,2.0);
+  \draw[dashed] (3.2,0) node[ecnode,below] {$x'''$} -- (3.2,2.0);
+  \node[ecnode,align=left,anchor=west] at (5.0,1.5)
+       {positive probability of $x'$:\\ $\Pr(\tilde x=x')=F(x')-\Pr(\tilde x<x')>0$;\\[2pt]
+        zero probability of $x\in(x'',x''')$:\\ $F$ is flat there.};
+\end{tikzpicture}
+\end{center}
+
+\topic{Expected utility for money lotteries}
+Turning to expected utility, define $u(x)$ as the Bernoulli utility of $x$. Assume $x$
+is bounded below, and assume that $u(x)$ is increasing, continuous and bounded. We can
+now calculate utility:
+\[ U(F)=\int u(x)\,dF(x). \]
+If $F(x)$ has a density, $F'(x)=f(x)$, then
+\[ U(F)=\int u(x)f(x)\,dx. \]
+
+
+\section{Risk aversion}
+
+Preferences depend on $u(x)$.
+
+\topic{Definition}
+The agent is risk averse if $u(x)$ is concave. Such an agent prefers getting the
+expected value of $F$, $\int x\,dF(x)$, for sure over taking the risky lottery $F$.
+This follows from Jensen's inequality:
+\[ \int u(x)\,dF(x)\ \le\ u\Bigl(\int x\,dF(x)\Bigr). \]
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  % u(x) = 1.5 sqrt(x); lottery x_L = 0.25, x_H = 3.75 with prob. 1/2 each
+  \ecaxes{4.6}{3.4}
+  \node[ecnode,right] at (4.6,0) {$x$};
+  \draw[budget,domain=0:4.2,samples=60] plot (\x,{1.5*sqrt(\x)});
+  \node[ecnode,right] at (4.2,3.07) {$u(x)$};
+  \draw (0.25,0.75) -- (3.75,2.905);                             % chord
+  \node[bundle] at (0.25,0.75) {}; \node[bundle] at (3.75,2.905) {};
+  \node[bundle] at (2,2.121) {};                                % u(E x)
+  \node[bundle] at (2,1.827) {};                                % E u(x)
+  \draw[dashed] (0.25,0) node[ecnode,below] {$x_L$} -- (0.25,0.75);
+  \draw[dashed] (3.75,0) node[ecnode,below] {$x_H$} -- (3.75,2.905);
+  \draw[dashed] (2,0) node[ecnode,below=11pt] {$E(x)$} -- (2,2.121);
+  \draw[dashed] (1.484,0) node[ecnode,below] {CE} -- (1.484,1.827);
+  \draw[dashed] (0,1.827) -- (2,1.827);
+  \draw[dashed] (0,2.121) -- (2,2.121);
+  \node[ecnode,left] at (0,2.18) {$u(E(x))$};
+  \node[ecnode,left] at (0,1.78) {$\int u\,dF$};
+\end{tikzpicture}
+\end{center}
+As the graph shows for risk aversion: the expected utility of the lottery (on the
+chord) lies below the utility of its expected value (on the curve).
+
+\topic{Concavity and attitude towards risk}
+\begin{flatlist}
+  \item $u''(x)<0\ \ \forall x \ \Rightarrow$ risk averse;
+  \item $u''(x)=0\ \ \forall x \ \Rightarrow$ risk neutral;
+  \item $u''(x)>0\ \ \forall x \ \Rightarrow$ risk seeking (risk loving).
+\end{flatlist}
+
+
+\section{Measuring the degree of risk aversion}
+
+\topic{Certainty equivalent}
+For a given $F$, the certainty equivalent $c(F,u)$ (CE) is the amount of money that
+makes you indifferent between that amount of money for sure and taking the lottery:
+\[ u(\mathrm{CE})=\int u(x)\,dF(x)\ \le\ u\Bigl(\int x\,dF(x)\Bigr)
+   \quad\Longleftrightarrow\quad \mathrm{CE}\ \le\ \int x\,dF(x), \]
+for a risk-averse agent (the equivalence uses that $u$ is increasing).
+
+\topic{The Arrow--Pratt measure of absolute risk aversion}
+Given $u(x)$, the CE is specific to the lottery. We want a measure that does not
+depend on $F$.
+
+\runin{Idea.} Measure ``how concave'' $u(x)$ is:
+\[ r_A(x\mid u)=-\frac{u''(x)}{u'(x)}\ \ge\ 0 \quad\text{if } u''(x)\le 0,
+   \ \text{i.e.\ risk averse.} \]
+
+\runin{Why divide by $u'(x)$?} Because $u(x)$ is not unique: it is only unique up to a
+positive affine transformation. Replacing $u(x)$ with $\alpha+\beta u(x)$,
+$\beta>0$,
+\[ r_A=-\frac{\beta u''(x)}{\beta u'(x)}=-\frac{u''(x)}{u'(x)}, \]
+so the measure does not change, whereas $u''(x)$ alone would be scaled by $\beta$.
+
+\runin{Comparing agents.} The higher $r_A$ is, the more risk averse the agent is. If
+\[ r_A(x\mid u_1)\ \ge\ r_A(x\mid u_2) \qquad \forall x, \]
+then $u_1(x)$ is an increasing and concave transformation of $u_2(x)$:
+\[ u_1(x)=T\bigl(u_2(x)\bigr), \qquad T \text{ increasing and concave}. \]
+Similarly, $u_1$ has a smaller CE than $u_2$: $c(F,u_1)\le c(F,u_2)$ for every $F$.
+
+
+\begin{transcriptnotes}
+  \item The export has 5 pages; page 1 is the blank notebook cover and is skipped. No
+        date or title is written on the pages, so the header date is left empty; the
+        subtitle is \textbf{added} (MWG Chapter 6, Sections 6.B--6.C).
+  \item Recap: ``Complete + transitive - continuity'' read as complete $+$ transitive
+        $+$ continuity. The sentence ``The independence axiom adds structure \ldots
+        parallel fashion'' appears twice on page 2 (before and after the theorem);
+        kept once. ``indiff'' $\to$ \emph{indifference curves}.
+  \item Theorem: ``then $\succsim$ by presented by utility function with the expected
+        utility prob.'' $\to$ \emph{can be represented by a utility function with the
+        expected utility property}. The page writes $U(L)=\sum_{i=1}^N P_i u_i$ with
+        an arrow from $U(L)$ to ``$P_1\cdots P_2$'' (read $p_1,\dots,p_N$) and
+        ``utility is outcome occurs'' (read \emph{utility if outcome $n$ occurs});
+        typeset with index $n$ as in Lesson 15. ``(rational, continuous,
+        independence)'' is \textbf{added}.
+  \item Sanity check: ``hyperplane that shift when $C$ changes'' --- the level $c$
+        (lower case, not the outcome set $C$). The normal-vector remark is
+        \textbf{added}. Note: ``preferences are presented under affine
+        transformation'' $\to$ \emph{the same preferences are represented after a
+        positive affine transformation}; the one-line check
+        $\sum_n p_n(\alpha+\beta u_n)=\alpha+\beta U(L)$ is \textbf{added}.
+  \item CDF: ``outcome is $X$ on less'' $\to$ \emph{$x$ or less}; ``all wants
+        righ-continuous'' $\to$ \emph{always right-continuous}; ``Ant Real random
+        Var. has avilible CDF'' $\to$ \emph{any real random variable has a CDF}. The
+        random variable is written as a script $\mathcal{X}$; typeset $\tilde x$.
+        ``$\Pr(\tilde x\in(x',x''])$'' kept. \textbf{Corrected:} the page says ``as
+        $x'\to x''$, $F(x'')-F(x')\to 0$ if prob zero that $\tilde x=x''$''; the
+        limit is $\Pr(\tilde x=x'')$ in general, which is $0$ exactly when there is no
+        mass at $x''$ --- both statements are now given.
+  \item Second CDF sketch: redrawn to scale. The page's labels $F(x'')=F(x''')$,
+        $F(x')$ and ``$\Pr[\tilde x<x']$'' (at the open circle) are kept; the margin
+        note ``positive prob of $x'$, zero prob of $x\in(x'',x''')$'' is kept and the
+        jump size $F(x')-\Pr(\tilde x<x')$ is \textbf{added}.
+  \item Expected utility: ``benooli'' $\to$ \emph{Bernoulli}; ``caunculate'' $\to$
+        \emph{calculate}. ``Assuming $x$ is boun DEN belong'' is read as \emph{assume
+        $x$ is bounded below} (\textbf{unclear}). \textbf{Corrected:} the page writes
+        $U(X)=\int u(x)\,dF(x)$; the utility is a function of the distribution, so it
+        is typeset $U(F)$, matching the next line ``Then $U(F)=\int u(x)f(x)\,dx$''.
+  \item Risk aversion: \textbf{Corrected:} ``prefers getting expected utility in $F$
+        over taking the risky lottery'' $\to$ the \emph{expected value} of $F$,
+        $\int x\,dF(x)$, for sure. ``Jensen Equality'' $\to$ \emph{Jensen's
+        inequality} (the displayed formula is an inequality). The concave-$u$ sketch
+        (with $x_L$, $x_H$, $E(x)$, CE) is redrawn to scale with $u=1.5\sqrt{x}$ and a
+        $\tfrac12$--$\tfrac12$ lottery on $x_L=0.25$, $x_H=3.75$ ($E(x)=2$, CE $\approx1.48$).
+  \item The boxed note ``Add back clause: $u''<0$ / $=0$ / $>0$ $\forall x$ $\Rightarrow$
+        risk averse / neutral / seeking'' (page 5) is inserted in the risk-aversion
+        section, where it belongs. Strict concavity gives \emph{strict} risk
+        aversion; the definition above (concave, $u''\le0$) is the weak version.
+  \item Measuring risk aversion: ``certainty equivlent'' $\to$ \emph{certainty
+        equivalent}; ``indifferen'' $\to$ \emph{indifferent}; the MWG notation
+        $c(F,u)$ is \textbf{added}. ``ARROR--PRATT'' $\to$ \emph{Arrow--Pratt}. The page
+        writes $R_A(X\mid U)$; typeset $r_A(x\mid u)$. ``why $u'(x)$?'' expanded to
+        \emph{why divide by $u'(x)$?}; the cut-off right edge of page 4 shows
+        $-\beta u''/\beta u'$, completed as $=-u''/u'$.
+  \item Comparing agents: ``the higher $R_A$ is, the risk averse the agent is'' $\to$
+        \emph{the more risk averse}; ``an $\uparrow$ and concave transformative'' $\to$
+        \emph{an increasing and concave transformation}. ``for every $F$'' is
+        \textbf{added} (MWG Proposition 6.C.2).
+\end{transcriptnotes}
+
+\end{document}

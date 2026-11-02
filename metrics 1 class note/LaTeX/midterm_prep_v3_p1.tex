@@ -1,0 +1,275 @@
+
+\begin{document}
+\begin{center}
+  {\footnotesize\scshape Department of Economics and Finance\\
+   Lang School of Business and Economics}\\[5pt]
+  {\large\scshape ECON*6140 Econometrics I}\\[3pt]
+  {\LARGE\bfseries\color{qnavy} Midterm Preparation Problem Set}\\[4pt]
+  {\itshape Past midterms, HW1, ETM exercises and new questions --- Lessons 1--8.
+  Each solution is printed directly below its question.}
+\end{center}
+\vspace{0.3em}{\color{qnavy}\hrule height 0.8pt}\vspace{0.9em}
+
+\topic{How to use this set}
+Read the solution under each question first, then cover it and redo the question from a
+blank page. Nothing requires running a regression. A green \emph{Why} line gives the intuition
+for the step above it.
+
+\topic{Importance ratings}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l p{0.5\linewidth} p{0.28\linewidth}@{}}
+  \toprule
+  Rating & Meaning & Questions \\
+  \midrule
+  \must & Set on a past midterm, or its proof is the engine of one. Be able to write it cold.
+        & A1, A2, A3, A4, B5, C2, C6, D5, D9 \\
+  \likely & Core lecture results; natural variants of exam questions.
+        & B1, C1, C3, C5, D1, D2, D3, D4, D6, D7, D10 \\
+  \opt & Easier variants or corollaries of a \must{} or \likely{} item. Do last.
+        & C4, D8 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+Tags: \examtag{} past midterm \quad \hwtag{} this term's assignment \quad \etmtag{} textbook
+\quad \newtag{} new. Part A is every question from the two real past midterms (Fall 2023 Q1--Q3,
+Fall 2024 Q1 and Q3; the 2024 paper has no Q2). A1 was set word for word in both years.
+
+\topic{Notation}
+$P_{A} = A(A\xT A)^{-1}A\xT$ projects onto the columns of $A$, $M_{A} = I - P_{A}$;
+$P_{1}, M_{1}$ are for $X_{1}$, and $P_{X}, M_{X}$ for $X = [X_{1}\ X_{2}]$. All are
+symmetric and idempotent; $M_{A}A = O$.
+
+%% ===================================================================== A
+\clearpage
+\section{Part A --- Past midterm questions}
+
+\begin{qbox}{A1.\ Numerical testing \quad(weight 30)}{\must\ \examtag{F2024 Q1}\ \examtag{F2023 Q2}}
+The following estimated equation was obtained by OLS using quarterly
+data from 1968 to 1989 inclusive:
+\[
+  \hat y_{t} = 3.2 - 0.104X_{1t} - 3.480X_{2t} + 0.340X_{3t}.
+\]
+The standard errors are $SE(b_{0}) = 2.4$, $SE(b_{1}) = 0.05$, $SE(b_{2}) = 1.2$,
+$SE(b_{3}) = 0.15$. The explained sum of squares is $109.6$ and the residual sum
+of squares $18.48$.
+\begin{flatlist}
+  \item[(a)] Test the significance of each of the slope coefficients.
+  \item[(b)] When three seasonal dummies were added and the equation was
+        re-estimated, the explained sum of squares rose to $115.8$. Test for the
+        presence of seasonal effects.
+  \item[(c)] Two further regressions based on the original specification were
+        computed for the subperiods 1968Q1--1988Q4 and 1989Q1--1989Q4, yielding
+        a residual sum of squares of $16.12$ for the first subperiod. Test that the
+        coefficients in the two periods are the same.
+\end{flatlist}
+\end{qbox}
+\begin{solbox}
+\step{Set-up.} $n = 22\times4 = 88$, $k = 4$, $n-k = 84$, $TSS = ESS + RSS = 109.6 + 18.48 = 128.08$.
+In matrix form $TSS = y\xT M_{\iota}y$, $ESS = y\xT(P_{X}-P_{\iota})y$, $RSS = y\xT M_{X}y$.
+Both regressions contain a constant, so they share the same $TSS$: adding regressors only moves
+variation from RSS to ESS.
+
+\step{(a)} $t_{j} = b_{j}/SE(b_{j})$, critical value $t_{0.025}(84)\approx1.99$:
+$t_{1} = \frac{-0.104}{0.05} = -2.08$, $t_{2} = \frac{-3.480}{1.2} = -2.90$, $t_{3} = \frac{0.340}{0.15} = 2.27$.
+All three $|t|>1.99$: each slope is significant at 5\%.
+
+\step{(b) Subset $F$ test ($H_{0}$: the three dummy coefficients are $0$, $q = 3$).}
+Unrestricted (with dummies): $USSR = 128.08 - 115.8 = 12.28$, $n-k = 88-7 = 81$.
+Restricted (without): $RSSR = 18.48$.
+\[
+  F = \frac{(RSSR-USSR)/q}{USSR/(n-k)} = \frac{(18.48-12.28)/3}{12.28/81} = \frac{2.067}{0.1516} = 13.63
+  > F_{0.05}(3,81)\approx2.72 .
+\]
+\Ans{Reject: seasonal effects are present.}
+
+\step{(c) Chow test.} $n_{1} = 84$, $n_{2} = 4 = k$, so subperiod 2 fits exactly: $SSR_{2} = 0$,
+$USSR = 16.12$, $q = n_{2} = 4$, denominator df $= n_{1}-k = 80$ (see C6).
+\[
+  F = \frac{(18.48-16.12)/4}{16.12/80} = \frac{0.590}{0.2015} = 2.93,
+  \quad F_{0.05}(4,80)\approx2.49,\ F_{0.01}(4,80)\approx3.56 .
+\]
+\Ans{Reject equal coefficients at 5\%, not at 1\%.}
+\begin{why}\Why the numerator is the drop in RSS per restriction, the denominator is noise
+per degree of freedom. In (c) each of the four 1989 observations is one restriction: the test asks
+whether they fit the line estimated on 1968--88.\end{why}
+\end{solbox}
+
+\begin{qbox}{A2.\ Deseasonalizing and FWL \quad(weight 70)}{\must\ \examtag{F2024 Q3}}
+Let $y = X\beta + u$, $X$ fixed $n\times k$, $u\sim N(0,\sigma^{2}I)$. Partition $X = [X_{1}|X_{2}]$,
+$\beta = (\beta_{1}\ \beta_{2})\xT$, where $X_{1}$ ($n\times k_{1}$) consists of seasonal dummies and
+$X_{2}$ ($n\times k_{2}$) of the variables of main interest. To estimate $\beta_{2}$:
+\begin{flatlist}
+  \item[(i)] regress the residuals of $y$ on $X_{1}$ on the $X_{2}$ variables $\to\hat\beta_{2}$;
+  \item[(ii)] regress $y$ on the residuals of $X_{2}$ on $X_{1}$ $\to\tilde\beta_{2}$;
+  \item[(iii)] regress the residuals of $y$ on $X_{1}$ on the residuals of $X_{2}$ on $X_{1}$ $\to\bar\beta_{2}$;
+  \item[(iv)] omit the dummies and estimate $y = X_{2}\beta_{2} + u$ $\to b_{2}$.
+\end{flatlist}
+Derive the distributions of $\hat\beta_{2}$, $\tilde\beta_{2}$, $\bar\beta_{2}$, $b_{2}$. How do they
+differ? What do you observe about deseasonalizing data in a regression?
+(Hint: express each regression in terms of projection matrices.)
+\end{qbox}
+\begin{solbox}
+\step{Tools.} ``Residuals of $v$ on $X_{1}$'' is $M_{1}v$. Since $M_{1}X_{1}=O$:
+$M_{1}y = M_{1}X_{2}\beta_{2} + M_{1}u$.
+
+\step{(i) $M_{1}y$ on raw $X_{2}$.}
+$\hat\beta_{2} = (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}y = (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}\,\beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}u$, so
+\[
+  \hat\beta_{2}\sim N\Big((X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}\,\beta_{2},\ \sigma^{2}(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}(X_{2}\xT X_{2})^{-1}\Big)
+\]
+(using $\Var(Bu)=\sigma^{2}BB\xT$ and $M_{1}M_{1}\xT=M_{1}$). The mean is
+$\beta_{2} - (X_{2}\xT X_{2})^{-1}X_{2}\xT P_{1}X_{2}\beta_{2}$: \textbf{biased} unless $X_{1}\xT X_{2}=O$.
+\begin{why}\Why $y$ has lost its seasonal swings but $X_{2}$ has not. The seasonal part of $X_{2}$
+no longer moves with $y$, so it acts as noise in the regressor and pulls the estimate towards zero.\end{why}
+
+\step{(ii) raw $y$ on $M_{1}X_{2}$.} Using $(M_{1}X_{2})\xT M_{1}X_{2} = X_{2}\xT M_{1}X_{2}$ and
+$(M_{1}X_{2})\xT y = X_{2}\xT M_{1}y$:
+\[
+  \tilde\beta_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y = \beta_{2} + (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}u
+  \sim N\big(\beta_{2},\ \sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}\big).
+\]
+\step{(iii) $M_{1}y$ on $M_{1}X_{2}$.} $M_{1}$ idempotent $\Rightarrow$ $\bar\beta_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y = \tilde\beta_{2}$,
+the FWL estimator: same $\beta_{2}$-block as OLS with the dummies included, and its residuals are $M_{X}y$.
+\begin{why}\Why once the \emph{regressor} is deseasonalized it is orthogonal to the seasonal part of $y$, so
+cleaning $y$ is optional. (In (ii) the residuals $y - M_{1}X_{2}\tilde\beta_{2}$ still contain $P_{1}y$, so a
+reported $s^{2}$ would be wrong; (iii) gets $s^{2}$ right up to the df correction $n-k$.)\end{why}
+
+\step{(iv) omit the dummies.}
+$b_{2} = \beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT X_{1}\beta_{1} + (X_{2}\xT X_{2})^{-1}X_{2}\xT u$, so
+$b_{2}\sim N\big(\beta_{2} + (X_{2}\xT X_{2})^{-1}X_{2}\xT X_{1}\beta_{1},\ \sigma^{2}(X_{2}\xT X_{2})^{-1}\big)$:
+omitted-variable bias unless $X_{2}\xT X_{1}\beta_{1}=0$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}\small
+\begin{tabular}{lll}
+\toprule
+Estimator & Mean & Variance \\
+\midrule
+(i) $\hat\beta_{2}$ & biased (towards 0) & $\sigma^{2}(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}X_{2}(X_{2}\xT X_{2})^{-1}$ \\
+(ii) $\tilde\beta_{2}$ & $\beta_{2}$ & $\sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}$ \\
+(iii) $\bar\beta_{2}$ & $\beta_{2}$ & $\sigma^{2}(X_{2}\xT M_{1}X_{2})^{-1}$ \\
+(iv) $b_{2}$ & biased (omitted $X_{1}\beta_{1}$) & $\sigma^{2}(X_{2}\xT X_{2})^{-1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+(i) and (iv) have smaller variance ($X_{2}\xT X_{2}\ge X_{2}\xT M_{1}X_{2}$) but are biased.
+All four coincide when $X_{1}\xT X_{2}=O$.
+\Ans{(ii) and (iii) equal OLS with the dummies included. Deseasonalizing is harmless only when the
+regressors $X_{2}$ are deseasonalized (with or without $y$). Deseasonalizing only $y$, or ignoring
+seasonality, biases $\beta_{2}$.}
+\end{solbox}
+
+\begin{qbox}{A3.\ OLS when the error has non-zero mean \quad(weight 40)}{\must\ \examtag{F2023 Q3}}
+Let $y = X\beta + u$, $y$ is $n\times1$, $X$ is $n\times k$, $\beta$ is $k\times1$, and
+$u\sim N(Z\gamma,\sigma^{2}I)$ with $Z$ $n\times p$, $\gamma$ $p\times1$. Derive the distribution of
+the OLS estimator $b$ (mean and variance). How does it differ from OLS when $u\sim N(0,\sigma^{2}I)$?
+Compare the OLS estimators under the two cases.
+\end{qbox}
+\begin{solbox}
+\step{Mean plus noise.} $u = Z\gamma + v$, $v\sim N(0,\sigma^{2}I)$. So $y = X\beta + Z\gamma + v$:
+$Z$ is an omitted regressor.
+\step{Mean.} $b = \beta + (X\xT X)^{-1}X\xT u\ \Rightarrow\ \E(b) = \beta + (X\xT X)^{-1}X\xT Z\gamma$.
+\step{Variance.} $b - \E(b) = (X\xT X)^{-1}X\xT v\ \Rightarrow\ \Var(b) = \sigma^{2}(X\xT X)^{-1}$.
+\Ans{$b\sim N\big(\beta + (X\xT X)^{-1}X\xT Z\gamma,\ \sigma^{2}(X\xT X)^{-1}\big)$. With $u\sim N(0,\sigma^{2}I)$,
+$b\sim N(\beta,\sigma^{2}(X\xT X)^{-1})$: same variance, mean shifted by the bias $\delta=(X\xT X)^{-1}X\xT Z\gamma$.}
+\step{Consequences.} $b$ is unbiased iff $X\xT Z\gamma=0$ (e.g.\ $\gamma=0$ or $Z\perp X$).
+$MSE(b)=\sigma^{2}(X\xT X)^{-1}+\delta\delta\xT$. Also $e=M_{X}u$ gives
+$\E(e\xT e)=\sigma^{2}(n-k)+\gamma\xT Z\xT M_{X}Z\gamma$, so $s^{2}$ is biased upwards and the usual $t$ and $F$
+tests are invalid.
+\begin{why}\Why $\delta$ is the coefficient vector from regressing $Z\gamma$ on $X$: OLS credits to $X$ whatever
+part of the error's mean looks like $X$. The variance is unchanged because a constant shift adds no spread.
+If $Z=\iota$ and $X$ has a constant, only the intercept is biased.\end{why}
+\end{solbox}
+
+\begin{qbox}{A4.\ AR(2) errors, unknown coefficients \quad(weight 30)}{\must\ \examtag{F2023 Q1}}
+Let $y_{t} = x_{t}\beta + u_{t}$, $u_{t} = \rho_{1}u_{t-1} + \rho_{2}u_{t-2} + \varepsilon_{t}$,
+$\varepsilon_{t}\sim N(0,\sigma_{\varepsilon}^{2})$; $\sigma_{\varepsilon}^{2}$, $\beta$ are unknown scalars and
+$\rho_{1},\rho_{2}$ are unknown. Describe a way of estimating $\beta$, $\rho_{1}$, $\rho_{2}$. How does the
+proposed method differ from the usual OLS?
+\end{qbox}
+\begin{solbox}
+\step{1. If the $\rho$'s were known.} Apply $1-\rho_{1}L-\rho_{2}L^{2}$:
+$y_{t}-\rho_{1}y_{t-1}-\rho_{2}y_{t-2} = (x_{t}-\rho_{1}x_{t-1}-\rho_{2}x_{t-2})\beta + \varepsilon_{t}$, $t=3,\dots,n$.
+The new error is iid, so OLS on the transformed data is (apart from two lost observations) GLS.
+\step{2. Unknown $\rho$'s: iterate (Cochrane--Orcutt type).}
+\begin{flatnum}
+  \item OLS of $y_{t}$ on $x_{t}$ (unbiased, since $\E(u)=0$) gives residuals $\hat u_{t}=y_{t}-x_{t}b$.
+  \item OLS of $\hat u_{t}$ on $\hat u_{t-1},\hat u_{t-2}$ (no constant) gives $\hat\rho_{1},\hat\rho_{2}$.
+  \item Quasi-difference with $\hat\rho_{1},\hat\rho_{2}$, OLS of $y_{*t}$ on $x_{*t}$ gives a new $\hat\beta$.
+  \item Recompute $\hat u_{t}=y_{t}-x_{t}\hat\beta$ from the \emph{original} data; repeat 2--4 until
+        $\hat\beta,\hat\rho_{1},\hat\rho_{2}$ stop changing. $\hat\sigma_{\varepsilon}^{2}=\sum\hat\varepsilon_{t}^{2}/(n-5)$.
+\end{flatnum}
+Equivalently, minimize $\sum_{t=3}^{n}[y_{t}-\rho_{1}y_{t-1}-\rho_{2}y_{t-2}-(x_{t}-\rho_{1}x_{t-1}-\rho_{2}x_{t-2})\beta]^{2}$
+over $(\beta,\rho_{1},\rho_{2})$ jointly.
+\step{3. Difference from OLS.} OLS ignores the correlation: still unbiased but inefficient, with true variance
+$\sigma^{2}(X\xT X)^{-1}X\xT\Omega X(X\xT X)^{-1}$, so reported standard errors and tests are wrong. The iterative method is
+GLS with estimated $\Omega$: asymptotically efficient with valid standard errors. It is nonlinear in the parameters
+(products $\rho_{j}\beta$), so it needs iteration, and two observations are lost.
+\begin{why}\Why the transformation needs the $\rho$'s, the $\rho$'s need the errors, the errors need $\beta$. OLS breaks the
+circle because it is unbiased, so its residuals are good enough to start.\end{why}
+\end{solbox}
+
+%% ===================================================================== B
+\section{Part B --- HW1}
+
+\begin{qbox}{B1.\ Partitioned OLS via the partitioned inverse}{\likely\ \hwtag{Q1}}
+For $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, use $b = (X\xT X)^{-1}X\xT y$ and the partitioned-inverse
+formula to show $b_{1} = (X_{1}\xT M_{2}X_{1})^{-1}X_{1}\xT M_{2}y$ and
+$b_{2} = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+\end{qbox}
+\begin{solbox}
+\step{Blocks.} $X\xT X = \begin{bmatrix}A&B\\B\xT&D\end{bmatrix}$, $A=X_{1}\xT X_{1}$, $B=X_{1}\xT X_{2}$, $D=X_{2}\xT X_{2}$.
+With $E = D - B\xT A^{-1}B = X_{2}\xT X_{2} - X_{2}\xT P_{1}X_{2} = X_{2}\xT M_{1}X_{2}$,
+\[
+  (X\xT X)^{-1} = \begin{bmatrix}A^{-1}+A^{-1}BE^{-1}B\xT A^{-1} & -A^{-1}BE^{-1}\\ -E^{-1}B\xT A^{-1} & E^{-1}\end{bmatrix}.
+\]
+\step{Second block row.}
+$b_{2} = -E^{-1}B\xT A^{-1}X_{1}\xT y + E^{-1}X_{2}\xT y = E^{-1}X_{2}\xT\big(I-X_{1}(X_{1}\xT X_{1})^{-1}X_{1}\xT\big)y = (X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$.
+Swapping the blocks gives $b_{1}$.
+\begin{why}\Why the Schur complement $E$ is the variation in $X_{2}$ left after $X_{1}$ has explained what it can;
+$b_{2}$ is identified from that leftover only. This is FWL in matrix-inverse form.\end{why}
+\end{solbox}
+
+\begin{qbox}{B5.\ Ten regressions: same $\hat\beta_{2}$? same residuals?}{\must\ \hwtag{Q5}\ \etmtag{2.16}}
+For $y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$, consider
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{ll@{\qquad}ll}
+(a) & $y = X_{2}\beta_{2} + u$ & (f) & $M_{1}y = X_{2}\beta_{2} + u$ \\
+(b) & $P_{1}y = X_{2}\beta_{2} + u$ & (g) & $M_{1}y = M_{1}X_{2}\beta_{2} + u$ \\
+(c) & $P_{1}y = P_{1}X_{2}\beta_{2} + u$ & (h) & $M_{1}y = X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$ \\
+(d) & $P_{X}y = X_{1}\beta_{1} + X_{2}\beta_{2} + u$ & (i) & $M_{1}y = M_{1}X_{1}\beta_{1} + M_{1}X_{2}\beta_{2} + u$ \\
+(e) & $P_{X}y = X_{2}\beta_{2} + u$ & (j) & $P_{X}y = M_{1}X_{2}\beta_{2} + u$
+\end{tabular}
+\end{center}
+For which are the estimates of $\beta_{2}$ the same as in the original regression, and why? For which are the
+residuals the same, and why?
+\end{qbox}
+\begin{solbox}
+Original: $\hat\beta_{2}=(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$, residuals $M_{X}y$. Facts used:
+$P_{X}X_{j}=X_{j}$, $P_{X}M_{1}X_{2}=M_{1}X_{2}$ (it lies in $S(X)$), $M_{1}X_{1}=O$, $X_{1}\xT M_{1}X_{2}=O$.
+\begin{center}
+\renewcommand{\arraystretch}{1.15}\small
+\begin{tabular}{l p{0.47\linewidth} c c}
+\toprule
+ & $\beta_{2}$-estimate & same $\hat\beta_{2}$? & same residuals? \\
+\midrule
+(a) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT y$ & no & no \\
+(b) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT P_{1}y$ & no & no \\
+(c) & $(X_{2}\xT P_{1}X_{2})^{-1}X_{2}\xT P_{1}y$ (not identified if $k_{2}>k_{1}$) & no & no \\
+(d) & $(X\xT X)^{-1}X\xT P_{X}y=(X\xT X)^{-1}X\xT y$ & \textbf{yes} & no (residuals $0$) \\
+(e) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT P_{X}y=(X_{2}\xT X_{2})^{-1}X_{2}\xT y$ & no & no \\
+(f) & $(X_{2}\xT X_{2})^{-1}X_{2}\xT M_{1}y$ & no & no \\
+(g) & $(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}y$ (FWL) & \textbf{yes} & \textbf{yes} \\
+(h) & regressors $X_{1}\perp M_{1}X_{2}$: coef.\ on $M_{1}X_{2}$ is FWL (on $X_{1}$ it is $0$) & \textbf{yes} & \textbf{yes} \\
+(i) & $M_{1}X_{1}=O$: $\beta_{1}$ not identified; $\beta_{2}$-block is FWL & \textbf{yes} & \textbf{yes} \\
+(j) & $(X_{2}\xT M_{1}X_{2})^{-1}X_{2}\xT M_{1}P_{X}y=$ FWL & \textbf{yes} & no (residuals $P_{1}y$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+\step{Residuals.} (g)--(i): $M_{1}y-P_{M_{1}X_{2}}y=(M_{1}-P_{X}+P_{1})y=M_{X}y$ by C2. (j): $P_{X}y-(P_{X}-P_{1})y=P_{1}y$.
+\begin{why}\Why to recover $\hat\beta_{2}$ the regressor must be $M_{1}X_{2}$ (the part of $X_{2}$ orthogonal to $X_{1}$);
+whether $y$ is cleaned or projected on $S(X)$ does not matter, since $M_{1}X_{2}$ is orthogonal to whatever was removed.
+To also recover the residuals, the regressand must be $M_{1}y$.\end{why}
+\end{solbox}
