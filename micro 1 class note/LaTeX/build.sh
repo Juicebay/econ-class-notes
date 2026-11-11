@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Build every lessonNN.tex in this folder and drop the finished PDFs one level
-# up, next to the original handwritten exports, as
+# Build every lessonNN.tex in this folder and drop the finished PDFs into
+# "../02 Lectures/Lesson NN - <shortname>/", next to the handwritten export, as
 # "Lesson NN - <shortname> (LaTeX).pdf", where <shortname> is read from the
 # "%% shortname: ..." line at the top of each lessonNN.tex.
 set -euo pipefail
@@ -20,8 +20,10 @@ for f in lesson[0-9][0-9].tex; do
   n=$(printf '%s' "$f" | sed -E 's/^lesson([0-9]+)\.tex$/\1/')
   name=$(sed -n 's/^%% shortname: *//p' "$f" | head -n 1)
   if [ -n "$name" ]; then out="Lesson ${n} - ${name} (LaTeX).pdf"; else out="Lesson ${n} (LaTeX).pdf"; fi
-  cp -f "${f%.tex}.pdf" "../${out}"
-  echo "   -> ../${out}"
+  if [ -n "$name" ]; then dest="../02 Lectures/Lesson ${n} - ${name}"; else dest="../02 Lectures/Lesson ${n}"; fi
+  mkdir -p "$dest"
+  cp -f "${f%.tex}.pdf" "${dest}/${out}"
+  echo "   -> ${dest}/${out}"
 done
 
 # remove .aux/.log/.fls/.fdb_latexmk, keep the PDFs

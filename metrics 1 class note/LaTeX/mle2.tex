@@ -1,0 +1,274 @@
+%% title: More on Maximum Likelihood - Covariance Estimators and Jacobian Terms
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\handoutheader{MLE II}{More on maximum likelihood: the Cram\'er--Rao bound, estimating the covariance matrix, the nonlinear regression with normal errors, Jacobian terms and the Box--Cox transformation}{}
+
+\runin{Previously} \emph{MLE~I}: $\sqrt n(\hat\theta-\theta_{0})\overset{a}{\sim}N(0,\mathcal I^{-1}(\theta_{0}))$, with
+$\mathcal I=-\mathcal H$ (information matrix equality). Notation as there: score $g$, CG matrix $G$,
+Hessian $H$, $\mathcal I^{n}=\frac1n\E(G'G)$, $I^{n}=n\mathcal I^{n}$.
+
+\section{The Cram\'er--Rao bound}
+
+Let $\tilde\theta$ be any unbiased estimator of $\theta$. The Cram\'er--Rao inequality states that
+\[ \Var(\tilde\theta)-\bigl(I^{n}(\theta_{0})\bigr)^{-1}\quad\text{is positive semidefinite.} \]
+Since the ML estimator has asymptotic covariance $(I^{n})^{-1}=\frac1n\mathcal I^{-1}$, it attains the
+bound in the limit: no consistent, asymptotically unbiased estimator, linear or nonlinear,
+is asymptotically more efficient than ML. This is an \emph{asymptotic} result; in finite
+samples ML is generally biased (\emph{MLE~I}, invariance) and need not attain the bound.
+
+\section{Estimating the covariance matrix of $\hat\theta$}
+
+There are several consistent estimators of $\Var(\hat\theta)$; they agree asymptotically
+under correct specification.
+
+\topic{(I) Inverse information matrix}
+\[ \widehat\Var_{\mathrm{I}}(\hat\theta)=\frac1n\,\mathcal I^{n}(\hat\theta)^{-1}=I^{n}(\hat\theta)^{-1},
+   \qquad
+   \mathcal I^{n}(\hat\theta)=\E\Bigl(\frac1n\,g(\theta)g'(\theta)\Bigr)\Big|_{\theta=\hat\theta}
+   =\E\Bigl(-\frac1n\,H(\theta)\Bigr)\Big|_{\theta=\hat\theta} \]
+(the first form equals $\frac1n\E(G'G)$ under independence). The most attractive in principle,
+but the expectations are often hard or impossible to compute analytically, so it is used
+less than the other two.
+
+\topic{(II) Inverse of minus the Hessian}
+\[ \widehat\Var_{\mathrm{H}}(\hat\theta)=-H(\hat\theta)^{-1}. \]
+If $\hat\theta$ is a regular local maximum, $H(\hat\theta)$ is negative definite, so $-H(\hat\theta)^{-1}$ is
+positive definite. Analytic second derivatives can be tedious or impossible; numerical
+derivatives are then an option, but they can be very unreliable and must be used with care.
+
+\topic{(III) Outer product of the gradient (OPG)}
+\[ \widehat\Var_{\mathrm{OPG}}(\hat\theta)=\bigl(G'(\hat\theta)\,G(\hat\theta)\bigr)^{-1}, \]
+based on $\E\bigl(g(\theta_{0})g'(\theta_{0})\bigr)=\E\bigl(G'(\theta_{0})G(\theta_{0})\bigr)$, which holds under independence.
+It needs first derivatives only.
+
+\topic{The OPG regression}
+The OPG estimator comes out of an artificial linear regression, with properties much like
+the GNR:
+\begin{equation}\tag{1}
+ \iota=G(\theta)\,b+\text{residuals}, \qquad \iota=(1,\ldots,1)' .
+\end{equation}
+Evaluated at the ML estimate, $\hat G=G(\hat\theta)$:
+\begin{equation}\tag{2}
+ \iota=\hat G\,b+\text{residuals},
+\end{equation}
+\begin{equation}\tag{3}
+ \hat b=(\hat G'\hat G)^{-1}\hat G'\iota=(\hat G'\hat G)^{-1}\hat g,
+ \qquad\text{since}\quad \hat G'\iota=\hat g\equiv g(\hat\theta).
+\end{equation}
+Because $\hat\theta$ solves the likelihood equations, $\hat g=0$, so $\hat b=0$. A $\hat b$ that is not
+close to zero signals that $\hat\theta$ is not really the ML estimate (e.g.\ the maximiser has not
+converged). The residuals are then $\iota-\hat G\hat b=\iota$, so
+\[ s^{2}=\frac{1}{n-k}\sum_{t}e_{t}^{2}=\frac{1}{n-k}\sum_{t}1=\frac{n}{n-k},
+   \qquad
+   \widehat\Var_{\text{OLS}}(\hat b)=\frac{n}{n-k}\,(\hat G'\hat G)^{-1}, \]
+which is the OPG estimator up to the factor $n/(n-k)\to1$.
+
+\section{The nonlinear regression model with normal errors}
+
+\begin{equation}\tag{4}
+ y=x(\beta)+u, \qquad u\sim N(0,\sigma^{2}I_{n}).
+\end{equation}
+All the NLS assumptions are maintained, with normality added. The contributions and the
+log-likelihood are
+\begin{align*}
+ \ell_{t}(\beta,\sigma)&=-\tfrac12\log(2\pi)-\log\sigma-\frac{(y_{t}-x_{t}(\beta))^{2}}{2\sigma^{2}}, \tag{5}\\
+ \ell(\beta,\sigma)&=-\tfrac n2\log(2\pi)-n\log\sigma-\frac{(y-x(\beta))'(y-x(\beta))}{2\sigma^{2}}. \tag{6}
+\end{align*}
+
+\topic{Concentrating out $\sigma$}
+Setting the derivative of (6) with respect to $\sigma$ to zero,
+\begin{align*}
+ \frac{\partial\ell(\beta,\sigma)}{\partial\sigma}&=-\frac n\sigma+\frac{(y-x(\beta))'(y-x(\beta))}{\sigma^{3}}=0 \tag{7}\\
+ \Longrightarrow\quad \hat\sigma^{2}(\beta)&=\frac{(y-x(\beta))'(y-x(\beta))}{n}, \tag{8}
+\end{align*}
+the maximising $\sigma^{2}$ for a given $\beta$ (hence the notation $\hat\sigma^{2}(\beta)$).
+Substituting (8) into (6) gives the \emph{concentrated log-likelihood}
+\begin{align*}
+ \ell^{c}(\beta)&=-\tfrac n2\log(2\pi)-\tfrac n2\log\Bigl[\tfrac1n(y-x(\beta))'(y-x(\beta))\Bigr]-\tfrac n2 \tag{9}\\
+ &=-\tfrac n2\log\bigl[(y-x(\beta))'(y-x(\beta))\bigr]
+   +\underbrace{\tfrac n2\bigl(\log n-1-\log(2\pi)\bigr)}_{\text{constant}}. \tag{10}
+\end{align*}
+Maximising $\ell^{c}$ is minimising the SSR, so \textbf{the ML estimate $\hat\beta$ is identical to
+the NLS estimate}, and
+\begin{equation}\tag{11}
+ \max_{\beta}\ \ell^{c}(\beta)=\max_{\beta}\ \ell\bigl(\beta,\hat\sigma(\beta)\bigr)=\max_{\beta,\sigma}\ \ell(\beta,\sigma).
+\end{equation}
+
+\topic{The information matrix}
+With $u_{t}=y_{t}-x_{t}(\beta)$ and $X_{ti}(\beta)=\partial x_{t}(\beta)/\partial\beta_{i}$, the first derivatives are
+\begin{align*}
+ \frac{\partial\ell_{t}}{\partial\beta_{i}}&=\frac{(y_{t}-x_{t}(\beta))X_{ti}(\beta)}{\sigma^{2}}=\frac{u_{t}X_{ti}(\beta)}{\sigma^{2}}, \tag{12}\\
+ \frac{\partial\ell_{t}}{\partial\sigma}&=-\frac1\sigma+\frac{(y_{t}-x_{t}(\beta))^{2}}{\sigma^{3}}=-\frac1\sigma+\frac{u_{t}^{2}}{\sigma^{3}}. \tag{13}
+\end{align*}
+These are all that is needed to compute the information matrix through the OPG form
+$\mathcal I^{n}=\frac1n\E(G'G)$. Using $\E(u_{t})=\E(u_{t}^{3})=0$, $\E(u_{t}^{2})=\sigma^{2}$, $\E(u_{t}^{4})=3\sigma^{4}$ for the
+normal, and $u_{t}$ independent of the regressors in $X_{t}(\beta)$:
+\begin{align*}
+ \mathcal I^{n}(\beta_{i},\beta_{j})&=\frac1n\,\E\Bigl(\sum_{t}\frac{u_{t}^{2}X_{ti}(\beta)X_{tj}(\beta)}{\sigma^{4}}\Bigr)
+   =\frac1n\,\frac{\sigma^{2}}{\sigma^{4}}\sum_{t}\E\bigl(X_{ti}(\beta)X_{tj}(\beta)\bigr)
+   =\frac1n\,\frac1{\sigma^{2}}\sum_{t}\E\bigl(X_{ti}X_{tj}\bigr), \tag{14}\\
+ \mathcal I^{n}(\beta_{i},\sigma)&=\frac1n\,\E\Bigl\{\sum_{t}\Bigl(-\frac{u_{t}X_{ti}(\beta)}{\sigma^{3}}+\frac{u_{t}^{3}X_{ti}(\beta)}{\sigma^{5}}\Bigr)\Bigr\}=0, \tag{15}\\
+ \mathcal I^{n}(\sigma,\sigma)&=\frac1n\,\E\Bigl\{\sum_{t}\Bigl(\frac1{\sigma^{2}}+\frac{u_{t}^{4}}{\sigma^{6}}-\frac{2u_{t}^{2}}{\sigma^{4}}\Bigr)\Bigr\}
+   =\frac1n\Bigl\{\frac n{\sigma^{2}}+\frac{3n\sigma^{4}}{\sigma^{6}}-\frac{2n\sigma^{2}}{\sigma^{4}}\Bigr\}=\frac2{\sigma^{2}}. \tag{16}
+\end{align*}
+These steps rely on the normal moments: zero third moment and fourth moment $3\sigma^{4}$
+(see Theil, \emph{Principles of Econometrics}, pp.~61--63). In matrix form, with $X=X(\beta)$,
+\begin{equation}\tag{17}
+ \mathcal I^{n}(\beta,\sigma)=\frac1n\begin{bmatrix}\E(X'X)/\sigma^{2} & 0\\ 0 & 2n/\sigma^{2}\end{bmatrix}.
+\end{equation}
+
+\topic{Covariance matrix of $(\hat\beta,\hat\sigma)$}
+(17) is block-diagonal, so it is inverted block by block (the $k\times k$ block for $\beta$ and
+the $1\times1$ block for $\sigma$). Evaluating at the estimates, with $\hat X=X(\hat\beta)$,
+\begin{equation}\tag{18}
+ \widehat V(\hat\beta,\hat\sigma)=\begin{bmatrix}\hat\sigma^{2}(\hat X'\hat X)^{-1} & 0\\ 0 & \hat\sigma^{2}/(2n)\end{bmatrix}.
+\end{equation}
+The $\beta$ block is the familiar NLS covariance matrix (with divisor $n$ in $\hat\sigma^{2}$). The
+zero off-diagonal block means $\hat\beta$ and $\hat\sigma$ are asymptotically uncorrelated, and since
+they are asymptotically jointly normal, asymptotically independent.
+
+\section{Jacobian terms}
+
+For the nonlinear regression with normal errors, ML and NLS coincide. In general they do not,
+because
+\begin{flatlist}
+ \item[(a)] the errors may be assumed to follow some specific non-normal distribution, and then
+       minimising the SSR is no longer what maximises the likelihood;
+ \item[(b)] even under normality, the likelihood may contain \emph{Jacobian terms}.
+\end{flatlist}
+
+\topic{Change of variables, one dimension}
+Let $x$ have density $f(x)$, and $x=h(y)$ (so $y=h^{-1}(x)$) with $h$ monotonic. Then
+\begin{equation}\tag{19}
+ f(y)=f\bigl(h(y)\bigr)\,\lvert h'(y)\rvert=f(x)\,\Bigl|\frac{dx}{dy}\Bigr|, \qquad x=h(y).
+\end{equation}
+Intuition: the transformation preserves probabilities. With $y=h^{-1}(x)=g(x)$ increasing,
+\begin{equation}\tag{20}
+ \Pr\{y\ \text{lies in}\ \Delta y\}=\Pr\{x\ \text{lies in}\ \Delta x\}.
+\end{equation}
+With $x'$, $y'$ the midpoints of $\Delta x$ and $\Delta y$,
+\begin{equation}\tag{21--22}
+ f(y')\,\Delta y=f(x')\,\Delta x \quad\Longrightarrow\quad f(y')=f(x')\,\frac{\Delta x}{\Delta y}.
+\end{equation}
+A density must be positive, so take absolute values, and let the intervals shrink
+($\lim_{\Delta x\to0}\Delta y/\Delta x=dy/dx$, $dx/dy=1/(dy/dx)$):
+\begin{equation}\tag{23}
+ f(y)=f(x)\,\Bigl|\frac{dx}{dy}\Bigr| .
+\end{equation}
+
+\topic{Many dimensions}
+For $m$-vectors $x$ and $y$ with $x=h(y)$,
+\begin{align*}
+ f(y)&=f\bigl(h(y)\bigr)\,\lvert\det J(y)\rvert, \tag{24}\\
+ J_{ij}(y)&=\frac{\partial h_{i}(y)}{\partial y_{j}}, \tag{26}
+\end{align*}
+where $\lvert\det J(y)\rvert$ is the absolute value of the determinant of the Jacobian matrix.
+
+In our models the transformation runs from the unobserved errors to the observed $y$'s. Its
+Jacobian is often the only thing that makes the log-likelihood something other than a
+transformation of the sum of squared residuals.
+
+\topic{Example: AR(1) in $y$, Jacobian equal to one}
+\begin{equation}\tag{27}
+ y_{t}=\alpha y_{t-1}+u_{t}, \qquad u_{t}\sim N(0,\sigma^{2})\ \text{independent}.
+\end{equation}
+The joint density of the $u$'s is
+\begin{equation}\tag{28}
+ (2\pi)^{-n/2}\Bigl(\frac1\sigma\Bigr)^{n}\exp\Bigl\{-\sum_{t=1}^{n}\frac{u_{t}^{2}}{2\sigma^{2}}\Bigr\},
+\end{equation}
+and with $u_{t}=y_{t}-\alpha y_{t-1}$ the joint density of the $y$'s (given $y_{0}$) is
+\begin{equation}\tag{29}
+ (2\pi)^{-n/2}\Bigl(\frac1\sigma\Bigr)^{n}\exp\Bigl\{-\frac{\sum_{t}(y_{t}-\alpha y_{t-1})^{2}}{2\sigma^{2}}\Bigr\}\,\lvert\det J\rvert .
+\end{equation}
+Here $\partial u_{t}/\partial y_{t}=1$ on the principal diagonal, $\partial u_{t}/\partial y_{t-1}=-\alpha$ just below it,
+and all other entries are zero:
+\[ J=\begin{bmatrix}1&&&\\-\alpha&1&&\\&\ddots&\ddots&\\&&-\alpha&1\end{bmatrix},
+   \qquad \det J=1 \]
+(a triangular matrix: the determinant is the product of the diagonal). So in this model
+ML is again least squares.
+
+\section{The Box--Cox transformation}
+
+\[ B(y,\lambda)=\begin{cases}\dfrac{y^{\lambda}-1}{\lambda}, & \lambda\neq0,\\[8pt] \log y, & \lambda=0,\end{cases}
+   \qquad y>0 . \]
+By l'H\^opital's rule $\log y$ is the limit of $(y^{\lambda}-1)/\lambda$ as $\lambda\to0$, so $B$ is continuous
+in $\lambda$. As $\lambda\to-\infty$,
+\begin{equation}\tag{30}
+ \frac{y_{t}^{\lambda}-1}{\lambda}=\frac{y_{t}^{\lambda}}{\lambda}-\frac1\lambda\ \longrightarrow\ 0
+ \qquad(y_{t}>1).
+\end{equation}
+
+\topic{The likelihood}
+The model is $B(y_{t},\lambda)=x_{t}(\beta)+u_{t}$, $u_{t}\sim N(0,\sigma^{2})$ independent, so
+\[ u_{t}=\frac{y_{t}^{\lambda}-1}{\lambda}-x_{t}(\beta), \qquad
+   \frac{\partial u_{t}}{\partial y_{t}}=\frac{\lambda y_{t}^{\lambda-1}}{\lambda}=y_{t}^{\lambda-1}>0, \]
+and $J$ is diagonal. The density of the $u_{t}$ is
+$(2\pi)^{-n/2}\sigma^{-n}\exp\{-\sum_{t}u_{t}^{2}/2\sigma^{2}\}$; the density of the $y_{t}$ is
+\begin{equation}\tag{31}
+ (2\pi)^{-n/2}\Bigl(\frac1\sigma\Bigr)^{n}
+ \exp\Bigl\{-\sum_{t}\frac{\bigl(B(y_{t},\lambda)-x_{t}(\beta)\bigr)^{2}}{2\sigma^{2}}\Bigr\}
+ \prod_{t=1}^{n}y_{t}^{\lambda-1},
+\end{equation}
+and the implied log-likelihood is
+\[ \ell(\beta,\lambda,\sigma)=-\frac n2\log(2\pi)-n\log\sigma
+   -\frac1{2\sigma^{2}}\sum_{t=1}^{n}\bigl(B(y_{t},\lambda)-x_{t}(\beta)\bigr)^{2}
+   +\underbrace{(\lambda-1)\sum_{t=1}^{n}\log y_{t}}_{\text{Jacobian}} . \]
+
+\topic{Why the Jacobian matters}
+As $\lambda\to-\infty$, $B(y_{t},\lambda)\to0$, so with $\beta$ such that $x_{t}(\beta)=0$ the SSR $\to0$. Minimising
+the SSR alone would therefore tend to pick $\lambda\approx-\infty$. But the Jacobian term
+$(\lambda-1)\sum_{t}\log y_{t}\to-\infty$ (for $\sum\log y_{t}>0$), so the log-likelihood is not maximised
+there; it tends towards a minimum. The Jacobian prevents the degenerate solution.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: \emph{MLE2.pdf}, ten photographed pages of the handwritten handout headed
+       ``(II) More on Maximum Likelihood'', paginated 1--10. Equation numbers are the
+       handout's; there is no (25), and (21)--(22) are merged here. The text is restated and
+       the derivations expanded; section numbers 1--4 are the handout's, with the normal
+       nonlinear model (an unnumbered part of Section 2 in the handout) given its own section.
+       No date. Transposes ($^{T}$) are primes.
+ \item Page 1: \textbf{Corrected:} the Cram\'er--Rao statement $V(\tilde\theta)-\mathcal I^{-1}(\theta_{0})$ mixes scales:
+       $\mathcal I$ is the per-observation (limiting) information, and the bound for $\Var(\tilde\theta)$ is
+       $(I^{n})^{-1}=(n\mathcal I^{n})^{-1}$. ``No unbiased estimator \ldots can be more efficient than the
+       ML estimator. This is an asymptotic result'' is restated with the asymptotic
+       qualification made explicit. \textbf{Corrected:} estimator (I) is written
+       $\frac1n\mathcal I^{n}(\hat\theta)^{-1}=I(\hat\theta)^{-1}$; with the notation of \emph{MLE~I} the right side is
+       $I^{n}(\hat\theta)^{-1}$. The margin note ``$\frac1n\E(G'G)$ in the case of independence'' is
+       folded into the text.
+ \item Page 2: \textbf{Corrected:} estimator (III) is headed $G^{T}(\hat\theta)G(\hat\theta)$; the covariance
+       estimator is its inverse.
+ \item Page 3: the margin ``(why?)'' after $\hat g=0$ is answered: $\hat\theta$ solves the likelihood
+       equations (type 2 estimator). In $s^{2}$ the handout's $\sum i^{2}$ is $\sum_{t}\iota_{t}^{2}=n$. The handout
+       writes $\ell(\beta,\sigma^{2})$ in (6) and differentiates with respect to $\sigma$; $\ell(\beta,\sigma)$ is used
+       throughout.
+ \item Page 5: (14) uses $\E(u_{t}^{2}X_{ti}X_{tj})=\sigma^{2}\E(X_{ti}X_{tj})$, which needs $u_{t}$ independent of the
+       regressors; stated explicitly (\textbf{added}). Theil's page reference is the handout's.
+ \item Page 6: ``the estimates of $\beta$ and $\hat\sigma^{2}$ are asymptotically independent'' --- the block
+       is for $\sigma$; the step from uncorrelated to independent via joint normality is
+       \textbf{added}. (18)'s $\hat\sigma^{2}/2n$ is read as $\hat\sigma^{2}/(2n)$. In the definition preceding (19)
+       the handout says $y=h^{-1}(x)$ with $x=h(y)$ in the margin; both are kept.
+ \item Page 7: ``$\lim_{\Delta x\to0}$'' is written $\Delta x\to\infty$-like (``$\to00$''); read as $\to0$.
+ \item Page 8: margin scribble $\prod_{t}e^{y_{t}}=e^{y_{1}}e^{y_{2}}\cdots e^{y_{n}}=e^{\sum y_{t}}$ is unrelated
+       to the text and omitted. The handout's $J$ is drawn with $-\alpha$ entries partly in the
+       first row; the stated rule ($1$ on the diagonal, $-\alpha$ just below) gives the lower
+       bidiagonal matrix shown, and conditioning on $y_{0}$ is \textbf{added}. The exclamation after
+       ``$\det J=1$'' is illegible and omitted.
+ \item Page 9: \textbf{Corrected:} ``$\log(y)$ is the limit of $(y^{\lambda}-1)/\lambda$ as $\lambda\to\infty$'' --- the
+       limit is as $\lambda\to0$. \textbf{Corrected:} (31) lacks the minus sign in the exponent.
+       \textbf{Added:} the condition $y_{t}>1$ in (30) (for $0<y_{t}<1$, $y_{t}^{\lambda}/\lambda\to-\infty$). The
+       margin note ``$\beta=0$'' beside ``SSR $\to0$'' is read as ``with $x_{t}(\beta)=0$''. The
+       derivative $\partial u_{t}/\partial y_{t}=y_{t}^{\lambda-1}$ and the residual $u_{t}$, written at the top of the
+       page, are placed in the text.
+ \item Original page map: p.\,1 Cram\'er--Rao, estimators (I) and (II); p.\,2 (II) continued,
+       (III) OPG, OPG regression (1)--(3); p.\,3 $\hat b=0$, $s^{2}$, normal nonlinear model (4)--(8);
+       p.\,4 concentrated log-likelihood (9)--(11), derivatives (12)--(13); p.\,5 information matrix
+       (14)--(17); p.\,6 (18), Section 3 Jacobian terms, (19); p.\,7 intuition (20)--(24); p.\,8 (26),
+       AR(1) example (27)--(29); p.\,9 Section 4 Box--Cox, (30)--(31), log-likelihood; p.\,10
+       conclusion on the Jacobian.
+\end{transcriptnotes}
+
+\end{document}

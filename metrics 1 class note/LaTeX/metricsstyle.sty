@@ -47,6 +47,20 @@
   \vspace{0.4em}\hrule\vspace{0.9em}%
 }
 
+% ------------------------------------------------------- handout title ------
+% \handoutheader{<label, e.g. MLE I>}{<subtitle>}{<date --- may be empty>}
+% Same block as \lessonheader, for the instructor's numbered handouts
+% (MLE I, MLE II, ...) that are not lessons of their own.
+\newcommand{\handoutheader}[3]{%
+  \begin{center}
+    {\large\scshape Econometrics I --- Class Notes}\\[3pt]
+    {\LARGE\bfseries Handout #1}\\[4pt]
+    {\itshape #2}%
+    \ifx\relax#3\relax\else\\[3pt]{\small #3}\fi
+  \end{center}
+  \vspace{0.4em}\hrule\vspace{0.9em}%
+}
+
 % ---------------------------------------------------- assignment title ------
 % \hwheader{<assignment number>}{<term --- may be empty>}{<due date --- may be empty>}
 % Same block as \lessonheader but for the problem sets, with the department

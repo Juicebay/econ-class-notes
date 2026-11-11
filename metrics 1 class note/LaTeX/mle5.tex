@@ -1,0 +1,289 @@
+%% title: Hausman Specification Testing and the LM Test by Artificial Regression
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\handoutheader{MLE V}{Supplementary lecture on maximum likelihood: Hausman specification testing (different from W, LM, LR), and the LM test computed by an artificial regression, with the test for AR(1) errors as the example}{}
+
+\runin{Previously} \emph{MLE~IV}: restricted ML $\tilde\theta$ (under $H_{0}\colon r(\theta)=0$, $r$
+restrictions, $R(\theta)=\partial r/\partial\theta'$), unrestricted ML $\hat\theta$, the information matrix
+$\mathcal I$, and
+$\operatorname{var}\bigl(\sqrt n(\tilde\theta-\theta_{0})\bigr)=\mathcal I^{-1}-\mathcal I^{-1}R'(R\,\mathcal I^{-1}R')^{-1}R\,\mathcal I^{-1}$.
+Throughout, ``$\operatorname{var}$'' of an estimator means its asymptotic variance.
+
+\section{Hausman specification testing}
+
+Consider two estimators of $\theta$:
+\begin{flatlist}
+ \item $\tilde\theta$ (\textbf{restricted ML}): consistent, asymptotically normal and asymptotically
+       efficient \emph{under $H_{0}$}.
+ \item $\hat\theta$ (\textbf{unrestricted ML}): consistent and asymptotically normal, \emph{but not
+       efficient under $H_{0}$}; it is, however, consistent over a broader range of parameter values
+       (whether or not $H_{0}$ holds).
+\end{flatlist}
+
+\runin{Note}
+\begin{flatnum}
+ \item If $H_{0}$ is true, both $\tilde\theta$ and $\hat\theta$ are consistent, and $\tilde\theta$ is more
+       efficient. If $H_{0}$ is false, $\tilde\theta$ is inconsistent but $\hat\theta$ is still consistent.
+ \item Look at $\hat\theta-\tilde\theta$. If $H_{0}$ is true, $\operatorname{plim}(\hat\theta-\tilde\theta)=0$; if $H_{0}$
+       is false, $\operatorname{plim}(\hat\theta-\tilde\theta)\neq0$.
+\end{flatnum}
+So we create a test statistic based on the contrast $\hat\theta-\tilde\theta$.
+
+\topic{The key result}
+Under $H_{0}$,
+\begin{equation}\tag{1}
+ \boxed{\ \operatorname{var}(\hat\theta-\tilde\theta)=\operatorname{var}(\hat\theta)-\operatorname{var}(\tilde\theta)\ }
+\end{equation}
+In general
+\[ \operatorname{var}(\hat\theta-\tilde\theta)=\operatorname{var}(\hat\theta)+\operatorname{var}(\tilde\theta)-2\operatorname{cov}(\hat\theta,\tilde\theta), \]
+so for (1) to hold we need
+\begin{equation}\tag{2}
+ \operatorname{var}(\tilde\theta)=\operatorname{cov}(\hat\theta,\tilde\theta).
+\end{equation}
+
+\topic{Proof of (2)}
+Consider the linear combination of $\tilde\theta$ and $\hat\theta$
+\[ \theta^{*}=(1-\lambda)\tilde\theta+\lambda\hat\theta . \]
+It is also consistent under $H_{0}$, with
+\[ \operatorname{var}(\theta^{*})=(1-\lambda)^{2}\operatorname{var}(\tilde\theta)+\lambda^{2}\operatorname{var}(\hat\theta)
+   +2\lambda(1-\lambda)\operatorname{cov}(\tilde\theta,\hat\theta). \]
+Choose $\lambda$ to minimise $\operatorname{var}(\theta^{*})$:
+\[ \frac{\partial\operatorname{var}(\theta^{*})}{\partial\lambda}
+   =-2(1-\lambda)\operatorname{var}(\tilde\theta)+2\lambda\operatorname{var}(\hat\theta)+(2-4\lambda)\operatorname{cov}(\tilde\theta,\hat\theta)=0, \]
+\begin{equation}\tag{3}
+ \Longrightarrow\quad
+ \lambda\bigl[\operatorname{var}(\tilde\theta)+\operatorname{var}(\hat\theta)-2\operatorname{cov}(\hat\theta,\tilde\theta)\bigr]
+ =\operatorname{var}(\tilde\theta)-\operatorname{cov}(\hat\theta,\tilde\theta).
+\end{equation}
+By assumption $\tilde\theta$ is asymptotically efficient. Therefore $\lambda=0$, i.e.\ $\theta^{*}=\tilde\theta$,
+gives the most efficient estimator in this family, so $\lambda=0$ must solve (3). Then
+\[ \operatorname{var}(\tilde\theta)-\operatorname{cov}(\hat\theta,\tilde\theta)=0
+   \quad\Longrightarrow\quad\operatorname{var}(\tilde\theta)=\operatorname{cov}(\hat\theta,\tilde\theta). \]
+(For vector $\theta$, take $\theta^{*}=\tilde\theta+\lambda A(\hat\theta-\tilde\theta)$ for any fixed $k\times k$ matrix $A$
+and any $c$. Efficiency of $\tilde\theta$ means $\operatorname{var}(c'\theta^{*})$ is minimised at $\lambda=0$, so its
+derivative there, $2\,c'\operatorname{cov}(\tilde\theta,\hat\theta-\tilde\theta)A'c$, is zero for all $c$ and $A$. Hence
+$\operatorname{cov}(\tilde\theta,\hat\theta-\tilde\theta)=0$, i.e.\ $\operatorname{cov}(\hat\theta,\tilde\theta)=\operatorname{var}(\tilde\theta)$.) Substituting (2) into the
+general expression gives (1). \hfill$\square$
+
+\topic{The Hausman statistic}
+Now look at
+\begin{equation}\tag{4}
+ (\hat\theta-\tilde\theta)'\bigl[\operatorname{var}(\hat\theta)-\operatorname{var}(\tilde\theta)\bigr]^{-}(\hat\theta-\tilde\theta)
+ \ \overset{a}{\sim}\ \chi^{2}_{r},
+\end{equation}
+where ${}^{-}$ denotes a generalised inverse (see below for why an ordinary inverse does not exist).
+Recall
+\[ \operatorname{var}(\hat\theta)=\frac1n\,\mathcal I^{-1}(\hat\theta), \]
+and, from \emph{MLE~IV},
+\begin{align*}
+ \operatorname{var}(\tilde\theta)
+ &=\frac1n\,\mathcal I^{-1}(\tilde\theta)\Bigl[I-R'(\tilde\theta)\bigl[R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigr]^{-1}R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)\Bigr]
+ \qquad(I=\text{identity matrix})\\
+ &=\frac1n\Bigl[\mathcal I^{-1}(\tilde\theta)-\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigl[R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigr]^{-1}R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)\Bigr].
+\end{align*}
+Under $H_{0}$ both information matrices estimate the same $\mathcal I(\theta_{0})$, so (evaluating at $\tilde\theta$)
+\begin{equation}\tag{5}
+ \operatorname{var}(\hat\theta)-\operatorname{var}(\tilde\theta)
+ =\frac1n\,\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigl[R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigr]^{-1}R(\tilde\theta)\mathcal I^{-1}(\tilde\theta),
+\end{equation}
+and the Hausman statistic is
+\[ n\,(\hat\theta-\tilde\theta)'\Bigl[\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigl[R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)R'(\tilde\theta)\bigr]^{-1}R(\tilde\theta)\mathcal I^{-1}(\tilde\theta)\Bigr]^{-}(\hat\theta-\tilde\theta)
+   \ \overset{a}{\sim}\ \chi^{2}_{r}. \]
+The $k\times k$ matrix in (5) has rank $r$ only (it is sandwiched around the $r\times r$ matrix
+$(R\mathcal I^{-1}R')^{-1}$), so for $r<k$ it is singular: this is why a generalised inverse is used, and why
+the degrees of freedom are $r$, not $k$.
+
+\topic{Illustration: the linear model with $R\beta=r$}
+Let $y=X\beta+u$, $u\sim N(0,\sigma^{2}I)$, with OLS $b=(X'X)^{-1}X'y$, $\operatorname{var}(b)=\sigma^{2}(X'X)^{-1}$, and
+restricted least squares (Lesson~6)
+\begin{align*}
+ b^{*}&=b+(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}(r-Rb),\\
+ \operatorname{var}(b^{*})&=\sigma^{2}(X'X)^{-1}-\sigma^{2}(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}.
+\end{align*}
+Hence
+\begin{align*}
+ b-b^{*}&=(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}(Rb-r),\\
+ \operatorname{var}(b)-\operatorname{var}(b^{*})&=\sigma^{2}(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}
+ \;\equiv\;\sigma^{2}P .
+\end{align*}
+One generalised inverse of $P$ is $X'X$ (check: $P(X'X)P=P$), and since $b-b^{*}$ lies in the column space
+of $P$ the quadratic form does not depend on which generalised inverse is used. Therefore
+\[ \frac1{\sigma^{2}}(b-b^{*})'P^{-}(b-b^{*})
+   =\frac1{\sigma^{2}}(Rb-r)'\bigl(R(X'X)^{-1}R'\bigr)^{-1}(Rb-r)\ \sim\ \chi^{2}_{r}, \]
+which is exactly the Wald statistic for $R\beta=r$ (and $r$ times the $F$ statistic once $\sigma^{2}$ is replaced
+by $s^{2}$). In this simple case the Hausman contrast reproduces the classical test; its value lies in
+cases where $\hat\theta$ and $\tilde\theta$ are any efficient/robust pair of estimators, not only ML.
+
+\section{The LM test by an artificial regression}
+
+\topic{The model}
+Let
+\[ y_{t}=X_{t}\beta+u_{t},\qquad u_{t}=\rho u_{t-1}+\varepsilon_{t},\qquad \varepsilon_{t}\sim\text{i.i.d. }N(0,\sigma^{2}),\qquad t=1,\dots,n, \]
+with $X_{t}$ the $1\times k$ row of regressors. The model can be rewritten as
+\[ y_{t}=\rho y_{t-1}+X_{t}\beta-\rho X_{t-1}\beta+\varepsilon_{t}
+   \;=\;f_{t}(\beta,\rho)+\varepsilon_{t}\;=\;f_{t}(\alpha)+\varepsilon_{t},\qquad\alpha=(\beta,\rho). \]
+Define
+\[ F_{ti}(\alpha)=\frac{\partial f_{t}(\alpha)}{\partial\alpha_{i}},\qquad t=1,\dots,n,\quad i=1,\dots,p,\quad p=k+1. \]
+Therefore $F$ is an $n\times p$ matrix,
+\[ F=\begin{bmatrix}
+ \dfrac{\partial f_{1}}{\partial\alpha_{1}}&\dfrac{\partial f_{1}}{\partial\alpha_{2}}&\cdots&\dfrac{\partial f_{1}}{\partial\alpha_{p}}\\[8pt]
+ \dfrac{\partial f_{2}}{\partial\alpha_{1}}&\dfrac{\partial f_{2}}{\partial\alpha_{2}}&\cdots&\dfrac{\partial f_{2}}{\partial\alpha_{p}}\\[4pt]
+ \vdots&\vdots&\ddots&\vdots\\[2pt]
+ \dfrac{\partial f_{n}}{\partial\alpha_{1}}&\dfrac{\partial f_{n}}{\partial\alpha_{2}}&\cdots&\dfrac{\partial f_{n}}{\partial\alpha_{p}}
+\end{bmatrix}. \]
+
+\topic{Log-likelihood, score and information}
+The log-likelihood is
+\[ L(\beta,\rho,\sigma)=L(\alpha,\sigma)=\text{const}-n\log\sigma-\frac1{2\sigma^{2}}\sum_{t=1}^{n}\bigl(y_{t}-f_{t}(\alpha)\bigr)^{2}. \]
+The first-order conditions are
+\begin{align}
+ \frac{\partial L}{\partial\alpha_{i}}&=g_{i}(\alpha,\sigma)=\frac1{\sigma^{2}}\sum_{t=1}^{n}\bigl(y_{t}-f_{t}(\alpha)\bigr)F_{ti}(\alpha)=0,\qquad i=1,\dots,p, \tag{6}\\
+ \frac{\partial L}{\partial\sigma}&=g_{\sigma}(\alpha,\sigma)=-\frac n\sigma+\frac1{\sigma^{3}}\sum_{t=1}^{n}\bigl(y_{t}-f_{t}(\alpha)\bigr)^{2}=0. \notag
+\end{align}
+In vector form $g_{\alpha}(\alpha,\sigma)=\frac1{\sigma^{2}}F'(\alpha)\bigl(y-f(\alpha)\bigr)$. The information matrix, with
+$\theta=(\alpha,\sigma)=(\beta,\rho,\sigma)$, is
+\[ \mathcal I(\theta)=-\E\Bigl[\frac{\partial^{2}L}{\partial\theta\,\partial\theta'}\Bigr]
+   =\begin{bmatrix}\dfrac1{\sigma^{2}}F'F&0\\[6pt]0&\dfrac{2n}{\sigma^{2}}\end{bmatrix},
+   \qquad
+   \mathcal I^{-1}(\theta)=\begin{bmatrix}\sigma^{2}(F'F)^{-1}&0\\[4pt]0&\dfrac{\sigma^{2}}{2n}\end{bmatrix}
+   =\begin{bmatrix}\mathcal I^{-1}(\alpha)&0\\0&\mathcal I^{-1}(\sigma)\end{bmatrix}, \]
+where $\sigma^{2}(F'F)^{-1}=\sigma^{2}\bigl(F'(\alpha)F(\alpha)\bigr)^{-1}$ from the definition of $F$. (The
+off-diagonal block is zero because $\E[\varepsilon_{t}]=0$; the $\sigma$ entry is
+$\E[-\partial^{2}L/\partial\sigma^{2}]=-n/\sigma^{2}+3n\sigma^{2}/\sigma^{4}=2n/\sigma^{2}$.)
+
+\topic{The LM statistic}
+Let $H_{0}$ impose $r$ restrictions on $\alpha$, and let $\tilde\theta=(\tilde\alpha,\tilde\sigma)$ be the restricted
+ML estimator. Then
+\[ LM=g'(\tilde\theta)\,\mathcal I^{-1}(\tilde\theta)\,g(\tilde\theta)=g'(\tilde\alpha)\,\mathcal I^{-1}(\tilde\alpha)\,g(\tilde\alpha), \]
+since $\mathcal I$ is block diagonal and $g_{\sigma}(\tilde\theta)=0$ ($\tilde\sigma$ solves its own first-order
+condition). (Written with the Hessian, $LM=-\tilde g'\tilde H^{-1}\tilde g$; the minus sign disappears once
+$-H$ is replaced by the information matrix.) With $\tilde f=f(\tilde\alpha)$ and $\tilde F=F(\tilde\alpha)$,
+\begin{align*}
+ LM&=\frac1{\tilde\sigma^{2}}\bigl(y-f(\tilde\alpha)\bigr)'F(\tilde\alpha)\;\tilde\sigma^{2}\bigl(F'(\tilde\alpha)F(\tilde\alpha)\bigr)^{-1}\;\frac1{\tilde\sigma^{2}}F'(\tilde\alpha)\bigl(y-f(\tilde\alpha)\bigr)\\
+   &=\frac1{\tilde\sigma^{2}}(y-\tilde f)'\tilde F(\tilde F'\tilde F)^{-1}\tilde F'(y-\tilde f).
+\end{align*}
+But this is just the explained sum of squares from the artificial regression
+\begin{equation}\tag{7}
+ \frac{y-\tilde f}{\tilde\sigma}=\tilde F\,b+\text{errors}.
+\end{equation}
+Recall: if $y=X\beta+u$, then $Xb=X(X'X)^{-1}X'y$ and
+\[ \mathrm{ESS}=b'X'Xb=y'X(X'X)^{-1}X'X(X'X)^{-1}X'y=y'X(X'X)^{-1}X'y. \]
+
+\runin{To summarise}
+$LM=\mathrm{ESS}$ from (7), and $\mathrm{ESS}\overset{a}{\sim}\chi^{2}_{r}$, $r$ = number of restrictions.
+
+\topic{The $nR^{2}$ form}
+Also note the following. The residual sum of squares of (7) is
+\[ \mathrm{RSS}=\frac1{\tilde\sigma^{2}}(y-\tilde f)'\bigl[I-\tilde F(\tilde F'\tilde F)^{-1}\tilde F'\bigr](y-\tilde f),
+   \qquad\text{but}\quad\tilde\sigma^{2}=\frac{(y-\tilde f)'(y-\tilde f)}{n}\ \text{under }H_{0}. \]
+Therefore
+\[ \frac1{\tilde\sigma^{2}}(y-\tilde f)'(y-\tilde f)=\frac{(y-\tilde f)'(y-\tilde f)}{(y-\tilde f)'(y-\tilde f)/n}=n, \]
+and hence
+\[ \mathrm{RSS}=\underbrace{\frac1{\tilde\sigma^{2}}(y-\tilde f)'(y-\tilde f)}_{=\,n}
+   -\underbrace{\frac1{\tilde\sigma^{2}}(y-\tilde f)'\tilde F(\tilde F'\tilde F)^{-1}\tilde F'(y-\tilde f)}_{=\,LM}
+   =n-LM
+   \quad\Longrightarrow\quad LM=n-\mathrm{RSS}. \]
+Also the (uncentred) total sum of squares of the regressand is
+$\mathrm{TSS}=(y-\tilde f)'(y-\tilde f)/\tilde\sigma^{2}=n$, and thus
+\[ R^{2}=\frac{\mathrm{ESS}}{\mathrm{TSS}}=1-\frac{\mathrm{RSS}}{\mathrm{TSS}}=1-\frac{n-LM}{n}=\frac{LM}{n}
+   \qquad\Longrightarrow\qquad\boxed{\,LM=nR^{2}\,} \]
+
+\section{Example: testing for AR(1) errors, $H_{0}\colon\rho=0$}
+
+From above,
+\[ y_{t}=f_{t}(\alpha)+\varepsilon_{t}=\rho y_{t-1}+X_{t}\beta-\rho X_{t-1}\beta+\varepsilon_{t}. \]
+Let $H_{0}\colon\rho=0$ (one restriction). With $f_{t}(\alpha)=\rho y_{t-1}+X_{t}\beta-\rho X_{t-1}\beta$,
+\begin{align*}
+ F_{t\beta_{i}}(\alpha)&=X_{ti}-\rho X_{t-1,i},\qquad i=1,\dots,k,\\
+ F_{t\rho}(\alpha)&=y_{t-1}-X_{t-1}\beta .
+\end{align*}
+Also $\alpha=(\beta,\rho)$ and $\tilde\alpha=(\tilde\beta,0)$, so $\tilde f_{t}=X_{t}\tilde\beta$ and the two equations above become
+\[ \tilde F_{t\beta_{i}}=X_{ti},\qquad \tilde F_{t\rho}=y_{t-1}-X_{t-1}\tilde\beta . \]
+The artificial regression (7) now becomes
+\begin{equation}\tag{8}
+ \frac1{\tilde\sigma}\bigl(y_{t}-X_{t}\tilde\beta\bigr)=X_{t}\,c+\bigl(y_{t-1}-X_{t-1}\tilde\beta\bigr)\,d+\text{errors}.
+\end{equation}
+From (8) we obtain $nR^{2}\overset{a}{\sim}\chi^{2}_{1}$; also a $t$-statistic on $d$ is a valid test of
+$H_{0}\colon\rho=0$.
+
+\runin{Note} $\tilde\beta$ is the OLS estimator under $H_{0}\colon\rho=0$ (with $\rho=0$ the model is the classical
+normal linear model, so restricted ML of $\beta$ is OLS).
+
+\topic{To summarise: testing for $\rho=0$}
+\begin{flatlist}
+ \item[Step 1] Run an OLS regression of $y_{t}$ on $X_{t}$ and obtain the residuals $e_{t}$.
+ \item[Step 2] Regress $e_{t}$ on $X_{t}$ and $e_{t-1}$, and obtain $nR^{2}\overset{a}{\sim}\chi^{2}_{1}$.
+\end{flatlist}
+\runin{Note 1} If we do not divide $e_{t}$ by $\tilde\sigma$ we lose nothing, since $R^{2}$ is invariant to rescaling the
+regressand.
+
+\runin{Note 2} The regressors in (8) are $X_{t}$ themselves, not the fitted values $X_{t}\tilde\beta$ (these are
+the derivatives $\tilde F_{t\beta}$). Because $e$ is orthogonal to $X$, if $X$ contains a constant the
+residuals have mean zero and the centred and uncentred $R^{2}$ coincide. For $t=1$ the lag $e_{0}$ is
+unavailable: either set $e_{0}=0$ or drop the first observation (asymptotically irrelevant).
+
+\runin{Exercise} Generalise the above procedure to test $H_{0}\colon\rho_{1}=\rho_{2}=\rho_{3}=\cdots=\rho_{p}=0$ if
+\[ y_{t}=X_{t}\beta+u_{t},\qquad u_{t}=\rho_{1}u_{t-1}+\rho_{2}u_{t-2}+\cdots+\rho_{p}u_{t-p}+\varepsilon_{t}. \]
+\emph{Sketch (added).} Now $f_{t}(\alpha)=X_{t}\beta+\sum_{j=1}^{p}\rho_{j}(y_{t-j}-X_{t-j}\beta)$ and at
+$\tilde\alpha=(\tilde\beta,0,\dots,0)$ the derivatives are $\tilde F_{t\beta}=X_{t}$,
+$\tilde F_{t\rho_{j}}=y_{t-j}-X_{t-j}\tilde\beta=e_{t-j}$. So regress $e_{t}$ on $X_{t},e_{t-1},\dots,e_{t-p}$;
+then $nR^{2}\overset{a}{\sim}\chi^{2}_{p}$ (or use the $F$ test of $d_{1}=\cdots=d_{p}=0$).
+
+\runin{Difference from the GNR?} The regression in (8) has the same regressors as the Gauss--Newton
+regression test for AR(1) errors in Lesson~13: $\tilde u_{t}$ on $X_{t}$ and $\tilde u_{t-1}$. The difference is
+in how it is motivated and read. The GNR comes from NLS and is read with the usual $t$/$F$ statistic
+(which re-estimates $\sigma^{2}$ from the GNR residuals); the artificial regression here comes from the ML
+score and information matrix, its regressand is scaled by $\tilde\sigma$, and the statistic is the LM form
+$\mathrm{ESS}=nR^{2}$, which uses the \emph{restricted} $\tilde\sigma^{2}$. Under $H_{0}$ they are asymptotically
+equivalent.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: \emph{MLE5.pdf}, six photographed pages: pages 1--3 handwritten, headed ``1\,(V)'', ``2'', ``3''
+       (Hausman specification testing); pages 4--6 printed sheets numbered 53--55 with handwritten heading
+       ``By an artificial Regression: Example of LM test''. Section headings are \textbf{added}. Equation
+       numbers: the handwritten part has (1), (2); here the proof's equation (2) is (3) and the condition
+       $\operatorname{var}(\tilde\theta)=\operatorname{cov}(\hat\theta,\tilde\theta)$ is labelled (2). The printed sheets number only (8),
+       which is kept; (4)--(7) are \textbf{added}. Transposes ($^{T}$) are primes.
+ \item Page 1: title ``Supplementary Lecture on Maximum Likelihood. Hausman specification testing (Different
+       from W, LM, LR)''. ``consistent over a broader range of estimate'' is read as ``of parameter values''.
+       ``Create a test statistic based on $(\tilde\theta-\tilde\theta)$'' (both tildes) is read as $\hat\theta-\tilde\theta$.
+ \item Page 2: \textbf{Corrected:} the derivative of $\operatorname{var}(\theta^{*})$ is written with $+2(1-\lambda)\operatorname{var}(\tilde\theta)$;
+       differentiating $(1-\lambda)^{2}$ gives $-2(1-\lambda)$. With the corrected sign the handout's next line
+       (3) follows; with the handout's sign it would not. The reason $\lambda=0$ must solve (3) and the
+       extension to vector $\theta$ are \textbf{added}. In the statistic (4) the handout writes an ordinary inverse;
+       the matrix is singular of rank $r$, so a generalised inverse is used (\textbf{corrected}).
+ \item Page 3: \textbf{Corrected:} inside the restricted variance the handout writes
+       $[R(\tilde\theta)\mathcal I(\tilde\theta)R'(\tilde\theta)]^{-1}$; it must be $[R\,\mathcal I^{-1}R']^{-1}$, as in \emph{MLE~IV}
+       (11). The lower half of the page is faint pencil working on the linear model ($b$, $b^{*}$, their
+       variances and the contrast $b-b^{*}$); it is partly illegible and is written out cleanly here as
+       ``Illustration: the linear model'', with the generalised-inverse step and the identification with the
+       Wald statistic \textbf{added}.
+ \item Page 4 (sheet 53): the log-likelihood is $L(\beta,\rho,\sigma^{2})=L(\alpha,\sigma^{2})$ in the handout but is written
+       and differentiated in $\sigma$; it is labelled $L(\alpha,\sigma)$ here. The handout writes
+       $\partial^{2}L/\partial\theta\partial\theta'=-\mathbb H(\theta)$ for the block matrix; that matrix is the
+       information matrix $-\E[\partial^{2}L/\partial\theta\partial\theta']$ (\textbf{corrected}, written $\mathcal I$).
+       \textbf{Corrected:} the lower-right block of $\mathcal I^{-1}$ is printed $2n/\sigma^{2}$; the inverse is $\sigma^{2}/(2n)$.
+       ``Let $H_{0}\colon\alpha=\alpha_{0}$'' is generalised to $r$ restrictions on $\alpha$, as the summary (``$r$ restrictions'')
+       and the example ($\rho=0$ only) require.
+ \item Page 5 (sheet 54): the printed ``$LM=-g'(\tilde\alpha)H^{-1}(\tilde\alpha)g(\tilde\alpha)=$ ???minus???'' is resolved: with the
+       Hessian the minus is needed, with the information matrix (as used in the next line) it is not.
+       The top of the sheet is curled; the line $g=\frac1{\sigma^{2}}(y-f(\alpha))'F(\alpha)$ is read from the visible part.
+       The struck-through $X'X(X'X)^{-1}$ in the ESS ``recall'' is the cancellation, written out here.
+       ``where $r$ -- restrictions (dimension of $\alpha$)'' is read as the number of restrictions (\textbf{corrected}).
+       $R^{2}$ here is the uncentred $R^{2}$ (\textbf{added}).
+ \item Page 6 (sheet 55): in (8) the first regressor is printed ``$(X_{t}\tilde\beta)c$'' with $\tilde\beta$ crossed out by hand,
+       and the printed ``Note 2: Instead of fitted values $X_{t}\tilde\beta$ as a regressor one can simply have the
+       $X_{t}$'s'' is struck through; the regressor is $X_{t}$, which is what the derivative gives, and the point is
+       kept as Note 2. The $e_{0}$ remark and the exercise sketch are \textbf{added}. The handwritten question
+       ``Difference from GNR?'' is answered (\textbf{added}).
+ \item Original page map: p.\,1 Hausman setup, result (1); p.\,2 proof of $\operatorname{var}(\tilde\theta)=\operatorname{cov}(\hat\theta,\tilde\theta)$, the
+       statistic; p.\,3 $\operatorname{var}(\tilde\theta)$, the contrast's variance, linear-model working; p.\,4 (53) AR(1) model as
+       $f_{t}(\alpha)$, $F$, log-likelihood, information; p.\,5 (54) LM as ESS, $LM=nR^{2}$; p.\,6 (55) test for $\rho=0$,
+       exercise.
+\end{transcriptnotes}
+
+\end{document}

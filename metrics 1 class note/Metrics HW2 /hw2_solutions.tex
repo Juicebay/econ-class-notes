@@ -1,0 +1,321 @@
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+\usepackage{booktabs}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,showstringspaces=false}
+
+\begin{document}
+
+\hwheader{2 --- Solutions}{Fall 2026}{Xingming Li \quad (Student ID: 1432037)}
+
+% ======================================================================
+\question{Question 1}
+Data: $X_{1t},X_{2t}\sim U(1,2)$, $u_t\sim N(0,1)$, $n=200$ (seed 6140).
+The same $X$'s and $u$'s are used for every value of $\beta$.
+
+\textbf{GNR.} Write the model as $y_t=x_t(\theta)+u_t$ with $x_t(\theta)=\alpha\bigl(X_{1t}^{\beta}+X_{2t}^{1-\beta}\bigr)$,
+$\theta=(\alpha,\beta)\xT$. A first-order Taylor expansion around the current value $\theta^{(j)}$ gives
+\[
+  x_t(\theta)\approx x_t(\theta^{(j)})+X_t(\theta^{(j)})\,(\theta-\theta^{(j)}),
+  \qquad X_t(\theta)=\frac{\partial x_t(\theta)}{\partial\theta\xT},
+\]
+so
+\[
+  y_t-x_t(\theta^{(j)})=X_t(\theta^{(j)})\,b+\text{resid},\qquad b=\theta-\theta^{(j)} .
+\]
+This is the GNR. The derivatives are
+\begin{align*}
+  \frac{\partial x_t}{\partial\alpha}&=X_{1t}^{\beta}+X_{2t}^{1-\beta},\\
+  \frac{\partial x_t}{\partial\beta}&=\alpha\Bigl(\frac{\partial X_{1t}^{\beta}}{\partial\beta}+\frac{\partial X_{2t}^{1-\beta}}{\partial\beta}\Bigr)
+  =\alpha\bigl(X_{1t}^{\beta}\log X_{1t}-X_{2t}^{1-\beta}\log X_{2t}\bigr),
+\end{align*}
+using $\partial X^{c}/\partial c=X^{c}\log X$ (and the chain rule gives the minus sign for $1-\beta$).
+
+\emph{Algorithm.} Start from $\theta^{(0)}=(0.5,0.3)$. At step $j$:
+\begin{flatnum}
+  \item compute the residuals $y_t-x_t(\theta^{(j)})$ and the regressors $X_t(\theta^{(j)})$;
+  \item run OLS: $b^{(j)}=\bigl(X\xT X\bigr)^{-1}X\xT\bigl(y-x(\theta^{(j)})\bigr)$;
+  \item update $\theta^{(j+1)}=\theta^{(j)}+b^{(j)}$;
+  \item stop when $\max|b^{(j)}|<10^{-8}$. At that point $X\xT(y-x(\hat\theta))=0$, which is exactly the
+        NLS first-order condition, so the SSR is minimized.
+\end{flatnum}
+Standard errors come from the final GNR: $\widehat{\Var}(\hat\theta)=s^2(X\xT X)^{-1}$, $s^2=\text{SSR}/(n-2)$.
+
+\begin{center}
+\begin{tabular}{llcccc}
+\toprule
+Part & True $\beta$ & $\hat\alpha$ (s.e.) & $\hat\beta$ (s.e.) & SSR & Iterations \\
+\midrule
+(i)      & 0.5   & 1.0383 (0.0297) & 0.6126 (0.1680) & 197.1807 & 6 \\
+(ii)(a)  & 0.1   & 1.0483 (0.0300) & 0.2279 (0.1633) & 197.1571 & 5 \\
+(ii)(b)  & 0.001 & 1.0508 (0.0311) & 0.1305 (0.1607) & 197.1583 & 6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Comment.} $\hat\alpha$ is close to its true value 1 and precisely estimated in all three cases.
+$\beta$ is estimated imprecisely (s.e.\ $\approx 0.16$), and the smaller the true $\beta$, the further
+$\hat\beta$ is pushed away from it (for $\beta=0.001$, $\hat\beta=0.13$). The SSR is nearly identical across
+the three regressions, so the objective function is very flat in $\beta$: with $X\in(1,2)$, the
+functions $X^{\beta}$ and $X^{1-\beta}$ change very little as $\beta$ changes, so $\beta$ is weakly identified.
+
+% ======================================================================
+\question{Question 2}
+DGP: $y_t=X_{1t}+X_{2t}+X_{3t}^{2}+u_t$, $X$'s $\sim U(1,2)$, $u_t\sim N(0,1)$.
+
+\textbf{(a)} Here $x_t(\theta)=\beta_1X_{1t}+\beta_2X_{2t}+\beta_3X_{3t}^{\gamma}$, $\theta=(\beta_1,\beta_2,\beta_3,\gamma)\xT$. The derivatives are
+\[
+  \frac{\partial x_t}{\partial\beta_1}=X_{1t},\qquad
+  \frac{\partial x_t}{\partial\beta_2}=X_{2t},\qquad
+  \frac{\partial x_t}{\partial\beta_3}=X_{3t}^{\gamma},\qquad
+  \frac{\partial x_t}{\partial\gamma}=\beta_3X_{3t}^{\gamma}\log X_{3t},
+\]
+so each GNR is
+\[
+  y_t-x_t(\theta^{(j)})=b_1X_{1t}+b_2X_{2t}+b_3X_{3t}^{\gamma^{(j)}}+b_4\,\beta_3^{(j)}X_{3t}^{\gamma^{(j)}}\log X_{3t}+\text{resid}.
+\]
+Start from $(0.5,0.5,0.5,1.5)$, same updating and stopping rule as Q1, and $s^2=\text{SSR}/(n-4)$.
+
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{2}{c}{$n=50$} & \multicolumn{2}{c}{$n=100$} & \multicolumn{2}{c}{$n=200$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & Est. & s.e. & Est. & s.e. & Est. & s.e. \\
+\midrule
+$\beta_1$ & 0.7125 & 0.4533 & 0.6122 & 0.3431 & 0.8518 & 0.2529 \\
+$\beta_2$ & 0.3936 & 0.4807 & 1.3636 & 0.3526 & 0.8542 & 0.2484 \\
+$\beta_3$ & 2.4419 & 0.9398 & 1.1101 & 0.6764 & 1.3819 & 0.4637 \\
+$\gamma$  & 0.9990 & 0.3332 & 1.8354 & 0.6718 & 1.5958 & 0.3497 \\
+\midrule
+SSR & \multicolumn{2}{c}{37.9353} & \multicolumn{2}{c}{102.8701} & \multicolumn{2}{c}{212.2670} \\
+Iterations & \multicolumn{2}{c}{9} & \multicolumn{2}{c}{9} & \multicolumn{2}{c}{6} \\
+\bottomrule
+\end{tabular}
+\end{center}
+Standard errors fall as $n$ grows. $\beta_3$ and $\gamma$ are hard to separate (e.g.\ $n=50$: $\hat\gamma\approx1$
+is compensated by $\hat\beta_3=2.44$), since $X_3^{\gamma}$ over $(1,2)$ can be approximated by a rescaled $X_3$.
+
+\textbf{(b)} $H_0:\gamma=1$.
+
+\emph{(i) Unrestricted (Wald / $t$):} $t=(\hat\gamma-1)/\text{se}(\hat\gamma)$, compared with $N(0,1)$.
+
+\emph{(ii) Restricted (LM via GNR):} under $\gamma=1$ the model is linear, so estimate
+$y_t=\beta_1X_{1t}+\beta_2X_{2t}+\beta_3X_{3t}+u_t$ by OLS to get $\tilde\beta$, $\tilde u_t$. Then run the GNR
+\[
+  \tilde u_t = b_1X_{1t}+b_2X_{2t}+b_3X_{3t}+c\,\tilde\beta_3X_{3t}\log X_{3t}+\text{resid},
+\]
+and use the $t$-statistic on $c$.
+
+\begin{center}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{(i) Wald} & \multicolumn{3}{c}{(ii) LM} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+$n$ & $t$ & $p$-value & Reject 5\% & $t_{LM}$ & $p$-value & Reject 5\% \\
+\midrule
+50  & $-0.0030$ & 0.9976 & No & $-0.0030$ & 0.9976 & No \\
+100 & $1.2436$  & 0.2136 & No & $1.8795$  & 0.0602 & No \\
+200 & $1.7037$  & 0.0884 & No & $2.3207$  & 0.0203 & Yes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Comment.} The two tests are asymptotically equivalent but differ in finite samples. At $n=50$ they agree
+(since $\hat\gamma\approx1$, the unrestricted and restricted estimates almost coincide) and both fail to reject the
+false null. As $n$ grows both statistics increase, but only the LM test rejects $\gamma=1$ at $n=200$; the Wald test
+still does not. Both tests have low power here because $\gamma$ is weakly identified.
+
+% ======================================================================
+\question{Question 3}
+
+\textbf{(a)} $f(x_i,\theta)=\theta x_i^{\theta-1}$, $0<x_i<1$.
+
+Likelihood and log-likelihood:
+\begin{align*}
+  \ell(\theta)&=\prod_i\theta x_i^{\theta-1},\\
+  L(\theta)&=\sum_i\log\bigl(\theta x_i^{\theta-1}\bigr)=\sum_i\bigl[\log\theta+(\theta-1)\log x_i\bigr]
+  =n\log\theta+(\theta-1)\sum_i\log x_i .
+\end{align*}
+F.O.C.\ w.r.t.\ $\theta$:
+\begin{align*}
+  \frac{\partial L}{\partial\theta}=\frac{n}{\hat\theta}+\sum_i\log x_i&=0\\
+  -\hat\theta\sum_i\log x_i&=n\\
+  \hat\theta&=-\frac{n}{\sum_i\log x_i}.
+\end{align*}
+S.O.C.: $\partial^2L/\partial\theta^2=-n/\theta^2<0$, so this is a maximum. (Since $0<x_i<1$, $\sum_i\log x_i<0$ and $\hat\theta>0$.)
+
+\textbf{(b)} $f(x_i,\theta)=\frac1\theta e^{-x_i/\theta}$, $x_i>0$.
+\begin{align*}
+  \ell(\theta)&=\prod_i\Bigl(\frac1\theta\Bigr)e^{-x_i/\theta},\\
+  L(\theta)&=\sum_i\Bigl[\log\Bigl(\frac1\theta\Bigr)-\frac{x_i}{\theta}\Bigr]
+  =n\log\Bigl(\frac1\theta\Bigr)-\frac{\sum_i x_i}{\theta}
+  =n\log(1)-n\log\theta-\frac{\sum_i x_i}{\theta}
+  =-n\log\theta-\frac{\sum_i x_i}{\theta}.
+\end{align*}
+F.O.C.\ w.r.t.\ $\theta$:
+\begin{align*}
+  \frac{\partial L}{\partial\theta}=-\frac{n}{\hat\theta}+\frac{\sum_i x_i}{\hat\theta^2}&=0\\
+  \frac1{\hat\theta}\Bigl(-n+\frac{\sum_i x_i}{\hat\theta}\Bigr)&=0\\
+  \frac{\sum_i x_i}{\hat\theta}&=n\\
+  \hat\theta&=\frac{\sum_i x_i}{n}=\bar x .
+\end{align*}
+S.O.C.: $\partial^2L/\partial\theta^2\big|_{\hat\theta}=\frac{n}{\hat\theta^2}-\frac{2\sum_ix_i}{\hat\theta^3}=\frac{n}{\hat\theta^2}-\frac{2n}{\hat\theta^2}=-\frac{n}{\hat\theta^2}<0$, a maximum.
+
+\textbf{(c)} $x_i=\theta+u_i^2$, $u_i\sim N(0,\sigma^2)$. Recall the density of $u$:
+\[
+  f_u(u)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\Bigl(-\frac{u^2}{2\sigma^2}\Bigr).
+\]
+\emph{Density of $x$} (Jacobian of the transformation). $x=g(u)=u^2+\theta$ is not one-to-one; just via simple substitution,
+\[
+  u_i^2=x_i-\theta\quad\Rightarrow\quad u_{1}=+\sqrt{x_i-\theta},\qquad u_{2}=-\sqrt{x_i-\theta},
+\]
+with
+\[
+  \frac{du_1}{dx}=\frac12(x_i-\theta)^{-1/2},\qquad \frac{du_2}{dx}=-\frac12(x_i-\theta)^{-1/2}.
+\]
+Both roots give the same $u^2=x_i-\theta$, so $f_u(u_1)=f_u(u_2)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\bigl(-\frac{x_i-\theta}{2\sigma^2}\bigr)$. Then
+\begin{align*}
+  f(x_i)&=f_u(u_1)\Bigl|\frac{du_1}{dx}\Bigr|+f_u(u_2)\Bigl|\frac{du_2}{dx}\Bigr|\\
+  &=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\Bigl(-\frac{x_i-\theta}{2\sigma^2}\Bigr)\cdot\frac12(x_i-\theta)^{-1/2}
+   +\frac{1}{\sqrt{2\pi\sigma^2}}\exp\Bigl(-\frac{x_i-\theta}{2\sigma^2}\Bigr)\cdot\frac12(x_i-\theta)^{-1/2}\\
+  &=\frac{1}{\sqrt{(x_i-\theta)\,2\pi\sigma^2}}\exp\Bigl(-\frac{x_i-\theta}{2\sigma^2}\Bigr),\qquad x_i>\theta .
+\end{align*}
+\emph{Log-likelihood.}
+\begin{align*}
+  \ell&=\prod_i f(x_i)=\prod_i\frac{1}{\sqrt{(x_i-\theta)\,2\pi\sigma^2}}\exp\Bigl(-\frac{x_i-\theta}{2\sigma^2}\Bigr),\\
+  L&=\sum_i\Bigl[\log(1)-\frac12\log(x_i-\theta)-\frac12\log2\pi-\frac12\log\sigma^2-\frac{x_i-\theta}{2\sigma^2}\Bigr]\\
+  &=-\frac12\sum_i\log(x_i-\theta)-\frac n2\log2\pi-\frac n2\log\sigma^2-\frac{\sum_i(x_i-\theta)}{2\sigma^2}.
+\end{align*}
+F.O.C.\ for $\theta$:
+\begin{align*}
+  \frac{\partial L}{\partial\theta}=\frac12\sum_i\frac{1}{x_i-\theta}+\frac{n}{2\sigma^2}&=0\\
+  \sum_i\frac{1}{x_i-\theta}&=-\frac{n}{\sigma^2}.
+\end{align*}
+Since $x_i>\theta$ for every $i$, the left-hand side is strictly positive while the right-hand side is negative, so
+the FOC has no solution for $\theta$. In fact $\partial L/\partial\theta>0$ everywhere, i.e.\ $L$ is increasing in
+$\theta$ over the admissible range $\theta<\min_i x_i$. The ML estimate is therefore the boundary
+\[
+  \hat\theta=\min_i x_i = x_{(1)} .
+\]
+F.O.C.\ for $\sigma^2$:
+\begin{align*}
+  \frac{\partial L}{\partial\sigma^2}=-\frac{n}{2\sigma^2}+\frac{\sum_i(x_i-\theta)}{2\sigma^4}&=0\\
+  \frac{1}{2\sigma^4}\sum_i(x_i-\theta)&=\frac{n}{2\sigma^2}\\
+  \frac{1}{\sigma^2}&=\frac{n}{\sum_i(x_i-\theta)}\\
+  \hat\sigma^2&=\frac{\sum_i(x_i-\hat\theta)}{n}.
+\end{align*}
+
+% ======================================================================
+\question{Question 4}
+Derive the mean and variance of $\hat\sigma^2=e\xT e/n$.
+
+\emph{Step 1: write $e\xT e$ in terms of $u$.} With $M=I_n-X(X\xT X)^{-1}X\xT$ (symmetric, idempotent, $MX=0$),
+\begin{align*}
+  e&=My=M(X\beta+u)=MX\beta+Mu=Mu,\\
+  e\xT e&=u\xT M\xT Mu=u\xT Mu,\\
+  \hat\sigma^2&=\frac{u\xT Mu}{n}.
+\end{align*}
+\emph{Step 2: trace of $M$.} Using $\operatorname{tr}(AB)=\operatorname{tr}(BA)$,
+\begin{align*}
+  \operatorname{tr}(M)&=\operatorname{tr}(I_n)-\operatorname{tr}\bigl(\underbrace{X}_{n\times k}\underbrace{(X\xT X)^{-1}X\xT}_{k\times n}\bigr)
+  =n-\operatorname{tr}\bigl(X\xT X(X\xT X)^{-1}\bigr)\\
+  &=n-\operatorname{tr}(I_k)=n-k .
+\end{align*}
+\emph{Step 3: mean.} $u\xT Mu$ is a scalar, so it equals its trace:
+\begin{align*}
+  \E(\hat\sigma^2)&=\frac1n\E(u\xT Mu)=\frac1n\E\bigl[\operatorname{tr}(u\xT Mu)\bigr]
+  =\frac1n\E\bigl[\operatorname{tr}(Muu\xT)\bigr]\\
+  &=\frac1n\operatorname{tr}\bigl(M\,\E(uu\xT)\bigr)=\frac1n\operatorname{tr}(M\cdot\sigma^2I)
+  =\frac{\sigma^2}{n}\operatorname{tr}(M)\\
+  &=\frac{\sigma^2}{n}(n-k)=\sigma^2-\frac{\sigma^2k}{n}=\sigma^2\Bigl(1-\frac kn\Bigr).
+\end{align*}
+\emph{Step 4: variance.} Define
+\[
+  w=\frac{e\xT e}{\sigma^2}=\Bigl(\frac{u}{\sigma}\Bigr)\xT M\Bigl(\frac{u}{\sigma}\Bigr)\sim\chi^2_{n-k},
+\]
+since $u/\sigma\sim N(0,I_n)$ and $M$ is idempotent with $\rank(M)=\operatorname{tr}(M)=n-k$. Then
+\[
+  \hat\sigma^2=\frac{\sigma^2}{n}\cdot\frac{e\xT e}{\sigma^2}=\frac{\sigma^2}{n}\,w ,
+\]
+and using $\E(w)=n-k$, $\Var(w)=2(n-k)$:
+\begin{align*}
+  \E(\hat\sigma^2)&=\frac{\sigma^2}{n}\E(w)=\frac{\sigma^2}{n}(n-k),\\
+  \Var(\hat\sigma^2)&=\Bigl(\frac{\sigma^2}{n}\Bigr)^2\Var(w)=\frac{\sigma^4}{n^2}\cdot2(n-k)=\frac{2\sigma^4(n-k)}{n^2}.
+\end{align*}
+So $\hat\sigma^2$ is biased downward, but the bias vanishes as $n\to\infty$.
+
+% ======================================================================
+\question{Question 5}
+\begin{align*}
+  \ell(\alpha)&=\prod_i\frac{\alpha\,10000^{\alpha}}{y_i^{\alpha+1}}=\prod_i\alpha\,10000^{\alpha}y_i^{-\alpha-1},\\
+  L(\alpha)&=\sum_i\bigl[\log\alpha+\alpha\log10000+(-\alpha-1)\log y_i\bigr]\\
+  &=n\log\alpha+n\alpha\log10000-(\alpha+1)\sum_i\log y_i .
+\end{align*}
+F.O.C.\ w.r.t.\ $\alpha$:
+\begin{align*}
+  \frac{\partial L}{\partial\alpha}=\frac{n}{\hat\alpha}+n\log10000-\sum_i\log y_i&=0\\
+  \frac{n}{\hat\alpha}&=\sum_i\log y_i-n\log10000\\
+  \hat\alpha&=\frac{n}{\sum_i\log y_i-n\log10000}=\frac{n}{\sum_i\log(y_i/10000)} .
+\end{align*}
+S.O.C.: $\partial^2L/\partial\alpha^2=-n/\alpha^2<0$, a maximum. (Since $y_i\ge10000$, the denominator is positive.)
+
+% ======================================================================
+\question{Question 6}
+\textbf{(i)} Let $r_t=y_t-X_t\beta$, so $u_t=r_t^{\lambda}$.
+
+\emph{Log-likelihood.} The density of $u_t$ is $\frac{1}{\sqrt{2\pi\sigma^2}}\exp\bigl(-\frac{u_t^2}{2\sigma^2}\bigr)$.
+To get the density of $y_t$ we need the Jacobian
+\[
+  \Bigl|\frac{\partial u_t}{\partial y_t}\Bigr|=\bigl|\lambda r_t^{\lambda-1}\bigr|=\lambda|r_t|^{\lambda-1},
+\]
+so
+\[
+  f(y_t)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\Bigl(-\frac{|r_t|^{2\lambda}}{2\sigma^2}\Bigr)\lambda|r_t|^{\lambda-1},
+\]
+and summing the logs over $t$,
+\[
+  L=-\frac n2\log2\pi-\frac n2\log\sigma^2-\frac1{2\sigma^2}\sum_t|r_t|^{2\lambda}+n\log\lambda+(\lambda-1)\sum_t\log|r_t| .
+\]
+\emph{F.O.C.\ for $\beta$.} Since $\partial r_t/\partial\beta=-X_t\xT$, for safety write $|r_t|^{2\lambda}=(r_t^2)^{\lambda}$ and use the chain rule:
+\begin{align*}
+  \frac{\partial}{\partial\beta}\Bigl[\frac1{2\sigma^2}\sum_t(r_t^2)^{\lambda}\Bigr]
+  &=\frac1{2\sigma^2}\sum_t\frac{\partial(r_t^2)^{\lambda}}{\partial r_t^2}\cdot\frac{\partial r_t^2}{\partial r_t}\cdot\frac{\partial r_t}{\partial\beta}\\
+  &=\frac1{2\sigma^2}\sum_t\lambda(r_t^2)^{\lambda-1}\cdot2r_t\cdot(-X_t\xT)
+  =-\frac{\lambda}{\sigma^2}\sum_t(r_t^2)^{\lambda-1}r_tX_t\xT,
+\end{align*}
+and
+\[
+  \frac{\partial}{\partial\beta}\Bigl[(\lambda-1)\sum_t\log|r_t|\Bigr]=(\lambda-1)\sum_t\frac{1}{r_t}\cdot(-X_t\xT)=-(\lambda-1)\sum_t\frac{X_t\xT}{r_t}.
+\]
+Hence
+\[
+  \frac{\partial L}{\partial\beta}=\frac{\lambda}{\sigma^2}\sum_t(r_t^2)^{\lambda-1}r_tX_t\xT-(\lambda-1)\sum_t\frac{X_t\xT}{r_t}=0 ,
+\]
+which has no closed-form solution for $\beta$.
+
+\emph{F.O.C.\ for $\sigma^2$:}
+\begin{align*}
+  \frac{\partial L}{\partial\sigma^2}=-\frac{n}{2\sigma^2}+\frac1{2\sigma^4}\sum_t|r_t|^{2\lambda}&=0\\
+  \frac{n}{2\sigma^2}&=\frac{\sum_t|r_t|^{2\lambda}}{2\sigma^4}\\
+  n\sigma^2&=\sum_t|y_t-X_t\beta|^{2\lambda}\\
+  \hat\sigma^2&=\frac{\sum_t|y_t-X_t\hat\beta|^{2\lambda}}{n}.
+\end{align*}
+\emph{If $\lambda$ is known}, solve these two FOCs for $\hat\beta,\hat\sigma^2$. There is no explicit solution for $\beta$,
+so it is done numerically (e.g.\ substitute $\hat\sigma^2(\beta)$ back into $L$ and maximize the concentrated
+log-likelihood over $\beta$). For $\lambda=1$ the Jacobian term drops out and this is just OLS.
+
+\emph{If $\lambda$ is unknown}, we also need the F.O.C.\ for $\lambda$. Using $\partial|r_t|^{2\lambda}/\partial\lambda=2|r_t|^{2\lambda}\log|r_t|$,
+\begin{align*}
+  \frac{\partial L}{\partial\lambda}
+  &=\frac{n}{\lambda}+\sum_t\log|r_t|-\frac1{2\sigma^2}\sum_t2\,|r_t|^{2\lambda}\log|r_t|\\
+  &=\frac{n}{\lambda}+\sum_t\log|r_t|-\frac1{\sigma^2}\sum_t|r_t|^{2\lambda}\log|r_t|=0 .
+\end{align*}
+Solve the three FOCs jointly to get $\hat\beta$, $\hat\sigma^2$ and $\hat\lambda$, numerically on the computer.
+
+% ======================================================================
+\newpage
+\topic{Appendix: Python code (Questions 1--2)}
+\lstinputlisting[language=Python]{hw2.py}
+
+\end{document}

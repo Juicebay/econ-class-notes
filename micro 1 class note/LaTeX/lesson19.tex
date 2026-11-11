@@ -1,0 +1,307 @@
+%% shortname: Second-Order Stochastic Dominance and Introduction to General Equilibrium
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{19}{Chapter 6 (concluded): second-order stochastic dominance; Chapter 15: introduction to general equilibrium and the Edgeworth box}{}
+
+
+\section{Reminder: first-order stochastic dominance}
+
+$F$ first-order stochastically dominates (FOSD) $G$ if
+\[ \int u(x)\,dF(x)\ \ge\ \int u(x)\,dG(x)
+   \quad\text{for all non-decreasing utility functions } u(x) \tag{1} \]
+\[ \Longleftrightarrow\qquad F(x)\ \le\ G(x) \qquad \forall\, x\in[0,\bar x]. \tag{2} \]
+
+FOSD is very powerful, but $F(x)\le G(x)$ for all $x$ is also very strong and often not
+satisfied. We will be able to say something more precise if we assume risk aversion
+$\Rightarrow$ second-order stochastic dominance (SOSD).
+
+
+\section{Second-order stochastic dominance (SOSD)}
+
+\topic{Definition}
+Start with a counterpart to (2): $F$ second-order stochastically dominates $G$ if
+\[ \int_0^{x} F(T)\,dT\ \le\ \int_0^{x} G(T)\,dT \qquad \forall\, x\in[0,\bar x]. \tag{3} \]
+(2) implies (is stronger than) (3): if $F\le G$ pointwise, the integrals are ordered too.
+So we can now compare more distributions.
+
+\topic{A property of (3): a higher expected value}
+(3) holds at all $x$, thus at $x=\bar x$. Integrating by parts,
+\begin{align*}
+  \int_0^{\bar x} 1\cdot F(T)\,dT
+   &= \bigl[T\,F(T)\bigr]_0^{\bar x}-\int_0^{\bar x} T\,dF(T)\\
+   &= \bar x - 0 - \underbrace{\int_0^{\bar x} T\,dF(T)}_{\text{expected value under } F}.
+\end{align*}
+So (3) at $\bar x$ reads $\bar x-E_F[x]\le \bar x-E_G[x]$, i.e.\
+\[ E_F[x]\ \ge\ E_G[x]: \]
+(3) implies a higher (or equal) expected winning under $F$ than under $G$.
+
+\subsection*{Comparing FOSD and SOSD (simple cases)}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.25]
+  % FOSD: G(t) = t + 0.15 sin(pi t) above F(t) = t - 0.15 sin(pi t); xbar = 4, height 1 = 2.6
+  \ecaxes{4.7}{3.1}
+  \node[ecnode,right] at (4.7,0) {$x$};
+  \draw[dashed] (0,2.6) -- (4,2.6);
+  \node[ecnode,left] at (0,2.6) {$1$};
+  \draw[dashed] (4,0) node[ecnode,below] {$\bar x$} -- (4,2.6);
+  \draw[budget,domain=0:4,samples=60] plot (\x,{2.6*(\x/4+0.15*sin(45*\x))});
+  \draw[budget,domain=0:4,samples=60] plot (\x,{2.6*(\x/4-0.15*sin(45*\x))});
+  \node[ecnode,anchor=south east] at (1.5,1.55) {$G$};
+  \node[ecnode,anchor=north west] at (2.4,1.05) {$F$};
+  \node[ecnode] at (2,-0.75) {FOSD $\Rightarrow$ SOSD};
+\end{tikzpicture}
+\hspace{1.2cm}
+\begin{tikzpicture}[scale=1.25]
+  % no FOSD but SOSD: G(t) = t + 0.1 sin(pi t), F(t) = t + 0.02 sin(pi t) - 0.09 sin(2 pi t)
+  \ecaxes{4.7}{3.1}
+  \node[ecnode,right] at (4.7,0) {$x$};
+  \draw[dashed] (0,2.6) -- (4,2.6);
+  \node[ecnode,left] at (0,2.6) {$1$};
+  \draw[dashed] (4,0) node[ecnode,below] {$\bar x$} -- (4,2.6);
+  \draw[budget,domain=0:4,samples=80] plot (\x,{2.6*(\x/4+0.1*sin(45*\x))});
+  \draw[budget,domain=0:4,samples=80] plot (\x,{2.6*(\x/4+0.02*sin(45*\x)-0.09*sin(90*\x))});
+  \node[ecnode,anchor=south east] at (1.3,1.35) {$G$};
+  \node[ecnode,anchor=north west] at (1.3,0.45) {$F$};
+  \node[ecnode] at (2,-0.75) {no FOSD, but SOSD};
+\end{tikzpicture}
+\end{center}
+
+\topic{When the CDFs cross: more mass in the tails}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.5]
+  % F(t) = t (straight line), G(t) = t + 0.12 sin(2 pi t); xbar = 4, height 1 = 2.6
+  \ecaxes{4.8}{3.1}
+  \node[ecnode,right] at (4.8,0) {$x$};
+  \draw[dashed] (0,2.6) -- (4,2.6);
+  \node[ecnode,left] at (0,2.6) {$1$};
+  \draw[dashed] (4,0) node[ecnode,below] {$\bar x$} -- (4,2.6);
+  \draw[budget] (0,0) -- (4,2.6);
+  \draw[budget,domain=0:4,samples=80] plot (\x,{2.6*(\x/4+0.12*sin(90*\x))});
+  \node[ecnode,anchor=south east] at (1.1,1.12) {$G(x)$};
+  \node[ecnode,anchor=north west] at (1.4,0.85) {$F(x)$};
+  % x' = 0.8 (t = 0.2): F = 0.52, G = 0.52 + 2.6*0.12*sin(72) = 0.817
+  \draw[dashed] (0.8,0) node[ecnode,below] {$x'$} -- (0.8,0.817);
+  \draw[dashed] (0,0.817) node[ecnode,left] {$G(x')$} -- (0.8,0.817);
+  \draw[dashed] (0,0.52) node[ecnode,left] {$F(x')$} -- (0.8,0.52);
+  % x'' = 3.2 (t = 0.8): F = 2.08, G = 2.08 - 0.297 = 1.783
+  \draw[dashed] (3.2,0) node[ecnode,below] {$x''$} -- (3.2,2.6);
+  \draw[{Stealth}-{Stealth}] (3.1,2.08) -- (3.1,2.6);
+  \node[ecnode,left] at (3.1,2.42) {$1-F(x'')$};
+  \draw[{Stealth}-{Stealth}] (3.32,1.783) -- (3.32,2.6);
+  \node[ecnode,right] at (4.05,2.15) {$1-G(x'')$};
+  \draw[thin] (3.36,2.19) -- (4.05,2.15);
+\end{tikzpicture}
+\end{center}
+
+$\Rightarrow$ $G$ has more mass at the tails ($G(x')>F(x')$ and $1-G(x'')>1-F(x'')$)
+$\to$ a heightened probability of very low or very high winnings $\to$ sounds risky.
+
+$\Rightarrow$ Intuition: $F$ is better than $G$ if the agent is risk averse.
+
+\topic{Main result for SOSD}
+\[ \int_0^{x} F(T)\,dT\ \le\ \int_0^{x} G(T)\,dT \quad \forall\, x\in[0,\bar x] \tag{3} \]
+\[ \Big\Updownarrow \]
+\[ \int u(x)\,dF(x)\ \ge\ \int u(x)\,dG(x)
+   \quad\text{for every non-decreasing, (weakly) concave } u(x). \tag{4} \]
+
+\topic{Proof of $(3)\Rightarrow(4)$}
+Assume $u$ is twice differentiable, so $u'\ge0$ and $u''\le0$. Let $H(x)=F(x)-G(x)$
+(so $H(0)=H(\bar x)=0$) and $S(x)=\int_0^{x}H(T)\,dT$, which is $\le0$ for all $x$ by (3).
+Integrating by parts twice,
+\begin{align*}
+  \int u(x)\,dF(x)-\int u(x)\,dG(x)
+   &= \int_0^{\bar x} u(x)\,dH(x)
+    = \underbrace{\bigl[u(x)H(x)\bigr]_0^{\bar x}}_{=0}-\int_0^{\bar x} u'(x)H(x)\,dx\\
+   &= -\Bigl(\bigl[u'(x)S(x)\bigr]_0^{\bar x}-\int_0^{\bar x} u''(x)\,S(x)\,dx\Bigr)\\
+   &= -\underbrace{u'(\bar x)}_{\ge0}\,\underbrace{\int_0^{\bar x}H(T)\,dT}_{\le0}
+      \;+\;0\;+\;\int_0^{\bar x}\underbrace{u''(x)}_{\le0}\,
+      \underbrace{\int_0^{x}H(T)\,dT}_{\le0}\,dx\\
+   &\ \ge\ 0.
+\end{align*}
+(The boundary term at $0$ vanishes because $S(0)=0$.) So (4) holds. $\checkmark$
+
+\topic{Proof of $(4)\Rightarrow(3)$}
+A special case of (4) is the (non-decreasing, concave) utility function
+\[ u(x)=\begin{cases} x & \text{if } x\le z,\\ z & \text{if } x>z. \end{cases} \]
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  \ecaxes{4.4}{2.6}
+  \node[ecnode,right] at (4.4,0) {$x$};
+  \node[ecnode,above] at (0,2.6) {$u(x)$};
+  \draw[budget] (0,0) -- (1.8,1.8) -- (4.2,1.8);
+  \draw[dashed] (1.8,0) node[ecnode,below] {$z$} -- (1.8,1.8);
+\end{tikzpicture}
+\end{center}
+
+Then
+\begin{align*}
+  \int u(x)\,dF(x) &= \int_0^{z} x\,dF(x)+\int_z^{\bar x} z\,dF(x)\\
+   &= \bigl[x\,F(x)\bigr]_0^{z}-\int_0^{z}F(x)\,dx + z\int_z^{\bar x}dF(x)\\
+   &= zF(z)-0-\int_0^{z}F(x)\,dx+z\bigl(1-F(z)\bigr)\\
+   &= z-\int_0^{z}F(x)\,dx,
+\end{align*}
+and likewise for $G$. So (4) implies
+\[ z-\int_0^{z}F(x)\,dx\ \ge\ z-\int_0^{z}G(x)\,dx
+   \quad\Longleftrightarrow\quad \int_0^{z}F(x)\,dx\ \le\ \int_0^{z}G(x)\,dx, \]
+and this holds regardless of what $z\in[0,\bar x]$ is $\Rightarrow$ (3). $\checkmark$
+
+
+\section{General equilibrium: introduction (MWG 15.A--15.C)}
+
+As a micro topic, let us focus primarily on \emph{welfare} questions. There are a lot of
+applications in macro and finance.
+
+\begin{flatlist}
+  \item We start by using simple models to illustrate important components of the
+        analysis and reveal some important conclusions (and pictures).
+  \item We bring together consumers, firms and markets, and \emph{endogenize} prices
+        and wealth.
+  \item We discuss 2 of the 3 models in Chapter 15, omitting the small open economy
+        with some exogenous world prices.
+\end{flatlist}
+
+\topic{Pure exchange economy}
+No production: agents are born with endowments that can be traded.
+
+\runin{Important assumption.} Agents are price takers. Nevertheless, these prices arise
+endogenously as part of the equilibrium.
+
+\runin{In equilibrium,} demand $=$ supply in all markets.
+
+
+\section{An economy with 2 agents and 2 goods}
+
+\begin{flatlist}
+  \item Agent $i$ has endowments $\omega_i=(\omega_{1i},\omega_{2i})$, where
+        $\omega_{ki}$ is the endowment of good $k$ held by agent $i$ (first index:
+        good; second index: agent).
+  \item Let $\omega=(\omega_1,\omega_2)$ denote the vector of endowments across agents.
+  \item Agent $i$'s bundle is $x_i=(x_{1i},x_{2i})$.
+  \item The total endowment of good $k=1,2$ is $\bar\omega_k=\omega_{k1}+\omega_{k2}$.
+  \item An allocation $x=(x_1,x_2)$ is \emph{feasible} if
+        \[ x_{k1}+x_{k2}\ \le\ \bar\omega_k, \qquad k=1,2. \]
+\end{flatlist}
+
+\topic{The Edgeworth box}
+We can capture the economy in the Edgeworth box: width $\bar\omega_1$, height
+$\bar\omega_2$. Agent 1's origin is the bottom-left corner, agent 2's origin the top-right
+corner (agent 2's quantities are measured leftwards and downwards).
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  % box 6 x 4; omega = (4, 1.6); budget slope -1.4
+  \draw[thick] (0,0) rectangle (6,4);
+  \node[ecnode,anchor=north east] at (-0.55,-0.5) {agent 1, $O_1$};
+  \node[ecnode,anchor=south west] at (6.55,4.5) {$O_2$, agent 2};
+  \draw[dashed] (4,0) -- (4,4);
+  \draw[dashed] (0,1.6) -- (6,1.6);
+  \draw[budget] (2.286,4) -- (5.143,0);
+  \node[ecnode,anchor=south west] at (2.9,2.9) {slope $-\tfrac{p_1}{p_2}$};
+  \node[bundle] at (4,1.6) {};
+  \node[ecnode,above right] at (4,1.6) {$\omega$};
+  % agent 1 measures
+  \draw[{Stealth}-{Stealth}] (0,-0.45) -- (4,-0.45);
+  \node[ecnode,below] at (2,-0.45) {$\omega_{11}$};
+  \draw[{Stealth}-{Stealth}] (-0.45,0) -- (-0.45,1.6);
+  \node[ecnode,left] at (-0.45,0.8) {$\omega_{21}$};
+  % agent 2 measures
+  \draw[{Stealth}-{Stealth}] (6,4.45) -- (4,4.45);
+  \node[ecnode,above] at (5,4.45) {$\omega_{12}$};
+  \draw[{Stealth}-{Stealth}] (6.45,4) -- (6.45,1.6);
+  \node[ecnode,right] at (6.45,2.8) {$\omega_{22}$};
+  % box dimensions
+  \node[ecnode] at (3,-1.1) {width $\bar\omega_1=\omega_{11}+\omega_{12}$};
+  \node[ecnode,rotate=90] at (-1.6,2) {height $\bar\omega_2=\omega_{21}+\omega_{22}$};
+\end{tikzpicture}
+\end{center}
+
+\begin{flatlist}
+  \item Agent $i$'s budget line goes through their endowment, because they do not have
+        to trade (or can sell and then buy back their endowment).
+  \item Relative prices are the same for both agents, so the two budget lines lie on
+        top of each other in the box.
+  \item Note that wealth is endogenous: it comes from selling endowments,
+        $w_i=p\cdot\omega_i=p_1\omega_{1i}+p_2\omega_{2i}$.
+\end{flatlist}
+
+
+\begin{transcriptnotes}
+  \item The export has 7 pages; the lower half of page 7 is blank. No date or title is
+        written, so the header date is left empty; the subtitle and the section headings
+        for Sections 1--2 and 4 are \textbf{added} (MWG Chapter 6, Section 6.D;
+        Chapter 15, Sections 15.A--15.B). The page itself titles Section 3 ``GE ---
+        General Equilibrium, Introduction 15.A--15.C''.
+  \item Page 1: ``Reminder of FOSD''; the label (1) for the integral condition and (2)
+        for $F\le G$ follow Lesson 18. ``not \underline{\ \ } statified'' $\to$
+        \emph{often not satisfied} (the blank is filled with ``often'');
+        ``what'' is crossed out; ``sat'' $\to$ \emph{say}; ``preceisely'' $\to$
+        \emph{precisely}. ``$\Rightarrow$ SOSD'' expanded.
+  \item Page 1, (3): written ``$\forall\,T\in[0,\bar x]$''; \textbf{corrected} to
+        $\forall\,x\in[0,\bar x]$ ($T$ is the integration variable; page 3 restates (3)
+        with $\forall\,x$). ``compare more distributions'' kept; the one-line reason why
+        (2) implies (3) is \textbf{added}.
+  \item Page 1--2, expected value: ``Exp.\ value of winning under $F$'' with an arrow to
+        page 2 ``(3) implies higher exp winning under $F$ than $G$''. The step
+        $\bar x-E_F\le\bar x-E_G$ is \textbf{added}; ``higher'' means \emph{weakly}
+        higher. The first integrand is written ``$1\,F(T)$'' (the $1$ is the factor
+        differentiated by parts); kept as $1\cdot F(T)$.
+  \item Page 2, three CDF sketches redrawn to scale; the curves in the first two
+        sketches are unlabelled on the page, so the labels $F$, $G$ are \textbf{added}.
+        Sketch 1: $G=t+0.15\sin\pi t$, $F=t-0.15\sin\pi t$ ($t=x/\bar x$). Sketch 2
+        (curves cross, ``no FOSD, but SOSD''): $G=t+0.1\sin\pi t$,
+        $F=t+0.02\sin\pi t-0.09\sin2\pi t$, chosen so that (3) holds with a single
+        crossing. Sketch 3: $F$ is the straight line and $G=t+0.12\sin2\pi t$ (a
+        mean-preserving spread of $F$). On the page the straight line is drawn past the
+        level $1$; it is stopped at $(\bar x,1)$. ``heighten prob'' $\to$
+        \emph{heightened probability}; ``winners'' $\to$ \emph{winnings}.
+  \item Page 3: ``ntuition'' $\to$ \emph{Intuition}; the page number reads ``3'' with a
+        stray ``(4)'' above it. ``For event non-decreasing and (4) weakly concave'' $\to$
+        \emph{for every non-decreasing and (weakly) concave}; the ``(4)'' is the
+        equation label, moved to the right.
+  \item Page 3 proof, $(3)\Rightarrow(4)$: the first line is written
+        ``$\int u(x)F(x)$'' $\to$ $\int u(x)\,dF(x)$. In the second integration by parts
+        the inner integral is written $\int_0^{0}H(T)\,dT$; \textbf{corrected} to
+        $\int_0^{x}H(T)\,dT$. The integral limits $0,\bar x$ and the notation
+        $S(x)$ are \textbf{added}; ``$u$ twice differentiable'' and the reasons the
+        boundary terms vanish are \textbf{added}. The page marks the signs
+        ($u'(\bar x)$: $+$; $\int H$: $-$; $u''$: $-$; $\int H$: $-$) and ``$\ge0$'';
+        these are typeset as underbraces.
+  \item Page 4, $(4)\Rightarrow(3)$: ``Pf:'' at the top. The utility function is
+        $u(x)=\min\{x,z\}$; it is not differentiable at $z$, which is fine because (4)
+        is stated for every non-decreasing concave $u$ (the differentiability in the
+        previous proof was only used for that direction). The sketch of $u(x)$ is
+        redrawn with a flat segment after $z$ (on the page the horizontal axis slopes).
+        The parenthesis in ``$z(1-F(z))$'' is closed; ``likewise for $G$'' is
+        \textbf{added}.
+  \item Page 5: ``primerily'' $\to$ \emph{primarily}; ``a lot of app.'' $\to$
+        \emph{applications}; ``anatts and preveal'' $\to$ \emph{analysis and reveal};
+        ``+ pics'' $\to$ \emph{(and pictures)}; ``endogenize'' kept. ``dissuc'' $\to$
+        \emph{discuss}; ``exogenous world prices'' (``world'' inserted with a caret).
+        ``agents are both with endowments'' $\to$ \emph{born with}; ``these prices are
+        arise'' $\to$ \emph{these prices arise}.
+  \item Page 6 (a fold shows part of the next page, ``(7)'' and ``his'', in the top
+        corner): ``eneconomy'' $\to$ \emph{economy}; ``$w_i(w_{1i},w_{2i})$'' $\to$
+        $\omega_i=(\omega_{1i},\omega_{2i})$, with the caret note ``Good, agent''
+        written out. ``denote the vector of endowments across agents'' and the
+        notation $\omega=(\omega_1,\omega_2)$ is \textbf{added}. ``An allocation of
+        endowments is feasible'' $\to$ \emph{An allocation $x=(x_1,x_2)$ is feasible}.
+  \item Edgeworth box redrawn to scale. On the page the right edge is labelled
+        ``length $\bar\omega_1$, height $\bar\omega_2$''; \textbf{corrected} so that the
+        width is $\bar\omega_1$ and the height $\bar\omega_2$, with the sums
+        $\omega_{k1}+\omega_{k2}$ \textbf{added}. Origins $O_1$, $O_2$ and the dashed
+        lines through $\omega$ are \textbf{added}. ``edge worth box'' $\to$
+        \emph{Edgeworth box}.
+  \item Page 6--7: ``his endowment because he does not have to trade (or can see and
+        then but back at his endowment)'' $\to$ \emph{(or can sell and then buy back
+        their endowment)}. ``Relative price are \ldots\ budget line are'' $\to$
+        \emph{prices are \ldots\ budget lines lie}. ``wealth is endogenous if it comes
+        from selling endowments''; the formula $w_i=p\cdot\omega_i$ is \textbf{added}.
+\end{transcriptnotes}
+
+\end{document}

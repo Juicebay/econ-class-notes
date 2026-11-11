@@ -1,0 +1,118 @@
+%% shortname: Ramsey Growth Model in Discrete Time
+\documentclass[11pt]{article}
+\usepackage{macrostyle}
+
+\begin{document}
+
+\noteheader{Ramsey Growth Model: Discrete Time}{Two solution methods: the Hamiltonian and dynamic programming}{}
+
+
+\section{The planner's problem}
+
+\[ \max_{\{c_t,\,k_{t+1}\}_{t=0}^{\infty}} \ \sum_{t=0}^{\infty}\beta^t u(c_t) \]
+subject to
+\begin{align}
+  c_t+i_t &= y_t \tag{1}\label{r:res}\\
+  y_t &= f(k_t) \tag{2}\label{r:tech}\\
+  i_t &= k_{t+1}-(1-\delta)k_t
+  \quad\text{or}\quad
+  i_t=\underbrace{k_{t+1}-k_t}_{\Delta k_t}+\delta k_t . \tag{3}\label{r:lom}
+\end{align}
+
+From \eqref{r:res}--\eqref{r:lom}:
+\begin{equation}
+  \Delta k_t = f(k_t)-\delta k_t-c_t . \tag{4}\label{r:dk}
+\end{equation}
+
+
+\section{Method I: the Hamiltonian}
+
+\[ H_t=\beta^t u(c_t)+\psi_t\bigl[f(k_t)-\delta k_t-c_t\bigr]. \]
+
+\topic{First-order conditions}
+\begin{align}
+  \frac{\partial H_t}{\partial c_t}&=0
+     &&\Rightarrow\quad \beta^t u'(c_t)=\psi_t \tag{5}\label{r:hc}\\
+  -\frac{\partial H_t}{\partial k_t}&=\Delta\psi_t
+     &&\Rightarrow\quad -\psi_t\bigl[f'(k_t)-\delta\bigr]
+       =\underbrace{\Delta\psi_t}_{\psi_t-\psi_{t-1}} \tag{6}\label{r:hk}\\
+  \frac{\partial H_t}{\partial \psi_t}&=\Delta k_t
+     &&\Rightarrow\quad \text{\eqref{r:dk}} \notag
+\end{align}
+
+\topic{The Euler equation}
+From \eqref{r:hk}:
+\begin{align*}
+  -\psi_t\bigl[f'(k_t)-\delta\bigr]&=\psi_t-\psi_{t-1}\\
+  \therefore\quad \psi_{t-1}&=\psi_t\bigl[f'(k_t)+1-\delta\bigr]\\
+  \text{or}\quad \psi_t&=\psi_{t+1}\bigl[f'(k_{t+1})+1-\delta\bigr].
+\end{align*}
+Substituting \eqref{r:hc} at $t$ and at $t+1$ and dividing by $\beta^t$:
+\begin{equation}
+  u'(c_t)=\beta u'(c_{t+1})\bigl[f'(k_{t+1})+1-\delta\bigr]. \tag{7}\label{r:euler}
+\end{equation}
+\eqref{r:euler} is the \emph{Euler equation}.
+
+
+\section{Method II: dynamic programming}
+
+\begin{align*}
+  V(k_t)=\max_{c_t,\,k_{t+1}}\ \Bigl\{\, & u(c_t)+\beta V(k_{t+1})\\
+  &\text{s.t.}\quad c_t+k_{t+1}=f(k_t)+(1-\delta)k_t \,\Bigr\}
+\end{align*}
+This is the \emph{value function}, or \emph{Bellman's equation}:
+\begin{flatlist}
+  \item[(a)] $u(c_t)$ = value of current-period utility;
+  \item[(b)] $\beta V(k_{t+1})$ = value of all future utility discounted to the present.
+\end{flatlist}
+
+\topic{Bellman's equation with a Lagrange multiplier}
+Attach a multiplier $\lambda_t$ to the period-$t$ budget constraint:
+\[ V(k_t)=\max_{c_t,\,k_{t+1}}\Bigl\{u(c_t)+\beta V(k_{t+1})
+   +\lambda_t\bigl[f(k_t)+(1-\delta)k_t-c_t-k_{t+1}\bigr]\Bigr\}. \]
+
+First-order conditions:
+\begin{align}
+  \foc{c_t}{u'(c_t)=\lambda_t} \tag{A1}\label{r:Ac}\\
+  \foc{k_{t+1}}{\beta V'(k_{t+1})=\lambda_t} \tag{A2}\label{r:Ak}
+\end{align}
+Envelope theorem:
+\begin{align}
+  \foc{k_t}{V'(k_t)=\lambda_t\bigl[f'(k_t)+1-\delta\bigr]} \notag
+\end{align}
+Update \eqref{r:Ac} and the envelope condition one period:
+\begin{align}
+  \foc{c_{t+1}}{u'(c_{t+1})=\lambda_{t+1}} \notag\\
+  \foc{k_{t+1}}{V'(k_{t+1})=\lambda_{t+1}\bigl[f'(k_{t+1})+1-\delta\bigr]
+         =\bigl(f'(k_{t+1})+1-\delta\bigr)u'(c_{t+1})} \tag{B}\label{r:B}
+\end{align}
+Eliminate $\lambda_t$ and $\lambda_{t+1}$: \eqref{r:Ac} and \eqref{r:Ak} give
+\begin{equation}
+  -u'(c_t)+\beta V'(k_{t+1})=0, \tag{A}\label{r:A}
+\end{equation}
+and combining \eqref{r:A} with \eqref{r:B},
+\[ u'(c_t)=\beta u'(c_{t+1})\bigl[f'(k_{t+1})+1-\delta\bigr], \tag{7} \]
+which is the same Euler equation as under the Hamiltonian.
+
+\runin{Equivalently (substitution).} Using the constraint to substitute out
+$c_t=f(k_t)+(1-\delta)k_t-k_{t+1}$,
+\[ V(k_t)=\max_{k_{t+1}}\ u\bigl(\underbrace{f(k_t)+(1-\delta)k_t-k_{t+1}}_{c_t}\bigr)+\beta V(k_{t+1}), \]
+and $\partial V(k_t)/\partial k_{t+1}=0$ gives \eqref{r:A} directly; the envelope theorem
+gives $V'(k_t)=\bigl(f'(k_t)+1-\delta\bigr)u'(c_t)$, i.e.\ \eqref{r:B} one period
+earlier. The multiplier simply records $\lambda_t=u'(c_t)$, the marginal utility of a unit
+of resources at $t$.
+
+
+\begin{transcriptnotes}
+  \item Source: handwritten notes \texttt{RGM3.pdf} (2 pages). Equation numbers
+        (1)--(7), (A), (B) follow the original.
+  \item Method II is written in the ``Bellman equation with a Lagrange multiplier''
+        format (FOCs labelled by variable, envelope theorem, update, eliminate
+        $\lambda$). The lecture solved it by substituting $c_t$ out of the objective; that
+        route is kept as the closing remark and gives the identical (A), (B) and (7).
+        Labels (A1), (A2) are added for the two multiplier FOCs.
+  \item The co-state in the Hamiltonian is written $\psi_t$ (handwritten as a
+        $\Psi$-like symbol).
+\end{transcriptnotes}
+
+\end{document}

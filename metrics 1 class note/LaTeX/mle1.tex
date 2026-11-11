@@ -1,0 +1,286 @@
+%% title: Maximum Likelihood Estimation
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\handoutheader{MLE I}{Maximum likelihood estimation: notation, invariance, consistency, asymptotic normality and the information matrix equality}{}
+
+\runin{Context} Handed out with Lesson 14, which motivates ML with the model
+$y_{t}^{\gamma}=\beta_{1}+\beta_{2}x_{2t}+u_{t}$ and introduces the Jacobian of a transformation.
+Continued in \emph{MLE~II}.
+
+\section{Introduction}
+
+\topic{When least squares is not appropriate}
+Least squares (linear or nonlinear) presumes the model can be written as
+\emph{dependent variable $=$ regression function $+$ additive error}. Not every model can. Example:
+\begin{equation}\tag{1}
+ y_{t}^{\gamma}=\beta_{0}+\beta_{1}x_{t}+u_{t}, \qquad u_{t}\sim\text{IID}(0,\sigma^{2}).
+\end{equation}
+With $\gamma$ known, (1) is a regression model; with $\gamma$ to be estimated it is not, and the
+sum of squares
+\begin{equation}\tag{2}
+ \operatorname{SSR}(\beta,\gamma)=\sum_{t=1}^{n}\bigl(y_{t}^{\gamma}-\beta_{0}-\beta_{1}x_{t}\bigr)^{2}
+\end{equation}
+can be driven to zero without reference to the data: if all $y_{t}>1$, take
+$\gamma\to-\infty$ and $\beta_{0}=\beta_{1}=0$. Least squares cannot give sensible estimates of (1).
+
+\topic{The idea of maximum likelihood}
+Choose the parameter value $\hat\theta$ under which the observed sample has the highest
+joint density, i.e.\ maximise the likelihood of the observed data.
+
+\topic{A first example: the exponential distribution}
+Let the $y_{t}$ be independent with density
+\begin{equation}\tag{3}
+ f(y_{t},\theta)=\theta e^{-\theta y_{t}}, \qquad y_{t}>0,\ \theta>0 .
+\end{equation}
+The joint density of the sample, viewed as a function of $\theta$ for the observed
+$y=(y_{1},\ldots,y_{n})$, is the \emph{likelihood function}; by independence it is the product
+of the individual densities:
+\begin{equation}\tag{4}
+ L(y,\theta)=\prod_{t=1}^{n}\theta e^{-\theta y_{t}} .
+\end{equation}
+Since $\log$ is strictly increasing, the maximiser of $L$ also maximises the
+\emph{log-likelihood} $\ell(y,\theta)\equiv\log L(y,\theta)$, which is easier to work with:
+\[ \ell(y,\theta)=\sum_{t=1}^{n}\bigl(\log\theta-\theta y_{t}\bigr)=n\log\theta-\theta\sum_{t}y_{t}. \]
+First-order condition and its solution:
+\[ \frac{d\ell}{d\theta}=\frac{n}{\theta}-\sum_{t}y_{t}=0
+   \quad\Longrightarrow\quad \hat\theta=\frac{n}{\sum_{t}y_{t}}=\frac{1}{\bar y}, \qquad
+   \frac{d^{2}\ell}{d\theta^{2}}=-\frac{n}{\theta^{2}}<0, \]
+so $\hat\theta$ is a maximum.
+
+\section{Notation}
+
+\begin{flatlist}
+ \item $y_{t}$: the $t$-th observation on a random variable; $y=(y_{1},\ldots,y_{n})'$.
+ \item $\theta$: a $k$-vector of parameters that determines the distribution of $y_{t}$;
+       $\theta\in\Theta$, the parameter space; $\theta_{0}$ is the true value.
+ \item $L_{t}(y_{t},\theta)$: the density of $y_{t}$ given $\theta$.
+ \item $L(y,\theta)\equiv L(\theta)=\prod_{t=1}^{n}L_{t}(y_{t},\theta)$: the likelihood function.
+ \item $\ell_{t}(y_{t},\theta)=\log L_{t}(y_{t},\theta)$: the contribution of observation $t$ to the
+       log-likelihood.
+ \item $\ell(y,\theta)\equiv\ell(\theta)=\sum_{t=1}^{n}\ell_{t}(y_{t},\theta)$: the log-likelihood function.
+ \item $g(y,\theta)\equiv g(\theta)$: the \emph{gradient} or \emph{score} vector ($k\times1$), with
+       $g_{i}(\theta)=\partial\ell(\theta)/\partial\theta_{i}$.
+ \item $G(y,\theta)\equiv G(\theta)$: the $n\times k$ \emph{CG matrix} (``contributions to the
+       gradient''), with $G_{ti}(\theta)=\partial\ell_{t}(\theta)/\partial\theta_{i}$; its $t$-th row is $G_{t}$
+       ($1\times k$). Summing the rows gives the score:
+       \[ g(\theta)=G'(\theta)\,\iota, \qquad \iota=(1,\ldots,1)'\ (n\times1). \]
+ \item $H(y,\theta)\equiv H(\theta)$: the $k\times k$ Hessian, $H_{ij}(\theta)=\partial^{2}\ell(\theta)/\partial\theta_{i}\partial\theta_{j}$.
+ \item $\mathcal H^{n}(\theta)\equiv\E\bigl(\tfrac1nH(\theta)\bigr)$ and
+       $\mathcal H(\theta)=\lim_{n\to\infty}\mathcal H^{n}(\theta)$.
+ \item $I_{t}(\theta)$: the information in observation $t$, the $k\times k$ matrix
+       \[ [I_{t}(\theta)]_{ij}=\E\bigl[G_{ti}(\theta)G_{tj}(\theta)\bigr], \qquad
+          I_{t}(\theta)=\E\bigl(G_{t}'G_{t}\bigr). \]
+ \item The (average) information matrix for a sample of size $n$, and its limit:
+       \[ \mathcal I^{n}(\theta)=\frac1n\sum_{t=1}^{n}I_{t}(\theta)=\frac1n\,I^{n}(\theta)
+          =\frac1n\,\E\bigl(G'G\bigr), \qquad
+          \mathcal I(\theta)=\lim_{n\to\infty}\mathcal I^{n}(\theta). \]
+\end{flatlist}
+$I_{t}$ measures the expected information in the $t$-th observation and $I^{n}=n\mathcal I^{n}$
+that in the whole sample. Like $I_{t}$, $\mathcal I^{n}$ and $\mathcal I$ are symmetric and, in
+general, positive semidefinite. Orders: $\mathcal I^{n}=O(1)$ while $I^{n}=O(n)$ (some authors call
+$I^{n}$ the information matrix).
+
+\topic{Two definitions of the ML estimator}
+\begin{flatlist}
+ \item[] \textbf{Type 1.} $\hat\theta$ is an ML estimator if
+         $\ell(y,\hat\theta)\ge\ell(y,\theta^{*})$ for all $\theta^{*}\in\Theta$ (a global maximiser).
+ \item[] \textbf{Type 2.} $\hat\theta$ is a root of the \emph{likelihood equations}
+         $g(y,\hat\theta)=0$.
+\end{flatlist}
+
+\section{Properties of maximum likelihood}
+
+Invariance, consistency, asymptotic normality and asymptotic efficiency.
+
+\subsection{Invariance}
+
+Let $\eta(\cdot)$ be a set of $k$ functions mapping $\theta$ one-to-one onto a new parameter
+vector $\phi=\eta(\theta)$, and write the log-likelihood in terms of $\phi$ as
+$\ell'(\phi)\equiv\ell\bigl(\eta^{-1}(\phi)\bigr)$. If $\ell(\hat\theta)>\ell(\theta^{*})$ for all
+$\theta^{*}\neq\hat\theta$, then with $\hat\phi=\eta(\hat\theta)$ and $\phi^{*}=\eta(\theta^{*})$,
+\[ \ell'(\hat\phi)=\ell(\hat\theta)>\ell(\theta^{*})=\ell'(\phi^{*})
+   \qquad\text{for all }\phi^{*}\neq\hat\phi . \]
+So maximising $\ell'(\phi)$ gives $\hat\phi=\eta(\hat\theta)$: the two sets of estimates are
+equivalent and attain the same maximised value. How the model is parametrised does not
+affect the estimates.
+
+\topic{Consequence: ML is generally biased}
+Suppose $\E(\hat\theta)=\theta$. For nonlinear $\eta$, in general (Jensen)
+\[ \E(\hat\phi)=\E\bigl(\eta(\hat\theta)\bigr)\neq\eta\bigl(\E(\hat\theta)\bigr)=\eta(\theta)=\phi, \]
+so $\hat\phi$ is biased. ML estimators cannot be unbiased in every parametrisation.
+The choice of parametrisation has no effect asymptotically, but matters in small samples.
+
+\subsection{Consistency}
+
+Under regularity conditions (the proof is difficult and omitted),
+\[ \operatorname*{plim}_{n\to\infty}\hat\theta=\theta_{0}. \]
+
+\subsection{The asymptotic distribution of the ML estimator}
+
+\topic{Expansion of the likelihood equations}
+Let $\hat\theta$ be a type 2 estimator. A first-order Taylor expansion of the
+likelihood equations around $\theta_{0}$ gives
+\begin{equation}\tag{5}
+ 0=g(\hat\theta)=g(\theta_{0})+H(\bar\theta)(\hat\theta-\theta_{0}),
+\end{equation}
+where $\bar\theta$ lies between $\theta_{0}$ and $\hat\theta$, chosen to make (5) exact. Solving,
+\begin{equation}\tag{6}
+ \hat\theta-\theta_{0}=-H^{-1}(\bar\theta)\,g(\theta_{0}),
+\end{equation}
+and rescaling so that every factor is $O(1)$:
+\[ \sqrt n\,(\hat\theta-\theta_{0})=-\Bigl(\frac{H(\bar\theta)}{n}\Bigr)^{-1}\frac{g(\theta_{0})}{\sqrt n}. \]
+
+\topic{The Hessian term}
+The $(i,j)$ element of $H(\bar\theta)/n$ is
+$\frac1n\sum_{t}\partial^{2}\ell_{t}(\theta)/\partial\theta_{i}\partial\theta_{j}\big|_{\theta=\bar\theta}$. By a law of large numbers,
+and because $\bar\theta$ lies between $\hat\theta$ and $\theta_{0}$ and is therefore consistent too,
+\[ \tfrac1nH(\bar\theta)\ \longrightarrow\ \mathcal H^{n}(\bar\theta)\ \longrightarrow\ \mathcal H(\theta_{0}), \]
+so
+\begin{equation}\tag{7}
+ \sqrt n\,(\hat\theta-\theta_{0})\ \overset{a}{=}\ -\mathcal H^{-1}(\theta_{0})\,\frac{g(\theta_{0})}{\sqrt n}.
+\end{equation}
+
+\topic{The score has mean zero}
+The only stochastic term on the right of (7) is $g(\theta_{0})/\sqrt n$, with typical element
+$\frac1{\sqrt n}\sum_{t}\partial\ell_{t}/\partial\theta_{i}\big|_{\theta_{0}}=\frac1{\sqrt n}\sum_{t}G_{ti}(\theta_{0})$.
+For each term,
+\begin{align*}
+ \E\Bigl[\frac{\partial\ell_{t}}{\partial\theta_{i}}\Big|_{\theta_{0}}\Bigr]
+ &=\E\Bigl[\frac{1}{L_{t}(\theta_{0})}\frac{\partial L_{t}(\theta)}{\partial\theta_{i}}\Big|_{\theta_{0}}\Bigr]
+  =\int\frac{1}{L_{t}(\theta_{0})}\frac{\partial L_{t}(\theta)}{\partial\theta_{i}}\Big|_{\theta_{0}}L_{t}(\theta_{0})\,dy_{t}\\
+ &=\int\frac{\partial L_{t}(\theta)}{\partial\theta_{i}}\Big|_{\theta_{0}}dy_{t}
+  =\frac{\partial}{\partial\theta_{i}}\int L_{t}\,dy_{t}=\frac{\partial}{\partial\theta_{i}}\,1=0. \tag{8}
+\end{align*}
+(8) assumes enough regularity to interchange differentiation and integration, and uses
+that $L_{t}$, being a density, integrates to one. Hence $\E\bigl(G_{ti}(\theta_{0})\bigr)=0$ and
+$\E\bigl(g(\theta_{0})/\sqrt n\bigr)=0$.
+
+\topic{The variance of the score}
+With mean zero, the variance of $g(\theta_{0})/\sqrt n$ is the expected outer product
+\begin{equation}\tag{9}
+ \frac1n\,\E\bigl(g(\theta_{0})g'(\theta_{0})\bigr),
+ \qquad\text{typical element}\quad
+ \frac1n\,\E\Bigl\{\Bigl(\sum_{t=1}^{n}G_{ti}(\theta_{0})\Bigr)\Bigl(\sum_{s=1}^{n}G_{sj}(\theta_{0})\Bigr)\Bigr\}.
+\end{equation}
+For $t\neq s$, $G_{ti}$ depends only on $y_{t}$ and $G_{sj}$ only on $y_{s}$, so by independence
+\[ \E(G_{ti}G_{sj})=\E(G_{ti})\,\E(G_{sj})=0 . \] Only the $t=s$ terms survive:
+\begin{equation}\tag{10}
+ \frac1n\,\E\Bigl\{\Bigl(\sum_{t}G_{ti}(\theta_{0})\Bigr)\Bigl(\sum_{s}G_{sj}(\theta_{0})\Bigr)\Bigr\}
+ =\frac1n\,\E\Bigl\{\sum_{t}G_{ti}(\theta_{0})G_{tj}(\theta_{0})\Bigr\},
+\end{equation}
+which holds only because of independence. In matrix form,
+\[ \mathcal I^{n}(\theta_{0})\equiv\frac1n\,\E\bigl(G'(\theta_{0})G(\theta_{0})\bigr)
+   =\frac1n\,\E\bigl(g(\theta_{0})g'(\theta_{0})\bigr). \]
+
+\topic{The sandwich}
+Define
+\begin{equation}\tag{11}
+ d(\theta_{0})\equiv-\mathcal H^{-1}(\theta_{0})\,\frac{g(\theta_{0})}{\sqrt n}
+ \ \overset{a}{=}\ \sqrt n\,(\hat\theta-\theta_{0}).
+\end{equation}
+Then $\E\bigl(d(\theta_{0})\bigr)=0$, and since $\mathcal H$ is symmetric,
+\begin{equation}\tag{12}
+ \Var\bigl(d(\theta_{0})\bigr)
+ =\bigl(-\mathcal H^{-1}(\theta_{0})\bigr)\Bigl[\tfrac1n\E(gg')\Bigr]\bigl(-\mathcal H^{-1}(\theta_{0})\bigr)
+ =\mathcal H^{-1}\,\mathcal I^{n}\,\mathcal H^{-1}.
+\end{equation}
+
+\subsection{The information matrix equality}
+
+Recall $\mathcal H^{n}_{ij}=\frac1n\E\bigl[\sum_{t}\partial^{2}\log L_{t}/\partial\theta_{i}\partial\theta_{j}\big|_{\theta_{0}}\bigr]$. From
+\[ \frac{\partial\log L_{t}}{\partial\theta_{i}}=\frac{1}{L_{t}}\frac{\partial L_{t}}{\partial\theta_{i}},
+   \qquad
+   \frac{\partial^{2}\log L_{t}}{\partial\theta_{i}\partial\theta_{j}}
+   =\Bigl[\frac{\partial^{2}L_{t}}{\partial\theta_{i}\partial\theta_{j}}L_{t}
+     -\frac{\partial L_{t}}{\partial\theta_{i}}\frac{\partial L_{t}}{\partial\theta_{j}}\Bigr]\Big/L_{t}^{2}, \]
+we get
+\begin{equation}\tag{13}
+ \frac{\partial^{2}\log L_{t}}{\partial\theta_{i}\partial\theta_{j}}
+ =\frac{1}{L_{t}}\frac{\partial^{2}L_{t}}{\partial\theta_{i}\partial\theta_{j}}
+  -\frac{\partial\log L_{t}}{\partial\theta_{i}}\frac{\partial\log L_{t}}{\partial\theta_{j}} .
+\end{equation}
+At $\theta_{0}$ the first term has expectation zero, by the argument of (8) applied twice:
+\[ \E\Bigl[\frac{1}{L_{t}(\theta_{0})}\frac{\partial^{2}L_{t}}{\partial\theta_{i}\partial\theta_{j}}\Big|_{\theta_{0}}\Bigr]
+   =\int\frac{\partial^{2}L_{t}}{\partial\theta_{i}\partial\theta_{j}}\Big|_{\theta_{0}}dy_{t}
+   =\frac{\partial^{2}}{\partial\theta_{i}\partial\theta_{j}}\underbrace{\int L_{t}\,dy_{t}}_{=1}=0 . \]
+Therefore
+\[ \E\Bigl(\frac{\partial^{2}\log L_{t}}{\partial\theta_{i}\partial\theta_{j}}\Big|_{\theta_{0}}\Bigr)
+   =-\E\Bigl(\frac{\partial\log L_{t}}{\partial\theta_{i}}\frac{\partial\log L_{t}}{\partial\theta_{j}}\Big|_{\theta_{0}}\Bigr)
+   =-\bigl[I_{t}(\theta_{0})\bigr]_{ij}, \]
+and, averaging over $t$ and taking limits,
+\[ \mathcal H^{n}(\theta_{0})=-\mathcal I^{n}(\theta_{0}), \qquad \mathcal H(\theta_{0})=-\mathcal I(\theta_{0}). \]
+
+\topic{Three equal forms of the asymptotic covariance}
+Substituting into (12),
+\[ \Var\bigl(\sqrt n(\hat\theta-\theta_{0})\bigr)
+   \ \overset{\text{(A)}}{=}\ \mathcal H^{-1}\mathcal I\,\mathcal H^{-1}
+   \ \overset{\text{(B)}}{=}\ -\mathcal H^{-1}
+   \ \overset{\text{(C)}}{=}\ \mathcal I^{-1}. \]
+(A) $=$ (B) $=$ (C) because the model is assumed correctly specified and everything is
+evaluated at $\theta_{0}$; that is what the information matrix equality needs.
+
+\topic{Conclusion: asymptotic normality}
+$g(\theta_{0})/\sqrt n$ is a scaled sum of independent mean-zero terms, so a central limit theorem
+gives
+\begin{align*}
+ \sqrt n\,(\hat\theta-\theta_{0}) &\ \overset{a}{\sim}\ N\bigl(0,\,-\mathcal H^{-1}(\theta_{0})\bigr), \tag{14}\\
+ \sqrt n\,(\hat\theta-\theta_{0}) &\ \overset{a}{\sim}\ N\bigl(0,\,\mathcal I^{-1}(\theta_{0})\bigr), \tag{15}\\
+ \sqrt n\,(\hat\theta-\theta_{0}) &\ \overset{a}{\sim}\ N\bigl(0,\,\mathcal H^{-1}(\theta_{0})\,\mathcal I(\theta_{0})\,\mathcal H^{-1}(\theta_{0})\bigr). \tag{16}
+\end{align*}
+Under correct specification all three coincide. Form (16), the sandwich, is built from
+(12) without the information matrix equality, so it is the one to use if that equality
+is in doubt.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: \emph{MLE1.pdf}, ten photographed pages of the handwritten handout headed
+       ``(I) Maximum Likelihood Estimation''. Equation numbers (1)--(16) are the handout's.
+       The text is restated and the derivations are laid out step by step; the section
+       headings follow the handout (``1.~Introduction'', ``Notation'', ``3.~Properties''),
+       with ``Notation'' numbered 2. No date. Transposes ($^{T}$ in the handout) are primes.
+ \item Page 1: \textbf{Corrected:} the handout says SSR $\to0$ by $\gamma\to-\infty$ ``if all the $y_{t}$
+       were greater than zero''; $y_{t}^{\gamma}\to0$ as $\gamma\to-\infty$ needs $y_{t}>1$ (for
+       $0<y_{t}<1$ it explodes). The degeneracy remains for any positive $y_{t}$: at $\gamma=0$,
+       $\beta_{0}=1$, $\beta_{1}=0$ the SSR is exactly zero (see Lesson 14, Section 5).
+ \item Page 2: the left edge is cut off in the photo (``[s]ingle unknown parameter'',
+       ``[n] observations'', ``[t]he likelihood'', ``[d]ensity''); the missing letters are
+       restored from context. The second-order condition is written $d^{2}\ell/d\theta^{2}<0$ with
+       its value $-n/\theta^{2}$ \textbf{added}; $\hat\theta=1/\bar y$ is \textbf{added}.
+ \item Page 4: \textbf{Corrected:} the handout writes $I_{t}\equiv\E(G_{t}G_{t}^{T})$ ``since $G_{t}$ is
+       $1\times k$''; for a $1\times k$ row that product is a scalar. The $k\times k$ matrix is
+       $\E(G_{t}'G_{t})$, consistent with $[I_{t}]_{ij}=\E(G_{ti}G_{tj})$ and $\mathcal I^{n}=\frac1n\E(G'G)$.
+       The handout's two scripts for the information matrix ($\mathcal I^{n}$ averaged,
+       $I^{n}=n\mathcal I^{n}$ total) are kept as calligraphic vs.\ roman.
+ \item Page 5: \textbf{Corrected:} invariance is written
+       $\ell'(\hat\phi)\equiv\ell(\eta(\hat\theta))$; since $\eta$ maps $\theta$ to $\phi$, the
+       reparametrised log-likelihood is $\ell'(\phi)=\ell(\eta^{-1}(\phi))$, so
+       $\ell'(\hat\phi)=\ell(\hat\theta)$. The handout's $n(\theta)$ is read as $\eta(\theta)$. The
+       reference to Jensen's inequality is \textbf{added}. The sentence running from page 5
+       to page 6 reads ``parametrization has no asymptotic effects but matters in small samples''.
+ \item Page 6: (5) is a mean-value expansion; for a vector $g$ the point $\bar\theta$ can differ
+       from row to row, which does not affect the argument. ``Its $(i,j)$th element'' of
+       $H(\bar\theta)/n$ is typeset as in the handout.
+ \item Page 8: the sentence explaining (10) (``the product will involve taking expectations of
+       terms that are independent since $L_{t}$ is independent of $L_{s}$, and hence are zero'') is
+       restated precisely: cross terms vanish because they are products of independent
+       mean-zero factors. The left side is written $\mathcal I^{n}(\theta)$ but is evaluated at
+       $\theta_{0}$.
+ \item Page 9: (12) is written $-\mathcal H^{-1}[\frac1n\E(gg')]-\mathcal H^{-1}$, the minus signs
+       meant as factors; it is typeset as the product
+       $(-\mathcal H^{-1})\,\mathcal I^{n}(-\mathcal H^{-1})$.
+       \textbf{Corrected:} the first term of (13) was written $\frac{1}{L_{t}}\partial^{2}\ell_{t}/\partial\theta_{i}\partial\theta_{j}$;
+       it is $\frac{1}{L_{t}}\partial^{2}L_{t}/\partial\theta_{i}\partial\theta_{j}$ (the density, not its log), as the
+       next line of the handout uses.
+ \item Page 10: the labels (A), (B), (C) are the handout's. The final remark on when to
+       prefer the sandwich (16) is \textbf{added}.
+ \item Original page map: p.\,1 introduction, model (1)--(2), idea of ML; p.\,2 exponential
+       example (3)--(4); p.\,3 notation through $\mathcal H^{n}$; p.\,4 information matrices, type 1
+       definition; p.\,5 type 2, invariance and bias; p.\,6 consistency, expansion (5)--(6),
+       Hessian term; p.\,7 (7)--(8), mean of the score; p.\,8 (9)--(11), variance of the score;
+       p.\,9 (12)--(13), information matrix equality; p.\,10 $\mathcal H=-\mathcal I$, (A)--(C), (14)--(16).
+\end{transcriptnotes}
+
+\end{document}

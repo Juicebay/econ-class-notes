@@ -31,6 +31,13 @@ metrics 1 class note*/
 ├── Lesson 12.pdf           original export
 ├── Lesson 12 - Asymptotics of NLS and Hypothesis Testing with the GNR (LaTeX).pdf   built from lesson12.tex
 ├── Lesson 12 Supplement - NLS Asymptotics Derivations (LaTeX).pdf   built from lesson12_supplement.tex
+├── Lesson 14.pdf           original export
+├── Lesson 14 - GNR Tests with AR(1) Errors, Jacobians and the Idea of ML (LaTeX).pdf   built from lesson14.tex
+├── MLE1.pdf, MLE2.pdf      photographed instructor handouts (I) and (II) on maximum likelihood
+├── MLE 1 - Maximum Likelihood Estimation (LaTeX).pdf   built from mle1.tex
+├── MLE 2 - More on Maximum Likelihood - Covariance Estimators and Jacobian Terms (LaTeX).pdf   built from mle2.tex
+├── MLE5.pdf                photographed handout (V): Hausman test, LM by artificial regression
+├── MLE 5 - Hausman Specification Testing and the LM Test by Artificial Regression (LaTeX).pdf   built from mle5.tex
 ├── Metrics HW1/
 │   ├── HW 1.pdf                           built from hw01.tex  (Assignment #1, ECON*6140)
 │   ├── HW 1 solution for question 1.tex/.pdf   Q1 solution; source lives here, uses ../LaTeX/metricsstyle
@@ -50,6 +57,11 @@ metrics 1 class note*/
     ├── lesson11.tex            NLS first-order conditions, X(β), Gauss–Newton regression and iteration, asymptotics of NLS
     ├── lesson12.tex            NLS residual variance and asymptotic normality, GNR covariance, restricted GNR tests
     ├── lesson12_supplement.tex derivation supplement: derivative of the FOC, √n-scaled step, Slutsky (built by hand)
+    ├── lesson13.tex            restricted GNR tests, test for AR(1) errors, GNR under σ²Ω
+    ├── lesson14.tex            GNR tests with AR(1) errors (ρ known / unknown), Jacobian of a transformation, idea of ML
+    ├── mle1.tex                handout MLE I: notation, invariance, asymptotic normality, information matrix equality
+    ├── mle2.tex                handout MLE II: Cramér–Rao, covariance estimators/OPG, normal NLS as ML, Jacobians, Box–Cox
+    ├── mle5.tex                handout MLE V: Hausman contrast test, LM = ESS = nR² from an artificial regression, test for AR(1) errors
     ├── hw01.tex                Assignment #1, ECON*6140, due 2026-10-14
     ├── lessonXX_template.tex   copy this to start a new lesson
     ├── extract_pages.py        render a handwritten PDF to PNGs for reading

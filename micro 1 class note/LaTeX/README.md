@@ -3,34 +3,29 @@
 Typeset versions of the handwritten lesson exports, in one fixed format.
 
 ```
-micro 1 class note*/
-├── Lesson 1.pdf  Lesson 3.pdf  lesson 4.pdf  Lesson 6.pdf  Lesson 7.pdf  Lesson 9.pdf  Lesson 10.pdf  Lesson 11.pdf  Lesson 13.pdf  Lesson 15.pdf  Lesson 16.pdf   original exports
-├── Lesson 01 - Consumer Choice and the Budget Set (LaTeX).pdf
-├── Lesson 03 - Demand, Walras Law and WARP (LaTeX).pdf
-├── Lesson 04 - Compensated Law of Demand and the Slutsky Matrix (LaTeX).pdf
-├── Lesson 06 - Preferences, Axioms and Utility (LaTeX).pdf
-├── Lesson 07 - Utility Maximization and Expenditure Minimization (LaTeX).pdf
-├── Lesson 09 - Duality, Hicksian Demand and Welfare (LaTeX).pdf
-├── Lesson 10 - Equivalent and Compensating Variation (LaTeX).pdf
-├── Lesson 11 - Aggregate Demand, Wealth Distribution and WARP (LaTeX).pdf
-├── Lesson 13 - Uncompensated Law of Demand and the Representative Consumer (LaTeX).pdf
-├── Lesson 15 - Choice under Uncertainty, Lotteries and the Independence Axiom (LaTeX).pdf
-├── Lesson 16 - Expected Utility, Money Lotteries and Risk Aversion (LaTeX).pdf
+micro 1 class note/
+├── 00 Course Info/              Schedule, syllabus
+├── 01 Labs/                     instructor lab slides + handouts (Lab 02, 05, 08, 12, 17)
+├── 02 Lectures/
+│   └── Lesson NN - <shortname>/ "... (handwritten).pdf" + "... (LaTeX).pdf"
+├── 03 Assignments/              HW1, HW2
+├── 04 Exams/
+├── 05 Textbooks & Supplements/  MWG, Munoz-Garcia, Econ709
 └── LaTeX/
     ├── microstyle.sty          THE FORMAT — edit here, not in the lessons
-    ├── lesson01.tex  lesson03.tex  lesson04.tex  lesson06.tex  lesson07.tex  lesson09.tex  lesson10.tex  lesson11.tex  lesson13.tex  lesson15.tex  lesson16.tex
+    ├── lesson01.tex … lesson18.tex
     ├── lessonXX_template.tex   copy this to start a new lesson
     ├── extract_pages.py        render a handwritten export to PNGs to read from
-    └── build.sh                builds every lesson and copies the PDFs up
+    └── build.sh                builds every lesson into ../02 Lectures/Lesson NN - <shortname>/
 ```
 
 ## Add a new lesson
 
 ```bash
 cd "LaTeX"
-cp lessonXX_template.tex lesson11.tex
-$EDITOR lesson11.tex          # fill in the shortname line, \lessonheader and the body
-./build.sh                    # -> ../Lesson 11 - <shortname> (LaTeX).pdf   (+ lesson11.pdf)
+cp lessonXX_template.tex lesson19.tex
+$EDITOR lesson19.tex          # fill in the shortname line, \lessonheader and the body
+./build.sh                    # -> ../02 Lectures/Lesson 19 - <shortname>/Lesson 19 - <shortname> (LaTeX).pdf
 ```
 
 `build.sh` rebuilds all lessons, so use it rather than calling `pdflatex` by hand;

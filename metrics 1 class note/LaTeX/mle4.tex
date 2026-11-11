@@ -1,0 +1,377 @@
+%% title: The Three Classical Tests - LM, Wald and LR (Restricted ML and the Linear Model)
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\handoutheader{MLE IV}{The three classical test statistics: the Lagrange multiplier (score) test from restricted maximum likelihood, and the LM, Wald and LR statistics in the linear model, with the inequality $W\ge LR\ge LM$}{}
+
+\runin{Previously} \emph{MLE~III}: the Wald, LR and LM principles. Notation: $g$ the score, $H$ the
+Hessian, $\mathcal I$ the information matrix, $\mathcal H=\operatorname{plim}H/n=-\mathcal I$, $G$ the CG matrix with
+$g=G'\iota$.
+
+\section{The three classical test statistics}
+
+Let $\tilde\theta$ denote the restricted ML estimates (under $H_{0}$) and $\hat\theta$ the unrestricted ML
+estimates.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.05]
+ \draw[ecaxis] (0,0) -- (7,0) node[below] {$\theta$};
+ \draw[ecaxis] (0,0) -- (0,4.4) node[left] {$\ell(\theta)$};
+ \draw[line width=0.9pt,domain=0.4:6.4,samples=60,smooth] plot (\x,{3.7-(\x-5)^2*0.13});
+ \draw[dashed] (0,3.7) node[left] {$\ell(\hat\theta)$} -- (5,3.7);
+ \draw[dashed] (0,2.9512) node[left] {$\ell(\tilde\theta)$} -- (2.6,2.9512);
+ \draw[dashed] (2.6,0) -- (2.6,2.9512);
+ \draw[dashed] (5,0) -- (5,3.7);
+ \draw[thin] (1.2,{2.9512+0.624*(1.2-2.6)}) -- (4.2,{2.9512+0.624*(4.2-2.6)}) node[above right] {$g(\tilde\theta)$};
+ \node[ecnode] at (6.3,3.0) {$g(\hat\theta)=0$};
+ \draw[|-|] (-1.55,2.9512) -- (-1.55,3.7);
+ \node[ecnode] at (-1.95,3.33) {LR};
+ \draw[|-|] (2.6,-0.3) -- (5,-0.3);
+ \node[ecnode] at (3.8,-0.62) {W};
+ \node[ecnode] at (2.6,-0.65) {$\theta_{0}$};
+ \node[ecnode] at (5,-0.65) {$\hat\theta$};
+\end{tikzpicture}
+\end{figure}
+
+\begin{flatlist}
+ \item The \textbf{Wald} principle is based on $\lvert\hat\theta-\theta_{0}\rvert$.
+ \item The \textbf{likelihood ratio} principle uses $\lvert\ell(\hat\theta)-\ell(\tilde\theta)\rvert$.
+ \item The \textbf{Lagrange multiplier} (``score'') principle looks at
+       $\lvert g(\tilde\theta)-g(\hat\theta)\rvert\equiv\lvert g(\tilde\theta)\rvert$ (why? because
+       $g(\hat\theta)=0$).
+\end{flatlist}
+
+\section{Lagrange multiplier (score) tests}
+
+Suppose we want to maximise $\ell(\theta)$ subject to $r$ ($\le k$) exact restrictions
+\begin{equation}\tag{1}
+ r(\theta)=0\qquad(\text{linear case: } R\theta=r),
+\end{equation}
+and $H_{0}$ is that (1) is true. Form the Lagrangian
+\begin{equation}\tag{2}
+ \ell(\theta)-r(\theta)'\lambda .
+\end{equation}
+The first-order conditions are
+\begin{equation}\tag{3}
+ g(\tilde\theta)-R'(\tilde\theta)\tilde\lambda=0,\qquad r(\tilde\theta)=0,
+\end{equation}
+where $R(\theta)$ is $r\times k$ with typical element $\partial r_{i}(\theta)/\partial\theta_{j}$.
+
+Taylor expand (3) around $(\theta_{0},0)=(\theta=\theta_{0},\lambda=0)$:
+\begin{align}
+ g(\theta_{0})+H(\bar\theta)(\tilde\theta-\theta_{0})-R'(\bar\theta)\tilde\lambda&=0, \tag{4}\\
+ R(\bar\theta)(\tilde\theta-\theta_{0})&=0, \notag
+\end{align}
+where $\bar\theta$ lies between $\tilde\theta$ and $\theta_{0}$ (the second line uses
+$r(\tilde\theta)=r(\theta_{0})=0$). Rewrite (4) as
+\begin{equation}\tag{5}
+ \begin{bmatrix}-H(\bar\theta)&R'(\bar\theta)\\ R(\bar\theta)&0\end{bmatrix}
+ \begin{bmatrix}\tilde\theta-\theta_{0}\\ \tilde\lambda\end{bmatrix}
+ =\begin{bmatrix}g(\theta_{0})\\0\end{bmatrix}.
+\end{equation}
+If we multiply $H(\bar\theta)$ by $1/n$, $(\tilde\theta-\theta_{0})$ by $\sqrt n$, $\tilde\lambda$ by $1/\sqrt n$ and
+$g(\theta_{0})$ by $1/\sqrt n$, we do not change the equality in (5), and we render all quantities
+which appear in it $O(1)$. Taking limits we get
+\begin{equation}\tag{6}
+ \begin{bmatrix}-\mathcal H(\theta_{0})&R'(\theta_{0})\\ R(\theta_{0})&0\end{bmatrix}
+ \begin{bmatrix}\sqrt n(\tilde\theta-\theta_{0})\\ \tilde\lambda/\sqrt n\end{bmatrix}
+ \overset{a}{=}\begin{bmatrix}g(\theta_{0})/\sqrt n\\0\end{bmatrix}.
+\end{equation}
+Rearranging yields
+\begin{equation}\tag{7}
+ \begin{bmatrix}\sqrt n(\tilde\theta-\theta_{0})\\ \tilde\lambda/\sqrt n\end{bmatrix}
+ \overset{a}{=}\begin{bmatrix}-\mathcal H&R'\\ R&0\end{bmatrix}^{-1}
+ \begin{bmatrix}g(\theta_{0})/\sqrt n\\0\end{bmatrix}.
+\end{equation}
+We know from before (\emph{MLE~III}) that
+\begin{equation}\tag{8}
+ \frac1{\sqrt n}\,g(\theta_{0})\overset{a}{\sim}N\bigl(0,\mathcal I(\theta_{0})\bigr),\qquad\mathcal I=-\mathcal H.
+\end{equation}
+Then from (7) the $(k+r)$-vector is asymptotically normal with mean zero:
+\begin{equation}\tag{9}
+ \begin{bmatrix}\sqrt n(\tilde\theta-\theta_{0})\\ \tilde\lambda/\sqrt n\end{bmatrix}
+ \overset{a}{\sim}N\Biggl\{0,\
+ \begin{bmatrix}-\mathcal H&R'\\ R&0\end{bmatrix}^{-1}
+ \begin{bmatrix}-\mathcal H&0\\0&0\end{bmatrix}
+ \begin{bmatrix}-\mathcal H&R'\\ R&0\end{bmatrix}^{-1}\Biggr\}.
+\end{equation}
+The inverse of the partitioned matrix that appears twice in (9) is
+\begin{equation}\tag{10}
+ \begin{bmatrix}-\mathcal H&R'\\ R&0\end{bmatrix}^{-1}
+ =\begin{bmatrix}
+   -\mathcal H^{-1}\bigl(I-R'(R\mathcal H^{-1}R')^{-1}R\mathcal H^{-1}\bigr) & \mathcal H^{-1}R'(R\mathcal H^{-1}R')^{-1}\\[4pt]
+   (R\mathcal H^{-1}R')^{-1}R\mathcal H^{-1} & -(R\mathcal H^{-1}R')^{-1}
+ \end{bmatrix}.
+\end{equation}
+Using $\mathcal I(\theta_{0})=-\mathcal H(\theta_{0})$ we get
+\begin{align}
+ \operatorname{var}\bigl(\sqrt n(\tilde\theta-\theta_{0})\bigr)&=\mathcal I^{-1}-\mathcal I^{-1}R'\bigl(R\,\mathcal I^{-1}R'\bigr)^{-1}R\,\mathcal I^{-1}, \tag{11}\\
+ \operatorname{var}\bigl(\tilde\lambda/\sqrt n\bigr)&=\bigl(R\,\mathcal I^{-1}(\theta_{0})R'\bigr)^{-1}. \tag{12}
+\end{align}
+(11) is the familiar restricted-least-squares result: in the linear model
+$\operatorname{var}(b_{R})=\sigma^{2}(X'X)^{-1}-\sigma^{2}(X'X)^{-1}R'\bigl(R(X'X)^{-1}R'\bigr)^{-1}R(X'X)^{-1}$.
+
+\topic{The Lagrange multiplier statistic}
+The LM test statistic is then given by
+\begin{equation}\tag{13}
+ \Bigl(\frac{\tilde\lambda}{\sqrt n}\Bigr)'\bigl(R\,\mathcal I^{-1}(\theta_{0})R'\bigr)\Bigl(\frac{\tilde\lambda}{\sqrt n}\Bigr)
+ =\frac1n\,\tilde\lambda'R\,\mathcal I^{-1}(\theta_{0})R'\tilde\lambda\ \overset{a}{\sim}\ \chi^{2}_{r},
+\end{equation}
+where $H_{0}\colon\lambda=0$.
+
+\topic{The score form}
+From the first-order condition (3) we have
+\begin{equation}\tag{14}
+ g(\tilde\theta)=R'\tilde\lambda .
+\end{equation}
+Substituting (14) into (13) yields the \emph{score form} of the LM test
+\begin{equation}\tag{15}
+ \frac1n\,\tilde g'\,\mathcal I^{-1}(\tilde\theta)\,\tilde g\ \overset{a}{\sim}\ \chi^{2}_{r},
+ \qquad\tilde g\equiv g(\tilde\theta).
+\end{equation}
+In practice we use (15), since $g(\tilde\theta)$ is typically available whereas $\tilde\lambda$ is not. The
+derivation via the Lagrange multipliers is illuminating, however, since it is clear why the test
+statistic is $\chi^{2}_{r}$ there, whereas from (15) this is not the case.
+
+\topic{Asymptotically equivalent versions}
+Valid and asymptotically equivalent tests include
+\begin{align}
+ &\frac1n\,\tilde g'\,\mathcal I^{-1}(\tilde\theta)\,\tilde g, \tag{16}\\
+ &-\tilde g'\tilde H^{-1}\tilde g, \tag{17}\\
+ &\tilde g'(\tilde G'\tilde G)^{-1}\tilde g, \tag{18}
+\end{align}
+with $\tilde H=H(\tilde\theta)$ and $\tilde G=G(\tilde\theta)$. (18) is interesting, since we know from before
+(\emph{MLE~II}) that
+\begin{equation}\tag{19}
+ g(\theta)=G'(\theta)\,\iota .
+\end{equation}
+Therefore (18) can be written as
+\begin{equation}\tag{20}
+ \iota'\tilde G(\tilde G'\tilde G)^{-1}\tilde G'\iota .
+\end{equation}
+But (20) is just the explained sum of squares from the (OPG) regression
+$\iota=\tilde G\,b+\text{errors}$.
+
+\section{An illustrative example: LM, W and LR in the linear model}
+
+Suppose the model under examination is the linear model
+\[ y=X_{1}\beta_{1}+X_{2}\beta_{2}+u,\qquad u\sim N(0,\sigma^{2}I),\qquad H_{0}\colon\beta_{1}=0, \]
+with $X=[X_{1}\ \ X_{2}]$, $X_{i}$ of dimension $n\times k_{i}$ and $k=k_{1}+k_{2}$. The log-likelihood is
+\begin{align*}
+ \ell(\theta)&=\text{const}-\frac n2\log\sigma^{2}-\frac1{2\sigma^{2}}(y-X_{1}\beta_{1}-X_{2}\beta_{2})'(y-X_{1}\beta_{1}-X_{2}\beta_{2})\\
+ &=\text{const}-\frac n2\log\sigma^{2}-\frac1{2\sigma^{2}}(y-X\beta)'(y-X\beta),
+\end{align*}
+where $\theta=(\beta_{1},\beta_{2},\sigma^{2})$. The first-order conditions for maximising the
+log-likelihood with respect to $\beta$ are
+\begin{equation}\tag{E1}
+ g(\beta)=\frac1{\sigma^{2}}X'(y-X\beta)=0\qquad(k\times1),
+\end{equation}
+which can be written as $[X_{1}\ \ X_{2}]'(y-X_{1}\beta_{1}-X_{2}\beta_{2})=0$, i.e.
+\begin{align}
+ \tfrac1{\sigma^{2}}X_{1}'(y-X_{1}\beta_{1}-X_{2}\beta_{2})&=0\qquad(k_{1}\times1), \tag{E2}\\
+ \tfrac1{\sigma^{2}}X_{2}'(y-X_{1}\beta_{1}-X_{2}\beta_{2})&=0\qquad(k_{2}\times1). \tag{E3}
+\end{align}
+
+\topic{Unrestricted and restricted estimates}
+Solving (E2)--(E3) gives the unrestricted estimates $(\hat\beta_{1},\hat\beta_{2})$, as in the
+partitioned-regression (FWL) formulas:
+\[ \hat\beta_{1}=(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}\,y,\qquad
+   \hat\beta_{2}=(X_{2}'M_{1}X_{2})^{-1}X_{2}'M_{1}\,y,\qquad
+   M_{i}=I-X_{i}(X_{i}'X_{i})^{-1}X_{i}',\ i=1,2, \]
+so $\hat\beta=(\hat\beta_{1},\hat\beta_{2})$. For the restricted estimate $\tilde\beta=(0,\tilde\beta_{2})$,
+solve again imposing $\beta_{1}=0$; (E2) and (E3) become
+\begin{align}
+ \tfrac1{\sigma^{2}}X_{1}'(y-X_{2}\beta_{2})&=0, \tag{E2$'$}\\
+ \tfrac1{\sigma^{2}}X_{2}'(y-X_{2}\beta_{2})&=0. \tag{E3$'$}
+\end{align}
+Note: $\tilde\beta_{2}$ from (E3$'$) is given by $\tilde\beta_{2}=(X_{2}'X_{2})^{-1}X_{2}'y$. Therefore
+$\frac1{\sigma^{2}}X_{2}'(y-X_{2}\tilde\beta_{2})=0$ ($k_{2}\times1$), \emph{but} in general
+$\frac1{\sigma^{2}}X_{1}'(y-X_{2}\tilde\beta_{2})\neq0$ ($k_{1}\times1$). Therefore $g(\tilde\beta)\neq0$ even
+though $g(\hat\beta)=0$. To summarise,
+\[ g(\hat\beta)=\begin{bmatrix}\frac1{\sigma^{2}}X_{1}'(y-X_{1}\hat\beta_{1}-X_{2}\hat\beta_{2})\\[3pt]
+                              \frac1{\sigma^{2}}X_{2}'(y-X_{1}\hat\beta_{1}-X_{2}\hat\beta_{2})\end{bmatrix}=0,
+   \qquad
+   g(\tilde\beta)=\begin{bmatrix}\frac1{\sigma^{2}}X_{1}'(y-X_{2}\tilde\beta_{2})\\[3pt]
+                                \frac1{\sigma^{2}}X_{2}'(y-X_{2}\tilde\beta_{2})\end{bmatrix}
+   =\begin{bmatrix}\frac1{\sigma^{2}}X_{1}'(y-X_{2}\tilde\beta_{2})\\[3pt]0\end{bmatrix}. \]
+
+\topic{The LM statistic}
+For the LM statistic we have $g(\tilde\beta)'\mathcal I^{-1}(\tilde\beta)\,g(\tilde\beta)$. Note
+\begin{equation}\tag{E4}
+ \mathcal I(\beta,\sigma^{2})=\begin{bmatrix}\frac1{\sigma^{2}}X'X&0\\0&\frac n{2\sigma^{4}}\end{bmatrix}.
+\end{equation}
+Therefore, because $\mathcal I(\beta,\sigma^{2})$ is block diagonal between $\beta$ and $\sigma^{2}$, we can
+concentrate on the $\beta$'s, on which the restrictions are placed, and ignore $\sigma^{2}$:
+\begin{equation}\tag{E5}
+ g(\tilde\theta)'\mathcal I^{-1}(\tilde\theta)g(\tilde\theta)
+ =g(\tilde\beta)'\mathcal I^{-1}(\tilde\beta)g(\tilde\beta)+g(\tilde\sigma^{2})\mathcal I^{-1}(\tilde\sigma^{2})g(\tilde\sigma^{2})
+ =g(\tilde\beta)'\mathcal I^{-1}(\tilde\beta)g(\tilde\beta),
+\end{equation}
+since $g(\tilde\sigma^{2})=0$. (Why? Work it out yourselves: $\tilde\sigma^{2}$ is the restricted ML
+estimate of $\sigma^{2}$, $\tilde\sigma^{2}=(y-X_{2}\tilde\beta_{2})'(y-X_{2}\tilde\beta_{2})/n$, so it solves
+the first-order condition for $\sigma^{2}$.) Now the LM statistic in (E5) involves
+$\mathcal I^{-1}(\tilde\beta)=\sigma^{2}(X'X)^{-1}$, with
+\begin{equation}\tag{E6}
+ (X'X)^{-1}=\begin{bmatrix}(X_{1}'M_{2}X_{1})^{-1}&A\\B&(X_{2}'M_{1}X_{2})^{-1}\end{bmatrix},
+\end{equation}
+where $A$, $B$ are nonzero submatrices (the expression in (E6) is obtained from the usual formula
+for the inverse of a partitioned matrix). Therefore, since the second block of $g(\tilde\beta)$ is zero,
+only the upper-left block of $\mathcal I^{-1}$ enters:
+\begin{align*}
+ LM&=g(\tilde\beta)'\,\mathcal I^{-1}(\tilde\beta)\,g(\tilde\beta)\\
+   &=\frac1{\tilde\sigma^{2}}\bigl[(y-X_{2}\tilde\beta_{2})'X_{1}\ \ 0\bigr]
+     \begin{bmatrix}(X_{1}'M_{2}X_{1})^{-1}&A\\B&(X_{2}'M_{1}X_{2})^{-1}\end{bmatrix}
+     \begin{bmatrix}X_{1}'(y-X_{2}\tilde\beta_{2})\\0\end{bmatrix}\\
+   &=\frac1{\tilde\sigma^{2}}(y-X_{2}\tilde\beta_{2})'X_{1}(X_{1}'M_{2}X_{1})^{-1}X_{1}'(y-X_{2}\tilde\beta_{2}). \tag{E7}
+\end{align*}
+But $y-X_{2}\tilde\beta_{2}=\bigl(I-X_{2}(X_{2}'X_{2})^{-1}X_{2}'\bigr)y=M_{2}y$, so
+\begin{equation}\tag{E8}
+ LM=\frac1{\tilde\sigma^{2}}\,y'M_{2}X_{1}(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}\,y .
+\end{equation}
+
+\topic{The Wald statistic}
+For $H_{0}\colon\beta_{1}=0$,
+\[ W=(\hat\beta_{1}-0)'\bigl[\widehat{\operatorname{var}}(\hat\beta_{1})\bigr]^{-1}(\hat\beta_{1}-0)
+   =\frac1{\hat\sigma^{2}}\,\hat\beta_{1}'(X_{1}'M_{2}X_{1})\hat\beta_{1}, \]
+and since $\hat\beta_{1}=(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y$ and
+$\widehat{\operatorname{var}}(\hat\beta_{1})=\hat\sigma^{2}(X_{1}'M_{2}X_{1})^{-1}$,
+\begin{equation}\tag{E9}
+ W=\frac1{\hat\sigma^{2}}\,y'M_{2}X_{1}(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}\,y .
+\end{equation}
+(E8) and (E9) have the same quadratic form in $y$; they differ only in the variance estimate,
+$\tilde\sigma^{2}$ (restricted) versus $\hat\sigma^{2}$ (unrestricted).
+
+\topic{The likelihood ratio statistic}
+With $\tilde u=y-X_{2}\tilde\beta_{2}$ and $\hat u=y-X_{1}\hat\beta_{1}-X_{2}\hat\beta_{2}$ (the restricted and
+unrestricted residuals), the likelihood ratio (using the concentrated log-likelihood,
+$-\frac n2\log(\mathrm{SSR}/n)+\text{const}$) is
+\begin{equation}\tag{E10}
+ LR=n\log\!\Bigl(\frac{\tilde u'\tilde u}{\hat u'\hat u}\Bigr)=n\log\!\Bigl(\frac{\mathrm{RSSR}}{\mathrm{USSR}}\Bigr).
+\end{equation}
+
+\section{Relations among W, LR and LM}
+
+\topic{Asymptotic equivalence}
+If $x$ is a small number, $\log(1+x)\simeq x$. Let
+\begin{equation}\tag{E11}
+ 1+x=\frac{\tilde u'\tilde u}{\hat u'\hat u}\quad\Longrightarrow\quad
+ x=\frac{\tilde u'\tilde u}{\hat u'\hat u}-1=\frac{\tilde u'\tilde u-\hat u'\hat u}{\hat u'\hat u}.
+\end{equation}
+Then (E10) becomes
+\begin{equation}\tag{E12}
+ n\log\!\Bigl(\frac{\tilde u'\tilde u}{\hat u'\hat u}\Bigr)\simeq n\,\frac{\tilde u'\tilde u-\hat u'\hat u}{\hat u'\hat u}.
+\end{equation}
+But (E12) $=$ (E9), since by the partitioned-regression (FWL) result
+\[ \tilde u'\tilde u-\hat u'\hat u=y'M_{2}X_{1}(X_{1}'M_{2}X_{1})^{-1}X_{1}'M_{2}y \]
+and $\hat\sigma^{2}=\hat u'\hat u/n$. Also (E8) is written as
+\begin{equation}\tag{E13}
+ n\,\frac{\tilde u'\tilde u-\hat u'\hat u}{\tilde u'\tilde u}
+\end{equation}
+(using $\tilde\sigma^{2}=\tilde u'\tilde u/n$). As $n\to\infty$, (E12), (E9) and (E13) are all
+$\overset{a}{\sim}\chi^{2}_{k_{1}}$. However, the equivalence of $W$, $LR$ and $LM$ as $\chi^{2}_{k_{1}}$ is
+\emph{only asymptotic}.
+
+\topic{Finite samples: $W\ge LR\ge LM$}
+In finite samples we have the following results. From (E11), $x=W/n$, so
+\begin{equation}\tag{E14}
+ LR=n\log(1+W/n)\ (\simeq W),
+\end{equation}
+since for small $W/n$, $n\log(1+W/n)\simeq n(W/n)=W$. Note the following: Taylor expand $\log(1+x)$
+around $x=0$,
+\[ \log(1+x)\simeq\log(1)+x\cdot\frac1{1+0}-\frac{x^{2}}2\Bigl(\frac1{1+0}\Bigr)^{2}+\cdots
+   \simeq 0+x-\frac{x^{2}}2+\cdots, \]
+and the higher-order terms are omitted. Therefore $x\ge\log(1+x)$, hence
+\begin{equation}\tag{E15}
+ W\ge LR\qquad\text{for finite samples.}
+\end{equation}
+Also
+\[ LM=n\,\frac{\tilde u'\tilde u-\hat u'\hat u}{\tilde u'\tilde u}
+   =W\Bigl(\frac{\hat u'\hat u}{\tilde u'\tilde u}\Bigr)=W\Bigl(\frac{\mathrm{USSR}}{\mathrm{RSSR}}\Bigr), \]
+but $\mathrm{USSR}<\mathrm{RSSR}$, so
+\begin{equation}\tag{E16}
+ LM<W.
+\end{equation}
+Also $LR=n\log(1+W/n)=n\log\bigl(1+LM\cdot a/n\bigr)$ with $a=\tilde u'\tilde u/\hat u'\hat u>1$, so
+$LR\simeq n(LM\cdot a/n)=LM\cdot a$, and therefore
+\begin{equation}\tag{E17}
+ LR>LM\qquad\text{since }a>1.
+\end{equation}
+(E15), (E16) and (E17) taken together lead to
+\[ \boxed{\,W>LR>LM\,}\qquad\text{for finite data.} \]
+In large samples this does not matter. Note: for small $n$, $W$, $LR$ and $LM$ are not only
+asymptotically $\chi^{2}$; the ordering means they can give conflicting decisions at a given critical
+value.
+
+\topic{An exact version of the argument}
+Write $a=\mathrm{RSSR}/\mathrm{USSR}>1$. Then
+\[ W=n(a-1),\qquad LR=n\log a,\qquad LM=n\Bigl(1-\frac1a\Bigr), \]
+and the elementary inequalities $1-1/a\le\log a\le a-1$ (valid for $a>0$, strict for $a\neq1$) give
+$W\ge LR\ge LM$ exactly, with no approximation.
+
+\emph{References (as given in the handout).} This inequality $W>LR>LM$ was noticed by Evans and Savin
+(1980), \emph{Econometrica}; Breusch, 1979, \emph{Econometrica}; Berndt and Savin, 1977, \emph{Econometrica}.
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: \emph{MLE4.pdf}, fourteen photographed pages: pages 1--4 headed ``(IV)'' (the three classical
+       statistics, Lagrange multiplier tests), then ten pages headed ``continued from (IV)\,---\,(IV)$'$'',
+       the linear-model example, paginated (unnumbered, then) 2--10. The text is restated and the
+       derivations expanded; section headings are \textbf{added}. Equation numbers: the handout's first part
+       runs (1)--(8), (10)--(21) (no (9), probably cut off at the page edge); here they are renumbered
+       consecutively, so the handout's (10)--(21) are (9)--(20). The example restarts at (1) in the
+       handout and runs to (17); its equations are labelled E1--E17 here. References to ``the handout's''
+       numbers in these notes use the handout's own numbering. Transposes ($^{T}$) are primes.
+ \item Page 1: the heading above ``The three classical test statistics'' is smudged and illegible; the
+       title used here is descriptive. ``(why!)'' after $g(\tilde\theta)-g(\hat\theta)\equiv g(\tilde\theta)$ is
+       answered ($g(\hat\theta)=0$). Notation: the handout uses $r(\theta)=0\Rightarrow R\theta=r$ (circled) for the linear case.
+ \item Page 2: \textbf{Corrected/clarified:} the Taylor expansion of (3) is written with $R'(\bar\theta)\tilde\lambda$;
+       replacing $R'(\tilde\theta)$ and $R(\tilde\theta)$ by their values at $\theta_{0}$ in the limit (6) is
+       justified by consistency of $\tilde\theta$. The second line of (4), $R(\bar\theta)(\tilde\theta-\theta_{0})=0$,
+       is written on a separate line in the handout and uses $r(\tilde\theta)=r(\theta_{0})=0$ (\textbf{added}).
+ \item Page 3: \textbf{Corrected:} the handout's variance expression (12) of $\sqrt n(\tilde\theta-\theta_{0})$ is garbled
+       (inverses lost); the correct form $\mathcal I^{-1}-\mathcal I^{-1}R'(R\mathcal I^{-1}R')^{-1}R\mathcal I^{-1}$ follows from
+       (9)--(10) and matches the handout's marginal annotation for the linear model, which is kept.
+       $\operatorname{var}(\tilde\lambda/\sqrt n)=(R\mathcal I^{-1}R')^{-1}$ (handout (13)) is derived by multiplying out
+       (9) (\textbf{added} check). The middle matrix in (9) has $\mathcal I=-\mathcal H$ in its upper-left block.
+ \item Page 4: \textbf{Corrected:} (15) of the handout reads $g(\tilde\theta)=-R'\tilde\lambda$; from (3) the sign is
+       $+$ ($g(\tilde\theta)=R'\tilde\lambda$); the sign has no effect on the quadratic form (16). The handout's
+       (17)--(19) are read as (16)--(18) here. ``Valid and asymptotically equivalent tests include'' (17), (18), (19):
+       (17) uses $\tilde H$ without the factor $1/n$ because $H$ here is the full-sample Hessian
+       (\textbf{added} remark). The handout's (21) is the explained sum of squares of the OPG regression
+       $\iota=\tilde Gb+\text{errors}$ (\emph{MLE~II}).
+ \item Example, pages 1--3: $\tilde\beta_{2}$ is written $\tilde\beta_{2}=(X_{2}'X_{2})^{-1}X_{2}'y$. The handout lists
+       the $X_{2}$ block before the $X_{1}$ block of $g(\tilde\beta)$; the order is switched here to match the
+       partitioning of $X=[X_{1}\ X_{2}]$.
+ \item Example, page 4: ``(why? Work it out yourselves)'' after $g(\tilde\sigma^{2})=0$ is answered (the
+       restricted ML estimate of $\sigma^{2}$ satisfies its own first-order condition). The handout's
+       $\sigma$ in the LM quadratic form is $\tilde\sigma^{2}$ (restricted) and in W it is
+       $\hat\sigma^{2}$ (unrestricted); this distinction, implicit in the handout's tildes and hats, is
+       made explicit.
+ \item Example, pages 5--6: (E6) writes $A$ and $B$ as nonzero submatrices; explicitly\\
+       $A=-(X_{1}'M_{2}X_{1})^{-1}X_{1}'X_{2}\,(X_{2}'X_{2})^{-1}$ and
+       $B=A'$ (\textbf{added}; not used since the
+       second block of $g(\tilde\beta)$ is zero). \textbf{Corrected:} in the Wald statistic the handout's middle matrix
+       is written $(X_{1}'M_{2}X_{1})^{-1}$; it should be $(X_{1}'M_{2}X_{1})$, the inverse of the variance's
+       matrix factor; the final form (E9) is as in the handout and confirms this.
+ \item Example, pages 7--8: the residual vectors, drawn in the handout with a nonstandard symbol ($\tilde G$,
+       $\hat G$ look-alikes), are $\tilde u,\hat u$; this is read from context (RSSR, USSR in (10)).
+       \textbf{Corrected:} the Taylor expansion of $\log(1+x)$ is written without the factor $1/2$ in the second-order
+       term, and its value is left blank; the term is $-x^{2}/2$. (14) and (15) are
+       $LR=n\log(1+W/n)\simeq W$ and $W\ge LR$.
+ \item Example, page 9: the handout derives $LR>LM$ from $LR\simeq LM\cdot a$ and $a>1$, which is
+       approximate; an exact derivation from $1-1/a\le\log a\le a-1$ is \textbf{added} at the end. ``For
+       small $n$, $W$, $LR$ and $LM$ are not only asymptotically $\chi^{2}$'' is read in the sense that their
+       exact distributions differ from $\chi^{2}$ and the ordering holds sample by sample.
+ \item Example, page 10: the reference line is transcribed as written: ``Evans and Savin (1980) Econometrica; Breusch 1979
+       Econometrica; Berndt and Savin 1977 Econometrica''; years are as in the handout (Evans and Savin's
+       paper is, to my knowledge, dated 1982 in \emph{Econometrica}; not verified here).
+ \item Original page map: p.\,1 three statistics, figure, start of LM; pp.\,2--3 Lagrangian, (2)--(14);
+       p.\,4 score form and equivalent versions (15)--(21); (IV)$'$ pp.\,1--3 linear model, estimates, gradients;
+       p.\,4 LM, information matrix; pp.\,5--6 LM and W derivations; p.\,7 LR and approximation; pp.\,8--9
+       finite-sample ordering; p.\,10 references.
+\end{transcriptnotes}
+
+\end{document}

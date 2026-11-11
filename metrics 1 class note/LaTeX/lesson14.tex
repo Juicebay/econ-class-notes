@@ -1,0 +1,211 @@
+%% title: GNR Tests with AR(1) Errors, Jacobians and the Idea of ML
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\lessonheader{14}{Restricted GNR tests with AR(1) errors (known and unknown $\rho$), the Jacobian of a transformation, and the idea of maximum likelihood}{November 4, 2026}
+
+\runin{Previously} The GNR under $u\sim(0,\sigma^{2}\Omega)$ and the power-term example with
+AR(1) errors (Lesson 13). This lesson finishes that example, adds the case of
+unknown $\rho$, and then starts maximum likelihood (handouts \emph{MLE~I} and \emph{MLE~II}).
+
+\section{Recap: the GNR after a GLS transformation}
+
+\[ y=x(\beta)+u, \qquad u\sim(0,\sigma^{2}\Omega), \qquad T'T=\Omega^{-1}, \qquad
+   Ty=Tx(\beta)+Tu, \quad \Var(Tu)=\sigma^{2}I_{n}. \]
+For $H_{0}:\beta_{2}=0$ (or any restriction on $\beta_{2}$) evaluate the transformed GNR at the
+restricted estimate $\tilde\beta=(\tilde\beta_{1}',\tilde\beta_{2}')'$:
+\[ T\bigl(y-x(\tilde\beta_{1},\tilde\beta_{2})\bigr)
+   =TX_{1}(\tilde\beta_{1},\tilde\beta_{2})\,b_{1}
+   +TX_{2}(\tilde\beta_{1},\tilde\beta_{2})\,b_{2}+\text{errors}, \]
+and test $b_{2}=0$.
+
+\section{Power term with AR(1) errors, $\rho$ known: $H_{0}:\beta_{3}=1$}
+
+\topic{The model and its quasi-difference}
+\[ y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}^{\beta_{3}}+u_{t}, \qquad
+   u_{t}=\rho u_{t-1}+\varepsilon_{t}, \qquad H_{0}:\ \beta_{3}=1 . \]
+Under $H_{0}$ the model is linear in $x_{1t},x_{2t}$. Here $T$ is the quasi-difference:
+\[ y_{t}-\rho y_{t-1}=\beta_{1}(x_{1t}-\rho x_{1,t-1})
+   +\beta_{2}\bigl(x_{2t}^{\beta_{3}}-\rho x_{2,t-1}^{\beta_{3}}\bigr)+\varepsilon_{t}. \]
+
+\topic{Derivatives, before and after the transformation}
+\[ X_{t}(\beta)=\Bigl(\ \frac{\partial x_{t}}{\partial\beta_{1}}\ \Big|\
+   \frac{\partial x_{t}}{\partial\beta_{2}}\ \Big|\ \frac{\partial x_{t}}{\partial\beta_{3}}\ \Bigr)
+   =\bigl(\,x_{1t}\ \big|\ x_{2t}^{\beta_{3}}\ \big|\ \beta_{2}x_{2t}^{\beta_{3}}\log x_{2t}\,\bigr), \]
+\begin{multline*}
+ [TX(\beta)]_{t}=\bigl(\,x_{1t}-\rho x_{1,t-1}\ \big|\
+   x_{2t}^{\beta_{3}}-\rho x_{2,t-1}^{\beta_{3}}\ \big|\\
+   \beta_{2}x_{2t}^{\beta_{3}}\log x_{2t}-\rho\beta_{2}x_{2,t-1}^{\beta_{3}}\log x_{2,t-1}\,\bigr).
+\end{multline*}
+
+\topic{The GNR at the restricted estimate ($\beta_{3}=1$)}
+$\tilde\beta_{1},\tilde\beta_{2}$ are the GLS estimates of the restricted model, i.e.\ OLS of
+$y_{t}-\rho y_{t-1}$ on $x_{1t}-\rho x_{1,t-1}$ and $x_{2t}-\rho x_{2,t-1}$. Then
+\begin{align*}
+ &y_{t}-\rho y_{t-1}-\tilde\beta_{1}(x_{1t}-\rho x_{1,t-1})-\tilde\beta_{2}(x_{2t}-\rho x_{2,t-1})\\
+ &\quad=(x_{1t}-\rho x_{1,t-1})\,b_{1}+(x_{2t}-\rho x_{2,t-1})\,b_{2}\\
+ &\quad+\bigl(\tilde\beta_{2}x_{2t}\log x_{2t}-\rho\tilde\beta_{2}x_{2,t-1}\log x_{2,t-1}\bigr)\,b_{3}
+   +\text{error},
+\end{align*}
+and $H_{0}$ is tested by the $t$ statistic on $b_{3}$.
+
+\topic{Why test $b_{3}=0$ when the hypothesis is $\beta_{3}=1$?}
+The GNR is one Gauss--Newton step away from the point where it is evaluated
+(Lesson 11): its coefficients estimate how far the parameters would have to move from
+$\tilde\beta$ to improve the fit. Because $\tilde\beta_{3}=1$ by construction, $b_{3}$ estimates
+(to first order) $\hat\beta_{3}-1$. If $H_{0}$ is true, the restricted estimates are consistent,
+moving $\beta_{3}$ away from 1 brings no systematic improvement, and $b_{3}$ is
+insignificant. So $b_{3}=0$ is not \emph{equivalent} to $\beta_{3}=1$; it is the \emph{test} of it.
+(In general: test $b_{2}=0$ in the GNR at $\tilde\beta$, whatever value the restriction fixes
+$\beta_{2}$ at.)
+
+\section{$\rho$ unknown: joint test of $\beta_{3}=1$ and $\rho=0$}
+
+\topic{Treat $\rho$ as a parameter}
+\[ y_{t}=\underbrace{\rho y_{t-1}+\beta_{1}(x_{1t}-\rho x_{1,t-1})
+   +\beta_{2}\bigl(x_{2t}^{\beta_{3}}-\rho x_{2,t-1}^{\beta_{3}}\bigr)}_{x_{t}(\beta_{1},\beta_{2},\beta_{3},\rho)}
+   +\varepsilon_{t},
+   \qquad H_{0}:\ \beta_{3}=1,\ \rho=0 . \]
+This is a nonlinear regression in $(\beta_{1},\beta_{2},\beta_{3},\rho)$ with well-behaved errors,
+so the ordinary (untransformed) GNR applies.
+
+\topic{Derivatives under $H_{0}$}
+At $\rho=0$ the first three columns are those of the model without autocorrelation, and
+\[ \frac{\partial x_{t}}{\partial\rho}=y_{t-1}-\beta_{1}x_{1,t-1}-\beta_{2}x_{2,t-1}^{\beta_{3}}
+   \ \overset{\beta_{3}=1}{=}\ y_{t-1}-\beta_{1}x_{1,t-1}-\beta_{2}x_{2,t-1}=u_{t-1}. \]
+So
+\[ X_{t}(\beta_{1},\beta_{2},1,0)=\bigl(\,x_{1t}\ \big|\ x_{2t}\ \big|\ \beta_{2}x_{2t}\log x_{2t}\ \big|\
+   y_{t-1}-\beta_{1}x_{1,t-1}-\beta_{2}x_{2,t-1}\,\bigr). \]
+
+\topic{The GNR}
+The restricted model is $y_{t}=\beta_{1}x_{1t}+\beta_{2}x_{2t}+u_{t}$, estimated by OLS, with
+residuals $e_{t}=y_{t}-\tilde\beta_{1}x_{1t}-\tilde\beta_{2}x_{2t}$. The GNR is
+\[ e_{t}=x_{1t}\,b_{1}+x_{2t}\,b_{2}+\bigl(\tilde\beta_{2}\,x_{2t}\log x_{2t}\bigr)\,b_{3}
+   +e_{t-1}\,b_{4}+\text{errors}. \]
+There are two restrictions, so test $b_{3}=b_{4}=0$ \emph{jointly} ($F$ with 2 numerator
+degrees of freedom, or $\chi^{2}_{2}$, e.g.\ $nR^{2}_{u}$). The reasoning is the same as above:
+$b_{3}$ and $b_{4}$ are the steps away from $\beta_{3}=1$ and $\rho=0$. The factor
+$\tilde\beta_{2}$ may be dropped from the third regressor (rescaling does not change the test),
+and the first observation is lost (or $e_{0}=0$).
+
+\section{Digression: the Jacobian of a transformation}
+
+\topic{One variable}
+Let $u$ have density $f_{u}(u)$ and let $y=g(u)$ with $g$ strictly increasing. Probability is
+preserved: for a small interval $\Delta u$ around $u'$, mapped to $\Delta y$ around $y'=g(u')$,
+\[ f_{u}(u')\,\Delta u\approx f_{y}(y')\,\Delta y
+   \quad\Longrightarrow\quad f_{y}(y')\approx\frac{\Delta u}{\Delta y}\,f_{u}(u'). \]
+As $\Delta u\to0$, $\Delta y/\Delta u\to dy/du>0$, so
+\[ f_{y}(y)=f_{u}\bigl(g^{-1}(y)\bigr)\,\frac{du}{dy}. \]
+If $g$ were decreasing, $du/dy<0$; a density must be non-negative, so in general
+\[ f_{y}(y)=f_{u}\bigl(g^{-1}(y)\bigr)\,\Bigl|\frac{du}{dy}\Bigr| . \]
+
+\topic{Many variables}
+For $u=(u_{1},\ldots,u_{n})'$ a one-to-one function of $y=(y_{1},\ldots,y_{n})'$, the Jacobian
+matrix is
+\[ J=\Bigl[\frac{\partial u_{i}}{\partial y_{j}}\Bigr]_{i,j=1,\ldots,n}
+   =\begin{bmatrix}
+     \dfrac{\partial u_{1}}{\partial y_{1}} & \cdots & \dfrac{\partial u_{1}}{\partial y_{n}}\\[6pt]
+     \vdots & \ddots & \vdots\\[2pt]
+     \dfrac{\partial u_{n}}{\partial y_{1}} & \cdots & \dfrac{\partial u_{n}}{\partial y_{n}}
+    \end{bmatrix},
+   \qquad f(y)=f\bigl(u(y)\bigr)\,\lvert\det J\rvert . \]
+$\lvert\det J\rvert$ plays the role of $\lvert du/dy\rvert$.
+
+\section{Why least squares can fail: transforming the dependent variable}
+
+\[ y_{t}^{\gamma}=\beta_{1}+\beta_{2}x_{2t}+u_{t}, \qquad
+   \min_{\gamma,\beta_{1},\beta_{2}}\ \sum_{t}\bigl(y_{t}^{\gamma}-\beta_{1}-\beta_{2}x_{2t}\bigr)^{2}. \]
+This is \emph{not} a regression model once $\gamma$ is estimated, and least squares breaks down:
+it can make the SSR as small as it likes by squashing the dependent variable. If every
+$y_{t}>1$, letting $\gamma\to-\infty$ sends $y_{t}^{\gamma}\to0$, so with $\beta_{1}=\beta_{2}=0$ the
+SSR $\to0$; even more simply, $\gamma=0$ makes $y_{t}^{0}=1$ for all $t$, and $\beta_{1}=1$,
+$\beta_{2}=0$ fits exactly. The estimates say nothing about the data.
+
+\topic{How the Jacobian fixes this}
+Maximum likelihood works with the density of the \emph{observed} $y_{t}$, not of $u_{t}$. Since
+$u_{t}=y_{t}^{\gamma}-\beta_{1}-\beta_{2}x_{2t}$ gives $\partial u_{t}/\partial y_{t}=\gamma y_{t}^{\gamma-1}$, the
+log-likelihood contains, besides the SSR term, the log-Jacobian
+\[ \log\lvert\det J\rvert=n\log\lvert\gamma\rvert+(\gamma-1)\sum_{t}\log y_{t}, \]
+which goes to $-\infty$ exactly where least squares degenerates ($\gamma\to0$ or
+$\gamma\to-\infty$). The Jacobian penalises shrinking $y$. This is worked out for the
+Box--Cox transformation in \emph{MLE~II}, Section~4.
+
+\section{Maximum likelihood: the first idea}
+
+\topic{A normal mean}
+\[ y_{i}\sim N(\mu,\sigma^{2})\ \text{independent}, \quad i=1,\ldots,n, \qquad \sigma^{2}\ \text{known}. \]
+Each candidate $\mu$ defines a density for the sample. Picture sliding the bell curve
+$N(\mu,\sigma^{2})$ along the axis on which the observations are marked: far to the left or
+right, most observations fall in the tails and their joint density is tiny; the curve
+centred in the middle of the observations gives them the highest joint density. Formally,
+\[ \max_{\mu}\ \prod_{i=1}^{n}\frac{1}{\sqrt{2\pi}\,\sigma}
+     \exp\Bigl\{-\frac{(y_{i}-\mu)^{2}}{2\sigma^{2}}\Bigr\}
+   \iff \min_{\mu}\ \sum_{i=1}^{n}(y_{i}-\mu)^{2}
+   \quad\Longrightarrow\quad \hat\mu=\frac{1}{n}\sum_{i}y_{i}=\bar y_{n}. \]
+
+\topic{The principle}
+Choose the parameters that maximise the joint density of the observed sample, i.e.\
+the density under which the data are most likely. With normal errors in the regression
+$y=X\beta+u$, $u\sim N(0,\sigma^{2}I_{n})$, this gives $\hat\beta=b_{\text{OLS}}$ and
+\[ \hat\sigma^{2}=\frac{e'e}{n}, \]
+which divides by $n$ rather than $n-K$, so it is biased but consistent (derived in
+\emph{MLE~II}, eq.~(8)).
+
+\clearpage
+\begin{transcriptnotes}
+ \item Source: the five-page photographed export \emph{Lesson 14.pdf}. No date is written;
+       November 4, 2026 is the export date and follows the Monday/Wednesday pattern
+       (Lesson 13: November 2). Section headings, the recap and connecting sentences are
+       \textbf{added}. Restricted estimates are written with a ``$\vee$''-like accent (and
+       sometimes hats); all are typeset as tildes, as in Lessons 12--13. $6^{2}$ is $\sigma^{2}$.
+ \item Page 1: \textbf{Corrected:} the second column of $X(\beta)$ was written $x_{2t}$; at a
+       general $\beta$ it is $x_{2t}^{\beta_{3}}$ (it equals $x_{2t}$ only under $H_{0}$). The
+       transformed matrix was labelled $TX(\beta_{1},\beta_{2})$; it depends on all three
+       parameters. \textbf{Corrected:} in its last column the lagged term had
+       $x_{2t}^{\beta_{3}}$ for $x_{2,t-1}^{\beta_{3}}$. \textbf{Corrected:} in the final GNR the
+       lagged regressor $\rho\tilde\beta_{2}x_{2,t-1}$ is missing $\log x_{2,t-1}$, and the left-hand
+       side starts with $y$ for $y_{t}$. A struck-through line
+       ($y-\tilde\beta_{1}x_{1t}-\tilde\beta_{2}x_{2t}$) is omitted. Note the null here is
+       $\beta_{3}=1$, not $\beta_{3}=0$ as in Lesson 13.
+ \item Page 2 (top): the question ``$b_{3}=0\Leftrightarrow\beta_{3}=1$, why though?'' is answered
+       in the text (\textbf{added}); the two are not equivalent, one tests the other.
+ \item Page 2: \textbf{Corrected:} in the model with unknown $\rho$ the term
+       $(x_{2t}^{\beta_{3}}-\rho x_{2,t-1}^{\beta_{3}})$ lacks its coefficient $\beta_{2}$. The column
+       $\partial TX/\partial\rho|_{\rho=0}$ is written out; its identification with $u_{t-1}$ (and
+       $e_{t-1}$ at the estimates) and the restricted OLS fit are \textbf{added}. The third GNR
+       regressor was written $(x_{2t}\log x_{2t})\,b_{3}$ without $\tilde\beta_{2}$, after a
+       struck ``$\log$''; both forms give the same test. ``$H_{0}:\beta_{3}=1,\rho=0
+       \Leftrightarrow b_{3}=0,b_{4}=0$, why?'' is answered: a joint test of two restrictions.
+ \item Page 3: ``Digression: Jacobian of transformation''. The figure (convex increasing
+       $g(u)$ with intervals $\Delta u$, $\Delta y$) is described in words; the assumption
+       $g''(u)>0$ only shapes the picture and is not needed. ``why? Prob need to be
+       positive'' is expanded into the absolute value. \textbf{Corrected:} the Jacobian matrix
+       was written with $\partial u_{n}/\partial y_{1}$ at the end of the first row, i.e.\ transposed;
+       the determinant is unchanged, and the convention $J_{ij}=\partial u_{i}/\partial y_{j}$ of
+       \emph{MLE~II} is used. ``$\lvert J\rvert\Rightarrow\lvert\det J\rvert>0$'' is read as ``use the
+       absolute value of the determinant''.
+ \item Page 4: the model $y_{t}^{\gamma}=\beta_{1}+x_{2}\beta_{2}+u_{t}$ is written with hats inside the
+       SSR; the hats are dropped (it is the objective, not its value at the estimate). The
+       margin questions ``we might need to test $\beta_{1},\beta_{2}$ to 0 and $\gamma$ to $-\infty$??
+       why?'' and ``then we can use Jacobian instead? How do they relate?'' are answered in
+       Section 5 (\textbf{added}): these are the degenerate least-squares solutions, and the
+       Jacobian term of the likelihood rules them out. The condition $y_{t}>1$ for
+       $\gamma\to-\infty$ and the $\gamma=0$ case are \textbf{added}.
+ \item Page 4 (bottom): ``MLE: start, $y_{i}\sim N(\mu,\sigma^{2})$, $\sigma^{2}$ known''. The sketch of
+       several normal curves centred at $\mu_{1},\mu_{2},\ldots,\mu_{15}$ over tick marks for the
+       data, with the label ``middle of all the ticks'', is described in words. The
+       estimator was written $\min_{\hat\mu}\sum(y_{i}-\hat\mu)^{2}$; the minimisation is over $\mu$.
+ \item Page 5: ``maximize the joint density of my sample $\Rightarrow$ the most likely density
+       function, $\hat\sigma^{2}=e'e/n$''. The regression context and the remark on the divisor
+       $n$ are \textbf{added}.
+ \item Original page map: page 1 transformed GNR and the power-term/AR(1) example with
+       $H_{0}:\beta_{3}=1$; page 2 why $b_{3}$, unknown $\rho$ and the joint GNR test; page 3
+       Jacobian digression (one variable, $n$ variables); page 4 $\lvert\det J\rvert$, the
+       $y^{\gamma}$ model, start of MLE with the normal mean; page 5 maximum likelihood principle
+       and $\hat\sigma^{2}=e'e/n$.
+\end{transcriptnotes}
+
+\end{document}

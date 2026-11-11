@@ -1,0 +1,288 @@
+%% shortname: State-Contingent Wealth, Insurance and First-Order Stochastic Dominance
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{18}{Chapter 6 (continued): state-contingent wealth, insurance, risky assets and first-order stochastic dominance}{}
+
+
+\section{Where we are}
+
+We started looking at lotteries over wealth. The properties of the Bernoulli utility
+function $u(\cdot)$ tell us whether the agent is risk averse or not.
+
+Our aim is to evaluate and compare different lotteries \emph{without} assuming too much
+knowledge about the Bernoulli utility function.
+
+
+\section{A different interpretation of the model: state-contingent wealth}
+
+But first, a different interpretation of the model. Rather than changing the
+\emph{probabilities} in lotteries, we change the \emph{wealth level} in different
+states (outcomes); e.g.\ insurance, risky assets.
+
+\topic{Setup}
+With a finite number of states and a fixed probability distribution
+$p=(p_1,\dots,p_N)$, the expected utility of the wealth vector $x=(x_1,\dots,x_N)$ is
+\[ V(x)=p_1u(x_1)+\dots+p_Nu(x_N)=\sum_{n=1}^{N}p_n u(x_n). \]
+
+\topic{Risk aversion $\Rightarrow$ convex preferences}
+If the agent is risk averse, $u(\cdot)$ is concave, and $V$ is a sum of concave
+functions with non-negative weights $p_n$. Hence
+\[ V(x)\ \text{is concave}\ \Rightarrow\ V(x)\ \text{is quasiconcave}\
+   \Rightarrow\ \text{preferences over } x \text{ are convex.} \]
+$\Rightarrow$ Averages are preferred to extremes. This fits with risk aversion: we like
+more balanced $x$'s because they have less risk, i.e.\ less variability across
+$x_1,\dots,x_N$.
+
+\subsection*{An example with 2 states}
+
+State $1$ is the good state, state $2$ the bad state.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \ecaxes{5.2}{5.2}
+  \node[ecnode,right] at (5.2,0) {$x_1$, good state};
+  \node[ecnode,above] at (0,5.2) {$x_2$, bad state};
+  \draw[dashed] (0,0) -- (4.8,4.8);
+  \node[ecnode,anchor=west,align=left] at (4.85,4.8) {line of certainty\\(full insurance)};
+  \node[ecnode] at (0.75,0.35) {$45^\circ$};
+  % indifference curve x1 x2 = 4
+  \draw[budget,domain=0.85:4.7,samples=60] plot (\x,{4/\x});
+  \node[bundle] at (0.85,4.706) {}; \node[bundle] at (4.7,0.851) {};
+  \node[bundle] at (2,2) {};
+  \draw[thin] (0.8,3.2) -- (3.2,0.8);
+  \node[ecnode,anchor=north west] at (3.25,0.75) {slope $-\tfrac{p_1}{p_2}$};
+  \node[ecnode,right] at (4.7,0.95) {$V(x)=\bar V$};
+  \draw[-{Stealth}] (2.9,1.38) -- (3.4,1.88);
+  \node[ecnode,right] at (3.4,1.95) {preferred};
+\end{tikzpicture}
+\end{center}
+
+\[ V(x)=p_1u(x_1)+p_2u(x_2), \qquad
+   \mathrm{MRS}=-\frac{p_1u'(x_1)}{p_2u'(x_2)} \quad\text{(slope of the indifference curve).} \]
+
+\begin{flatlist}
+  \item If the agent is risk neutral, $u(x)=x$, so
+        $\mathrm{MRS}=-\dfrac{p_1}{p_2}$, a constant: indifference curves are straight
+        lines.
+  \item For a risk-averse agent, \emph{on the $45^\circ$ line} ($x_1=x_2$, so
+        $u'(x_1)=u'(x_2)$):
+        \[ \mathrm{MRS}=-\frac{p_1}{p_2}. \]
+\end{flatlist}
+Starting at a point of certainty, $x_1=x_2$, it is as if the agent were risk neutral
+for small changes.
+
+
+\section{Application to insurance}
+
+The price of $1$ unit of insurance is $\alpha$. If you buy $1$ unit, you pay $\alpha$ in
+both states and receive $1$ in the bad state:
+\[ dx_1=-\alpha, \qquad dx_2=1-\alpha, \qquad
+   \frac{dx_2}{dx_1}=\frac{1-\alpha}{-\alpha}=-\frac{1-\alpha}{\alpha}. \]
+
+\topic{Overpriced insurance}
+For the insurance company to make a profit we need $\alpha\ge p_2$, so
+\[ \frac{1-\alpha}{\alpha}\ \le\ \frac{1-p_2}{p_2}=\frac{p_1}{p_2}: \]
+the budget line is flat compared to the indifference curve at the $45^\circ$ line.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  % p1 = p2 = 1/2, u = ln; budget x2 = 3.32 - 0.6 x1 through e = (4.2, 0.8)
+  \fill[black!8] (0,0) -- (0,3.32) -- (5.533,0) -- cycle;
+  \ecaxes{6.0}{4.6}
+  \node[ecnode,right] at (6.0,0) {$x_1$};
+  \node[ecnode,above] at (0,4.6) {$x_2$};
+  \draw[dashed] (0,0) -- (4.3,4.3);
+  \node[ecnode] at (0.75,0.35) {$45^\circ$};
+  \draw[budget] (0,3.32) -- (5.533,0);
+  \node[ecnode,anchor=west] at (5.2,0.75) {slope $-\tfrac{1-\alpha}{\alpha}$};
+  % IC through the certain point on the budget line (x1 x2 = 2.075^2)
+  \draw[domain=1.05:4.2,samples=60] plot (\x,{4.3056/\x});
+  \draw[thin] (1.2,2.95) -- (2.95,1.2);
+  \node[ecnode,anchor=north east] at (2.95,1.2) {$-\tfrac{p_1}{p_2}$};
+  \node[bundle] at (2.075,2.075) {};
+  % optimal IC x1 x2 = 4.593, tangent at (2.767, 1.66)
+  \draw[budget,domain=1.15:5.3,samples=60] plot (\x,{4.593/\x});
+  \node[bundle] at (2.767,1.66) {};
+  \node[ecnode,above right] at (2.767,1.66) {$x^*$};
+  \node[bundle] at (4.2,0.8) {};
+  \node[ecnode,below left] at (4.2,0.8) {$e$};
+  \node[ecnode] at (1.75,0.35) {feasible set};
+\end{tikzpicture}
+\end{center}
+
+$\Rightarrow$ Even a risk-averse agent accepts some risk (does not fully insure) if
+insurance is overpriced: the optimum $x^*$ lies below the $45^\circ$ line, $x_1^*>x_2^*$.
+(Here $e$ is wealth with no insurance.)
+
+
+\section{Application: betting on a risky asset}
+
+For each unit of the asset bought,
+\[ \left.\begin{aligned} dx_1&=\alpha_1>0\\ dx_2&=-\alpha_2<0 \end{aligned}\right\}
+   \qquad \frac{dx_2}{dx_1}=-\frac{\alpha_2}{\alpha_1}. \]
+The expected return is
+\[ p_1\alpha_1+p_2(-\alpha_2), \]
+and the return is positive iff
+\[ p_1\alpha_1>p_2\alpha_2 \quad\Longleftrightarrow\quad \frac{p_1}{p_2}>\frac{\alpha_2}{\alpha_1}. \]
+Then, starting from certainty, the indifference curve (slope $-p_1/p_2$) is steeper than
+the asset line (slope $-\alpha_2/\alpha_1$).
+
+$\Rightarrow$ The risk-averse agent buys a small (but positive) amount of the risky
+asset whenever its expected return is positive.
+
+
+\section{Comparing distributions (lotteries)}
+
+If we know the agent's Bernoulli utility function, it is easy to pick between two
+lotteries: pick the one with the highest $U(F)$, or equivalently the highest CE.
+
+But what if $u(x)$ is not known? We look for \emph{robust} comparisons, where it does
+not matter what the exact details of $u(x)$ are.
+
+$\Rightarrow$ Are there lotteries that ``everyone'' can agree are better than others?
+
+\runin{Aside.} In Micro II, we use distributions to describe beliefs about
+characteristics (ability, willingness-to-pay). Being able to compare different
+distributions has many applications.
+
+\topic{Setting}
+We compare distributions with the same support $[0,\bar x]$, i.e.\ with
+\[ F(0)=0, \qquad F(\bar x)=1. \]
+
+\runin{First question.} Assume the only information we have is that more is better
+than less, i.e.\ $u(x)$ is non-decreasing. Are there distributions $F$ and $G$ such
+that all these agents prefer $F$ to $G$?
+
+
+\section{First-order stochastic dominance (FOSD)}
+
+\topic{Definition 1}
+$F$ first-order stochastically dominates $G$ if
+\[ \int u(x)\,dF(x)\ \ge\ \int u(x)\,dG(x) \qquad\text{for all non-decreasing } u(x).
+   \tag{1} \]
+
+\topic{Definition 2}
+$F$ first-order stochastically dominates $G$ if
+\[ F(x)\ \le\ G(x) \qquad \forall\, x\in[0,\bar x]. \tag{2} \]
+
+\topic{Main result}
+$(1)\Longleftrightarrow(2)$: the two definitions are equivalent.
+
+\runin{Intuition for $(2)\Rightarrow(1)$.} $F(x)\le G(x)$ means that there is a smaller
+probability of a bad outcome (at most $x$) under $F$ than under $G$
+\[ \Longleftrightarrow\quad 1-F(x)\ \ge\ 1-G(x): \]
+$F$ is more likely to give a good outcome (more than $x$).
+
+\begin{center}
+\begin{tikzpicture}[scale=1.45]
+  % G(x) = 1-(1-x/4)^2, F(x) = (x/4)^2, height 1 = 2.6
+  \ecaxes{4.8}{3.2}
+  \node[ecnode,right] at (4.8,0) {$x$};
+  \node[ecnode,below left] at (0,0) {$0$};
+  \draw[dashed] (0,2.6) -- (4,2.6);
+  \node[ecnode,left] at (0,2.6) {$1$};
+  \draw[budget,domain=0:4,samples=60] plot (\x,{2.6*(1-(1-\x/4)^2)});
+  \draw[budget,domain=0:4,samples=60] plot (\x,{2.6*(\x/4)^2});
+  \node[ecnode,anchor=north west] at (2.6,2.25) {$G(x)$};
+  \node[ecnode,anchor=north west] at (3.0,1.35) {$F(x)$};
+  \draw[dashed] (4,0) node[ecnode,below] {$\bar x$} -- (4,2.6);
+  \draw[dashed] (1.5,0) node[ecnode,below] {$x$} -- (1.5,2.6);
+  \draw[{Stealth}-{Stealth}] (1.35,1.584) -- (1.35,2.6);
+  \node[ecnode,left] at (1.35,2.1) {$1-G(x)$};
+  \draw[{Stealth}-{Stealth}] (1.65,0.366) -- (1.65,2.6);
+  \node[ecnode,right] at (1.65,1.25) {$1-F(x)$};
+\end{tikzpicture}
+\end{center}
+
+\topic{Proof of $(2)\Rightarrow(1)$}
+Assume $u(x)$ is differentiable, and compare expected utilities:
+\[ \int u(x)\,dF(x)-\int u(x)\,dG(x)=\int u(x)\,dH(x), \qquad
+   H(x)=F(x)-G(x)\ \le\ 0. \]
+Integrating by parts,
+\begin{align*}
+  \int_0^{\bar x} u(x)\,dH(x)
+   &= \bigl[u(x)H(x)\bigr]_0^{\bar x}-\int_0^{\bar x} u'(x)H(x)\,dx\\
+   &= 0-0-\int_0^{\bar x} \underbrace{u'(x)}_{\ge0}\,\underbrace{H(x)}_{\le0}\,dx
+    \ \ge\ 0 \qquad\text{if } u'(x)\ge 0,
+\end{align*}
+since $H(0)=F(0)-G(0)=0$ and $H(\bar x)=1-1=0$. So (1) holds. $\checkmark$
+
+\topic{Proof of $(1)\Rightarrow(2)$}
+$F$ is better than $G$ for \emph{all} non-decreasing utility functions, and therefore
+also for the step function
+\[ u(x)=\begin{cases} 0 & \text{if } x\le z,\\ 1 & \text{if } x>z. \end{cases} \]
+From (1),
+\begin{align*}
+  0\ \le\ \int u(x)\,dH(x) &= \int_0^{z} 0\,dH(x)+\int_z^{\bar x} 1\,dH(x)
+   = \bigl[H(x)\bigr]_z^{\bar x}\\
+  &= 0-\bigl(F(z)-G(z)\bigr)=G(z)-F(z).
+\end{align*}
+And $z$ does not matter $\Rightarrow$ $F(z)\le G(z)$ for all $z\in[0,\bar x]$
+$\Rightarrow$ (2). $\checkmark$
+
+
+\begin{transcriptnotes}
+  \item The export has 7 pages; page 7 holds only the last two lines of the proof
+        (the rest of the page is blank). No date or title is written, so the header
+        date is left empty; the subtitle and section headings are \textbf{added}
+        (MWG Chapter 6, Sections 6.C--6.D).
+  \item Page 1: ``benoulli'' $\to$ \emph{Bernoulli}; ``evaluate compact differend
+        lotteries'' $\to$ \emph{evaluate and compare different lotteries};
+        ``differend'' $\to$ \emph{different}; ``probilities'' $\to$
+        \emph{probabilities}; ``funtions'' $\to$ \emph{functions}. ``less variability
+        because of $x_1\dots x_n$'' $\to$ \emph{across $x_1,\dots,x_N$}. The page
+        writes $V(x)=p_1u(x_1)\ \dots\ p_Nu(x_N)$ with the $+$ signs missing; the sum
+        is restored. ``with non-negative weights $p_n$'' is \textbf{added} (a sum of
+        concave functions is concave only with non-negative weights).
+  \item Page 2 diagram (two states, $45^\circ$ line labelled ``line of uncertainty /
+        full insurance''): \textbf{corrected} to \emph{line of certainty} --- on the
+        $45^\circ$ line wealth is the same in both states. Redrawn to scale with
+        $p_1=p_2$ and $u=\ln$; the tangent with slope $-p_1/p_2$ on the $45^\circ$
+        line and the ``preferred'' arrow (the page has small arrows) are drawn
+        explicitly. The page writes $U(x)$ here and $V(x)$ on page 1; typeset $V(x)$
+        throughout.
+  \item ``Straight line: for a risk averse agent, on the $45^\circ$ line
+        $\mathrm{MRS}=-p_1/p_2$'' --- the ``straight line'' belongs to the
+        risk-neutral case; split into two bullets. ``for some changes'' $\to$
+        \emph{for small changes} (the statement is local).
+  \item Insurance: the top of page 3 is cut off; it shows ``$\ldots=-\alpha$,
+        $dx_2=1-\alpha$'', read as $dx_1=-\alpha$, $dx_2=1-\alpha$. The explanation
+        ``pay $\alpha$ in both states and receive $1$ in the bad state'' is
+        \textbf{added}. The step $(1-p_2)/p_2=p_1/p_2$ uses $p_1+p_2=1$.
+  \item Insurance diagram redrawn to scale ($p_1=p_2=\tfrac12$, $u=\ln$,
+        $\alpha=0.625$, so slope $-0.6$). The no-insurance point $e$ and the label
+        $x^*$ are \textbf{added}. ``accents risks'' $\to$ \emph{accepts (some)
+        risk}; ``does not fully insure'' and $x_1^*>x_2^*$ are \textbf{added}.
+  \item Risky asset: ``Application hetting a risk asset'' $\to$ \emph{betting on a
+        risky asset}; ``asset but'' $\to$ \emph{asset bought}; ``expected winning of
+        return'' $\to$ \emph{expected return}. ``buys a small amount of risk
+        asset'' $\to$ \emph{a small (but positive) amount \ldots\ whenever its
+        expected return is positive}; the steeper-indifference-curve sentence is
+        \textbf{added} to connect it to the $45^\circ$-line MRS.
+  \item Page 4: ``companies distribution lotteries'' $\to$ \emph{Comparing
+        distributions (lotteries)}. ``highest $U(F)$ on CE'' $\to$ \emph{or the
+        highest CE}. ``cability'' $\to$ \emph{ability}; ``into'' $\to$
+        \emph{information}; ``all these agent $F$ to $G$'' $\to$ \emph{all these
+        agents prefer $F$ to $G$}.
+  \item Page 5: ``FOSD'' expanded to \emph{first-order stochastically dominates}. In
+        Definition 1 the right-hand side is written $\int u\,dG(x)$; typeset
+        $\int u(x)\,dG(x)$. ``small prob of a bad under $F$'' $\to$ \emph{smaller
+        probability of a bad outcome (at most $x$)}; the line
+        $1-F(x)\ge1-G(x)$ is \textbf{added}. The CDF sketch (with ``$1-G(x)$''
+        marked) is redrawn to scale with $G(x)=1-(1-x/\bar x)^2$,
+        $F(x)=(x/\bar x)^2$; the $1-F(x)$ gap is \textbf{added}.
+  \item Page 6, $(2)\Rightarrow(1)$: ``differentio'' $\to$ \emph{differentiable}.
+        The boundary terms vanish because $H(0)=H(\bar x)=0$; this reason is
+        \textbf{added}.
+  \item Page 6, $(1)\Rightarrow(2)$: the step function is named $v(x)$ on the page but
+        then used as $u(x)$ in the next line; typeset $u(x)$ throughout. Note that
+        it is not continuous, whereas Lesson 16 assumed a continuous $u$; the proof
+        uses Definition 1 for all non-decreasing $u$ (a continuous approximation
+        gives the same conclusion). $[H(x)]_z^{\bar x}=H(\bar x)-H(z)$ is the
+        integral over $(z,\bar x]$, consistent with the cut at $x\le z$.
+\end{transcriptnotes}
+
+\end{document}

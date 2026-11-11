@@ -1,0 +1,211 @@
+%% shortname: The Baseline Real Business Cycle Model
+\documentclass[11pt]{article}
+\usepackage{macrostyle}
+
+\begin{document}
+
+\noteheader{Business Cycle Theory}{The baseline Real Business Cycle model}{}
+
+
+\section{Setup}
+
+\runin{Notation.} Upper-case letters denote economy-wide averages that are taken as
+given by individual households, whereas lower-case letters denote individual-specific
+variables, which households control.
+
+\topic{The representative firm's problem (FP)}
+\begin{align}
+  &\max\ \bigl\{\,Y_t-w_tN_t-r_tK_t\,\bigr\} \tag{1}\label{b:fp}\\
+  \text{s.t.}\quad Y_t &= z_tF(K_t,A_tN_t) \tag{2}\label{b:prod}\\
+  A_t &= A_0e^{xt} \tag{3}\label{b:A}\\
+  \ln z_t &= \rho\ln z_{t-1}+\varepsilon_t,\qquad
+     \varepsilon_t\sim\text{iid } N(0,\sigma^2) \tag{4}\label{b:z}
+\end{align}
+The first-order conditions give factor prices equal to marginal products:
+\begin{align}
+  \therefore\quad w_t &= z_tA_tF_2(t) \tag{5}\label{b:w}\\
+  r_t &= z_tF_1(t) \tag{6}\label{b:r}
+\end{align}
+
+\topic{The representative household's problem (HP)}
+\[ \max_{c_t,\,i_t,\,\ell_t,\,n_t}\ \E_0\Bigl\{\sum_{t=0}^{\infty}\beta^t u(c_t,\ell_t)\Bigr\} \]
+\begin{align}
+  \text{s.t.}\quad c_t+i_t &= w_tn_t+r_tk_t \tag{7}\label{b:bc}\\
+  i_t &= k_{t+1}-(1-\delta)k_t \tag{8}\label{b:lom}\\
+  n_t+\ell_t &= 1 \tag{9}\label{b:time}
+\end{align}
+
+
+\section{Dynamic programming with a Lagrange multiplier}
+
+Substituting \eqref{b:lom} and \eqref{b:time} into \eqref{b:bc}, the dynamic programming
+formulation of this problem is given by Bellman's equation, with a multiplier
+$\lambda_t$ on the budget constraint:
+\begin{align*}
+  V(k_t;z_t)=\max_{c_t,\,k_{t+1},\,n_t}\Bigl\{\,& u(c_t,1-n_t)+\beta\E_tV(k_{t+1};z_{t+1})\\
+  &+\lambda_t\bigl[w_tn_t+(r_t+1-\delta)k_t-c_t-k_{t+1}\bigr]\Bigr\}.
+\end{align*}
+Here $k_t$ (individual capital) and $z_t$ (technology) are the states; $c_t$, $n_t$ and
+$k_{t+1}$ are the controls. Write $u_1(t)$, $u_2(t)$ for the partial derivatives of
+$u(c,\ell)$ evaluated at date-$t$ choices, and $V'(t)=\partial V(k_t;z_t)/\partial k_t$.
+
+\topic{First-order conditions}
+\begin{align}
+  \foc{c_t}{u_1(t)=\lambda_t} \tag{10}\label{b:fc}\\
+  \foc{n_t}{u_2(t)=w_t\lambda_t} \tag{11}\label{b:fn}\\
+  \foc{k_{t+1}}{\beta\E_tV'(t+1)=\lambda_t} \tag{12}\label{b:fk}
+\end{align}
+
+\topic{Envelope theorem}
+\begin{align*}
+  \foc{k_t}{V'(t)=\lambda_t(r_t+1-\delta)}
+\end{align*}
+Update \eqref{b:fc} and the envelope condition one period:
+\begin{align}
+  \foc{c_{t+1}}{u_1(t+1)=\lambda_{t+1}} \notag\\
+  \foc{k_{t+1}}{V'(t+1)=\lambda_{t+1}(r_{t+1}+1-\delta)} \tag{13}\label{b:env}
+\end{align}
+
+\topic{Eliminate the multipliers}
+
+\runin{Labour--leisure choice.} From \eqref{b:fc} and \eqref{b:fn}:
+\begin{equation}
+  u_2(t)=w_t\,u_1(t). \tag{14}\label{b:intra}
+\end{equation}
+This equates the marginal cost of working to the marginal benefit:
+\begin{flatlist}
+  \item $u_2(t)$ = marginal cost of working (foregone leisure);
+  \item $w_t\,u_1(t)$ = marginal benefit of working (the wage $\times$ marginal utility
+        from $c$).
+\end{flatlist}
+
+\runin{Intertemporal choice.} From \eqref{b:fc}, \eqref{b:fk} and \eqref{b:env}:
+\begin{equation}
+  u_1(t)=\beta\E_t\bigl\{u_1(t+1)\bigl[r_{t+1}+1-\delta\bigr]\bigr\}. \tag{15}\label{b:euler}
+\end{equation}
+This is the \emph{Euler equation}: it equates the marginal utility of consuming current
+income to the discounted marginal utility you would receive by investing current income
+and augmenting future consumption.
+
+Alternative interpretation:
+\begin{flatlist}
+  \item LHS = marginal cost of saving (or investing);
+  \item RHS = marginal benefit of saving (or investing).
+\end{flatlist}
+
+
+\section{Competitive equilibrium}
+
+A competitive equilibrium consists of an allocation $\{c_t,n_t,k_{t+1},i_t\}$ for the
+typical household, an allocation $\{N_t,K_t,Y_t\}$ for the typical firm, and a set of
+prices $\{w_t,r_t\}$, such that:
+\begin{flatlist}
+  \item[(i)] the household's allocation solves HP, given prices;
+  \item[(ii)] the firm's allocation solves FP, given prices;
+  \item[(iii)] all markets clear:
+\end{flatlist}
+\begin{align}
+  n_t &= N_t \tag{16}\label{b:mcn}\\
+  k_t &= K_t \tag{17}\label{b:mck}\\
+  c_t+i_t &= Y_t \tag{18}\label{b:mcy}
+\end{align}
+
+
+\section{The effects of a technology shock}
+
+Suppose there is a positive technology shock in the current period:
+$\varepsilon_t>0\Rightarrow z_t>1$ (given $z_{t-1}=1$).
+
+\runin{From \eqref{b:z}:} $z_{t+1}$:\quad
+$\E_t\{\ln z_{t+1}\}=\rho\ln z_t\ \Rightarrow\ \E_t\{z_{t+1}\}\uparrow$.
+
+\runin{From \eqref{b:r}:} $r_{t+1}$:\quad
+$\E_t\{r_{t+1}\}\uparrow\ \Rightarrow\ \E_t\{r_{t+1}+1-\delta\}\uparrow$.
+
+\runin{From \eqref{b:euler}:} $k_{t+1}$, $i_t$:\quad RHS of \eqref{b:euler}
+$\uparrow\ \Rightarrow\ k_{t+1}$ and $i_t\uparrow$.
+
+$c_t$: save more and consume less (\emph{intertemporal substitution effect}, ISE).
+
+\runin{From \eqref{b:intra}:}
+\begin{flatlist}
+  \item[(i)] $c_t\downarrow$ via ISE $\Rightarrow$ RHS of \eqref{b:intra}$\uparrow$
+        $\Rightarrow n_t\uparrow,\ \ell_t\downarrow$.\\
+        Intuition: work more and save more.
+  \item[(ii)] $w_t\uparrow$ via \eqref{b:w} $\Rightarrow$ RHS of \eqref{b:intra}$\uparrow$
+        $\Rightarrow n_t\uparrow,\ \ell_t\downarrow$.\\
+        Intuition: substitution effect $\to$ work more when $w$ is high.
+\end{flatlist}
+
+\runin{From \eqref{b:prod}:} $Y_t\uparrow$ because $n_t\uparrow$ and $z_t\uparrow$.
+
+Since $Y_t\uparrow$ (and $w_t$, $r_t$), $c_t$ may $\uparrow$. This is called the
+\emph{income effect} (IE).
+
+\topic{Summary}
+\[ \begin{aligned}
+   \text{ISE}&\Rightarrow c_t\downarrow\\
+   \text{IE}&\Rightarrow c_t\uparrow
+   \end{aligned}
+   \qquad
+   \left\{\ \parbox{0.5\linewidth}{Intuition: you save a higher fraction of $Y_t$
+   ($\therefore c_t\downarrow$) but you have more $Y_t$ ($\therefore c_t\uparrow$).}\right. \]
+
+\runin{Note.} The IE also affects $n_t$: if $c_t\uparrow$ via IE then RHS of
+\eqref{b:intra}$\downarrow\ \Rightarrow n_t\downarrow$ and $\ell_t\uparrow$.
+Intuition: leisure is a normal good.
+
+\topic{Results}
+\[ z_t\uparrow\ \Rightarrow\ Y_t\uparrow,\ i_t\uparrow,\
+   c_t\uparrow\ (\text{if IE}>\text{ISE}),\ w_t\uparrow,\
+   r_t+1-\delta\uparrow,\ n_t\uparrow\ (\text{if SE}+\text{ISE}>\text{IE}). \]
+$\hookrightarrow$ Everything could be procyclical, just like the data. But can the model
+match the \emph{size} of the observed correlations? Can it match the observed
+\emph{volatility}? We need to solve the model and run a simulation.
+
+
+\section{Solving the model}
+
+Before we can run a simulation we need to solve the model and set parameter values.
+Solving the model involves finding the \emph{policy functions} (or \emph{decision rules})
+that map the current-period state variable and the current state of technology into the
+control variables and the future value of the state variable, i.e.
+\begin{align*}
+  c_t &= C(k_t,z_t)\\
+  k_{t+1} &= K(k_t,z_t)\\
+  &\ \ \vdots\\
+  &\ \ \text{etc.}
+\end{align*}
+
+\runin{Problem.} As is generally the case with non-linear dynamic systems, the model has
+(in general) no closed-form analytical solution. Like the Ramsey model, we will solve the
+general version of the RBC model by performing a \emph{log-linear approximation around
+the steady state}. Before we do this, let's consider a special case of the model that has
+an analytical solution. Assume:
+\begin{align*}
+  u(c,\ell) &= \omega\ln c+(1-\omega)\ln\ell\\
+  Y &= zN^{1-\alpha}K^{\alpha}\\
+  \delta &= 100\%
+\end{align*}
+
+
+\begin{transcriptnotes}
+  \item Source: handwritten notes \texttt{RBC1.pdf} (6 pages). Equation numbers
+        (1)--(18) follow the original; the notes stop after stating the assumptions of
+        the special case (continued next lecture).
+  \item The Bellman equation is written in the Lagrange-multiplier format, with the
+        multiplier term entered as $+\lambda_t[\text{resources}-\text{uses}]$. The lecture
+        wrote the equivalent $-\lambda_t[c_t+k_{t+1}-w_tn_t-(r_t+1-\delta)k_t]$; all FOCs
+        are unchanged. The ``update'' and ``eliminate the multipliers'' steps are made
+        explicit.
+  \item (11): the original reads $u_2(t)=w_{\scriptscriptstyle 2}\lambda_t$; corrected
+        to $w_t\lambda_t$.
+  \item Policy functions: the original says they ``map the control variables and the
+        future value of the state variable into the current-period state variable and
+        technology''; reworded in the direction of the map, $(k_t,z_t)\mapsto(c_t,k_{t+1})$,
+        consistent with the formulas $c_t=C(k_t,z_t)$, $k_{t+1}=K(k_t,z_t)$.
+  \item ``SE'' in the Results line is the (intratemporal) wage substitution effect of
+        item (ii) under \eqref{b:intra}.
+\end{transcriptnotes}
+
+\end{document}
