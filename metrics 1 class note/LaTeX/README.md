@@ -38,6 +38,8 @@ metrics 1 class note*/
 ├── MLE 2 - More on Maximum Likelihood - Covariance Estimators and Jacobian Terms (LaTeX).pdf   built from mle2.tex
 ├── MLE5.pdf                photographed handout (V): Hausman test, LM by artificial regression
 ├── MLE 5 - Hausman Specification Testing and the LM Test by Artificial Regression (LaTeX).pdf   built from mle5.tex
+├── GMM after MLE.... with a little bit of IV.pdf   class notes on IV/2SLS + photographed handout "Lecture on GMM"
+├── GMM 1 - Generalized Method of Moments - GIV, GMM as GLS, Asymptotics and the Sargan-Hansen Test (LaTeX).pdf   built from gmm1.tex
 ├── Metrics HW1/
 │   ├── HW 1.pdf                           built from hw01.tex  (Assignment #1, ECON*6140)
 │   ├── HW 1 solution for question 1.tex/.pdf   Q1 solution; source lives here, uses ../LaTeX/metricsstyle
@@ -62,6 +64,7 @@ metrics 1 class note*/
     ├── mle1.tex                handout MLE I: notation, invariance, asymptotic normality, information matrix equality
     ├── mle2.tex                handout MLE II: Cramér–Rao, covariance estimators/OPG, normal NLS as ML, Jacobians, Box–Cox
     ├── mle5.tex                handout MLE V: Hausman contrast test, LM = ESS = nR² from an artificial regression, test for AR(1) errors
+    ├── gmm1.tex                IV/2SLS (class) + handout GMM: orthogonality conditions, GMM = GLS on W'y, GIV/IV/OLS/GLS as special cases, asymptotics, Sargan–Hansen
     ├── hw01.tex                Assignment #1, ECON*6140, due 2026-10-14
     ├── lessonXX_template.tex   copy this to start a new lesson
     ├── extract_pages.py        render a handwritten PDF to PNGs for reading

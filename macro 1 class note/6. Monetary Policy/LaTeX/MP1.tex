@@ -1,0 +1,463 @@
+%% shortname: Monetary Policy, Rules vs Discretion
+\documentclass[11pt]{article}
+\usepackage{macrostyle}
+
+\begin{document}
+
+\noteheader{Monetary Policy}{Rules vs.\ discretion}{}
+
+
+\section{Rules, discretion and the inflation bias}
+
+\runin{Discretion.} Policy is \emph{discretionary} if it is conducted on a
+period-by-period basis, with no necessary connection between the choices of different
+periods.
+
+\runin{Rule.} Policy follows a \emph{rule} if some formula describing policy is followed
+over a large number of periods.
+
+$\hookrightarrow$ Kydland and Prescott showed that discretionary policy making produces an
+\emph{inflation bias}: an equilibrium inflation rate that exceeds the socially desired rate.
+
+\topic{Why the bias?}
+\begin{flatnum}
+  \item[(i)] A desire for economic expansion above potential output (or to support an
+        unemployment rate below the natural rate of unemployment).
+  \item[(ii)] The inability of the central bank to credibly commit to a low inflation rate.
+\end{flatnum}
+
+
+\section{The model}
+
+\topic{The central bank}
+The objective of the central bank (C.B.) is to minimize the expected value of the loss
+function
+\begin{equation}
+  V=\tfrac12\lambda\,(y-y_n-k)^2+\tfrac12(\pi-\bar\pi)^2 \tag{1}\label{m:loss}
+\end{equation}
+\begin{flatlist}
+  \item $y$: actual output level;
+  \item $y_n$: the natural rate of output (the market-clearing value);
+  \item $k>0$: political pressure variable;
+  \item $\pi$: the actual inflation rate;
+  \item $\bar\pi$: the socially optimal inflation rate. Assume $\bar\pi=0$;
+  \item $\lambda>0$: a parameter that governs the relative weight the C.B.\ places on
+        output expansion relative to price stabilization.
+\end{flatlist}
+$\hookrightarrow$ The C.B.'s problem is to stabilize $y$ around $y_n+k$ and $\pi$ around zero.
+
+\topic{Aggregate output}
+\begin{equation}
+  y=y_n+a(\pi-\pi^e)+e,\qquad a>0 \tag{2}\label{m:as}
+\end{equation}
+\begin{flatlist}
+  \item $\pi^e$: the public's expectation of inflation;
+  \item $e$: supply shock, $e\sim\text{iid } N(0,\sigma_e^2)$.
+\end{flatlist}
+\runin{Motivation.} Equation \eqref{m:as} arises from the presence of one-period nominal
+wage contracts. If $\pi>\pi^e$ then real wages are eroded, firms hire more workers, and
+output rises. Also, $e$ is a supply shock which shifts the aggregate supply curve left or
+right.
+
+\topic{Inflation}
+\begin{equation}
+  \pi=\Delta M+v \tag{3}\label{m:infl}
+\end{equation}
+\begin{flatlist}
+  \item $\Delta M$: money supply growth rate (the C.B.'s instrument);
+  \item $v$: price (or velocity) shock, included so that the C.B.\ cannot control $\pi$
+        perfectly; $v\sim\text{iid } N(0,\sigma_v^2)$, independent of $e$.
+\end{flatlist}
+
+\topic{Timing of events}
+\begin{flatnum}
+  \item[(i)] Agents set $\pi^e$ (and therefore their wage contracts).
+  \item[(ii)] The supply shock $e$ is revealed.
+  \item[(iii)] The C.B.\ sets $\Delta M$.
+  \item[(iv)] The price shock $v$ is revealed.
+\end{flatnum}
+So when the C.B.\ moves it knows $e$ and takes $\pi^e$ as given, but it does not know $v$.
+
+
+\section{Equilibrium under discretionary policy making}
+
+From \eqref{m:loss} and \eqref{m:as}, with $\bar\pi=0$:
+\begin{equation}
+  V=\tfrac12\lambda\bigl[a(\pi-\pi^e)+e-k\bigr]^2+\tfrac12\pi^2 \tag{A.4}\label{a:V1}
+\end{equation}
+From \eqref{m:infl} and \eqref{a:V1}:
+\begin{equation}
+  V=\tfrac12\lambda\bigl[a\Delta M+av-a\pi^e+e-k\bigr]^2+\tfrac12(\Delta M+v)^2
+  \tag{A.5}\label{a:V2}
+\end{equation}
+
+\topic{The C.B.'s problem}
+\[ \min_{\Delta M}\ \E\{V\mid e\} \]
+\textbf{FOC:}
+\[
+  \E\Bigl\{\lambda\bigl[a\Delta M+av-a\pi^e+e-k\bigr]a+\Delta M+v\ \Big|\ e\Bigr\}=0
+\]
+\[
+  \therefore\quad \lambda a^2\Delta M+\lambda a^2\E[v]-\lambda a^2\pi^e-\lambda a(k-e)
+  +\Delta M+\E[v]=0 .
+\]
+Since $\E[v]=0$, $(1+\lambda a^2)\Delta M=\lambda a^2\pi^e+\lambda a(k-e)$, so
+\begin{equation}
+  \boxed{\ \Delta M=\frac{\lambda a^2\pi^e+\lambda a(k-e)}{1+\lambda a^2}\ }
+  \tag{A.6}\label{a:dM}
+\end{equation}
+
+\Needspace{6\baselineskip}
+\runin{Notice.}
+\begin{flatnum}
+  \item[(i)] Policy is conditional on the realization of the supply shock. Therefore the
+        C.B.\ faces a trade-off between stabilizing output and stabilizing inflation.
+  \item[(ii)] Optimal policy depends on $\pi^e$.
+\end{flatnum}
+
+\topic{Aside: the reaction function without shocks}
+Consider the case where there is no $e$ or $v$. Then
+\begin{equation}
+  \Delta M=\frac{\lambda a^2}{1+\lambda a^2}\,\pi^e+\frac{\lambda a}{1+\lambda a^2}\,k
+  \tag{A.6$'$}\label{a:dM0}
+\end{equation}
+and $\pi=\Delta M$. The reaction function has a positive intercept and a slope
+$\lambda a^2/(1+\lambda a^2)<1$, so it crosses the $45^\circ$ line exactly once.
+
+\begin{center}
+\begin{tikzpicture}[x=1.15cm,y=1.15cm]
+  \ecaxes{5.6}{4.4}
+  \node[right] at (5.6,0) {$\pi^e$};
+  \node[above] at (0,4.4) {$\pi,\ \Delta M$};
+  % 45-degree line
+  \draw (0,0) -- (4.2,4.2);
+  \draw (0.55,0) arc (0:45:0.55); \node[ecnode] at (0.85,0.32) {\scriptsize $45^\circ$};
+  % reaction function: intercept 1.2, slope 0.5 -> fixed point at 2.4
+  \draw[budget] (0,1.2) -- (5.2,3.8) node[right] {$\Delta M$};
+  \node[left] at (0,1.2) {$\dfrac{\lambda a k}{1+\lambda a^2}$};
+  % cobweb from pi^e = 0
+  \draw[densely dashed,black!60] (0,1.2) -- (1.2,1.2) -- (1.2,1.8) -- (1.8,1.8) -- (1.8,2.1)
+        -- (2.1,2.1) -- (2.1,2.25);
+  \node[below] at (1.2,0) {$\pi_1$};
+  \node[below] at (1.8,0) {$\pi_2$};
+  \draw[dotted] (1.2,0) -- (1.2,1.2); \draw[dotted] (1.8,0) -- (1.8,1.8);
+  \node[bundle] at (2.4,2.4) {};
+  \draw[dotted] (2.4,0) -- (2.4,2.4);
+  \node[below] at (2.4,-0.42) {$\pi^e_{ss}=\lambda a k$};
+  \draw[dotted] (2.4,0) -- (2.4,-0.45);
+  \node[ecnode,anchor=west,font=\footnotesize] at (3.35,2.55)
+       {slope $=\dfrac{\lambda a^2}{1+\lambda a^2}<1$};
+\end{tikzpicture}
+\end{center}
+
+\runin{Questions.} (Answers read off the diagram.)
+\begin{flatnum}
+  \item If $\pi^e_1=0$, what is the optimal $\Delta M_1$ (or $\pi_1$)?\\
+        $\hookrightarrow$ The intercept: $\pi_1=\lambda ak/(1+\lambda a^2)>0$. Surprise
+        inflation is tempting.
+  \item If $\pi^e_2=\pi_1$, what is the optimal $\pi_2$?\\
+        $\hookrightarrow$ $\pi_2=\dfrac{\lambda a^2\pi_1+\lambda ak}{1+\lambda a^2}>\pi_1$:
+        inflation ratchets up.
+  \item At a given $\pi^e$, is the optimal $\pi\gtrless\pi^e$?\\
+        $\hookrightarrow$ $\pi>\pi^e$ for $\pi^e<\lambda ak$ (reaction function above the
+        $45^\circ$ line) and $\pi<\pi^e$ for $\pi^e>\lambda ak$.
+  \item At $\pi^e_{ss}$, what is the optimal $\pi$?\\
+        $\hookrightarrow$ $\pi=\pi^e_{ss}=\lambda ak$: the only point where expectations
+        are confirmed.
+\end{flatnum}
+
+\runin{Solution to the public's problem.} In an equilibrium without disturbances,
+$\pi^e=\pi$: private agents will anticipate the behaviour of the C.B.
+
+\topic{Rational expectations}
+Since private agents understand the incentives facing the C.B., they use \eqref{a:dM}
+when they form expectations of $\pi$:
+\[
+  \pi^e=\E[\pi]=\E[\Delta M+v]=\E[\Delta M]
+  \quad\therefore\quad
+  \pi^e=\frac{\lambda a^2\pi^e+\lambda ak}{1+\lambda a^2}
+\]
+\begin{equation}
+  \therefore\quad \boxed{\ \pi^e=\lambda ak>0\ } \tag{A.7}\label{a:pie}
+\end{equation}
+$\hookrightarrow$ $\pi^e$ is increasing in $\lambda$, $a$ and $k$.
+
+From \eqref{a:dM} and \eqref{a:pie}:
+\begin{align}
+  \Delta M &= \frac{\lambda^2a^3k+\lambda a(k-e)}{1+\lambda a^2}
+            = \frac{\lambda a(1+\lambda a^2)k-\lambda ae}{1+\lambda a^2}\notag\\
+           &= \lambda ak-\Bigl[\frac{\lambda a}{1+\lambda a^2}\Bigr]e \tag{A.8}\label{a:dMeq}
+\end{align}
+$\hookrightarrow$ Notice: without $k$, policy is directed only at output stabilization
+($y$ around $y_n$).
+
+\topic{Calculate $\pi$, $V$ and $\E[V]$}
+From \eqref{m:infl} and \eqref{a:dMeq}:
+\begin{equation}
+  \pi=\lambda ak-\Bigl[\frac{\lambda a}{1+\lambda a^2}\Bigr]e+v \tag{A.9}\label{a:pi}
+\end{equation}
+From \eqref{a:V1}, \eqref{a:dMeq} and \eqref{a:pi}, using
+$a(\pi-\pi^e)+e=-\frac{\lambda a^2}{1+\lambda a^2}e+av+e=\frac{e}{1+\lambda a^2}+av$:
+\begin{equation}
+  V=\tfrac12\lambda\Bigl[\frac{e}{1+\lambda a^2}+av-k\Bigr]^2
+   +\tfrac12\Bigl(\lambda ak-\frac{\lambda a}{1+\lambda a^2}e+v\Bigr)^2
+  \tag{A.10}\label{a:V}
+\end{equation}
+Expanding,
+\begin{align*}
+  \E[V]=\tfrac{\lambda}{2}\,\E\Bigl[&\frac{e^2}{(1+\lambda a^2)^2}+\frac{2aev}{1+\lambda a^2}
+     -\frac{2ke}{1+\lambda a^2}+a^2v^2-2akv+k^2\Bigr]\\
+  {}+\tfrac12\,\E\Bigl[&\lambda^2a^2k^2-\frac{2\lambda^2a^2ke}{1+\lambda a^2}+2\lambda akv
+     -\frac{2\lambda aev}{1+\lambda a^2}+v^2+\frac{\lambda^2a^2e^2}{(1+\lambda a^2)^2}\Bigr].
+\end{align*}
+\runin{Note.} $\E[e^2]=\sigma_e^2$, $\E[v^2]=\sigma_v^2$, $\E[e]=\E[v]=0$ and
+$\E[ev]=\E[e]\E[v]=0$. Therefore
+\begin{align}
+  \E[V]&=\frac{\lambda\sigma_e^2}{2(1+\lambda a^2)^2}+\frac{\lambda a^2\sigma_v^2}{2}
+        +\frac{\lambda k^2}{2}+\frac{\lambda^2a^2k^2}{2}
+        +\frac{\lambda^2a^2\sigma_e^2}{2(1+\lambda a^2)^2}+\frac{\sigma_v^2}{2}\notag\\
+       &=\boxed{\ \frac{\lambda}{2}(1+\lambda a^2)k^2
+        +\frac12\Bigl[(1+\lambda a^2)\sigma_v^2+\frac{\lambda}{1+\lambda a^2}\,\sigma_e^2\Bigr]
+        \ }\equiv V_D^e \tag{A.11}\label{a:VD}
+\end{align}
+
+
+\section{Equilibrium under a policy rule}
+
+Suppose \eqref{m:loss}, \eqref{m:as} and \eqref{m:infl} determine the values of $V$, $y$ and
+$\pi$, respectively.
+
+\topic{The monetary policy rule}
+\begin{equation}
+  \Delta M=b_0+b_1e \tag{B.4}\label{b:rule}
+\end{equation}
+The C.B.\ must commit to $b_0$ and $b_1$ \emph{prior} to the public forming $\pi^e$ and
+prior to observing $e$. Therefore the C.B.\ will choose $b_0$ and $b_1$ to minimize the
+\emph{unconditional} expectation of the loss function:
+\[ \min_{b_0,\,b_1}\ \E\{V\}. \]
+\runin{Aside.} $\pi=b_0+b_1e+v$, so
+\begin{equation}
+  \E[\pi]=\pi^e=b_0 . \tag{B.5}\label{b:pie}
+\end{equation}
+Hence $a(\pi-\pi^e)=a(b_1e+v)$, and the problem is
+\[
+  \min_{b_0,\,b_1}\ \E\Bigl\{\tfrac{\lambda}{2}\bigl[ab_1e+av+e-k\bigr]^2
+     +\tfrac12\bigl[b_0+b_1e+v\bigr]^2\Bigr\}.
+\]
+Because the public's expectation moves one-for-one with $b_0$, $b_0$ drops out of the
+output term: the C.B.\ cannot raise output by choosing a higher average money growth rate.
+
+\topic{First-order conditions}
+\begin{align}
+  \foc{\partial V/\partial b_0}{\E\bigl[b_0+b_1e+v\bigr]=0
+       \ \Longrightarrow\ b_0^*=0} \tag{B.6}\label{b:b0}\\
+  \foc{\partial V/\partial b_1}{\E\bigl[\lambda(ab_1e+av+e-k)(ae)+(b_0+b_1e+v)e\bigr]=0}
+       \notag
+\end{align}
+\[
+  \therefore\quad \E\bigl[\lambda a^2b_1e^2+\lambda a^2ve+\lambda ae^2-\lambda kae
+     +b_0e+b_1e^2+ve\bigr]=0
+\]
+\[
+  \therefore\quad \lambda a^2b_1\sigma_e^2+0+\lambda a\sigma_e^2-0+0+b_1\sigma_e^2+0=0
+\]
+\begin{equation}
+  \therefore\quad b_1^*=-\frac{\lambda a}{1+\lambda a^2} \tag{B.7}\label{b:b1}
+\end{equation}
+
+\topic{The equilibrium}
+From \eqref{b:rule}, \eqref{b:b0} and \eqref{b:b1}:
+\begin{equation}
+  \Delta M=-\frac{\lambda a}{1+\lambda a^2}\,e \tag{B.8}\label{b:dM}
+\end{equation}
+$\hookrightarrow$ Notice that the monetary policy response to a supply shock is the
+\emph{same} under discretionary policy making (compare \eqref{a:dMeq}) and when the C.B.\
+follows a policy rule.
+\begin{equation}
+  \therefore\quad \pi=\Bigl[-\frac{\lambda a}{1+\lambda a^2}\Bigr]e+v \tag{B.9}\label{b:pi}
+\end{equation}
+and $\E[\pi]=0$ $\Rightarrow$ average inflation is zero.
+
+\topic{Expected loss under the rule}
+\begin{align*}
+  \E[V]&=\E\Bigl\{\tfrac{\lambda}{2}\Bigl[\underbrace{-\frac{\lambda a^2}{1+\lambda a^2}e
+        +av+e}_{=\,\frac{e}{1+\lambda a^2}+av}-k\Bigr]^2
+        +\tfrac12\Bigl(-\frac{\lambda ae}{1+\lambda a^2}+v\Bigr)^2\Bigr\}\\
+  &=\E\Bigl\{\tfrac{\lambda}{2}\Bigl[\frac{e^2}{(1+\lambda a^2)^2}+\frac{2ave}{1+\lambda a^2}
+        -\frac{2ke}{1+\lambda a^2}+a^2v^2-2akv+k^2\Bigr]\\
+  &\qquad\ +\tfrac12\Bigl[\frac{\lambda^2a^2e^2}{(1+\lambda a^2)^2}
+        -\frac{2\lambda aev}{1+\lambda a^2}+v^2\Bigr]\Bigr\}\\
+  &=\tfrac{\lambda}{2}\Bigl[\frac{\sigma_e^2}{(1+\lambda a^2)^2}+a^2\sigma_v^2+k^2\Bigr]
+     +\tfrac12\Bigl[\frac{\lambda^2a^2\sigma_e^2}{(1+\lambda a^2)^2}+\sigma_v^2\Bigr]
+\end{align*}
+\begin{equation}
+  \boxed{\ \E[V]=\frac{\lambda k^2}{2}+\frac12(1+\lambda a^2)\sigma_v^2
+   +\Bigl[\frac{\lambda}{2(1+\lambda a^2)}\Bigr]\sigma_e^2\ }\equiv V_R^e \tag{B.10}\label{b:VR}
+\end{equation}
+
+\topic{Comparing discretion and the rule}
+\begin{equation}
+  V_D^e-V_R^e=\frac{\lambda k^2}{2}\bigl[1+\lambda a^2-1\bigr]
+  =\frac{\lambda^2a^2k^2}{2}>0 \tag{B.11}\label{b:DR}
+\end{equation}
+$\therefore$ The expected loss under the rule is lower. Why? Compare output fluctuations
+under the two types of policies.
+
+\runin{Discretion.}
+\[
+  y-y_n=a(\pi-\pi^e)+e
+  =a\Bigl[\lambda ak-\Bigl(\frac{\lambda a}{1+\lambda a^2}\Bigr)e+v-\lambda ak\Bigr]+e
+  =\frac{e}{1+\lambda a^2}+av .
+\]
+\runin{Rule.}
+\[
+  y-y_n=a(\pi-\pi^e)+e
+  =a\Bigl[0-\frac{\lambda a}{1+\lambda a^2}e+v-0\Bigr]+e
+  =\frac{e}{1+\lambda a^2}+av .
+\]
+$\hookrightarrow$ They are identical. However, $\pi$ is lower under the rule (by
+$\lambda ak$ on average). Discretionary policy making produces an inflation bias with no
+gain in output.
+
+
+\section{Solutions to the inflation bias}
+
+\topic{1.\ Change the mandate of the C.B.\ so that it must pursue a zero inflation target}
+\begin{align}
+  &\Rightarrow\ \Delta M=0 \tag{C.4}\label{c:dM}\\
+  &\therefore\ \pi=v \tag{C.5}\label{c:pi}\\
+  &\phantom{\therefore\ }\E[\pi]=0=\pi^e \tag{C.6}\label{c:Epi}\\
+  &\phantom{\therefore\ }y-y_n=av+e \tag{C.7}\label{c:y}
+\end{align}
+\begin{align}
+  \therefore\quad \E[V]&=\E\Bigl\{\tfrac{\lambda}{2}\bigl[av+e-k\bigr]^2+\tfrac12 v^2\Bigr\}
+     \notag\\
+   &=\E\Bigl\{\tfrac{\lambda}{2}\bigl(a^2v^2+2ave-2avk+e^2-2ke+k^2\bigr)
+     +\tfrac{v^2}{2}\Bigr\}\notag\\
+   &=\boxed{\ \frac{\lambda k^2}{2}+\frac12(1+\lambda a^2)\sigma_v^2
+     +\frac{\lambda\sigma_e^2}{2}\ }\equiv V_0^e \tag{C.8}\label{c:V0}
+\end{align}
+Compare with discretion:
+\[
+  V_D^e-V_0^e=\frac{a^2\lambda^2k^2}{2}-\frac{\lambda^2a^2\sigma_e^2}{2(1+\lambda a^2)}
+  \ \gtrless\ 0 .
+\]
+$\hookrightarrow$ Discretionary policy making would be preferred to a $\Delta M=0$ rule if
+\[
+  \underbrace{\frac{a^2\lambda^2k^2}{2}}_{\substack{\text{cost of the}\\
+     \text{inflationary bias}}}
+  \ <\
+  \underbrace{\frac{\lambda^2a^2\sigma_e^2}{2(1+\lambda a^2)}}_{\substack{\text{gain from}\\
+     \text{stabilization policy}}}
+  \qquad\therefore\quad k^2<\frac{\sigma_e^2}{1+\lambda a^2}.
+\]
+\runin{Notice also.}
+\[
+  V_R^e-V_0^e=-\frac{a^2\lambda^2}{2(1+\lambda a^2)}\,\sigma_e^2<0 .
+\]
+$\therefore$ At best, $\Delta M=0$ is a \emph{second-best} policy: the optimal rule
+\eqref{b:dM} removes the bias \emph{and} keeps the stabilization of supply shocks.
+
+\topic{2.\ Remove the political pressure variable $k$}
+(I.e.\ remove government control over monetary policy.)
+
+$\hookrightarrow$ If $k$ is removed, then the inflationary bias $\pi^e=\lambda ak$ is
+removed $\Rightarrow$ problem solved.
+
+\topic{3.\ Reputation: gain a reputation for having a low inflation target}
+Assume the public follows a \emph{trigger strategy}:
+\[
+  \pi^e=\begin{cases}
+    0 & \text{if } \E[\Delta M]=0 \text{ (the C.B.\ has kept to zero inflation)},\\
+    a\lambda k & \text{otherwise.}
+  \end{cases}
+\]
+$\E[\Delta M]=0$ can be supported as an equilibrium so long as the central bank discounts
+future payoffs to a sufficiently small degree (i.e.\ it is patient enough that the
+one-time gain from surprise inflation is outweighed by the future cost of $\pi^e=a\lambda
+k$ forever after).
+
+
+\section{Examples: attempts to implement a rule}
+
+\topic{Canada}
+In 1991 the Bank of Canada (Governor Crow) proposed an amendment to the Bank of Canada
+Act: it wanted to change the mandate to pursue price stability. The problem with the
+existing Act was that it permitted too much flexibility.
+\begin{flatlist}
+  \item The Bank was essentially arguing to implement a binding rule.
+  \item Result: the proposal was rejected. Nonetheless, the BoC targeted low inflation.
+        $\pi\downarrow$ (from 6+\% to 1\%), but the economy fell into a severe recession,
+        i.e.\ in $y-y_n=a(\pi-\pi^e)+e$, in 1991 $e<0$ and $\pi-\pi^e<0$.
+\end{flatlist}
+
+\topic{New Zealand}
+The governor of the central bank must keep $\pi$ between 0\% and 2\%, otherwise he/she
+can be removed from office.
+
+$\hookrightarrow$ Very similar to imposing a rule. Result: $\pi\downarrow$ dramatically.
+
+\topic{Argentina}
+\begin{center}
+\begin{tabular}{cc}
+  Decade & $\pi$ \\ \hline
+  1950s & $\sim 30\%$ \\
+  1960s & $\sim 23\%$ \\
+  1970s & $\sim 133\%$ \\
+  1980s & $\sim 750\%$
+\end{tabular}
+\qquad
+\begin{minipage}{0.38\textwidth}
+  Why? The government was printing money to finance its debt.
+\end{minipage}
+\end{center}
+
+$\to$ In 1990 the government fixed its exchange rate with the U.S.\ dollar. Recall that
+purchasing power parity (PPP) requires
+\[
+  \frac{er\cdot P^f}{P}=1,
+\]
+where $P$ is the domestic (Argentine) price level, $P^f$ the U.S.\ price level, and $er$
+the nominal exchange rate (the number of Argentine pesos required to obtain \$1 U.S.).
+In growth rates,
+\[
+  \Delta er=\pi-\pi^f .
+\]
+$\hookrightarrow$ Domestic inflation must be targeted to U.S.\ inflation, otherwise you
+would get a movement in $er$. A fixed exchange rate is therefore a rule for $\pi$.
+
+\runin{Result.}
+\begin{flatlist}
+  \item 1992: $\pi\downarrow$ to $\approx 0\%$.
+  \item 2002: the government abandoned the fixed exchange rate so that it could print
+        money to finance new debt. $\therefore\ \pi\uparrow$.
+\end{flatlist}
+
+
+\begin{transcriptnotes}
+  \item Source: handwritten notes \texttt{MP1.pdf} (14 pages). Equations (1)--(3) follow
+        the original. The original restarts its numbering at (4) in each of Sections
+        3, 4 and 5; here they carry the prefixes A, B and C (e.g.\ the original (6) of
+        the discretion section is (A.6), and its (6$'$) is (A.6$'$)). The comparison
+        $V_D^e-V_R^e$, numbered (11) in the original rule section, is (B.11).
+  \item Political pressure is written as a stylized $k$ in the original; it is a
+        positive constant (the C.B.'s output target is $y_n+k$). $\E[ev]=0$ uses the
+        independence of $e$ and $v$, made explicit in \eqref{m:infl}.
+  \item The answers to the four questions after \eqref{a:dM0}, and the cobweb path in
+        the diagram, are added; the original poses the questions only. Question 3
+        reads ``At $\pi^e_{LG}$'' (``LG'' unclear in the scan); answered for a general
+        $\pi^e$ on either side of the fixed point.
+  \item (C.8): the original reads $\lambda k/2$; corrected to $\lambda k^2/2$ (the
+        derivation two lines above, and the comparison $V_D^e-V_0^e$, use $k^2$).
+  \item Reputation: the original says ``$\E[\Delta M]$ can be supported as an eq'm'';
+        written as $\E[\Delta M]=0$, which is the outcome the trigger strategy
+        sustains. The patience interpretation of ``discounts future payoffs to a
+        sufficiently small degree'' is added.
+  \item Remarks in the comparisons (``by $\lambda ak$ on average'', ``with no gain in
+        output'', and why $b_0$ drops out of the output term) are added to connect the
+        algebra; all equations were checked.
+  \item Argentina: the dates 1990 (fixed exchange rate) and 1992 (inflation near zero)
+        are as written; the Convertibility Plan formally began in April 1991.
+\end{transcriptnotes}
+
+\end{document}

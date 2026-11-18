@@ -1,0 +1,393 @@
+%% title: Generalized Method of Moments - GIV, GMM as GLS, Asymptotics and the Sargan-Hansen Test
+\documentclass[11pt]{article}
+\usepackage{metricsstyle}
+
+\begin{document}
+
+\handoutheader{GMM I}{Lecture on GMM: instrumental variables and two-stage least squares (from class), population orthogonality conditions, the GMM estimator in the linear model, its interpretation as GLS, asymptotics, and hypothesis testing including the Sargan--Hansen test of overidentifying restrictions}{}
+
+\runin{Previously} \emph{MLE~V}: the Hausman test, based on the contrast between an estimator that is
+efficient under $H_{0}$ and one that is consistent more generally. Throughout, transposes are written
+with a prime, $P_{W}=W(W'W)^{-1}W'$ is the orthogonal projection onto $\mathcal S(W)$ (the column space of
+$W$) and $M_{W}=I-P_{W}$.
+
+%% ======================================================================
+\section{Instrumental variables and two-stage least squares (from class)}
+
+\topic{The problem}
+\[ y=X\beta+u,\qquad u\sim(0,\sigma^{2}I_{n}),\qquad X\ \text{is } n\times k . \]
+OLS needs $\E(X'u)=0$. Suppose instead some regressors are endogenous, $\E(X'u)\neq0$, so that
+$b=(X'X)^{-1}X'y$ is inconsistent. Suppose we have an $n\times p$ matrix of \textbf{instruments} $W$ with
+\begin{align*}
+ &\E(W'u)=0 &&\text{(instruments are exogenous)},\\
+ &\operatorname{plim}\tfrac1n W'X=\Sigma_{WX}\ \text{of full column rank } k &&\text{(instruments are relevant)}.
+\end{align*}
+
+\topic{Simple IV ($p=k$)}
+Premultiply the model by $W'$ and divide by $n$:
+\[ \frac{W'y}{n}=\frac{W'X}{n}\,\beta+\frac{W'u}{n}. \]
+Take probability limits. Since $\E(W'u)=0$, a law of large numbers gives $\operatorname{plim}W'u/n=0$, so
+\[ \Sigma_{Wy}=\Sigma_{WX}\,\beta+0
+   \quad\Longrightarrow\quad
+   \beta=\Sigma_{WX}^{-1}\Sigma_{Wy}, \]
+where $\Sigma_{Wy}=\operatorname{plim}W'y/n$ and $\Sigma_{WX}$ is square ($k\times k$) and invertible. Replacing
+population moments by sample moments gives the (simple) IV estimator
+\begin{equation}\tag{1}
+ \hat\beta_{IV}=(W'X)^{-1}W'y .
+\end{equation}
+It is consistent: $\hat\beta_{IV}=\beta+(W'X/n)^{-1}(W'u/n)\to\beta+\Sigma_{WX}^{-1}\cdot0=\beta$.
+
+\topic{More instruments than regressors ($p>k$)}
+Now $W'X$ is $p\times k$ and cannot be inverted. Use instead the $k$ columns
+\[ \hat X=P_{W}X=W(W'W)^{-1}W'X \]
+as the instruments in (1). $\hat X$ is $n\times k$, it lies in $\mathcal S(W)$ so it is exogenous, and it is the
+linear combination of the instruments that is closest to $X$. Then, using $P_{W}'=P_{W}$ and
+$P_{W}P_{W}=P_{W}$,
+\begin{equation}\tag{2}
+ \hat\beta_{GIV}=(\hat X'X)^{-1}\hat X'y=(X'P_{W}X)^{-1}X'P_{W}y ,
+\end{equation}
+the \textbf{generalized IV} (GIV) estimator. Since $\hat X'X=X'P_{W}X=X'P_{W}P_{W}X=\hat X'\hat X$, (2) is also
+$(\hat X'\hat X)^{-1}\hat X'y$, i.e.\ OLS of $y$ on $\hat X$.
+
+\topic{Two-stage least squares}
+That last observation gives the name:
+\begin{flatnum}
+ \item \emph{First stage}: regress each column of $X$ on $W$ by OLS and keep the fitted values $\hat X=P_{W}X$.
+       (Recall the OLS notation: $P_{X}y=\hat y$, $M_{X}y=e$, $y-\hat y=e$.)
+ \item \emph{Second stage}: regress $y$ on $\hat X$ by OLS. The coefficients are $\hat\beta_{GIV}$ in (2).
+\end{flatnum}
+Caution: the second-stage residuals $y-\hat X\hat\beta_{GIV}$ are \emph{not} the IV residuals. To estimate
+$\sigma^{2}$ use $\hat u=y-X\hat\beta_{GIV}$, i.e.\ $\hat\sigma^{2}=\hat u'\hat u/n$.
+
+\topic{GIV as a minimum-distance (GMM) estimator}
+The population condition is $\E(W'u)=0$. With $p>k$ we cannot make the $p$ sample moments $W'u$
+\emph{exactly} zero by choosing $k$ parameters, so we make them as close to zero as possible:
+\[ \min_{\beta}\ \bigl|W'u-\E(W'u)\bigr| ,\qquad \E(W'u)=0. \]
+Measure the distance with the inverse of the variance of the moments (moments that are noisier get
+less weight):
+\[ \min_{\beta}\ u'W\bigl[\Var(W'u)\bigr]^{-1}W'u ,\qquad \Var(W'u)=\E(W'uu'W)=\sigma^{2}W'W . \]
+Writing $u=y-X\beta$ and dropping the constant $\sigma^{2}$,
+\begin{equation}\tag{3}
+ \min_{\beta}\ (y-X\beta)'W(W'W)^{-1}W'(y-X\beta)=(y-X\beta)'P_{W}(y-X\beta).
+\end{equation}
+The first-order condition is $-2X'P_{W}(y-X\beta)=0$, whose solution is exactly (2). This is the idea that
+the GMM lecture below develops in general.
+
+\topic{Testing exogeneity of $X$ (Hausman, cf.\ MLE~V)}
+$H_{0}\colon \E(X'u)=0$. Compare $b$ (OLS) with $\hat\beta_{GIV}$:
+\begin{flatlist}
+ \item under $H_{0}$ both are consistent and $b$ is efficient (Gauss--Markov);
+ \item under $H_{1}$ only $\hat\beta_{GIV}$ is consistent.
+\end{flatlist}
+So the contrast $\hat\beta_{GIV}-b$ plays the role of $\hat\theta-\tilde\theta$ in \emph{MLE~V}. By the same argument,
+$\Var(\hat\beta_{GIV}-b)=\Var(\hat\beta_{GIV})-\Var(b)=\sigma^{2}\bigl[(X'P_{W}X)^{-1}-(X'X)^{-1}\bigr]$ under $H_{0}$, and
+\[ (\hat\beta_{GIV}-b)'\Bigl\{\hat\sigma^{2}\bigl[(X'P_{W}X)^{-1}-(X'X)^{-1}\bigr]\Bigr\}^{-}(\hat\beta_{GIV}-b)
+   \ \overset{a}{\sim}\ \chi^{2}_{r}, \]
+with $r$ the rank of the middle matrix (the number of possibly endogenous regressors, i.e.\ columns of $X$ not
+in $\mathcal S(W)$). This is the Durbin--Wu--Hausman test.
+
+%% ======================================================================
+\section{The GMM setup}
+
+\topic{Population orthogonality conditions}
+\begin{equation}\tag{4}
+ \E\bigl(W'f(y,X,\beta)\bigr)=0 ,
+\end{equation}
+where
+\begin{flatlist}
+ \item $y$ is $n\times1$, $X$ is $n\times k$, and $\beta$ is $l\times1$ (in the linear model $l=k$; for a
+       nonlinear $f$ the number of parameters need not equal the number of regressors);
+ \item $W$ is $n\times p$ with $p\ge l$: the \textbf{instrument matrix}. Its columns represent the
+       \emph{information set}: variables known to be exogenous;
+ \item $f(\cdot)$ is the $n\times1$ vector of error functions, one for each observation; at the true $\beta$ it is
+       the error term (e.g.\ $f=y-X\beta=u$ in the linear model).
+\end{flatlist}
+Where (4) comes from: if the errors have mean zero conditional on the information set,
+\[ \E(f\mid W)=0\quad\Longrightarrow\quad \E(W'f)=\E\bigl(W'\,\E(f\mid W)\bigr)=0 \]
+by the law of iterated expectations.
+
+\topic{Sample analog and overidentification}
+The method-of-moments idea replaces (4) by its sample analog
+\[ W'f(y,X,\hat\beta)=0 , \]
+$p$ equations in $l$ unknowns.
+\begin{flatlist}
+ \item $p=l$ (exactly identified): solve the equations exactly (e.g.\ simple IV (1)).
+ \item $p>l$ (overidentified): more equations than unknowns $\Longrightarrow$ in general there is \emph{no
+       exact solution} for $\hat\beta$. We choose $\hat\beta$ to make $W'f$ as close to zero as possible.
+\end{flatlist}
+
+\topic{The weighting matrix}
+The vector of moments $W'f$ ($p\times1$) has, at the true $\beta$,
+\[ \E(W'f)=0,\qquad
+   \Var(W'f)=\E\bigl[(W'f)(W'f)'\bigr]=\E(W'ff'W)\equiv\Sigma\qquad(p\times p). \]
+
+\topic{The GMM estimator}
+\textbf{GMM -- Generalized Method of Moments}: minimise the quadratic form in the moments, weighted by the
+inverse of their variance,
+\begin{equation}\tag{5}
+ \min_{\hat\beta}\ (W'f)'\bigl[\Var(W'f)\bigr]^{-1}(W'f)
+ \;=\;\min_{\hat\beta}\ f'W\,\Sigma^{-1}W'f .
+\end{equation}
+Using $\Sigma^{-1}$ as the weight is the efficient choice: any positive definite weight matrix gives a
+consistent estimator, but $\Sigma^{-1}$ gives the smallest asymptotic variance.
+
+%% ======================================================================
+\section{The linear model}
+
+\topic{Example}
+Let
+\[ f(y,X,\beta)=y-X\beta=u,\qquad\text{where}\quad \E(uu')=\sigma^{2}\Omega\ \ (\neq\sigma^{2}I_{n}\text{ in general}). \]
+Then
+\[ \E(W'f)=\E(W'u)=\E\bigl(W'(y-X\beta)\bigr)=0, \qquad
+   \Var(W'u)=\E(W'uu'W)=\sigma^{2}W'\Omega W=\Sigma , \]
+treating $W$ as fixed (or conditioning on it).
+
+\topic{The criterion}
+Substituting into (5),
+\[ \min_{\hat\beta}\ \underbrace{(y-X\hat\beta)'W}_{f'W}\ \underbrace{(\sigma^{2}W'\Omega W)^{-1}}_{\Sigma^{-1}}\ \underbrace{W'(y-X\hat\beta)}_{W'f}, \]
+where the objective is
+\begin{align*}
+ &\frac{1}{\sigma^{2}}(y-X\hat\beta)'W(W'\Omega W)^{-1}W'(y-X\hat\beta) \\
+ &=\frac{1}{\sigma^{2}}\Bigl[\,y'W(W'\Omega W)^{-1}W'y-2\hat\beta'X'W(W'\Omega W)^{-1}W'y \\
+ &\hphantom{=\frac{1}{\sigma^{2}}\Bigl[\,}+\hat\beta'X'W(W'\Omega W)^{-1}W'X\hat\beta\,\Bigr].
+\end{align*}
+The two cross terms are equal scalars (each is the transpose of the other, and $(W'\Omega W)^{-1}$ is
+symmetric), which is why they combine into $-2\hat\beta'X'W(W'\Omega W)^{-1}W'y$.
+
+\topic{First-order conditions}
+Differentiate with respect to $\hat\beta$, using $\partial(\hat\beta'a)/\partial\hat\beta=a$ and
+$\partial(\hat\beta'A\hat\beta)/\partial\hat\beta=2A\hat\beta$ for symmetric $A$; the factor $1/\sigma^{2}$ does not
+affect the solution:
+\[ -2X'W(W'\Omega W)^{-1}W'y+2X'W(W'\Omega W)^{-1}W'X\hat\beta=0 . \]
+Hence, provided the $k\times k$ matrix $X'W(W'\Omega W)^{-1}W'X$ is invertible (this needs $p\ge k$ and
+$W'X$ of full column rank),
+\begin{equation}\tag{6}
+ \boxed{\begin{aligned}
+ \hat\beta_{GMM}&=\bigl[X'W(W'\Omega W)^{-1}W'X\bigr]^{-1}X'W(W'\Omega W)^{-1}W'y\\
+ &=\bigl[X'W\Sigma^{-1}W'X\bigr]^{-1}X'W\Sigma^{-1}W'y
+ \end{aligned}}
+\end{equation}
+($\sigma^{2}$ appears in both brackets of the second form and cancels). The second-order condition holds
+because $2X'W(W'\Omega W)^{-1}W'X$ is positive definite.
+
+%% ======================================================================
+\section{GMM as GLS, and its special cases}
+
+\topic{GMM is GLS on the transformed model}
+Premultiply the model by $W'$:
+\[ W'y=W'X\beta+W'u
+   \qquad\Longleftrightarrow\qquad
+   y^{*}=X^{*}\beta+u^{*},\qquad \Var(u^{*})=\sigma^{2}W'\Omega W=\Sigma, \]
+where
+\[ \left.\begin{aligned}
+ y^{*}&=W'y &&\ p\times1\\
+ X^{*}&=W'X &&\ p\times k\\
+ u^{*}&=W'u &&\ p\times1
+\end{aligned}\ \right\}\quad
+\begin{minipage}{0.42\textwidth}
+These are $p\times1$ and $p\times k$, not $n\times1$ and $n\times k$ as usual: the transformed model has
+$p$ ``observations'', one per moment condition.
+\end{minipage} \]
+The errors $u^{*}$ are not spherical, so apply GLS. Let $T$ be a $p\times p$ matrix with
+\[ T'T=(W'\Omega W)^{-1}\qquad(\text{so }T\,W'\Omega W\,T'=I_{p}), \]
+and premultiply by $T$:
+\[ Ty^{*}=TX^{*}\beta+Tu^{*},\qquad \Var(Tu^{*})=\sigma^{2}\,T\,W'\Omega W\,T'=\sigma^{2}I_{p}. \]
+OLS on this transformed equation is GLS on $y^{*}=X^{*}\beta+u^{*}$:
+\[ b_{GLS}=\bigl(X^{*\prime}T'TX^{*}\bigr)^{-1}X^{*\prime}T'Ty^{*}
+         =\bigl[X'W(W'\Omega W)^{-1}W'X\bigr]^{-1}X'W(W'\Omega W)^{-1}W'y , \]
+so
+\[ b_{GLS}\ \text{from above}\ \equiv\ \hat\beta_{GMM}. \]
+Equivalently, the GMM criterion (5) is $\sigma^{-2}$ times the sum of squared residuals of the regression of
+$Ty^{*}$ on $TX^{*}$; this is what the tests in Section~\ref{sec:tests} use.
+
+\topic{Special case 1: $\Var(u)=\sigma^{2}I$ $\Rightarrow$ GIV}
+With $\Omega=I$, (6) becomes
+\[ \hat\beta_{GMM}=\bigl[X'W(W'W)^{-1}W'X\bigr]^{-1}X'W(W'W)^{-1}W'y
+   =\bigl[X'P_{W}X\bigr]^{-1}X'P_{W}y\ \equiv\ \hat\beta_{GIV}, \]
+the 2SLS estimator (2) from class. If moreover $p=k$, $W'X$ is square and invertible and
+\[ \hat\beta_{GIV}=(W'X)^{-1}W'W(X'W)^{-1}X'W(W'W)^{-1}W'y=(W'X)^{-1}W'y=\hat\beta_{IV}, \]
+the simple IV estimator (1).
+
+\topic{Special case 2: $X\in\mathcal S(W)$ $\Rightarrow$ OLS}
+If every column of $X$ lies in $\mathcal S(W)$ (all the $X$'s are exogenous and satisfy the orthogonality
+condition, so they are among the instruments), then $P_{W}X=X$ and
+\[ \hat\beta_{GMM}=(X'X)^{-1}X'y=\hat\beta_{OLS}. \]
+
+\topic{Special case 3: GLS}
+With exogenous $X$ and general $\Omega$, take $W=\Omega^{-1}X$ ($p=k$). Then $W'X=W'\Omega W=X'\Omega^{-1}X$ and (6)
+gives $\hat\beta_{GMM}=(X'\Omega^{-1}X)^{-1}X'\Omega^{-1}y=\hat\beta_{GLS}$.
+
+%% ======================================================================
+\section{Asymptotics}
+
+\topic{Assumptions}
+Let
+\begin{gather*}
+ \operatorname{plim}\frac{X'W}{n}=\Sigma_{XW},\qquad
+ \operatorname{plim}\frac{W'X}{n}=\Sigma_{WX}=\Sigma_{XW}',\\
+ \operatorname{plim}\frac{W'\Var(u)W}{n}=\sigma^{2}\operatorname{plim}\frac{W'\Omega W}{n}=\sigma^{2}\Sigma_{W\Omega W},
+\end{gather*}
+and, by a central limit theorem,
+\[ \frac{W'u}{\sqrt n}\ \overset{d}{\longrightarrow}\ N\bigl(0,\ \sigma^{2}\Sigma_{W\Omega W}\bigr). \]
+
+\topic{Sampling error}
+Substitute $y=X\beta+u$ into (6):
+\[ \hat\beta_{GMM}=\beta+\bigl[X'W(W'\Omega W)^{-1}W'X\bigr]^{-1}X'W(W'\Omega W)^{-1}W'u . \]
+Multiply by $\sqrt n$ and distribute the powers of $n$ so that every matrix is $O_{p}(1)$:
+\[ \sqrt n(\hat\beta_{GMM}-\beta)
+ =\Bigl[\tfrac{X'W}{n}\bigl(\tfrac{W'\Omega W}{n}\bigr)^{-1}\tfrac{W'X}{n}\Bigr]^{-1}
+  \tfrac{X'W}{n}\bigl(\tfrac{W'\Omega W}{n}\bigr)^{-1}\tfrac{W'u}{\sqrt n}
+ \ \overset{d}{\longrightarrow}\ A\,N\bigl(0,\sigma^{2}\Sigma_{W\Omega W}\bigr), \]
+with
+\[ A=\bigl(\Sigma_{XW}\Sigma_{W\Omega W}^{-1}\Sigma_{WX}\bigr)^{-1}\Sigma_{XW}\Sigma_{W\Omega W}^{-1}. \]
+(Check of the powers: $n\cdot n^{-1}\cdot n=n$ inside the inverse, $n^{-1}$ outside; $n\cdot n^{-1}\cdot n^{-1/2}$ on the
+right; total $n^{-1}\cdot n^{1/2}\cdot\sqrt n=1$.) The variance is the sandwich
+$A\,\sigma^{2}\Sigma_{W\Omega W}\,A'$; with $B=\Sigma_{XW}\Sigma_{W\Omega W}^{-1}\Sigma_{WX}$ (symmetric),
+\[ A\,\sigma^{2}\Sigma_{W\Omega W}A'
+ =\sigma^{2}B^{-1}\Sigma_{XW}\Sigma_{W\Omega W}^{-1}\Sigma_{W\Omega W}\Sigma_{W\Omega W}^{-1}\Sigma_{WX}B^{-1}
+ =\sigma^{2}B^{-1}BB^{-1}=\sigma^{2}B^{-1}. \]
+
+\topic{Results}
+\begin{align*}
+ \sqrt n(\hat\beta_{GMM}-\beta)&\ \overset{d}{\longrightarrow}\ N\Bigl(0,\ \sigma^{2}\bigl(\Sigma_{XW}\Sigma_{W\Omega W}^{-1}\Sigma_{WX}\bigr)^{-1}\Bigr)\\[2pt]
+ \sqrt n(\hat\beta_{GIV}-\beta)&\ \overset{d}{\longrightarrow}\ N\Bigl(0,\ \sigma^{2}\bigl(\Sigma_{XW}\Sigma_{WW}^{-1}\Sigma_{WX}\bigr)^{-1}\Bigr)
+   &&(\Omega=I)\\[2pt]
+ \sqrt n(\hat\beta_{IV}-\beta)&\ \overset{d}{\longrightarrow}\ N\Bigl(0,\ \sigma^{2}\,\Sigma_{WX}^{-1}\Sigma_{WW}\Sigma_{XW}^{-1}\Bigr)
+   &&(\Omega=I,\ p=k)\\[2pt]
+ \sqrt n(\hat\beta_{GLS}-\beta)&\ \overset{d}{\longrightarrow}\ N\bigl(0,\ \sigma^{2}\Sigma_{X\Omega^{-1}X}^{-1}\bigr)
+   &&(W=\Omega^{-1}X)\\[2pt]
+ \sqrt n(\hat\beta_{OLS}-\beta)&\ \overset{d}{\longrightarrow}\ N\bigl(0,\ \sigma^{2}\Sigma_{XX}^{-1}\bigr)
+   &&(\Omega=I,\ W=X)
+\end{align*}
+where $\Sigma_{WW}=\operatorname{plim}W'W/n$, $\Sigma_{XX}=\operatorname{plim}X'X/n$ and
+$\Sigma_{X\Omega^{-1}X}=\operatorname{plim}X'\Omega^{-1}X/n$. Each line is the first one with the substitution shown:
+\begin{flatlist}
+ \item GIV: $\Omega=I$ makes $\Sigma_{W\Omega W}=\Sigma_{WW}$.
+ \item IV: when $p=k$, $\Sigma_{WX}$ and $\Sigma_{XW}$ are square and invertible, so
+       \[ (\Sigma_{XW}\Sigma_{WW}^{-1}\Sigma_{WX})^{-1}=\Sigma_{WX}^{-1}\Sigma_{WW}\Sigma_{XW}^{-1}. \]
+ \item GLS: $W=\Omega^{-1}X$ makes $\Sigma_{XW}=\Sigma_{WX}=\Sigma_{W\Omega W}=\Sigma_{X\Omega^{-1}X}$.
+ \item OLS: $W=X$ and $\Omega=I$ make all three equal to $\Sigma_{XX}$.
+\end{flatlist}
+In practice $\sigma^{2}$ is replaced by $\hat\sigma^{2}=\hat u'\Omega^{-1}\hat u/n$ with $\hat u=y-X\hat\beta_{GMM}$, and the
+$\Sigma$'s by their sample counterparts, e.g.\
+$\widehat{\Var}(\hat\beta_{GMM})=\hat\sigma^{2}\bigl[X'W(W'\Omega W)^{-1}W'X\bigr]^{-1}$.
+
+%% ======================================================================
+\section{Hypothesis testing}\label{sec:tests}
+
+\topic{1) Testing restrictions on $\beta$}
+Start from the moment equations
+\begin{equation}\tag{7}
+ W'y=W'X\beta+W'u .
+\end{equation}
+Partition $\beta=(\beta_{1}',\beta_{2}')'$ and $X=[X_{1}\ X_{2}]$ conformably ($k_{1}+k_{2}=k$), and test
+$H_{0}\colon\beta_{2}=0$:
+\[ W'y=W'X_{1}\beta_{1}+W'X_{2}\beta_{2}+W'u . \]
+Premultiply by $T$ (with $T'T=(W'\Omega W)^{-1}$ as in Section~4) to make the errors spherical:
+\begin{align*}
+ TW'y&=TW'X_{1}\beta_{1}+TW'X_{2}\beta_{2}+TW'u\\
+ y^{*}&=X_{1}^{*}\beta_{1}+X_{2}^{*}\beta_{2}+u^{*},\qquad \Var(u^{*})=\sigma^{2}I_{p},
+\end{align*}
+where now (redefining the starred variables to include $T$)
+\[ \underset{p\times1}{y^{*}}=TW'y ;\qquad \underset{p\times k_{1}}{X_{1}^{*}}=TW'X_{1} ;\qquad \underset{p\times k_{2}}{X_{2}^{*}}=TW'X_{2} . \]
+This is an ordinary regression with spherical errors, so everything from the linear model carries over
+(``etc.\ using the FWL theorem''): e.g.\ by FWL, $\hat\beta_{2}$ is the OLS coefficient from regressing
+$M_{X_{1}^{*}}y^{*}$ on $M_{X_{1}^{*}}X_{2}^{*}$, and
+\[ \frac{\text{RSSR}-\text{USSR}}{\hat\sigma^{2}}\ \overset{a}{\sim}\ \chi^{2}_{k_{2}}\quad\text{under }H_{0}, \]
+where RSSR and USSR are the SSRs of the starred regression without and with $X_{2}^{*}$. Note that
+$\sigma^{2}$ must be estimated from the original $n$ residuals ($\hat\sigma^{2}$ above), not from the starred regression,
+which has only $p$ ``observations''.
+
+\topic{2) Testing overidentifying restrictions}
+This is a test for correct model specification within a GMM framework. Suppose $p>k$ (with $p=k$ there is
+nothing to test: the moments are set exactly to zero). Augment $X$ by $p-k$ extra columns of $W$
+(chosen so that, together with $X$, they are linearly independent); call them $W_{2}$ ($n\times(p-k)$).
+We now have
+\begin{equation}\tag{8}
+\begin{aligned}
+ W'y&=W'X\beta+W'W_{2}\gamma+W'u\\
+ y^{*}&=X^{*}\beta+X^{**}\gamma+u^{*}
+\end{aligned}
+\end{equation}
+(after premultiplying by $T$ as before), where $X^{**}=TW'W_{2}$ holds the $p-k>0$ extra variables taken
+from the $W$ matrix ($n\times p$). The dimensions are
+\[ \underset{p\times1}{y^{*}}=\underset{p\times k}{X^{*}}\ \underset{k\times1}{\beta}
+   +\underset{p\times(p-k)}{X^{**}}\ \underset{(p-k)\times1}{\gamma}+u^{*} . \]
+So $(\beta',\gamma')'$ is $p\times1$: (8) has the \emph{same number of observations as regressors}. The
+$p\times p$ regressor matrix $[X^{*}\ X^{**}]$ is square and nonsingular, so the regression fits exactly:
+\[ \Longrightarrow\quad \text{SSR from (8) is zero!} \]
+
+\runin{Testing $\gamma=0$} Equation (7) (after premultiplying by $T$) is (8) with $\gamma=0$. So
+\begin{flatlist}
+ \item SSR from (7) $=$ RSSR;
+ \item SSR from (8) $=$ USSR $\equiv0$.
+\end{flatlist}
+\[ \Longrightarrow\quad \text{RSSR}-\text{USSR}=\text{SSR}-0=\text{SSR from (7)} \]
+is a test statistic for the hypothesis that the extra variables from $W$ are \emph{not} significant. Scaled by
+$\sigma^{2}$,
+\begin{equation}\tag{9}
+ \frac{\text{SSR from (7)}}{\sigma^{2}}
+ =\frac{(y-X\hat\beta_{GMM})'W(W'\Omega W)^{-1}W'(y-X\hat\beta_{GMM})}{\sigma^{2}}
+ =\hat f'W\Sigma^{-1}W'\hat f
+ \ \overset{a}{\sim}\ \chi^{2}_{p-k},
+\end{equation}
+i.e.\ the minimised value of the GMM criterion (5) (with $\sigma^{2}$ replaced by $\hat\sigma^{2}$ in practice). The degrees of
+freedom are the number of overidentifying restrictions, $p-k$.
+
+\runin{Interpretation} Not rejecting means that $W$ only works through the $X$'s, \emph{not} by itself: the
+instruments have no direct effect on $y$ beyond their effect through $X$ (they are validly excluded from
+the equation, and $\E(W'u)=0$ is not contradicted). This is the
+\[ \Longrightarrow\quad\textbf{Sargan--Hansen specification test.} \]
+
+\runin{Remarks}
+\begin{flatnum}
+ \item Which $p-k$ columns of $W$ are added does not matter: any choice that makes $[X^{*}\ X^{**}]$
+       nonsingular gives USSR $=0$, so the statistic is always the minimised criterion (9).
+ \item With $\Omega=I$, (9) is $\hat u'P_{W}\hat u/\hat\sigma^{2}$ with $\hat u=y-X\hat\beta_{GIV}$ and $\hat\sigma^{2}=\hat u'\hat u/n$. This
+       equals $nR^{2}$ (uncentred) from the regression of the IV residuals $\hat u$ on $W$, which is how Sargan's
+       test is usually computed.
+ \item The test only checks the overidentifying restrictions: it cannot detect a problem that affects all
+       instruments in the same way, and it cannot be computed when $p=k$.
+\end{flatnum}
+
+\begin{transcriptnotes}
+ \item Sources: page~1 is handwritten class notes (today's class, IV from the board); pages~2--7 are the
+       instructor's handout ``Lecture on GMM'' (sheets 1--6, dated Fall 2024). Section~1 is built from page~1;
+       Sections~2--6 follow the handout. Transposes ($^{T}$) are written as primes.
+ \item Page 1: the jottings are expanded into full statements. \textbf{Added}: the relevance condition, the
+       consistency step for $\hat\beta_{IV}$, the identity $\hat X'X=\hat X'\hat X$ (why GIV is 2SLS), the caution about
+       second-stage residuals, the first-order condition of (3). The line ``$\min_\beta|W'u-\E(W'u)|$'' is kept and
+       its weighted version $\min u'W(\Var(W'u))^{-1}W'u$ is completed with $\Var(W'u)=\sigma^{2}W'W$.
+       ``$H_{0}\colon\E(X'u)=0$, $b-\hat\beta_{GIV}$'' is written out as the Durbin--Wu--Hausman test, using
+       \emph{MLE~V} (\textbf{added}). The stray ``$\to\Sigma_{Wy}$, $\to\Sigma_{WX}$'' labels are the plims of $W'y/n$ and $W'X/n$.
+ \item Page 2 (sheet 1): ``$\beta$ is $l\times1$, $k\neq l$'' is read as ``$k$ need not equal $l$'' (in the linear model
+       of later sheets $l=k$). ``$f(\cdot)$ are optimization errors'' is read as the error functions
+       (residuals at the true $\beta$). The law-of-iterated-expectations step behind $\E(f\mid W)=0\Rightarrow\E(W'f)=0$
+       and the remark on the efficient weight matrix are \textbf{added}.
+ \item Page 3 (sheet 2): \textbf{Corrected}: the first term of the expanded criterion is printed
+       ``$y'W^{T}(W^{T}\Omega W)^{-1}W^{T}y$''; it is
+       $y'W(W'\Omega W)^{-1}W'y$. The $1/\sigma^{2}$ in the expansion multiplies all three terms (bracket
+       \textbf{added}). Why the cross terms combine, the matrix-derivative rules, the rank condition and the
+       cancellation of $\sigma^{2}$ in (6) are \textbf{added}.
+ \item Page 4 (sheet 3): \textbf{Corrected}: ``$\Var(u^{*})=\sigma^{2}\Sigma=\sigma^{2}W'\Omega W$''; with $\Sigma$ defined to include $\sigma^{2}$
+       (sheet 1--2), $\Var(u^{*})=\sigma^{2}W'\Omega W=\Sigma$. The handout's $T'T=\Sigma^{-1}=(W'\Omega W)^{-1}$ drops the
+       $\sigma^{2}$; $T'T=(W'\Omega W)^{-1}$ is used (the scalar does not change the estimator). The verification that OLS
+       on the $T$-transformed equation reproduces (6), the simple-IV case $p=k$, and special case~3 (GLS)
+       are \textbf{added}.
+ \item Page 5 (sheet 4): \textbf{Corrected}: the IV variance is printed $\sigma^{2}\Sigma_{WX}^{-1}\Sigma_{WW}\Sigma_{WX}^{-1}$; the last factor
+       is $\Sigma_{XW}^{-1}=(\Sigma_{WX}')^{-1}$. ``$\operatorname{plim}W'\Var(u)W/n\to\sigma^{2}W'\Omega W/n\to\sigma^{2}\Sigma_{W\Omega W}$'' is written as
+       a single plim. The $\sqrt n$ scaling, the sandwich calculation and the derivation of each special
+       case from the GMM variance are \textbf{added}, as is the feasible variance estimator.
+ \item Page 6 (sheet 5): ``$T W^{T}y$'' etc.\ uses the same $T$ as sheet 3; the starred variables are
+       redefined to include $T$, as the handout does. The $\chi^{2}_{k_{2}}$ statistic, the FWL statement and the
+       warning about estimating $\sigma^{2}$ are \textbf{added} to ``etc.\ using the FWL theorem''. ``$p\ge k$'' under
+       item 2 is sharpened to $p>k$. ``Increase and add as many of these ($p-k>0$) variables to $X$'' is read
+       as ``augment $X$ by $p-k$ columns of $W$''.
+ \item Page 7 (sheet 6): \textbf{Corrected}: ``SSR $\sim\chi^{2}_{p-k}$'' must be scaled by $\sigma^{2}$, (9). The identification of
+       SSR from (7) with the minimised GMM criterion, the $nR^{2}$ form, and remarks 1 and 3 are \textbf{added}.
+ \item Original page map: p.\,1 class notes (IV, GIV/2SLS, minimum distance, Hausman); p.\,2 orthogonality
+       conditions, $\Sigma$, GMM criterion; p.\,3 linear example, FOC, (6); p.\,4 GMM as GLS, GIV, OLS; p.\,5
+       asymptotics; p.\,6 testing $\beta_{2}=0$, start of overidentification test; p.\,7 SSR $=0$, Sargan--Hansen.
+\end{transcriptnotes}
+
+\end{document}

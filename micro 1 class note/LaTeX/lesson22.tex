@@ -1,0 +1,281 @@
+%% shortname: Robinson Crusoe in a Picture, Private Ownership Economies and Excess Demand
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{22}{Chapter 15 (end): the Robinson Crusoe economy in a picture. Chapter 17
+(17.A--17.B): the private ownership economy, Walrasian equilibrium, and excess demand in the pure
+exchange economy}{}
+
+
+\section{The Robinson Crusoe economy in a picture}
+
+Recall the one-consumer, one-firm economy: leisure $x_1$, consumption good $x_2$, time
+endowment $\bar L$, labour $z=\bar L-x_1$, production function $f(z)$, output price $p$ and
+wage $w$. Labour input is measured to the \emph{left} from the firm's origin (drawn as
+$-z$, an input), so leisure is measured to the right from the consumer's origin.
+
+\begin{center}
+\begin{tikzpicture}[x=1.9cm,y=1.15cm]
+  % x1 = leisure in [0,4], Lbar = 4, z = 4 - x1; f(z) = 2 sqrt(z); u = sqrt(x1 x2)
+  % equilibrium: z* = 4/3, x1* = 8/3, x2* = 2.309, w/p = 0.866, pi/p = 1.155
+  \draw[ecaxis] (4,0) -- (-0.45,0);
+  \draw[ecaxis] (4,0) -- (4,5.1) node[ecnode,above] {output $x_2$};
+  \node[ecnode,below] at (-0.45,0) {$-z$};
+  \node[ecnode,below] at (0,-0.05) {$O_c$};
+  \draw (0,0.07) -- (0,-0.07);
+  \node[ecnode,below right] at (4,0) {$O_f$};
+  % production function, budget line, cost line, indifference curve
+  \draw[budget,domain=0:4,samples=120] plot (\x,{2*sqrt(4-\x)});
+  \draw[budget] (0.1,4.532) -- (4,1.155);
+  \draw[thin] (0,3.464) -- (4,0);
+  \draw[budget,domain=1.3:4,samples=60] plot (\x,{6.158/\x});
+  \node[bundle] at (2.667,2.309) {};
+  % helper lines
+  \draw[dashed] (2.667,0) -- (2.667,2.309) -- (4,2.309) node[ecnode,right] {$x_2^*$};
+  \draw[{Stealth}-{Stealth}] (2.52,1.155) -- (2.52,2.309);
+  \node[ecnode,anchor=east] at (2.5,1.7) {max profit $\dfrac{\pi(p,w)}{p}$};
+  \draw[{Stealth}-{Stealth}] (4.12,0) -- (4.12,1.155);
+  \node[ecnode,anchor=west] at (4.15,0.58) {$\dfrac{\pi(p,w)}{p}$: real dividend};
+  % labels
+  \node[ecnode,anchor=east] at (0.55,4.75) {budget line, slope $-\dfrac wp$};
+  \node[ecnode,anchor=east] at (-0.05,4.0) {$f(z)$};
+  \node[ecnode,anchor=east] at (-0.05,3.3) {cost $\dfrac wp\,z$};
+  \node[ecnode,anchor=west] at (1.45,4.85) {indifference curve};
+  \draw[thin] (1.75,4.62) -- (1.45,4.25);
+  \node[ecnode] at (3.3,3.2) {slope $-\dfrac wp$};
+  % braces under the axis
+  \draw[{Stealth}-{Stealth}] (0,-0.65) -- (2.667,-0.65);
+  \node[ecnode,below] at (1.33,-0.65) {leisure $x_1^*$};
+  \draw[{Stealth}-{Stealth}] (2.667,-0.65) -- (4,-0.65);
+  \node[ecnode,below] at (3.33,-0.65) {labour $z^*$};
+\end{tikzpicture}
+\end{center}
+
+\begin{flatlist}
+  \item \textbf{Firm.} The line through $O_f$ with slope $-w/p$ is the (real) cost of
+        labour, $\frac wp z$. Profit is the vertical gap between $f(z)$ and the cost line;
+        it is largest at $z^*$, where $f'(z^*)=w/p$, and equals the real dividend
+        $\pi(p,w)/p$.
+  \item \textbf{Consumer.} The budget line $x_2=\frac wp(\bar L-x_1)+\frac{\pi(p,w)}{p}$ is
+        the cost line shifted up by the real dividend, so it is tangent to $f$ at $z^*$. The
+        consumer picks the point where an indifference curve is tangent to it.
+  \item \textbf{Equilibrium.} At the equilibrium $w/p$ both choices are the same point:
+\end{flatlist}
+\[ \text{MRT} \;=\; \frac wp \;=\; \text{MRS}. \]
+
+\topic{Note: the welfare theorems}
+The area under the curve $f(z)$ is the production set $Y$.
+
+\begin{flatlist}
+  \item \textbf{First fundamental welfare theorem:} the equilibrium is Pareto efficient.
+        There is one consumer, and at the point of tangency his utility is maximal given the
+        restrictions imposed by $f(z)$.
+  \item \textbf{Second welfare theorem:} there is only one Pareto efficient allocation, so
+        the second welfare theorem holds in a trivial sense.
+\end{flatlist}
+
+\topic{Another illustration that the market economy works well}
+Consider a benevolent planner:
+\[ \max_{x_1,x_2}\; u(x_1,x_2) \quad\text{s.t. feasibility, i.e.}\quad
+   x_2\le f(z),\;\; z=\bar L-x_1 . \]
+The planner chooses the same tangency point as the market.
+
+
+\section{The positive theory of general equilibrium (MWG 17.A--17.B)}
+
+Plan: describe the economy, define what we mean by an equilibrium, and examine if and when
+an equilibrium exists. (Later: MWG 17.C.)
+
+\topic{The model}
+$I$ consumers, $J$ firms, $L$ commodities.
+
+\begin{flatlist}
+  \item \textbf{Consumers.} Each consumer $i$ has a preference relation $\succsim_i$ over
+        the consumption set $X_i\subset\R^L$ and an endowment $\omega_i\in\R^L_+$. The
+        consumer is also endowed with shares: he owns the share $\theta_{ij}$ of firm
+        $j=1,\dots,J$, with
+        \[ \theta_{ij}\in[0,1] \qquad\text{and}\qquad \sum_{i=1}^{I}\theta_{ij}=1
+           \;\text{ for every } j \qquad\text{(private ownership).} \]
+  \item \textbf{Firms.} Each firm $j$ has a production set $Y_j\subset\R^L$.
+\end{flatlist}
+
+\runin{Summary.} The private ownership economy is described by
+\[ \Bigl(\,\{X_i,\succsim_i\}_{i=1}^{I},\;\; \{Y_j\}_{j=1}^{J},\;\;
+   \{\omega_i,\theta_{i1},\theta_{i2},\dots,\theta_{iJ}\}_{i=1}^{I}\Bigr). \]
+These are the exogenous primitives. Next: the endogenous solutions.
+
+\topic{Allocations}
+An allocation specifies a consumption vector $x_i\in X_i$ for each consumer $i$ and a
+production vector $y_j\in Y_j$ for each firm $j$. Let
+\[ x=(x_1,\dots,x_I) \qquad\text{and}\qquad y=(y_1,\dots,y_J)
+   \qquad\Longrightarrow\qquad \text{an allocation is } (x,y). \]
+
+\topic{Equilibrium}
+The concept is a \emph{Walrasian equilibrium}, or \emph{price-taking equilibrium}: a steady
+state where prices support consumer and firm behaviour that is mutually consistent.
+
+\topic{Definition (Walrasian equilibrium)}
+A Walrasian equilibrium consists of an allocation $(x^*,y^*)$ and a price vector $p$ such
+that:
+\begin{flatnum}
+  \item \textbf{Firms.} Each firm maximizes profit:
+        \[ p\cdot y_j\;\le\; p\cdot y_j^* \qquad \forall\, y_j\in Y_j,\quad j=1,\dots,J. \]
+  \item \textbf{Consumers.} Each consumer maximizes utility: $x_i^*$ is optimal for
+        $\succsim_i$ in the budget set
+        \[ \Bigl\{x_i\in X_i:\; p\cdot x_i\;\le\; p\cdot\omega_i
+           +\sum_{j=1}^{J}\theta_{ij}\,p\cdot y_j^*\Bigr\}, \qquad i=1,\dots,I. \]
+  \item \textbf{Market clearing.} Consumers' and firms' trades are feasible:
+        \[ \sum_{i=1}^{I}x_i^* \;=\; \sum_{i=1}^{I}\omega_i+\sum_{j=1}^{J}y_j^*. \]
+\end{flatnum}
+
+\runin{Aim:} find $p$ and $(x^*,y^*)$ such that (1)--(3) are satisfied. Is there a solution
+(existence)?
+
+
+\section{The pure exchange economy}
+
+\topic{Set-up}
+Exchange economy: no production. Formally there is one firm, $J=1$, which is a disposal
+technology:
+\[ Y_1=-\R^L_+ . \]
+
+\begin{flatlist}
+  \item Assume preferences are continuous, strictly convex and locally non-satiated
+        $\Rightarrow$ demand \emph{functions} rather than correspondences.
+  \item Assume $\sum_{i=1}^{I}\omega_i\gg 0$.
+\end{flatlist}
+
+\topic{The equilibrium conditions become}
+\begin{flatnum}
+  \item \textbf{Firm profit maximization:}
+        \[ y_1^*\le 0, \qquad p\ge 0, \qquad p\cdot y_1^*=0 . \]
+        \begin{flatlist}
+          \item $y_1^*\le 0$ (i.e.\ $y_1^*\in Y_1$): feasibility.
+          \item $p\ge 0$: if a price is negative, then there is no solution to the
+                profit-maximization problem (dispose of ever more of that good).
+          \item $p\cdot y_1^*=0$: given $p\ge 0$ and $y_1\le 0$, the maximal profit is $0$.
+        \end{flatlist}
+  \item \textbf{Consumer utility maximization:}
+        \[ x_i^*=x_i(p,\;p\cdot\omega_i). \]
+        Wealth $p\cdot\omega_i$ is the income from selling the endowment; there is no
+        dividend, since $p\cdot y_1^*=0$. Note: wealth is endogenous --- it depends on $p$.
+  \item \textbf{Market clearing:}
+        \[ \sum_{i=1}^{I}x_i^*-\sum_{i=1}^{I}\omega_i \;=\; y_1^*
+           \qquad(\text{recall } y_1^*\le 0). \]
+\end{flatnum}
+
+\topic{Putting (2)--(3) together: excess demand}
+\begin{align*}
+  \sum_{i}x_i(p,p\cdot\omega_i)-\sum_{i}\omega_i &= y_1^*
+     &&\text{LHS: aggregate demand minus aggregate endowment} \\
+  \sum_{i}\bigl(x_i(p,p\cdot\omega_i)-\omega_i\bigr) &= y_1^*
+     &&\text{LHS: sum of individual excess demands } z_i(p) \\
+  \sum_{i}z_i(p) &= y_1^* \\
+  z(p) &= y_1^*
+     &&\text{$z(p)=\textstyle\sum_i z_i(p)$: \emph{aggregate excess demand}}
+\end{align*}
+By (1), $y_1^*\le 0$, hence
+\[ z(p)\le 0 . \]
+
+\topic{Necessity}
+We see that (1)--(3) imply $p\ge 0$ and $z(p)\le 0$ $\Rightarrow$ $p\ge 0$ and $z(p)\le 0$
+are necessary for an equilibrium.
+
+\topic{Sufficiency}
+The result is that $p\ge 0$ and $z(p)\le 0$ are also sufficient.
+
+\begin{center}
+\fbox{\parbox{0.86\linewidth}{\textbf{Result.} A price vector $p\ge 0$ is a Walrasian
+equilibrium price vector if and only if $z(p)\le 0$.}}
+\end{center}
+
+\runin{Proof} that $p\ge 0$ and $z(p)\le 0$ imply (1)--(3). Set
+\[ x_i^*=x_i(p,p\cdot\omega_i) \qquad\text{and}\qquad y_1^*=z(p). \]
+We must show that $(x_1^*,\dots,x_I^*,y_1^*)$ and $p$ satisfy (1)--(3).
+
+\begin{flatlist}
+  \item (3) holds by construction: $\sum_i x_i^*-\sum_i\omega_i=z(p)=y_1^*$.
+  \item For (1) we already have $p\ge 0$, and $y_1^*=z(p)\le 0$ because $z(p)\le 0$. The
+        last part of (1) is zero profit:
+        \begin{align*}
+          p\cdot y_1^* \;=\; p\cdot z(p) &= p\cdot\sum_i z_i(p) \\
+            &= p\cdot\sum_i\bigl(x_i(p,p\cdot\omega_i)-\omega_i\bigr) \\
+            &= \sum_i\bigl(p\cdot x_i(p,p\cdot\omega_i)-p\cdot\omega_i\bigr) \;=\; 0,
+        \end{align*}
+        since each $\succsim_i$ is locally non-satiated (Walras' law: each consumer spends
+        all of his wealth, so every term in the sum is zero).
+  \item (2) is satisfied by definition: profit is zero, so each consumer's wealth is
+        $p\cdot\omega_i$, and $x_i^*$ is the demand at that wealth. \hfill$\blacksquare$
+\end{flatlist}
+
+
+\begin{transcriptnotes}
+  \item The export has 5 pages. No date is written, so the header date is left empty; the
+        subtitle and the section headings are \textbf{added} (MWG 15.C and 17.A--17.B).
+  \item Page 1: ``rohinson crusoe economy in a pic'' $\to$ \emph{The Robinson Crusoe economy
+        in a picture}. The sketch is redrawn to scale with the same example as Lesson 21
+        ($f(z)=2\sqrt z$, $\bar L=4$, $u=\sqrt{x_1x_2}$, so $z^*=4/3$, $w/p\approx0.87$).
+        Labels kept from the page: budget line, $f(z)$, cost function $\frac wp(-z)$
+        (typeset as cost $\frac wp z$), max profit, slope $-w/p$, real dividend
+        $\pi(p,w)/p$, $x_2^*$, $z^*$, $-z$ labour input, labour, leisure. The origin labels
+        $O_c$, $O_f$, the indifference-curve label and the three bullets explaining the
+        figure are \textbf{added}; the recap sentence above the figure is \textbf{added}.
+  \item Page 1: the page writes ``MRT $=\frac pw=$ MRS''; \textbf{corrected} to
+        $\frac wp$ (the slope marked in the figure and the conditions $f'(z)=w/p$,
+        MRS $=w/p$ of Lesson 21).
+  \item Page 1: ``fundemental weafare'' $\to$ \emph{fundamental welfare}; ``production set,
+        $Y$''. ``His utility is under the point of tangency. Given the restrictions imposed
+        by $f(z)$'' is read as: his utility is \emph{maximal at} the point of tangency given
+        the restrictions imposed by $f(z)$ (the word after ``is'' is uncertain). ``theorem
+        hold in trivial sense'' $\to$ \emph{holds in a trivial sense}.
+  \item Page 1: ``Another illustration of the market economy works well'' $\to$
+        \emph{that the market economy works well}. Planner: ``max $u(x_1,x_2)$ s.t.\
+        feasibility i.e.\ $f(z)$''; the constraint is written out as $x_2\le f(z)$,
+        $z=\bar L-x_1$, and the sentence that the planner picks the same point is
+        \textbf{added}. ``The positive theorem of general equ.'' $\to$ \emph{positive
+        theory of general equilibrium}; the margin reads ``17A--B'' and a second line read
+        as ``Later 17.C'' (first word uncertain).
+  \item Page 2: ``$J$ forms'' $\to$ \emph{firms}; ``pref relation''; the consumption set is
+        written $X_i$, and $X_i\subset\R^L$ is \textbf{added}. ``He owns share $\theta_i$
+        of form $j=1,2\dots$?'' $\to$ share $\theta_{ij}$ of firm $j=1,\dots,J$; ``for
+        every $j$'' is \textbf{added} to $\sum_i\theta_{ij}=1$.
+  \item Page 2: ``each firm $j$ has production set $X_j\subset\R^L$'' is \textbf{corrected}
+        to $Y_j$ (as in the summary line on the same page). In the summary the last set is
+        written $\{\omega_i,\theta_{i1},\theta_{i2}\dots\theta_{ij}\}_{j=1}^{I}$;
+        \textbf{corrected} to $\theta_{iJ}$ and index $i=1,\dots,I$.
+  \item Page 2: ``An allocation consumption $t_i$ and production $t_j$'' is read as a
+        consumption vector $x_i$ for each $i$ and a production vector $y_j$ for each $j$;
+        $y=(y_1\dots y_j)$ $\to$ $y_J$. ``A walriasian equilibrium on a price taking
+        equilibrium'' $\to$ \emph{or a price-taking equilibrium}.
+  \item Page 3: ``consists of an allocations $(x,y)$'' $\to$ $(x^*,y^*)$. Condition 2 is
+        written $p\cdot x_i^*\le p\cdot\omega_i+\sum_{i=1}^{J}\theta_{ij}\,p\,y_i^*$;
+        \textbf{corrected} to a sum over $j$ of $\theta_{ij}\,p\cdot y_j^*$, and stated as
+        optimality in the budget set. ``market clearence'' $\to$ \emph{clearing}. A line
+        read as ``The[n] come back to Walrasian equilibrium'' is dropped (uncertain reading;
+        it only introduces the ``Aim'' line).
+  \item Page 3: ``one firm $J=1$, which is a disposal techno.'' $\to$ \emph{technology};
+        ``$Y_1=\R^L_-$'' typeset as $-\R^L_+$. ``locally non-satialed'' $\to$
+        \emph{non-satiated}; ``demand function rather than correspondences''.
+  \item Page 4: ``1 firm may profit'' $\to$ \emph{firm profit maximization}. The three
+        annotations under $y_1^*\le0$, $p\ge0$, $p\cdot y_1^*=0$ are kept; the parenthesis
+        ``dispose of ever more of that good'' is \textbf{added}. ``no divident sense
+        $p\cdot y^*=0$'' $\to$ \emph{no dividend, since} $p\cdot y_1^*=0$; ``wealth is
+        endougenous depend on $P$''.
+  \item Page 4: market clearing is written $\sum_i y_i^*-\sum_i\omega_i=y_1^*$;
+        \textbf{corrected} to $\sum_i x_i^*$. In ``Putting 2--3 together'' the right-hand
+        sides are written $y_i^*$, $y_I^*$; \textbf{corrected} to $y_1^*$. ``LHS is
+        aggregate demand'' is completed to \emph{aggregate demand minus aggregate
+        endowment}.
+  \item Page 5: ``$z(p)=y_I$'' $\to$ $y_1^*$; ``$z(p)\le0$ Bx(1)'' $\to$ \emph{by (1)};
+        ``impart that'' $\to$ \emph{imply}; ``safficient''; ``an walrasian eq.\ price
+        vector iff''. The boxed statement of the result follows the page's wording.
+  \item Page 5, proof: ``let $y_i^*=z(p)$'' $\to$ $y_1^*$. The page writes ``(3) holds
+        because $z(p)\le0$ so $y^*=z(p)\ge0$''; the sign is \textbf{corrected}: (3) holds by
+        construction, and $z(p)\le0$ gives $y_1^*\le0$, which is part of (1). The order of
+        the three steps is changed so that (2) comes last, because (2) uses the zero-profit
+        result (no dividend); the remark about Walras' law is \textbf{added}.
+\end{transcriptnotes}
+
+\end{document}

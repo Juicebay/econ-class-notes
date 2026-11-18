@@ -1,0 +1,314 @@
+%% shortname: Existence with Production, Price Equilibrium with Transfers and the First Welfare Theorem
+\documentclass[11pt]{article}
+\usepackage{microstyle}
+
+\begin{document}
+
+\lessonheader{24}{Chapter 17 (end): existence of equilibrium in a production economy.
+Chapter 16 (16.A--16.C): price equilibrium with transfers and the first welfare theorem.
+An example of non-existence}{}
+
+
+\section{Existence of equilibrium with production}
+
+Finishing Chapter 17 today: the production economy. We need to modify our aggregate excess
+demand function to account for production.
+
+\topic{Assumptions on the production sets}
+To have a more well-behaved problem, assume that the production sets are \emph{closed} and
+\emph{bounded above} $\Rightarrow$ there is a solution to each firm's profit-maximization
+problem. Assume also that each production set is \emph{strictly convex}
+$\Rightarrow$ the solution is unique, so we have a supply \emph{function} rather than a
+correspondence.
+
+\topic{Profit and supply functions}
+Let $\pi_j(p)$ denote firm $j$'s profit function and $y_j(p)$ its supply function:
+\[ \pi_j(p)=p\cdot y_j(p), \qquad j=1,\dots,J. \]
+
+\topic{Production-inclusive excess demand}
+Define the production-inclusive aggregate excess demand function
+\[ \tilde z(p)\;=\;\sum_{i=1}^{I}x_i\Bigl(p,\;p\cdot\omega_i+\sum_{j=1}^{J}\theta_{ij}\,\pi_j(p)\Bigr)
+   \;-\;\sum_{i=1}^{I}\omega_i\;-\;\sum_{j=1}^{J}y_j(p). \]
+Consumer $i$'s wealth is the value of the endowment plus the share $\theta_{ij}$ of the profit
+of every firm $j$.
+
+The function $\tilde z(p)$ satisfies the same five properties as $z(p)$ does (continuity,
+homogeneity of degree zero, Walras' law $p\cdot\tilde z(p)=0$, bounded below, unbounded
+above near the boundary), which we used to prove existence in a pure exchange economy
+(Lesson 23). Hence
+\begin{center}
+\fbox{\parbox{0.86\linewidth}{\textbf{Result.} $p\gg 0$ is an equilibrium price vector if and
+only if $\tilde z(p)=0$, and such a $p$ exists (same fixed-point argument as for $z(p)$).}}
+\end{center}
+
+\runin{Trick:} use Walras' law to cut down the degrees of freedom by 1 $\Rightarrow$ only
+$L-1$ degrees of freedom, so we can normalize the price of one of the goods to be $1$.
+
+\runin{Important:} prices are endogenous, and so is income, because income relies on selling
+endowments and earning dividends.
+
+\topic{Remarks}
+\begin{flatlist}
+  \item A solution exists under these assumptions.
+  \item Convexity of the production sets is important. Even if it does not hold for
+        individual firms, it may still hold in an approximate sense in the aggregate.
+\end{flatlist}
+
+
+\section{General equilibrium and welfare (MWG Chapter 16)}
+
+\begin{flatlist}
+  \item 16.A--16.C: the first welfare theorem.
+  \item 16.D--16.F: the second welfare theorem, plus discussion.
+\end{flatlist}
+
+We wish to study the properties of Walrasian equilibrium, assuming it exists (sufficient
+conditions for existence: last lecture).
+
+\topic{Price equilibrium with transfers}
+In fact, we extend the equilibrium concept beyond Walrasian equilibrium: a \emph{price
+equilibrium with transfers}, i.e.\ a Walrasian equilibrium with wealth transfers.
+
+\begin{flatlist}
+  \item Given $p$, total wealth is
+        \[ p\cdot\bar\omega+\sum_{j=1}^{J}p\cdot y_j^*, \qquad
+           \bar\omega=\sum_{i=1}^{I}\omega_i . \]
+  \item This total wealth can be redistributed. Let $w_i$ denote consumer $i$'s allocated
+        wealth, with $\sum_{i=1}^{I}w_i=p\cdot\bar\omega+\sum_{j=1}^{J}p\cdot y_j^*$.
+        $\Rightarrow$ consumer $i$'s budget set is
+        \[ \{x_i\in X_i:\; p\cdot x_i\le w_i\}. \]
+\end{flatlist}
+
+\topic{Definition (price equilibrium with transfers)}
+An allocation $(x^*,y^*)$ and a price vector $p$ constitute a price equilibrium with
+transfers if there is some wealth distribution $(w_1,\dots,w_I)$ as above such that agents
+are maximizing and demand $=$ supply:
+\begin{flatnum}
+  \item \textbf{Firms:} $p\cdot y_j\le p\cdot y_j^*$ for all $y_j\in Y_j$, $j=1,\dots,J$.
+  \item \textbf{Consumers:} $x_i^*$ is optimal for $\succsim_i$ in
+        $\{x_i\in X_i:\,p\cdot x_i\le w_i\}$, $i=1,\dots,I$.
+  \item \textbf{Market clearing:} $\displaystyle\sum_{i=1}^{I}x_i^*=\bar\omega+\sum_{j=1}^{J}y_j^*$.
+\end{flatnum}
+
+\begin{flatlist}
+  \item Walrasian equilibrium was the special case where there is no redistribution, but each
+        consumer's wealth is the value of his endowment plus dividends:
+        $w_i=p\cdot\omega_i+\sum_{j}\theta_{ij}\,p\cdot y_j^*$.
+  \item $\Rightarrow$ The set of price equilibria with transfers is potentially a large set.
+\end{flatlist}
+
+Assume preferences are locally non-satiated. This does not guarantee existence, but if an
+equilibrium exists, then it is ``nice'':
+
+\topic{First fundamental welfare theorem}
+\begin{center}
+\fbox{\parbox{0.86\linewidth}{\textbf{Theorem.} If preferences are locally non-satiated and
+$(x^*,y^*,p)$ is a price equilibrium with transfers, then the allocation $(x^*,y^*)$ is Pareto
+efficient.
+
+\textbf{Corollary.} Walrasian equilibrium allocations are Pareto efficient.}}
+\end{center}
+
+\runin{Proof} (by contradiction). Assume $(x^*,y^*)$ is not Pareto efficient
+$\Rightarrow$ there is some feasible allocation $(x,y)$ that is a Pareto improvement over
+$(x^*,y^*)$: $x_i\succsim_i x_i^*$ for all $i$ and $x_i\succ_i x_i^*$ for at least one $i$.
+
+\runin{Step 0.} Local non-satiation implies $p\cdot x_i^*=w_i$ for all $i$ (otherwise there
+would be a strictly better bundle close to $x_i^*$ that is still affordable).
+
+\runin{Step 1: consumers who are made strictly better off.}
+\[ x_i\succ_i x_i^* \;\Longrightarrow\; p\cdot x_i>w_i=p\cdot x_i^* . \]
+Otherwise $x_i$ is affordable and the consumer should buy it instead of $x_i^*$
+(contradicting that $x_i^*$ is optimal).
+
+\runin{Step 2: no consumer is worse off.}
+\[ x_i\succsim_i x_i^* \;\Longrightarrow\; p\cdot x_i\ge w_i=p\cdot x_i^* . \]
+Otherwise $x_i$ is affordable with money to spare, so (by local non-satiation) an even better
+bundle is affordable, contradicting that $x_i^*$ is optimal.
+
+\runin{Step 3: sum over all agents,} keeping in mind that the inequality is strict for at
+least one agent:
+\[ \sum_{i=1}^{I}p\cdot x_i\;>\;\sum_{i=1}^{I}w_i
+   \;=\;p\cdot\bar\omega+\sum_{j=1}^{J}p\cdot y_j^*
+   \;\ge\;p\cdot\bar\omega+\sum_{j=1}^{J}p\cdot y_j , \]
+where the last inequality is profit maximization ($p\cdot y_j^*\ge p\cdot y_j$ for every
+$y_j\in Y_j$).
+
+\runin{Step 4: quantities.} The above was expressed in money. Now consider quantities:
+$(x,y)$ must be feasible,
+\[ \sum_{i=1}^{I}x_i=\bar\omega+\sum_{j=1}^{J}y_j , \]
+so their values at prices $p$ are the same:
+\[ p\cdot\sum_{i}x_i=p\cdot\bar\omega+p\cdot\sum_{j}y_j
+   \quad\Longleftrightarrow\quad
+   \sum_{i}p\cdot x_i=p\cdot\bar\omega+\sum_{j}p\cdot y_j . \]
+This contradicts the earlier conclusion that
+$\sum_i p\cdot x_i>p\cdot\bar\omega+\sum_j p\cdot y_j$. $\Rightarrow$ $(x^*,y^*)$ is Pareto
+efficient. \hfill$\blacksquare$
+
+
+\section{Example: why strict convexity and strong monotonicity matter for existence}
+
+A pure exchange economy with two agents and two goods ($x_{ki}$: consumption of good $k$ by
+agent $i$).
+
+\begin{flatlist}
+  \item \textbf{Agent 1:} $u_1(x_{11},x_{21})=\sqrt{x_{11}}+x_{21}$ $\Rightarrow$
+        indifference curves $x_{21}=c-\sqrt{x_{11}}$, with unbounded slope as
+        $x_{11}\to 0$.
+  \item \textbf{Agent 2:} $u_2(x_{12},x_{22})=x_{12}$. Locally non-satiated, but neither
+        strongly monotone nor strictly convex (agent 2 does not care about good 2).
+  \item \textbf{Endowments:} agent 1 has all of good 2, agent 2 has all of good 1:
+        $\omega_1=(0,\bar\omega_2)$, $\omega_2=(\bar\omega_1,0)$.
+\end{flatlist}
+
+\begin{center}
+\begin{tikzpicture}[x=1.15cm,y=1.15cm]
+  % box: omega1bar = 5, omega2bar = 3; endowment at (0,3)
+  % agent 1: u = sqrt(x) + y; prices p1/p2 = 1/2 -> demand x11 = 1, x21 = 2.5
+  \draw[line width=0.6pt] (0,0) rectangle (5,3);
+  \node[ecnode,below left] at (0,0) {$O_1$};
+  \node[ecnode,above right] at (5,3) {$O_2$};
+  % Pareto set: top edge
+  \draw[adm] (0,3) -- (5,3);
+  \node[ecnode,above] at (2.5,3.05) {Pareto efficient allocations};
+  % agent 1 indifference curves: through omega (c=3) and tangent at x1(p) (c=3.5)
+  \draw[budget,domain=0:5,samples=120] plot (\x,{3-sqrt(\x)});
+  \draw[budget,domain=0.25:5,samples=120] plot (\x,{3.5-sqrt(\x)});
+  \draw[-{Stealth}] (1.5,1.15) -- (1.9,1.55);
+  \node[ecnode,anchor=west] at (0.9,0.4) {agent 1's indiff.\ curves};
+  % agent 2 indifference curves (vertical)
+  \draw[dashed] (4.65,0) -- (4.65,3);
+  \draw[dashed] (4.3,0) -- (4.3,3);
+  \draw[-{Stealth}] (4.95,2.3) -- (4.4,2.3);
+  \node[ecnode,anchor=west] at (5.1,2.45) {agent 2's indiff.};
+  \node[ecnode,anchor=west] at (5.1,2.1) {curves (vertical)};
+  % budget line through omega, slope -p1/p2 = -1/2
+  \draw[thin] (0,3) -- (5,0.5);
+  \node[ecnode,anchor=west] at (5.1,0.6) {budget line, slope $-p_1/p_2$};
+  % endowment and agent 1's demand
+  \node[bundle] at (0,3) {};
+  \node[ecnode,above left] at (0,3) {$\omega$};
+  \node[bundle] at (1,2.5) {};
+  \node[ecnode,above right] at (1,2.55) {$x_1(p)$};
+  % labels
+  \node[ecnode,below] at (2.5,-0.15) {good 1 (agent 1)};
+  \node[ecnode,rotate=90,above] at (-0.15,1.5) {good 2 (agent 1)};
+\end{tikzpicture}
+\end{center}
+
+The Pareto efficient allocations are the top edge of the box: agent 1 gets all of good 2 (which
+agent 2 does not value), and good 1 is split in any way.
+
+\topic{There is no equilibrium}
+\begin{flatlist}
+  \item \textbf{Look for equilibrium prices $p\gg 0$.} Agent 2 keeps her endowment of good 1:
+        she only cares about good 1, and her wealth $p_1\bar\omega_1$ buys exactly
+        $\bar\omega_1$ units of it. But agent 1 is also demanding good 1: his wealth
+        $p_2\bar\omega_2$ is positive and his marginal utility of good 1 is unbounded at
+        $x_{11}=0$, so $x_{11}(p)>0$. Hence total demand for good 1 exceeds the supply
+        (endowment):
+        \[ z_1(p)=x_{11}(p)+\bar\omega_1-\bar\omega_1=x_{11}(p)>0
+           \;\Rightarrow\; \text{not an equilibrium.} \]
+  \item \textbf{If $p_1=0$ or $p_2=0$}, there is a free good $\Rightarrow$ unbounded demand
+        ($p_1=0$: agent 2 demands unboundedly much of good 1; $p_2=0$: agent 1 demands
+        unboundedly much of good 2):
+        \[ z_1(p)>0 \quad\text{or}\quad z_2(p)>0 . \]
+\end{flatlist}
+$\Rightarrow$ No equilibrium exists.
+
+
+\begin{transcriptnotes}
+  \item The export has 6 pages; page 6 is blank apart from three lines at the top. No date
+        is written, so the header date is left empty; the subtitle and the section headings
+        are \textbf{added}.
+  \item Page 1: ``Finishing 17 today. Production Economy''. ``modify over aggregate excess
+        demand'' $\to$ \emph{our}. ``production sets are chosen and burned above'' is
+        read as \emph{closed and bounded above} (the standard assumptions guaranteeing a
+        solution to profit maximization). ``Let $\pi_i(P)$ denote firm $j$'s profit function
+        and $X_i(P)$ denote its supply function; $\pi_i(P)=Py_i(P)$'' is \textbf{corrected}
+        to $\pi_j$, $y_j$ and $\pi_j(p)=p\cdot y_j(p)$.
+  \item Page 1: ``Define production function inclusive excess demand function'' $\to$
+        \emph{production-inclusive}. In $\tilde z(p)$ the upper limits of both $j$-sums
+        are written $I$ (or unclear); \textbf{corrected} to $J$. The sentence on
+        consumer $i$'s wealth is \textbf{added}.
+  \item Page 1: ``same five properties as $z(p)$ does and which we used to prove existance
+        in a pure exchange economy''; the list of the five properties in parentheses is
+        \textbf{added} from the Lesson 23 slides. ``$p\gg0$ is an equilibrium price vector
+        iff $\tilde z(p)=0$'' is kept and boxed; the clause ``and such a $p$ exists'' is
+        \textbf{added} (it is what ``a solution exists'' on page 2 refers to). ``walra's law
+        to cut down the degree of freedom by 1'' $\to$ \emph{Walras' law \dots\ degrees}.
+  \item Page 2: ``normalize the price of one of the goods tobe 1''. ``Prices are endogenous
+        so is income because it relies on selling endowments and earning divident'' $\to$
+        \emph{dividends}. ``A solution exists under one assumptions'' $\to$ \emph{these
+        assumptions}. ``Convexity \dots\ even it does not hold for individual firms it still
+        hold in an approximate sense on the aggregate'' $\to$ \emph{it may still hold in an
+        approximate sense in the aggregate}.
+  \item Page 2: ``Chapter 16: Geneal equilibrium and welfane''; ``16 A--C first welfare
+        therom''; ``16 D--F [section, crossed out] second \dots\ + discussion'' $\to$
+        \emph{second welfare theorem, plus discussion}. ``study properties of walrasian
+        equilibrium assuming it exists $\to$ sufficient conditions yestoday'' $\to$
+        \emph{sufficient conditions for existence: last lecture}.
+  \item Page 2: ``extend the EQ concept beyound walrasian equ'' $\to$ \emph{beyond Walrasian
+        equilibrium}. Total wealth $p\cdot\bar\omega+\sum_j p\cdot y_j^*$ is kept; the
+        definition $\bar\omega=\sum_i\omega_i$ and the condition
+        $\sum_i w_i=p\cdot\bar\omega+\sum_j p\cdot y_j^*$ are \textbf{added}. Budget set
+        ``$Px_i\le w_i$'' written as a set.
+  \item Page 3: ``We now look for a price-equilibrium with transfers $(x^*,y^*,p)$ if there is
+        some wealth distribution that agents are maximizing and demand $=$ supply'' is turned
+        into the formal \textbf{Definition}; the three numbered conditions are
+        \textbf{added} (MWG Definition 16.B.4), written as in Lesson 22.
+  \item Page 3: ``Walrasian equilibrium was the special case welfare there is no
+        redistribution but the consumer's wealth is the value of his endowment $+$
+        Divident'' $\to$ \emph{where there is no redistribution \dots\ dividends}; the
+        formula for $w_i$ is \textbf{added}. ``potentilly a large set''.
+  \item Page 3: ``locally non-satiated. Does not generate existance'' $\to$ \emph{does not
+        guarantee existence}. ``The first [crossed-out word] welfare theorem assume colar
+        [crossed out] Non-satiation and that $(x^*,y^*,P)$ is a price equb.\ with transfers,
+        then $(x^*,y^*)$ is P.E.'' $\to$ boxed theorem; P.E.\ $=$ Pareto efficient.
+        ``Collary: Walrasian EQ are P.E.'' $\to$ \emph{Corollary}. The precise meaning of a
+        Pareto improvement is \textbf{added} to the proof.
+  \item Page 3: ``Before we get to implication, local non-satiation implies $P\cdot X_i^*=w_i$
+        for $\forall i$'' $\to$ Step 0; the reason in parentheses is \textbf{added}.
+  \item Page 4: Step 1 is written $x_i\succsim_i x_i^*\Rightarrow Px_i>w_i$;
+        \textbf{corrected} to the strict preference $x_i\succ_i x_i^*$ (``consumers that are
+        made strictly better off''; with weak preference the strict inequality does not
+        follow). ``Contradicting $x_i^*$ is optimum''. Step 2: ``an even better [bundle,
+        crossed out] bundle is affordable''; the appeal to local non-satiation is
+        \textbf{added}.
+  \item Page 4: ``Sum over all agent, keeping in mind that the inequality is strict for at
+        least one agent''; in the chain, the annotation ``profit max'' under the last
+        $\ge$ is kept as the explanation after the display. The second sum on the page is
+        written $\sum_{i=1}^{I}w_i$ (kept); the summation limits on $y_j$ are kept as $J$.
+        ``Let us now consider quemtities: $(x,y)$ must be feasible''.
+  \item Page 5: ``so their value is the same'' and the two equalities are kept; ``contradicts
+        the earlier conclusion that $\sum Px_i>P\bar\omega+\sum P\cdot y_j$
+        $\Rightarrow(x^*,y^*)$ is P.E.''
+  \item Page 5: ``An example of a pure exchange to show why strict convexity $+$ strong
+        monotonicity is important for existence'' is used as the section title. Agent 1's
+        utility is written $v(x_{11},x_{12})=\sqrt{x_{11}}+x_{21}$; \textbf{corrected} to
+        $u_1(x_{11},x_{21})$ (good $k$, agent $i$, as in Lessons 19 and 21). The annotation
+        under $\sqrt{x_{11}}$ reads ``good agent'' (uncertain; probably ``good 1, agent 1'')
+        and is dropped. ``indiff curve $x_2=c-\sqrt{x_{11}}$ with unbounded score as
+        $x_{11}\to0$'' $\to$ $x_{21}=c-\sqrt{x_{11}}$, \emph{unbounded slope}. Agent 2:
+        $V(x_{12},x_{22})=x_{12}$, ``locally non-satiated''; the remark that agent 2 is
+        neither strongly monotone nor strictly convex is \textbf{added}. The endowment
+        vectors are \textbf{added}.
+  \item Page 5, figure: Edgeworth box redrawn to scale ($\bar\omega_1=5$, $\bar\omega_2=3$,
+        $p_1/p_2=1/2$, so agent 1 demands $x_1(p)=(1,2.5)$, where his indifference curve
+        is tangent to the budget line). Kept from the page: $\omega$
+        at the top-left corner, the brace ``P.E.\ allocation'' along the top edge (drawn as
+        a thick line), agent 1's indifference curves with the arrow of increasing utility,
+        ``agent 2's indiff curve'' (vertical) with an arrow pointing left, ``Agent 1'',
+        ``Agent 2''. The budget line, the demand point $x_1(p)$, the origins $O_1$, $O_2$
+        and the axis labels are \textbf{added}; the sentence explaining the Pareto set is
+        \textbf{added}.
+  \item Page 5: ``Look for EQ prices $p\gg0$ $\Rightarrow$ Agent 2 keeps her endowment of
+        good 1 $+$ agent 1 is also demanding good 1. Total demand $>$ supply endow.\ of good
+        1, $Z(P)>0$ $\Rightarrow$ Not EQ''; $Z(P)$ \textbf{corrected} to $z_1(p)$; the
+        reasons (agent 2's wealth, agent 1's unbounded marginal utility) are \textbf{added}.
+  \item Page 6: ``If $P_1$ and $P_2$ is $=0$'' $\to$ \emph{if $p_1=0$ or $p_2=0$}.
+        ``$z(p)>0$ or $z_2(p)>0$'' $\to$ $z_1(p)>0$ or $z_2(p)>0$; which agent's demand
+        explodes in each case is \textbf{added}.
+\end{transcriptnotes}
+
+\end{document}

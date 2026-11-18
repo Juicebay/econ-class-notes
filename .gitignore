@@ -33,3 +33,10 @@ micro 1 class note/05 Textbooks & Supplements/Felix Munoz-Garcia*
 
 # Stray build copy (Metrics HW2 folder name has a trailing space)
 metrics 1 class note/HW 2.pdf
+
+# Final exam prep / mock finals (keep off GitHub)
+**/final prep/
+
+# LaTeX build intermediates
+*.fdb_latexmk
+*.fls

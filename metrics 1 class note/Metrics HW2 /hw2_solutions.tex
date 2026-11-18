@@ -313,6 +313,49 @@ log-likelihood over $\beta$). For $\lambda=1$ the Jacobian term drops out and th
 \end{align*}
 Solve the three FOCs jointly to get $\hat\beta$, $\hat\sigma^2$ and $\hat\lambda$, numerically on the computer.
 
+\medskip
+\textbf{(ii)} $H_0:\lambda=1$, using only the restricted estimates (LM test via the OPG regression).
+
+\emph{Restricted estimates.} With $\lambda=1$, $n\log\lambda=0$, $(\lambda-1)\sum_t\log|r_t|=0$ and $|r_t|^{2\lambda}=r_t^2$, so
+\[
+  L(\beta,\sigma^2,1)=-\frac n2\log2\pi-\frac n2\log\sigma^2-\frac1{2\sigma^2}\sum_t(y_t-X_t\beta)^2 ,
+\]
+which is the normal linear regression model. Hence
+\[
+  \tilde\beta=(X\xT X)^{-1}X\xT y,\qquad e_t=y_t-X_t\tilde\beta,\qquad \tilde\sigma^2=\frac{e\xT e}{n}.
+\]
+\emph{Gradient contributions.} Write $L=\sum_t\ell_t$ with
+$\ell_t=-\frac12\log2\pi-\frac12\log\sigma^2-\frac{(r_t^2)^\lambda}{2\sigma^2}+\log\lambda+(\lambda-1)\log|r_t|$.
+Differentiating as in (i) and evaluating at $\tilde\theta$ ($\lambda=1$, $r_t=e_t$):
+\begin{align*}
+  \frac{\partial\ell_t}{\partial\beta}&=\frac{\lambda}{\sigma^2}(r_t^2)^{\lambda-1}r_tX_t\xT-(\lambda-1)\frac{X_t\xT}{r_t}
+  &&\Rightarrow\quad \frac{e_tX_t\xT}{\tilde\sigma^2},\\
+  \frac{\partial\ell_t}{\partial\sigma^2}&=-\frac1{2\sigma^2}+\frac{(r_t^2)^\lambda}{2\sigma^4}
+  &&\Rightarrow\quad -\frac1{2\tilde\sigma^2}+\frac{e_t^2}{2\tilde\sigma^4},\\
+  \frac{\partial\ell_t}{\partial\lambda}&=\frac1\lambda+\log|r_t|-\frac{(r_t^2)^\lambda}{\sigma^2}\log|r_t|
+  &&\Rightarrow\quad 1+\log|e_t|-\frac{e_t^2}{\tilde\sigma^2}\log|e_t| ,
+\end{align*}
+using $\partial(r_t^2)^\lambda/\partial\lambda=2(r_t^2)^\lambda\log|r_t|$. Stack these into the $n\times(k+2)$ matrix $\tilde G$ (row $t$ = the three
+contributions above).
+
+\emph{Score.} $\tilde g=\tilde G\xT\iota$. The $\beta$ block is $X\xT e/\tilde\sigma^2=0$ (normal equations) and the $\sigma^2$ element is
+$-n/(2\tilde\sigma^2)+e\xT e/(2\tilde\sigma^4)=0$, so only
+\[
+  \tilde g_\lambda=n+\sum_t\log|e_t|-\frac1{\tilde\sigma^2}\sum_te_t^2\log|e_t|
+\]
+is nonzero. The test asks whether $\tilde g_\lambda$ is significantly different from 0.
+
+\emph{LM statistic.} Estimating the information matrix by $\tilde G\xT\tilde G$ (OPG),
+\[
+  LM=\tilde g\xT(\tilde G\xT\tilde G)^{-1}\tilde g=\iota\xT\tilde G(\tilde G\xT\tilde G)^{-1}\tilde G\xT\iota=\text{ESS}=n-\text{SSR},
+\]
+from the regression of $\iota$ (a column of ones) on all $k+2$ columns of $\tilde G$, no constant.
+All columns must be included, so that the variance of $\tilde g_\lambda$ accounts for $\beta,\sigma^2$ being estimated.
+Under $H_0$, $LM\overset{a}{\sim}\chi^2(1)$; reject at 5\% if $LM>3.84$.
+
+\emph{Procedure.} (1) OLS of $y$ on $X$, save $e_t$, $\tilde\sigma^2$; (2) build the three columns of $\tilde G$;
+(3) regress $\iota$ on $\tilde G$; (4) $LM=n-\text{SSR}$ vs.\ $\chi^2_{0.95}(1)=3.84$. The model with $\lambda$ free is never estimated.
+
 % ======================================================================
 \newpage
 \topic{Appendix: Python code (Questions 1--2)}

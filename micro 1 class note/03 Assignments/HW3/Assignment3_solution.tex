@@ -1,0 +1,328 @@
+\documentclass[12pt,letterpaper]{article}
+
+% ---------- Standard setup ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\setlist[itemize]{itemsep=2pt,topsep=2pt}
+\setlist[enumerate]{itemsep=2pt,topsep=2pt}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------- Hints (set to \showhintsfalse before submitting) ----------
+\newif\ifshowhints
+\showhintstrue
+\newcommand{\hint}[1]{\ifshowhints{\color{blue}\small\textbf{Hint.} #1\par}\fi}
+
+% ---------- Header ----------
+\begin{document}
+
+\begin{center}
+  {\large\bfseries ECON 6000 -- Microeconomics I}\\[4pt]
+  {\large\bfseries Assignment 3}\\[10pt]
+  Name: Xingming Li\\
+  Student ID: 1432037
+\end{center}
+
+\vspace{6pt}
+
+% ==========================================================
+\section*{Question 1}
+
+\[
+u(x) = 3x - x^3, \qquad x\in X=[-1,1],
+\]
+\[
+\max_{p_1,p_2,x_1,x_2}\; p_1u(x_1)+p_2u(x_2)
+\quad\text{s.t.}\quad p_1x_1+p_2x_2=0,\quad p_1,p_2\ge 0,\; p_1+p_2=1,\quad x_1,x_2\in[-1,1].
+\]
+
+\subsection*{1.1}
+
+\textit{Reducing the problem.} Since $p_1,p_2\ge0$ and $p_1x_1+p_2x_2=0$, the outcomes cannot have the same strict sign. If either outcome is $0$, the lottery pays $0$ for sure and $EU=u(0)=0$. Otherwise, without loss of generality, $x_1<0<x_2$, so $x_1$ is the loss and $x_2$ is the gain. Substituting $p_1=1-p_2$ into the zero-mean constraint,
+\[
+p_1=\frac{x_2}{x_2-x_1},\qquad p_2=\frac{-x_1}{x_2-x_1},
+\]
+so
+\[
+EU=\frac{x_2(3x_1-x_1^3)-x_1(3x_2-x_2^3)}{x_2-x_1}
+=\frac{x_1x_2(x_2-x_1)(x_2+x_1)}{x_2-x_1}
+=x_1x_2(x_1+x_2)\equiv V(x_1,x_2),
+\]
+with $x_1\in[-1,0)$ and $x_2\in(0,1]$.
+
+\textit{Where the optimum can be.} Since $x_1x_2<0$, we have $V>0$ if and only if $x_1+x_2<0$, i.e.\ $x_1<-x_2$. So any lottery that beats the riskless one has a loss that is larger in size than the gain, and we can restrict attention to this region.
+
+\textit{Optimal loss.} $\partial V/\partial x_1=x_2(2x_1+x_2)$. In the region $x_1<-x_2$ we have $2x_1+x_2<-x_2<0$, and $x_2>0$, so $\partial V/\partial x_1<0$. Hence $V$ is strictly decreasing in $x_1$ there, and the loss is pushed to the corner $x_1^*=-1$.
+
+\textit{Optimal gain.} Substituting, $V(-1,x_2)=-x_2(x_2-1)=x_2-x_2^2$. The first-order condition $1-2x_2=0$ gives $x_2^*=\tfrac12$, and the second derivative is $-2<0$, so this is a maximum.
+
+\textit{Solution.}
+\[
+x_1^*=-1 \text{ with } p_1^*=\tfrac13,\qquad x_2^*=\tfrac12 \text{ with } p_2^*=\tfrac23,\qquad EU^*=\tfrac14 .
+\]
+Check: $-\tfrac13+\tfrac23\cdot\tfrac12=0$, and $\tfrac13 u(-1)+\tfrac23 u(\tfrac12)=-\tfrac23+\tfrac23\cdot\tfrac{11}{8}=\tfrac14>0$, so this beats the riskless lottery.
+
+\textit{Comparison with a risk-averse agent.} With concave $v$, Jensen's inequality gives $\int v\,dF\le v(0)$ for any zero-mean $F$, so a risk-averse agent chooses $0$ for sure. Our agent instead takes on risk, since $EU^*=\tfrac14>u(0)$; Jensen fails because $u$ is not concave. As $u''(x)=-6x$, $u$ is convex over losses, so the agent is risk-loving there and pushes the loss to the extreme $-1$. It is concave over gains, so he is risk-averse there and prefers a moderate, likely gain of $\tfrac12$ to the largest gain. The result is a small, likely gain and a large, unlikely loss, a lottery a risk-averse agent would never choose.
+
+\subsection*{1.2}
+
+\textit{Sketch.} $u(-1)=-2$, $u(0)=0$, $u(1)=2$, and $u'(x)=3-3x^2\ge0$, so $u$ is non-decreasing. Since $u''(x)=-6x$, $u$ is convex on $[-1,0]$ and concave on $[0,1]$.
+
+\begin{center}
+\begin{tikzpicture}[xscale=3.2,yscale=1.15]
+  \draw[->] (-1.25,0) -- (1.3,0) node[right] {$x$};
+  \draw[->] (0,-2.4) -- (0,2.5) node[above] {$u$};
+  \draw[thick,domain=-1:1,samples=80] plot (\x,{3*\x-\x*\x*\x});
+  \draw[thick,red,dashed] (-1,-2) -- (0.5,1.375);
+  \fill (-1,-2) circle[x radius=0.016,y radius=0.045];
+  \fill (0.5,1.375) circle[x radius=0.016,y radius=0.045];
+  \fill[red] (0,0.25) circle[x radius=0.016,y radius=0.045];
+  \draw[dotted] (-1,0) node[above] {\small $-1$} -- (-1,-2);
+  \draw[dotted] (0.5,0) node[below] {\small $\tfrac12$} -- (0.5,1.375);
+  \draw[dotted] (1,0) node[below] {\small $1$} -- (1,2);
+  \node[left] at (-1,-2) {\small $-2$};
+  \node[right] at (1,2) {\small $u(x)=3x-x^3$};
+  \node[red,anchor=south east] at (-0.56,-1.0) {\small $u_C(x)=\tfrac{9x+1}{4}$};
+  \node[red,anchor=east] at (-0.03,0.5) {\small $u_C(0)=\tfrac14$};
+\end{tikzpicture}
+\end{center}
+
+\textit{Constructing $u_C$.} By Section 4.2 of the handout, $u_C$ is the lowest concave function weakly above $u$. Over the convex part, it is the straight line from $(-1,-2)$ that is tangent to $u$ at some $b>0$:
+\[
+u'(b)=\frac{u(b)-u(-1)}{b+1}
+\;\Longleftrightarrow\;
+3(1-b)(1+b)=\frac{(b+1)^2(2-b)}{b+1}=(b+1)(2-b)
+\;\Longleftrightarrow\;
+b=\tfrac12 .
+\]
+The slope is $u'(\tfrac12)=\tfrac94$, so the line is $\tfrac{9x+1}{4}$ and
+\[
+u_C(x)=\begin{cases}
+\dfrac{9x+1}{4} & \text{if } x\in[-1,\tfrac12],\\[8pt]
+3x-x^3 & \text{if } x\in[\tfrac12,1].
+\end{cases}
+\]
+(Check: $\tfrac{9x+1}{4}-u(x)=(x+1)(x-\tfrac12)^2\ge0$, and the slope of $u_C$ never increases, so $u_C$ is concave and above $u$.)
+
+\textit{Choice of an agent with $u_C$.} Since $u_C$ is concave, Jensen's inequality gives
+\[
+p_1u_C(x_1)+p_2u_C(x_2)\le u_C(0)=\tfrac14
+\]
+for every feasible lottery. Because $u_C$ is linear on $[-1,\tfrac12]$, this holds with equality whenever both outcomes lie in $[-1,\tfrac12]$. If instead an outcome above $\tfrac12$ has positive probability, zero mean forces the other outcome to be negative, so the two outcomes straddle the kink at $\tfrac12$ and the inequality is strict. Hence the solutions are all zero-mean lotteries with
+\[
+x_1\in[-1,0],\qquad x_2\in[0,\tfrac12],
+\]
+including the riskless lottery at $0$.
+
+\textit{Comparison with 1.1.} The lottery from 1.1, $(-1,\tfrac12)$ with probabilities $(\tfrac13,\tfrac23)$, lies in this set, and both agents get the same value, $\tfrac14$. The difference is uniqueness: the agent with $u$ strictly prefers that lottery to any other, while the agent with $u_C$ is risk neutral on $[-1,\tfrac12]$ and is indifferent among all of these lotteries, including no risk.
+
+\textit{$u_C(0)$ versus 1.1.} They are equal, $u_C(0)=\tfrac14=EU^*$. Since $u\le u_C$ and $u_C$ is concave, any feasible lottery satisfies
+\[
+p_1u(x_1)+p_2u(x_2)\;\le\;p_1u_C(x_1)+p_2u_C(x_2)\;\le\;u_C(0),
+\]
+so $u_C(0)$ is the most the agent with $u$ can get. The lottery $(-1,\tfrac12)$ attains it, because $u=u_C$ at both outcomes and both lie on the linear segment. This is the point of concavification: $u_C(0)$ is the best expected utility from mixing points of $u$ with mean $0$, which is exactly the agent's problem in 1.1.
+
+\subsection*{1.3}
+
+\textit{An upper bound.} The argument from 1.2 carries over with $0$ replaced by $\mu$. For any feasible lottery with $p_1x_1+p_2x_2=\mu$,
+\[
+\underbrace{p_1u(x_1)+p_2u(x_2)}_{\text{(1) expected } u}
+\;\le\;
+\underbrace{p_1u_C(x_1)+p_2u_C(x_2)}_{\text{(2) expected } u_C}
+\;\le\;
+u_C(p_1x_1+p_2x_2)=u_C(\mu).
+\]
+The first inequality holds because $u\le u_C$, and the second is Jensen's inequality for the concave $u_C$. So $u_C(\mu)$ is an upper bound on the agent's expected utility. A lottery attains it only if both inequalities hold with equality:
+\begin{itemize}
+  \item (1) holds with equality only if every outcome with positive probability is a point where $u$ and $u_C$ touch, i.e.\ $x_i\in\{-1\}\cup[\tfrac12,1]$;
+  \item (2) holds with equality only if all such outcomes lie on one linear piece of $u_C$: either all in $[-1,\tfrac12]$, or the lottery is degenerate.
+\end{itemize}
+We now find such a lottery for each $\mu$.
+
+\textit{Case $\mu\in[-1,\tfrac12]$.} Here $u_C$ is linear, so we look for outcomes that are contact points on the linear segment, which are $x_1=-1$ and $x_2=\tfrac12$. The probabilities solve
+\[
+\begin{cases}
+p_1+p_2=1,\\[2pt]
+-p_1+\tfrac12p_2=\mu.
+\end{cases}
+\]
+Substituting $p_1=1-p_2$ gives $\tfrac32p_2-1=\mu$, so
+\[
+p_2^*=\frac{2(1+\mu)}{3},\qquad p_1^*=\frac{1-2\mu}{3},
+\]
+both in $[0,1]$ exactly when $\mu\in[-1,\tfrac12]$. The expected utility is
+\[
+EU^*=\frac{1-2\mu}{3}\cdot(-2)+\frac{2(1+\mu)}{3}\cdot\frac{11}{8}
+=\frac{-8+16\mu+11+11\mu}{12}
+=\frac{9\mu+1}{4}=u_C(\mu),
+\]
+so the bound is attained. For $\mu\in(-1,\tfrac12)$ this is the unique solution, since $-1$ and $\tfrac12$ are the only contact points on the linear segment. At $\mu=0$ we recover 1.1 ($p_1^*=\tfrac13$, $p_2^*=\tfrac23$, $EU^*=\tfrac14$). At the endpoints the lottery becomes degenerate: at $\mu=-1$ it pays $-1$ for sure, and at $\mu=\tfrac12$ it pays $\tfrac12$ for sure.
+
+\textit{Case $\mu\in[\tfrac12,1]$.} Here $u_C(\mu)=u(\mu)$, so the riskless lottery that pays $\mu$ for sure attains the bound, with
+\[
+EU^*=u(\mu)=3\mu-\mu^3=u_C(\mu).
+\]
+It is the unique solution: $u_C$ is strictly concave on $[\tfrac12,1]$, and any nondegenerate lottery with mean $\mu\ge\tfrac12$ either stays in $[\tfrac12,1]$ or puts weight below $\tfrac12$ and so straddles the kink. Either way (2) is strict.
+
+\textit{Summary.}
+\[
+\text{optimal lottery}=
+\begin{cases}
+-1 \text{ w.p. } \tfrac{1-2\mu}{3},\;\; \tfrac12 \text{ w.p. } \tfrac{2(1+\mu)}{3}, & \mu\in[-1,\tfrac12],\\[6pt]
+\mu \text{ for sure}, & \mu\in[\tfrac12,1],
+\end{cases}
+\]
+\[
+EU^*(\mu)=u_C(\mu)=
+\begin{cases}
+\tfrac{9\mu+1}{4}, & \mu\in[-1,\tfrac12],\\[4pt]
+3\mu-\mu^3, & \mu\in[\tfrac12,1].
+\end{cases}
+\]
+
+\textit{$u_C(\mu)$ versus expected utility.} They are equal for every $\mu\in[-1,1]$. The chain of inequalities shows that $u_C(\mu)$ is an upper bound on expected utility from any lottery with mean $\mu$, and the lotteries above attain it. This is what concavification means: $u_C(\mu)$ is the highest expected utility the agent can get by mixing points of $u$ with mean $\mu$. Graphically, the agent's maximum value as a function of the mean traces out $u_C$. For low means the agent gambles between the worst outcome $-1$ and the tangency point $\tfrac12$, and moves along the chord. For means above $\tfrac12$, $u$ is already concave, so the agent behaves like a risk-averse agent and takes $\mu$ for sure. Two outcomes are enough to reach the bound here because the outcome space is one-dimensional: any point on the graph of $u_C$ lies on a chord between two points of $u$.
+
+% ==========================================================
+\section*{Question 2}
+
+\subsection*{2.1}
+
+\textit{Expected utility.} With $K$ units of insurance the agent pays $\gamma K$ in every state and receives $\min\{K,d\}$ when the damage is $d$. With $w=9$, $d_B=1$, $d_T=6$ and $K\in[0,6]$, we have $\min\{K,d_T\}=K$, so
+\[
+\begin{aligned}
+EU(K)&=\tfrac13 u(w-\gamma K)+\tfrac13 u\big(w-\gamma K-d_B+\min\{K,d_B\}\big)+\tfrac13 u\big(w-\gamma K-d_T+\min\{K,d_T\}\big)\\[2pt]
+&=\tfrac13\Big[\ln(9-\gamma K)+\ln\big(8-\gamma K+\min\{1,K\}\big)+\ln\big(3+K(1-\gamma)\big)\Big],\qquad 0\le K\le 6 .
+\end{aligned}
+\]
+All arguments are positive on $[0,6]$ since $9-\gamma K>9-6=3$.
+
+\textit{Derivative for $K\ne1$.} For $K<1$, $\min\{1,K\}=K$, so the bad-state wealth is $8+K(1-\gamma)$. For $K>1$, $\min\{1,K\}=1$, so the bad-state wealth is $9-\gamma K$, the same as in the good state. Hence
+\[
+EU'(K)=
+\begin{cases}
+\dfrac13\left[-\dfrac{\gamma}{9-\gamma K}+\dfrac{1-\gamma}{8+K(1-\gamma)}+\dfrac{1-\gamma}{3+K(1-\gamma)}\right], & 0\le K<1,\\[14pt]
+\dfrac13\left[-\dfrac{2\gamma}{9-\gamma K}+\dfrac{1-\gamma}{3+K(1-\gamma)}\right], & 1<K\le 6.
+\end{cases}
+\]
+
+\textit{Directional derivatives at $K=1$.} Letting $K\to1$ in each branch,
+\[
+EU'(1^-)=\frac13\left[\frac{1-2\gamma}{9-\gamma}+\frac{1-\gamma}{4-\gamma}\right],
+\qquad
+EU'(1^+)=\frac13\left[-\frac{2\gamma}{9-\gamma}+\frac{1-\gamma}{4-\gamma}\right].
+\]
+They differ because the coverage in the bad state stops growing at $K=1$. Their difference is $EU'(1^-)-EU'(1^+)=\frac{1}{3(9-\gamma)}>0$, so $EU$ has a concave kink at $K=1$.
+
+\textit{Sign of $EU'(1^-)$.} Since $9-\gamma>0$ and $4-\gamma>0$, the sign is that of
+\[
+(1-2\gamma)(4-\gamma)+(1-\gamma)(9-\gamma)=3\gamma^2-19\gamma+13 .
+\]
+Its roots are $\gamma=\frac{19\pm\sqrt{205}}{6}$. The larger root exceeds $1$, and the smaller is $\frac{19-\sqrt{205}}{6}\approx0.780$. So for $\gamma\in(0,1)$,
+\[
+EU'(1^-)>0\iff\gamma<\frac{19-\sqrt{205}}{6}\approx0.780 .
+\]
+
+\textit{Sign of $EU'(1^+)$.} The sign is that of
+\[
+(1-\gamma)(9-\gamma)-2\gamma(4-\gamma)=3\gamma^2-18\gamma+9=3(\gamma^2-6\gamma+3).
+\]
+Its roots are $\gamma=3\pm\sqrt6$, and only $3-\sqrt6\approx0.551$ lies in $(0,1)$. So for $\gamma\in(0,1)$,
+\[
+EU'(1^+)>0\iff\gamma<3-\sqrt6\approx0.551 .
+\]
+
+\textit{Summary.} Both directional derivatives are positive when $\gamma<3-\sqrt6$. When $3-\sqrt6\le\gamma<\frac{19-\sqrt{205}}{6}$, only the left derivative is positive. When $\gamma\ge\frac{19-\sqrt{205}}{6}$, neither is positive.
+
+\subsection*{2.2}
+
+\textit{Locating $K^*$.} Each term of $EU$ is $\ln$ of a concave function of $K$, so $EU$ is concave and its slope only falls as $K$ rises. Hence the signs at the kink locate the optimum: if both directional derivatives are positive, $K^*>1$; if $EU'(1^-)>0>EU'(1^+)$, $K^*=1$. By 2.1:
+\begin{itemize}
+  \item $\gamma=\tfrac13,\tfrac12<0.551$: both are positive, so $K^*>1$;
+  \item $\gamma=\tfrac23\in(0.551,\,0.780)$: $EU'(1^-)>0>EU'(1^+)$, so $K^*=1$.
+\end{itemize}
+
+\textit{Solving for $K^*>1$.} Setting $EU'(K)=0$ on $(1,6]$,
+\[
+(1-\gamma)(9-\gamma K)=2\gamma\big(3+K(1-\gamma)\big)
+\;\Longleftrightarrow\;
+9-15\gamma=3\gamma(1-\gamma)K
+\;\Longleftrightarrow\;
+K^*=\frac{3-5\gamma}{\gamma(1-\gamma)} .
+\]
+So $K^*(\tfrac13)=6$ and $K^*(\tfrac12)=2$, both in $(1,6]$.
+
+\textit{Wealth and risk.} With $w_G=9-\gamma K$, $w_B=8-\gamma K+\min\{K,1\}$, $w_T=3+(1-\gamma)K$:
+\[
+\begin{array}{c|c|ccc|c}
+\gamma & K^* & w_G & w_B & w_T & \text{risk?}\\\hline
+\tfrac13 & 6 & 7 & 7 & 7 & \text{no}\\
+\tfrac12 & 2 & 8 & 8 & 4 & \text{yes}\\
+\tfrac23 & 1 & \tfrac{25}{3} & \tfrac{25}{3} & \tfrac{10}{3} & \text{yes}
+\end{array}
+\]
+A unit beyond $K=1$ pays only in state $T$, which has probability $\tfrac13$. At $\gamma=\tfrac13$ these units are actuarially fair, so the risk-averse consumer insures fully and faces no risk. At $\gamma=\tfrac12$ and $\gamma=\tfrac23$ they are overpriced ($\gamma>\tfrac13$), so the consumer stops short of full coverage in state $T$ and bears risk.
+
+\textit{Expected profit.} The insurer collects $\gamma K$ and pays $\min\{K,1\}$ in $B$ and $K$ in $T$:
+\[
+\pi=\gamma K-\tfrac13\min\{K,1\}-\tfrac13K .
+\]
+\[
+\gamma=\tfrac13:\ \pi=2-\tfrac13-2=-\tfrac13<0;\qquad
+\gamma=\tfrac12:\ \pi=1-\tfrac13-\tfrac23=0;\qquad
+\gamma=\tfrac23:\ \pi=\tfrac23-\tfrac13-\tfrac13=0 .
+\]
+At $\gamma=\tfrac13$ the first unit (which pays with probability $\tfrac23$) is underpriced, so profit is negative.
+
+\subsection*{2.3}
+
+Buy $K^*=6$ (full insurance); the insurer's expected profit is $0$.
+
+\textit{Setup.} As in 2.1, but the premium $P(K)$ replaces $\gamma K$:
+\[
+P(K)=\begin{cases}\tfrac23K, & K\le1,\\[2pt] \tfrac23+\tfrac13(K-1), & K>1,\end{cases}
+\qquad
+EU(K)=\tfrac13\Big[\ln\big(9-P(K)\big)+\ln\big(8-P(K)+\min\{K,1\}\big)+\ln\big(3-P(K)+K\big)\Big].
+\]
+
+\textit{Case 1: $K\le1$.} Substitute $P(K)=\tfrac23K$ and $\min\{K,1\}=K$:
+\[
+EU=\tfrac13\Big[\ln\big(9-\tfrac23K\big)+\ln\big(8+\tfrac13K\big)+\ln\big(3+\tfrac13K\big)\Big],
+\qquad
+\frac{dEU}{dK}=\frac13\left[-\frac{2}{27-2K}+\frac{1}{24+K}+\frac{1}{9+K}\right].
+\]
+On $[0,1]$, $-\frac{2}{27-2K}\ge-\frac{2}{25}$ and $\frac{1}{9+K}\ge\frac1{10}>\frac2{25}$, so $\frac{dEU}{dK}>0$ (at $K=1$ it equals $\frac13\cdot\frac{3}{50}$). The optimum is not in $[0,1)$.
+
+\textit{Case 2: $K>1$.} Substitute $P(K)=\tfrac{K+1}{3}$ and $\min\{K,1\}=1$:
+\[
+w_G=9-\tfrac{K+1}{3}=\tfrac{26-K}{3},\qquad
+w_B=8-\tfrac{K+1}{3}+1=\tfrac{26-K}{3},\qquad
+w_T=3-\tfrac{K+1}{3}+K=\tfrac{8+2K}{3},
+\]
+so
+\[
+EU=\tfrac13\Big[2\ln\Big(\frac{26-K}{3}\Big)+\ln\Big(\frac{8+2K}{3}\Big)\Big],
+\qquad
+\frac{dEU}{dK}=\frac13\left[-\frac{2}{26-K}+\frac{2}{8+2K}\right],
+\]
+which is positive iff $8+2K<26-K$, i.e.\ $K<6$, and zero at $K=6$. Hence $K^*=6$, and wealth is $\tfrac{20}{3}$ in every state: no risk.
+
+\textit{Profit.} Expected profit is premium minus expected payout:
+\[
+\pi=P(K)-\tfrac13\min\{K,1\}-\tfrac13K
+\quad\Rightarrow\quad
+\pi(6)=\tfrac73-\tfrac13-2=0 .
+\]
+
+\textit{Why.} The first dollar pays in states $B$ and $T$ (probability $\tfrac23$) and costs $\tfrac23$; each dollar above $1$ pays only in $T$ (probability $\tfrac13$) and costs $\tfrac13$. Every unit is actuarially fair, so, as in Example 6.C.1, the risk-averse agent fully insures and the insurer breaks even.
+
+\end{document}
